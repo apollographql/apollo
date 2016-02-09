@@ -4,6 +4,10 @@ This is a high-level overview of the architecture of a reactive GraphQL data loa
 
 If you haven't yet, read our [announcement post](http://info.meteor.com/blog/reactive-graphql) which outlines all of the problems we are aiming to solve.
 
+Here's a summary of the design in a diagram, which will be explained in more detail later:
+
+<img src="reactive-with-mutations-diagram.png" title="Reactive GraphQL with mutations" />
+
 ## GraphQL
 
 (You can skip this part if you are already familiar with GraphQL)
