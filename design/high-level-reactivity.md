@@ -4,14 +4,6 @@ This is a high-level overview of the architecture of a reactive GraphQL data loa
 
 If you haven't yet, read our [announcement post](http://info.meteor.com/blog/reactive-graphql) which outlines all of the problems we are aiming to solve.
 
-Here's a summary in the form of a component diagram:
-
-![Block diagram](block-diagram.png)
-
-This represents all of the components that need to exist for the whole system to function together, and have the best developer experience we can imagine.
-
-Some of these blocks already exist, and some are almost there. Not all of them need to be built by us at Meteor, and we'll be looking for owners and contributors for some of the components soon. The first step in this direction will be defining the APIs between the different parts.
-
 ## GraphQL
 
 (You can skip this part if you are already familiar with GraphQL)
@@ -228,3 +220,13 @@ The new system is designed to avoid this issue, and the implementation will be b
 2. **Mutations.** In a reactive system, a mutation will cause that client to refetch some data, and possibly some other clients. It is important to track which mutations are happening, what performance load those incur on the database, which dependencies that invalidates, and which refetches that causes in the other clients. This should give you the tools to optimize your UI structure, data loading patterns, reactivity, and mutations to reduce load on your server while maintaining a great experience for your app's users.
 
 After you analyze the two paths above, there should be a clear path to optimization through careful manual invalidations and disabling reactivity that will let you change a minimum of app code to "twist the knobs" on performance.
+
+## Implementation plan
+
+Here's a diagram of all of the pieces we think will need to be built to have a complete system:
+
+![Block diagram](block-diagram.png)
+
+It's a lot of stuff, but a lot of it already exists thanks to the Relay project, and some of the things can be contributed by the community once the structure is clearer, for example some of the database drivers.
+
+If you're interested in helping out with some parts of the project, I'd love to hear from you! Please file an issue here or email me at sashko@meteor.com.
