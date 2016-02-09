@@ -10,7 +10,7 @@ Here's a summary of the design in a diagram, which will be explained in more det
 
 ## GraphQL
 
-(You can skip this part if you are already familiar with GraphQL)
+(You can [skip this part](#reactive-graphql) if you are already familiar with GraphQL)
 
 GraphQL is a tree-shaped query language for querying a schema of node types. So, for example, if you have users, todo lists, and tasks, you might query them like this:
 
