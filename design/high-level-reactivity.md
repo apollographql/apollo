@@ -137,7 +137,7 @@ This will let you manually specify situations in which the number of notificatio
 Based on the above primitives, here is a stateless strategy for GraphQL reactivity:
 
 1. The client fetches the query from the GraphQL server, which includes a set of deps in the response.
-2. The client periodically polls the invalidation server with the set of deps, and the server returns the list of deps which have a newer version available.
+2. The client periodically polls the invalidation server with the set of deps, and the server returns the list of deps which have a newer version available. Note that this can easily be converted to a stateful approach where the client subscribes to a list of depenencies over a websocket, for parts of the client which need lower latency.
 3. The client re-fetches the subtrees of the query which depend on the invalidated deps.
 
 There are ways to move more state to the server to optimize the latency of the system and reduce roundtrips, but those can be added later.
