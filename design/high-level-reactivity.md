@@ -137,12 +137,21 @@ This will let you manually specify situations in which the number of notificatio
 Based on the above primitives, here is a stateless strategy for GraphQL reactivity:
 
 1. The client fetches the query from the GraphQL server, which includes a set of deps in the response.
-2. The client periodically polls the invalidation server with the set of deps, and the server returns the list of deps which have a newer version available. Note that this can easily be converted to a stateful approach where the client subscribes to a list of depenencies over a websocket, for parts of the client which need lower latency.
+2. The client periodically polls the invalidation server with the set of deps, and the server returns the list of deps which have a newer version available. Note that this can easily be converted to a stateful approach where the client subscribes to a list of depenencies over a websocket, for parts of the client which need lower latency - see the [section below](#reducing-latency).
 3. The client re-fetches the subtrees of the query which depend on the invalidated deps.
 
 There are ways to move more state to the server to optimize the latency of the system and reduce roundtrips, but those can be added later.
 
 <img src="reactive-graphql-block-diagram.png" title="Reactive GraphQL block diagram" width="50%" />
+
+### Reducing latency
+
+The rest of the document talks in terms of polling a dependency server for updates. This results in two roundtrips per update: one to get the invalidated keys, and another to actually get the new data. Here's how that could be reduced to 1 or 0 round trips:
+
+1. The invalidation server could accept websocket connections, and let the client subscribe to the dependency keys it cares about - this would mean the invalidation is pushed immediately, and then there is one roundtrip to fetch the actual data.
+2. The application server could subscribe to the invalidations, and do the GraphQL queries _on the server_, and then diff that against the current state of the client and send a patch. This would make the system work almost exactly like Meteor today, and could be a good option for applications with fewer users and a great need for low latency.
+
+Since both of those approaches don't change anything about the inherent design of the system and are relatively simple to implement, we'll leave them as optimizations for the future.
 
 ### Invalidating dependencies
 
