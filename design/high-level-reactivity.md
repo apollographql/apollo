@@ -59,7 +59,7 @@ Note that there is a GraphQL cache - what this does is decompose the results of 
 
 This is clearly very simplified, and you can read about how the Relay cache works on [Huey Petersen's website](http://hueypetersen.com/posts/2015/09/30/quick-look-at-the-relay-store/). The important thing to note is that the cache decomposes query results into a flat structure, and a smart cache will be able to generate a query to update just one list and its tasks, or just the list’s name, as necessary.
 
-// May be we can link Learn GraphQL here as well. Specially for someone who dislike GraphQL.
+// May be we can link Learn GraphQL. It's great, specially for a person who dislike GraphQL.
 // We've exprience in coverting them to lovers with LearnGraphQL :)
 // Edit: I'm waiting to add a section on Reactive GraphQL.
 
@@ -185,7 +185,7 @@ The rest of the document talks in terms of polling a dependency server for updat
 2. The application server could subscribe to the invalidations, and do the GraphQL queries _on the server_, and then diff that against the current state of the client and send a patch. This would make the system work almost exactly like Meteor today, and could be a good option for applications with fewer users and a great need for low latency.
 
 // I think it's better to go with Just the 1. We could optimize on top of that. It's not a good idea to maintain two different things.
-// If that app is small, it might be okay to change the polling interval smaller.  That'll do the trick.
+// If that app is small, it might be okay to change the polling interval smaller. That'll do the trick.
 
 Since both of those approaches don't change anything about the inherent design of the system and are relatively simple to implement, we'll leave them as optimizations for the future.
 
@@ -193,9 +193,10 @@ Since both of those approaches don't change anything about the inherent design o
 
 We haven’t talked at all about how the invalidation server finds out that a dependency version has incremented, and that clients should reload that data. At the lowest level, your code posts to the invalidation server the list of keys that need to be invalidated whenever you make a write to the data store. The next section will talk about a nice high-level wrapper around that for application developers.
 
-// Here, I'll be great we can submit the actual DB changes as well. I mean for simple quries. 
+// Here, I'll be great we can submit the actual DB changes as well. I mean for simple queries. 
 // Then we could do something with that. Specially in the client.
-// But then again, I get the issue of race-conditions when working with multiple servers.
+//
+// But then again, I get the issue of race-conditions, when working with multiple servers.
 // We clearly have no idea on which change actually applied to the DB. 
 // So, it's wise to forget this, at least for now :)
 
@@ -247,17 +248,18 @@ context.invalidateDependency(notificationDepKeyForUser(userId));
 
 Hopefully, with time, we can make more and more invalidations automatic, but it’s always good to have an “escape hatch” for more complex situations where the developer needs all the control they can get.
 
-// Add a section here: This is why we said, you need to add custom keys. Then we can have some examples like this:
+// Add a section here: This is why we said, you need to add custom keys. 
+// Then we can have some examples like this:
 
-1. Stop reactivity. Just publish a depKey which is random. We never will invalidate it.
-2. Counter.  Sometimes you don't need to it to be neal realtime reactive. So, we can throttle the invalidations and invalidate it for few minutes.
+1. Stop reactivity. Just publish a depKey which is random. Do not invalidate that key.
+2. Counter.  Sometimes you don't need to it to be neal realtime. So, we can throttle the invalidations and invalidate it for every few minutes.
 
 <img src="reactive-with-mutations-diagram.png" title="Reactive GraphQL with mutations" />
 
 You can see in the diagram how invalidations flow from the mutation to the relevant clients, which then refetch the data as needed.
 
 // How about outside invalidations. Lets say after a diret DB write from another non Meteor app.  
-// If we can connect to the invalidation server from outside that's awesome.
+// If we can connect to the invalidation server from outside that's awesome. (Again via a GraphQL mutation)
 
 ## Data drivers
 
@@ -294,8 +296,8 @@ The new system is designed to avoid this issue, and the implementation will be b
 
 After you analyze the two paths above, there should be a clear path to optimization through careful manual invalidations and disabling reactivity that will let you change a minimum of app code to "twist the knobs" on performance.
 
-> Oh Yeah! I'm seeing huge set of ideas. 
-> Just implement this. So, we can build a great APM and make money :P
+// Oh Yeah! I'm seeing huge set of ideas. 
+// Let's implement this. So, we can build a great APM and make money :P
 
 ## Implementation plan
 
