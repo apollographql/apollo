@@ -183,8 +183,9 @@ In this dependency-based system, mutations need to do several things:
 
 We hope this system will put less burden on the developer to specify which data might have changed when they are calling a mutation, while leaving the door open for such an optimization when it is necessary.
 
-The hardest question here is (2) - how does a mutation notify the invalidation server, and therefore the appropriate app clients, which data it has changed?
+Having mutations emit invalidations is also a great way to do optimistic UI. You can simply return the dependency keys invalidated by the mutation to the client, and then the client knows it has the real data from the server as soon as it has refetched those dependencies.
 
+The hardest question here is (2) - how does a mutation notify the invalidation server, and therefore the appropriate app clients, which data it has changed?
 
 ### Automatic dependency invalidation
 
@@ -258,7 +259,7 @@ Here's a diagram of all of the pieces we think will need to be built to have a c
 
 ![Block diagram](block-diagram.png)
 
-Individual designs for each of the components incoming -- for example, how does the invalidation server work? The goal of this document is mostly to outline how they will all work together.
+Individual designs for each of the components incoming -- for example, how does the invalidation server work? The goal of this document is mostly to outline how they will all work together. We want all of the components of the system to have clean, well-documented APIs so that you can write your own implementation of any part if you need to.
 
 It's a lot of stuff, but a lot of it already exists thanks to the Relay project, and some of the things can be contributed by the community once the structure is clearer, for example some of the database drivers.
 
