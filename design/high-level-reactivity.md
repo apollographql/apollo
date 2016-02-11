@@ -2,7 +2,8 @@
 
 This is a high-level overview of the architecture of a reactive GraphQL data loading system, aimed at getting feedback from engineers who have been there and done that. We want to share what we’re working on to see if people find it interesting, and to validate our design against what others have seen in the field.
 
-If you haven't yet, read our [announcement post](http://info.meteor.com/blog/reactive-graphql) which outlines all of the problems we are aiming to solve.
+- If you haven't yet, read our [announcement post](http://info.meteor.com/blog/reactive-graphql) which outlines all of the problems we are aiming to solve.
+- You can also read Arunoda's post that summarizes this doc: [Meteor's Reactive GraphQL is Just Awesome](https://voice.kadira.io/meteor-s-reactive-graphql-is-just-awesome-b21074231528#.3h3hmtbm2)
 
 Here's a summary of the design in a diagram, which will be explained in more detail later:
 
