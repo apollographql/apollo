@@ -46,6 +46,8 @@ Each field in the query calls a resolver function on the server, which can acces
 }
 ```
 
+> You can follow the [LearnGraphQL](https://learngraphql.com/) interactive course to learn GraphQL basics. You could complete it in few hours.
+
 Note that there is no restriction on data sources - you could have your todo lists stored in one database, and your tasks in a different one. In fact, one of the main benefits of GraphQL is a total abstraction over where the data is coming from, so that frontend developers don’t have to worry about it, and backend developers are free to move around data or services as needed. Here’s what that looks like in terms of the components of the architecture:
 
 <img src="graphql-block-diagram.png" title="Basic GraphQL block diagram" width="50%" />
