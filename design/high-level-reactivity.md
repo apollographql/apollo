@@ -105,6 +105,7 @@ This will tell the client which dependencies they should watch to figure out if 
 Note that can’t put the `_deps` field on tasks itself, because JSON doesn’t allow it, so we have to put it on the parent instead. Also, the `_self` field is a shorthand to avoid listing all of the properties of the list object - it could have `name`, `description`, and so on, and it would be a waste of bandwidth to send all of those key names again.
 
 ### Automatically recording dependencies when reading data
+
 In order to know when a GraphQL query needs to be re-run, we need to know what deps represent different parts of the query. These deps can be recorded manually for complex queries, but simple queries can have their deps identified automatically. For example, here’s a query used in a particular part of the GraphQL resolution tree:
 
 ```
@@ -202,7 +203,7 @@ You can see that this matches up with the dependency we automatically recorded w
 
 ### Manual dependency invalidation
 
-For more complex situations, you will have to emit invalidations manually. For example, in the above example about notifications, we will want to invalidate the notification count manually when we add a notification:
+Sometimes, you will want or need to emit invalidations manually. For example, in the above example about notifications, we will want to invalidate the notification count manually when we add a notification:
 
 ```
 notifications.insert(...);
@@ -214,6 +215,14 @@ Hopefully, with time, we can make more and more invalidations automatic, but it�
 <img src="reactive-with-mutations-diagram.png" title="Reactive GraphQL with mutations" />
 
 You can see in the diagram how invalidations flow from the mutation to the relevant clients, which then refetch the data as needed.
+
+### Writing from external data sources
+
+If the writes to your backend are coming from an external source, you won't be able to take advantage of automatic invalidation. This means you will need something else to provide the reactivity if you need that data to update in your UI. The simplest thing to do is to have the service making the external write also post to the invalidation server directly.
+
+Another way to make external updates reactive is to set up a live query implementation that invalidates dependencies by watching the database. For example, Meteor's Livequery could be set up to watch MongoDB and fire the `todoLists:1` invalidation above when the result for `todoLists.find({ id: 1 })` changes.
+
+The initial version of the system won't have built-in support for livequeries, but we hope that well-defined APIs for all parts of the system will make these components easy to plug in to the rest of the stack.
 
 ## Data drivers
 
