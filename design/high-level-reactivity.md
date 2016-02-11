@@ -160,11 +160,11 @@ The rest of the document talks in terms of polling a dependency server for updat
 
 Since both of those approaches don't change anything about the inherent design of the system and are relatively simple to implement, we'll leave them as optimizations for the future.
 
-### Invalidating dependencies
+## Invalidating dependencies
 
-We haven’t talked at all about how the invalidation server finds out that a dependency version has incremented, and that clients should reload that data. At the lowest level, your code posts to the invalidation server the list of keys that need to be invalidated whenever you make a write to the data store. The next section will talk about a nice high-level wrapper around that for application developers.
+We haven’t talked at all about how the invalidation server finds out that a dependency version has incremented, and that clients should reload that data. At the lowest level, your code posts to the invalidation server the list of keys that need to be invalidated whenever you make a write to the data store. This section will also talk about a nice high-level wrapper around that for application developers.
 
-## Mutations
+### Mutations
 
 So far, we have only talked about loading data, which is fine if your app is just a view or dashboard onto some data you don’t control. However, most apps also have controls for the users to manipulate their persistent data.
 
@@ -216,7 +216,7 @@ Hopefully, with time, we can make more and more invalidations automatic, but it�
 
 You can see in the diagram how invalidations flow from the mutation to the relevant clients, which then refetch the data as needed.
 
-### Writing from external data sources
+### Writing from external services
 
 If the writes to your backend are coming from an external source, you won't be able to take advantage of automatic invalidation. This means you will need something else to provide the reactivity if you need that data to update in your UI. The simplest thing to do is to have the service making the external write also post to the invalidation server directly.
 
