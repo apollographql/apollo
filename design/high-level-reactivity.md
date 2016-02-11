@@ -257,6 +257,8 @@ Here's a diagram of all of the pieces we think will need to be built to have a c
 
 ![Block diagram](block-diagram.png)
 
+Individual designs for each of the components incoming -- for example, how does the invalidation server work? The goal of this document is mostly to outline how they will all work together.
+
 It's a lot of stuff, but a lot of it already exists thanks to the Relay project, and some of the things can be contributed by the community once the structure is clearer, for example some of the database drivers.
 
 If you're interested in helping out with some parts of the project, I'd love to hear from you! Please file an issue here or email me at sashko@meteor.com.
