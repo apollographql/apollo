@@ -106,15 +106,15 @@ Note that can’t put the `_deps` field on tasks itself, because JSON doesn’t 
 
 ### Automatically recording dependencies when reading data
 
-In order to know when a GraphQL query needs to be re-run, we need to know what deps represent different parts of the query. These deps can be recorded manually for complex queries, but simple queries can have their deps identified automatically. For example, here’s a query used in a particular part of the GraphQL resolution tree:
+In order to know when a GraphQL query needs to be re-run, we need to know what deps represent different parts of the query. These deps can be recorded manually for complex queries, but simple queries can have their deps identified automatically. For example, here’s a JavaScript SQL query that could be used in a particular part of the GraphQL resolution tree:
 
-```
+```js
 todoLists.select('*').where('id', 1);
 ```
 
-This might record the following dependency:
+This will automatically record the following dependency:
 
-```
+```js
 { key: 'todoLists:1', version: 0 }
 ```
 
@@ -126,7 +126,7 @@ The automatic dependency recording mechanism won’t work if it isn’t possible
 
 For example, if you have a complex query to count the number of notifications a user has, you might want a custom invalidation key for that number:
 
-```
+```js
 // somewhere, a function that consistently generates a key
 function notificationDepKeyForUser(userId) {
   return 'notificationCount:' + userId;
@@ -187,15 +187,15 @@ The hardest question here is (2) - how does a mutation notify the invalidation s
 
 ### Automatic dependency invalidation
 
-Just like for data reading, in simple cases we should be able to emit invalidations from mutations automatically. For example, if you ran the following query:
+Just like for data reading, in simple cases we should be able to emit invalidations from mutations automatically. For example, if you ran the following SQL update query in your mutation resolver:
 
-```
+```js
 todoLists.update('name', 'The new name for my todo list').where('id', 1);
 ```
 
 We should invalidate the following dependency key:
 
-```
+```js
 'todoLists:1'
 ```
 
@@ -205,7 +205,7 @@ You can see that this matches up with the dependency we automatically recorded w
 
 Sometimes, you will want or need to emit invalidations manually. For example, in the above example about notifications, we will want to invalidate the notification count manually when we add a notification:
 
-```
+```js
 notifications.insert(...);
 context.invalidateDependency(notificationDepKeyForUser(userId));
 ```
