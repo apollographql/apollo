@@ -75,7 +75,7 @@ The intended result is that if you are holding a piece of data, and you have a d
 
 ### Returning dependencies to the client
 
-Before, we gave an example of a GraphQL response for a simple query. If you make a reactive GraphQL query, you will get extra metadata about the dependencies involved in particular subtrees, like so:
+Before, we gave an example of a GraphQL response for a simple query. If you make a reactive GraphQL query, the client needs extra metadata to know which parts of the result tree are reactive, and what keys they should be invalidated by. The client query fetcher will inject fields for this metadata into your query automatically, so that internally the response will look like this:
 
 ```
 {
@@ -100,7 +100,7 @@ Before, we gave an example of a GraphQL response for a simple query. If you make
 }
 ```
 
-This will tell the client which dependencies they should watch to figure out if the list object itself changed, or if the list of tasks needs to be updated.
+This will tell the client which dependencies they should watch to figure out if the list object itself changed, or if the list of tasks needs to be updated. Of course, the extra metadata will be filtered out before passing the data to the actual consumer.
 
 Note that can’t put the `__deps` field on tasks itself, because JSON doesn’t allow it, so we have to put it on the parent instead. Also, the `__self` field is a shorthand to avoid listing all of the properties of the list object - it could have `name`, `description`, and so on, and it would be a waste of bandwidth to send all of those key names again.
 
