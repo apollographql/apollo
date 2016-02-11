@@ -91,7 +91,11 @@ Before, we gave an example of a GraphQL response for a simple query. If you make
           tasks: { key: '35232345', version: 4 }
         }
       }
-    ]
+    ],
+    _deps: {
+      _self: { key: '23245455', version: 1 },
+      lists: { key: '89353566', version: 5 }
+    }
   }
 }
 ```
