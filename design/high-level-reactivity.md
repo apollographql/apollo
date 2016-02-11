@@ -61,11 +61,17 @@ Note that there is a GraphQL cache - what this does is decompose the results of 
 
 This is clearly very simplified, and you can read about how the Relay cache works on [Huey Petersen's website](http://hueypetersen.com/posts/2015/09/30/quick-look-at-the-relay-store/). The important thing to note is that the cache decomposes query results into a flat structure, and a smart cache will be able to generate a query to update just one list and its tasks, or just the list’s name, as necessary.
 
+// May be we can link Learn GraphQL. It's great, specially for a person who dislike GraphQL.
+// We've exprience in coverting them to lovers with LearnGraphQL :)
+// Edit: I'm waiting to add a section on Reactive GraphQL.
+
 ## Reactive GraphQL
 
 People are excited about GraphQL, and it solves a lot of the problems which many developers, including Meteor’s customers and users, have brought to light. But when you’re building an app, you need more than just a way to query the server and get a response. For example, some parts of your app will want the data to update reactively when a different user makes a change.
 
 The client and server parts of the GraphQL system will need to collaborate to make this possible, but one of our goals is to make minimal changes to the current reference implementation of GraphQL so that developers can take advantage of current and future productivity tools for GraphQL.
+
+// Just Great.
 
 ### Dependencies
 
@@ -99,6 +105,31 @@ Before, we gave an example of a GraphQL response for a simple query. If you make
   }
 }
 ```
+
+// I think following example is simple and complete.
+
+```
+{
+  me: {
+    username: "sashko",
+    lists: [
+      {
+        id: 1,
+        name: "My first todo list",
+      }
+    ],
+
+    __deps: {
+      _self: { key: '12341234', version: 3 },
+      lists: { key: '35232345', version: 4 }
+    }
+  }
+}
+```
+
+// Thinking about _self and lists. Is that because to avoid data re-fetching of lists when the username changes?
+// If so, what are the types we want to do it?
+// Is that something we can do it in the GraphQL Schema level.
 
 This will tell the client which dependencies they should watch to figure out if the list object itself changed, or if the list of tasks needs to be updated.
 
@@ -138,6 +169,8 @@ context.recordDependency(notificationDepKeyForUser(userId));
 
 This will let you manually specify situations in which the number of notifications should be refreshed. Advanced users with particularly strict performance requirements, like a site-wide visitor count or a realtime high-score table, might also choose to use manually constructed dependencies for more control over their data flow.
 
+//  Add a sentence like this: You could learn more about this when we discuss about Mutations at the end.
+
 ## Simple reactivity model
 
 Based on the above primitives, here is a stateless strategy for GraphQL reactivity:
@@ -157,11 +190,21 @@ The rest of the document talks in terms of polling a dependency server for updat
 1. The invalidation server could accept websocket connections, and let the client subscribe to the dependency keys it cares about - this would mean the invalidation is pushed immediately, and then there is one roundtrip to fetch the actual data.
 2. The application server could subscribe to the invalidations, and do the GraphQL queries _on the server_, and then diff that against the current state of the client and send a patch. This would make the system work almost exactly like Meteor today, and could be a good option for applications with fewer users and a great need for low latency.
 
+// I think it's better to go with Just the 1. We could optimize on top of that. It's not a good idea to maintain two different things.
+// If that app is small, it might be okay to change the polling interval smaller. That'll do the trick.
+
 Since both of those approaches don't change anything about the inherent design of the system and are relatively simple to implement, we'll leave them as optimizations for the future.
 
 ### Invalidating dependencies
 
 We haven’t talked at all about how the invalidation server finds out that a dependency version has incremented, and that clients should reload that data. At the lowest level, your code posts to the invalidation server the list of keys that need to be invalidated whenever you make a write to the data store. The next section will talk about a nice high-level wrapper around that for application developers.
+
+// Here, I'll be great we can submit the actual DB changes as well. I mean for simple queries. 
+// Then we could do something with that. Specially in the client.
+//
+// But then again, I get the issue of race-conditions, when working with multiple servers.
+// We clearly have no idea on which change actually applied to the DB. 
+// So, it's wise to forget this, at least for now :)
 
 ## Mutations
 
@@ -211,9 +254,18 @@ context.invalidateDependency(notificationDepKeyForUser(userId));
 
 Hopefully, with time, we can make more and more invalidations automatic, but it’s always good to have an “escape hatch” for more complex situations where the developer needs all the control they can get.
 
+// Add a section here: This is why we said, you need to add custom keys. 
+// Then we can have some examples like this:
+
+1. Stop reactivity. Just publish a depKey which is random. Do not invalidate that key.
+2. Counter.  Sometimes you don't need to it to be neal realtime. So, we can throttle the invalidations and invalidate it for every few minutes.
+
 <img src="reactive-with-mutations-diagram.png" title="Reactive GraphQL with mutations" />
 
 You can see in the diagram how invalidations flow from the mutation to the relevant clients, which then refetch the data as needed.
+
+// How about outside invalidations. Lets say after a diret DB write from another non Meteor app.  
+// If we can connect to the invalidation server from outside that's awesome. (Again via a GraphQL mutation)
 
 ## Data drivers
 
@@ -229,6 +281,16 @@ A first-class developer friendly backend data driver will need to:
 
 While the ideal driver would emit exact deps and invalidations automatically for all queries, this is not likely to be practical for an arbitrary datastore. In practice, drivers will likely fall back to broader deps and invalidations, and tooling will help developers identify places where these invalidations can be optimized.  The developer can then rework their query or emit manual invalidations as needed.
 
+// How about the design of the Invalidation Server. Here's my ideas:
+ * It would be great if it's stateless, so if we need more load we can just scale it.
+ * If not, we could shard it scale out. 
+ * This is not a thing we need to do now.
+ * But, we should plan for it.
+ 
+// Are we going to write it in Node.js
+
+I assume drivers need to do something in the invalidation later too. (Data fetching). So it's needed to do it in Node.js?
+
 ## Application performance monitoring and optimization
 
 One thing we discovered about the stateful livequery approach to reactivity and subscriptions in the current Meteor system was that it can make things harder to debug and analyze. When you are debugging your app or trying to figure out a performance issue, you need to reproduce a situation on your server which causes a certain problem. When there is a lot of state there, lots of which depends on what the database happens to be doing at the time, which queries you have running, and the specific combination of clients looking at the data, it's difficult to isolate what is causing your problem.
@@ -240,12 +302,20 @@ The new system is designed to avoid this issue, and the implementation will be b
 
 After you analyze the two paths above, there should be a clear path to optimization through careful manual invalidations and disabling reactivity that will let you change a minimum of app code to "twist the knobs" on performance.
 
+// Oh Yeah! I'm seeing huge set of ideas. 
+// Let's implement this. So, we can build a great APM and make money :P
+
 ## Implementation plan
 
 Here's a diagram of all of the pieces we think will need to be built to have a complete system:
 
 ![Block diagram](block-diagram.png)
 
+// What does FlowRouter has to do with this. Do we need to do any changes?
+
 It's a lot of stuff, but a lot of it already exists thanks to the Relay project, and some of the things can be contributed by the community once the structure is clearer, for example some of the database drivers.
+
+// Are we using Relay's connection API which is optimized for pagination. That's place where it adds the complexity to Relay and it's GraphQL part.
+// With our design, I don't think we need it.
 
 If you're interested in helping out with some parts of the project, I'd love to hear from you! Please file an issue here or email me at sashko@meteor.com.
