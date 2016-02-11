@@ -224,6 +224,8 @@ Another way to make external updates reactive is to set up a live query implemen
 
 The initial version of the system won't have built-in support for livequeries, but we hope that well-defined APIs for all parts of the system will make these components easy to plug in to the rest of the stack.
 
+Finally, if it is appropriate for your application, you will be able to handle the situation without firing any dependencies by simply re-polling the right data from the client. For some applications loading the extra data is not a big deal - for example, if you have an internal dashboard used by a total of 5 people. In this case simplicity of implementation might trump performance and efficiency concerns.
+
 ## Data drivers
 
 To make this system easy to get started with, we’ll need some well-designed drivers for popular data sources. Connecting an arbitrary data source into the system will be trivial if you don’t need reactivity - you can just pick any data loading package from NPM or write some simple functions to fetch the data. To add reactivity, you can use manual dependency recording and invalidation.
