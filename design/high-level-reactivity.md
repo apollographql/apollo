@@ -86,14 +86,14 @@ Before, we gave an example of a GraphQL response for a simple query. If you make
         id: 1,
         name: "My first todo list",
         tasks: [ ... and so on ],
-        _deps: {
-          _self: { key: '12341234', version: 3 },
+        __deps: {
+          __self: { key: '12341234', version: 3 },
           tasks: { key: '35232345', version: 4 }
         }
       }
     ],
-    _deps: {
-      _self: { key: '23245455', version: 1 },
+    __deps: {
+      __self: { key: '23245455', version: 1 },
       lists: { key: '89353566', version: 5 }
     }
   }
@@ -102,7 +102,7 @@ Before, we gave an example of a GraphQL response for a simple query. If you make
 
 This will tell the client which dependencies they should watch to figure out if the list object itself changed, or if the list of tasks needs to be updated.
 
-Note that can’t put the `_deps` field on tasks itself, because JSON doesn’t allow it, so we have to put it on the parent instead. Also, the `_self` field is a shorthand to avoid listing all of the properties of the list object - it could have `name`, `description`, and so on, and it would be a waste of bandwidth to send all of those key names again.
+Note that can’t put the `__deps` field on tasks itself, because JSON doesn’t allow it, so we have to put it on the parent instead. Also, the `__self` field is a shorthand to avoid listing all of the properties of the list object - it could have `name`, `description`, and so on, and it would be a waste of bandwidth to send all of those key names again.
 
 ### Automatically recording dependencies when reading data
 
