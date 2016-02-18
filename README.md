@@ -1,6 +1,6 @@
 # Apollo
 
-The data stack for modern apps.
+The data stack for modern apps, brought to you by [Meteor](https://www.meteor.com/).
 
 Reactively connect any backend data source to any client, built on GraphQL and Relay.
 
