@@ -60,7 +60,7 @@
   font-size: 25px;
 }
 .top_section_wrapper {
-  -webkit-filter: opacity(.3);
+  -webkit-filter: opacity(.4);
   filter: opacity(.8);
   background: rgba(255, 255, 255, .6);
 }
