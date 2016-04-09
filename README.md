@@ -1,4 +1,4 @@
-![Apollo logo](logo-banner.png)
+![Apollo logo](apollo-banner.png)
 
 The data stack for modern apps, brought to you by [Meteor](https://www.meteor.com/). Reactively connect any backend data source to any client.
 
