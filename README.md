@@ -6,4 +6,4 @@ This is the main repository for discussion and coordination - the code will live
 
 - Read the [blog post about our goals for the project](https://medium.com/apollo-stack/apollo-8b7215bcab1c).
 - Stay up to date by reading our [posts on Medium](https://medium.com/apollo-stack)
-- [Join us on Slack!](http://apolloslack.meteorapp.com/)
+- [Join us on Slack!](http://slack.apollostack.com/)
