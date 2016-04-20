@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="33.498" y1="40.4517" x2="14.5017" y2="7.549">
+		<stop  offset="0" style="stop-color:#2AA699"/>
+		<stop  offset="1" style="stop-color:#565A9A"/>
+	</linearGradient>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_1_)" d="M24,5C13.523,5,5,13.523,5,24s8.523,19,19,19
+		s19-8.523,19-19S34.477,5,24,5z M24,40c-8.837,0-16-7.163-16-16S15.163,8,24,8s16,7.163,16,16S32.837,40,24,40z"/>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="36.002" y1="44.7881" x2="11.998" y2="3.2121">
+		<stop  offset="0" style="stop-color:#2AA699"/>
+		<stop  offset="1" style="stop-color:#102B49"/>
+	</linearGradient>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_2_)" d="M24,0C10.745,0,0,10.745,0,24s10.745,24,24,24
+		s24-10.745,24-24S37.255,0,24,0z M24,45C12.401,45,3,35.599,3,24S12.401,3,24,3s21,9.401,21,21S35.599,45,24,45z"/>
+</g>
+</svg>

@@ -1,0 +1,180 @@
+@import "../util/index.import.less";
+
+.document-formatting {
+	.font-s2;
+	line-height: 1.375rem; //22px
+
+  h1, h2, h3, h4, h5 {
+    .type-bold;
+    line-height: 1em;
+
+		&:not(:first-child) { padding: 1em 0 0; }
+
+    & + *:not(hr) { //clears margin of element directly following a Heading
+      margin-top: 0 !important;
+    }
+  }
+
+  hr + * { margin-top: 0 !important; }
+
+  h1 {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid @color-mediumlight;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid @color-mediumlight;
+  }
+
+  h3 {
+		.font-s3;
+		margin-bottom: .25rem;
+	}
+
+  h4 { margin-bottom: .125rem; }
+
+  p {
+    margin-bottom: .75rem;
+    margin-top: .75rem;
+    position: relative;
+
+    &:first-of-type:not(:only-of-type) { margin-top: 0; }
+  }
+
+	a {
+		//same as .link.primary
+		//can't seem to :extend
+		&:link,
+		&:visited { color: @color-primary; }
+		&:hover { text-decoration: underline; }
+		&:active { color: darken(@color-primary, 5%); }
+	}
+
+  figure {
+    clear: both;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    figcaption {
+      .font-s1;
+      color: @color-mediumdark;
+    }
+  }
+
+  img {
+    display: inline-block;
+    padding: 0 1.25em;
+    max-width: 100%;
+    position: relative;
+    vertical-align: top;
+
+    &.alignright{
+      float: right;
+      margin-right: 0;
+    }
+
+    &.alignleft{
+      float: left;
+      margin-left: 0;
+    }
+
+    &.aligncenter{
+      display: block;
+      margin-bottom: 1rem;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 1rem;
+    }
+  }
+
+  blockquote {
+    border-left: 2px solid @color-primary;
+    color: @color-mediumdark;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: .75em 1.25em .75em 1.5em;
+
+    p:only-of-type { margin: 0; }
+  }
+
+  ol,
+	ul {
+    list-style-position: outside;
+    margin-bottom: .75rem;
+    margin-top: .75rem;
+    padding-left: 2rem;
+  }
+
+  ol { list-style-type: decimal; }
+  ul { list-style-type: disc; }
+
+  pre {
+    margin-top: .75rem;
+    margin-bottom: .75rem;
+
+    code {
+      .ellipsized;
+      border: none;
+      box-shadow: none;
+      color: @color-darkest;
+      margin: 0;
+      max-width: 100%;
+      padding: 0;
+    }
+  }
+  .highlight pre {
+    overflow: auto;
+    padding: .5rem .75rem;
+  }
+
+  // Tables based on GH markdown format
+  table {
+    .font-s2;
+    padding: 0;
+  }
+  table tr {
+    border-top: 1px solid @color-mediumlight;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+  table tr:nth-child(2n) {
+    background-color: @color-light;
+  }
+  table tr th {
+    font-weight: bold;
+    border: 1px solid @color-medium;
+    border-radius: 3px 3px 0 0;
+    text-align: left;
+    margin: 0;
+    padding: .5rem .75rem;
+  }
+  table tr td {
+    border: 1px solid #ddd;
+    text-align: left;
+    margin: 0;
+    padding: .5rem 1rem;
+  }
+
+  table tr th :first-child, table tr td:first-child {
+    margin-top: 0;
+  }
+
+  table tr th :last-child, table tr td:last-child {
+    margin-bottom: 0;
+  }
+
+  dl {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding-left: 2rem;
+
+    dt {
+      .type-bold;
+
+      &:not(:first-child) { margin-top: .75rem; }
+      code { line-height: inherit; }
+    }
+  }
+}

@@ -1,0 +1,427 @@
+@import "../util/index.import.less";
+
+.btn {
+	.transition( all 150ms ease-out );
+  .transform(translate3d(0,0,0));
+	border: 0;
+	display: inline-block;;
+	line-height: 20px !important;
+	overflow: hidden;
+	padding: .625rem 1.875rem;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+	white-space: nowrap;
+	.user-select(none);
+
+	.font-s1;
+	.subheading-caps(center);
+
+	// Pill shaped
+	&.round { border-radius: 3em; }
+
+	// Small buttons
+	&.small {
+		.transition( all 250ms ease-out );
+		padding: .25rem 1.25rem;
+	}
+
+	// Disabled
+	&[disabled] { cursor: not-allowed; }
+
+	// Button colors
+	&.primary {
+		background-color: @color-primary;
+		color: @color-lightest;
+
+		&:hover{ background-color: darken(@color-primary, 5%); }
+    &:active { box-shadow: fade((darken(@color-primary, 50%)), 30%) 0 0px 0px 3em inset; }
+
+		&[disabled],
+		&[disabled]:hover,
+		&[disabled]:active {
+			background-color: lighten(@color-primary, 15%);
+			box-shadow: none;
+		}
+	}
+
+	&.secondary {
+		background-color: @color-secondary;
+		color: @color-lightest;
+
+		&:hover{ background-color: darken(@color-secondary, 5%); }
+    &:active { box-shadow: fade((darken(@color-secondary, 50%)), 30%) 0 0px 0px 3em inset; }
+
+		&[disabled],
+		&[disabled]:hover,
+		&[disabled]:active {
+			background-color: lighten(@color-secondary, 15%);
+			box-shadow: none;
+		}
+	}
+
+	&.tertiary {
+		@color-button: lighten(@color-medium, 7%);
+		background-color: @color-button;
+		color: @color-darkest;
+
+		&:hover{ background-color: darken(@color-button, 5%); }
+    &:active { box-shadow: fade((darken(@color-button, 50%)), 30%) 0 0px 0px 3em inset; }
+		&[disabled],
+		&[disabled]:hover,
+		&[disabled]:active {
+			background-color: lighten(@color-button, 4%);
+			box-shadow: none;
+			color: @color-mediumdark;
+		}
+	}
+
+	&.ancillary {
+		box-shadow: @color-medium 0 0 0 1px inset;
+		color: @color-dark;
+
+		letter-spacing: 0;
+		text-indent: 0;
+		text-transform: none;
+
+		&:hover {
+			color: @color-dark;
+		}
+
+		&.active, //.active is paired used in .btn-group.toggle
+		&:active {
+			box-shadow: @color-mediumdark 0 0 0 3em inset;
+			background-color: @color-medium;
+			color: @color-lightest;
+		}
+	}
+
+	&.inverse {
+		box-shadow: fade(@color-lightest, 30%) 0 0px 0px 1px inset;
+		color: @color-lightest;
+
+		//remove caps
+		letter-spacing: 0;
+		text-indent: 0;
+		text-transform: none;
+
+		&:hover{ box-shadow: fade(@color-lightest, 20%) 0 0px 0px 1px inset; }
+    &:active { box-shadow: fade(@color-lightest, 10%) 0 0px 0px 3em inset; }
+		&.active {
+			color: @color-darkest;
+			box-shadow: @color-lightest 0 0px 0px 3em inset;
+		}
+	}
+
+	&.selected {
+		color: @color-dark;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+
+		&:after {
+			.position(absolute, 0,0,0,0);
+			content: '';
+			border: 1px dotted @color-mediumdark;
+			display: block;
+		}
+
+		[class*="icon-"] {
+			text-indent: 0;
+			letter-spacing: 0;
+			margin-left: -.375rem;
+		}
+	}
+
+	// Progress button
+	// When a user has submitted a form and there is a finite amount wait time
+	&.progress {
+		height: auto;
+
+		.rest,
+    .active { .transition( all 700ms @easing); }
+
+		.rest {
+			.transform(translate3d(0,0,0));
+			display: inline-block;
+			opacity: 1;
+		}
+
+    .active {
+			.position(absolute, 50%, 0, auto, 0);
+			.transform(translate3d(0, 100%,0));
+			opacity: 0;
+		}
+
+		&:before {
+			.position(absolute, auto, 0, 0, 0, 100%, 2px);
+			.transition( all 150ms ease-out);
+			.transform(translateY(100%));
+			//background-color: rgba(0,0,0,.2);
+			content: '';
+		}
+
+		.progress-bar {
+      .position(absolute, auto, 0, 0, 0, 100%, 2px);
+      .transition( all 150ms ease-out );
+			.transform(translateX(-100%));
+      z-index: 1;
+    }
+
+		&.primary .progress-bar { background-color: darken(@color-primary,  10%); }
+		&.secondary .progress-bar { background-color: darken(@color-secondary, 10%); }
+		&.tertiary .progress-bar { background-color: @color-primary; }
+
+		&.progress-active {
+			cursor: progress;
+
+			.rest {
+				.transform(translate3d(0,-100%,0));
+				opacity: 0;
+			}
+      .active {
+				.transform(translate3d(0, -50%,0));
+				opacity: 1;
+			}
+
+
+			&:before { .transform(translateY(0%)); }
+			.progress-bar { .transform(translateX(0%));}
+		}
+	}
+
+	// Loading button
+	// When a user has submitted a form and there is an uncertain  wait time
+	// e.g., calling third-party APIs
+	&.loading {
+		.rest,
+    .active { .transition( all 700ms @easing ); }
+
+    .rest {
+			.transform(translate3d(0,0,0));
+			display: inline-block;
+			opacity: 1;
+		}
+
+    .active {
+			.position(absolute, 50%, 0, auto, 0);
+			.transform(translate3d(0, 100%,0));
+			opacity: 0;
+		}
+
+		&:before {
+			.position(absolute, auto, 0, 0, 0, 100%, 2px);
+			.transition( all 300ms ease-out);
+			.transform(translateX(100%));
+			background: rgba(0,0,0,.2);
+			opacity: 0;
+			content: '';
+		}
+
+		.loading-bar {
+      .position(absolute, auto, 0, 0, 0, 33.3%, 2px);
+      .transition( all 200ms ease-out );
+			opacity: 0;
+      z-index: 1;
+    }
+
+		&.primary .loading-bar { background-color: lighten(@color-primary,  10%); }
+		&.secondary .loading-bar { background-color: lighten(@color-secondary, 10%); }
+		&.tertiary .loading-bar { background-color: @color-primary; }
+
+		&.loading-active {
+			cursor: progress;
+
+			.rest {
+				.transform(translate3d(0,-100%,0));
+				opacity: 0;
+			}
+      .active {
+				.transform(translate3d(0, -50%,0));
+				opacity: 1;
+			}
+
+			@keyframes loading-horiz {
+				0%,
+				100% { .transform(translateX(-100%)); }
+				50% { .transform(translateX(300%)); }
+			}
+
+			&:before {
+				.transform(translateX(0%));
+				opacity: 1;
+			}
+
+			.loading-bar {
+				.animation(loading-horiz 2s ease-in-out);
+				.animation-iteration-count(infinite);
+				opacity: 1;
+			}
+		}
+	}
+
+	&.paginated {
+		@color-button: lighten(@color-medium, 10%);
+		background-color: @color-button;
+		color: @color-darkest;
+
+		padding-left: 1rem;
+		padding-right: 1rem;
+		letter-spacing: 0;
+		text-indent: 0;
+
+		&:hover{ background-color: darken(@color-button, 5%); }
+    &:active { box-shadow: fade((darken(@color-button, 50%)), 30%) 0 0px 0px 3em inset; }
+
+		& + .btn {
+			margin-left: 1px;
+
+			@color-button: lighten(@color-medium, 7%);
+			background-color: @color-button;
+			color: @color-darkest;
+
+			&:hover{ background-color: darken(@color-button, 5%); }
+	    &:active { box-shadow: fade((darken(@color-button, 50%)), 30%) 0 0px 0px 3em inset; }
+		}
+
+		&[disabled],
+		&[disabled]:hover,
+		&[disabled]:active {
+			background-color: lighten(@color-button, 4%);
+			box-shadow: none;
+			color: @color-mediumdark;
+		}
+
+		.icon-arrow-right,
+		.icon-arrow-left {
+			.font-s2;
+			line-height: 20px !important;
+			display: inline-block;
+			vertical-align: top;
+		}
+	}
+
+	&.small.circle {
+		padding-left: 0;
+		padding-right: 0;
+		text-align: center;
+		width: 28px; //the size of small buttons
+	}
+
+	&.scale {
+		background-color: transparent;
+		padding: 0;
+		width: 14px;
+
+		[class*="icon-"]:only-child {
+			display: block;
+			font-size: 10px;
+			line-height: 14px;
+			letter-spacing: 0;
+			text-indent: 0;
+		}
+
+		box-shadow: @color-primary 0 0 0 1px inset;
+		color: @color-primary;
+
+		letter-spacing: 0;
+		text-indent: 0;
+		text-transform: none;
+
+
+		&.active, //.active is paired used in .btn-group.toggle
+		&:active {
+			box-shadow: @color-primary 0 0 0 3em inset;
+			color: @color-lightest;
+		}
+
+		&.disabled {
+			box-shadow: @color-medium 0 0 0 1px inset;
+			color: @color-medium;
+			cursor: not-allowed;
+		}
+	}
+
+	[class*="icon-"] {
+		font-size: 80%;
+		display: inline-block;
+		margin-right: .25em;
+		vertical-align: baseline;
+
+		&:only-child {
+			.font-s2;
+			letter-spacing: 0;
+			margin-right: 0;
+			text-indent: 0;
+			display: block;
+		}
+	}
+}
+
+.btn-group {
+	display: inline-block;
+
+	> .btn { float: left; }
+	&.right > .btn { float: right; }
+
+	&.full-bleed {
+		.display(flex);
+		.flex-direction(row-reverse);
+
+		> .btn { .flex(1); }
+	}
+}
+
+
+.pagination {
+	.count {
+		.font-s1;
+		.subheading-caps;
+		display: inline-block;
+		line-height: 40px;
+		margin-left: 1rem;
+
+		color: @color-darker;
+
+		.preposition { color: @color-mediumdark; }
+	}
+}
+
+.btn-group.toggle .btn {
+	& + .btn { margin-left: -1px; }
+	&:first-of-type { border-radius: 3em 0 0 3em; }
+	&:last-of-type { border-radius: 0 3em 3em 0; }
+}
+
+//This appears as a button but is actually a form element
+.btn-group.toggle-form{
+	.display(flex);
+
+	> .btn.toggle-form {
+		.flex(1);
+
+		.transition(
+			box-shadow 225ms ease-out,
+			background-color 300ms ease-in,
+			color 300ms ease-out );
+		.type-semibold;
+		.font-s2;
+		background-color: fade(@color-lightest, 50%);
+		box-shadow: fade(@color-lightest, 0%) 0 0 0 0 inset;
+		color: @color-mediumdark;
+		letter-spacing: 0;
+		margin: 0;
+		text-indent: 0;
+		text-transform: none;
+
+		&:not(:first-of-type) { margin-left: 1px; }
+	}
+
+	input.toggle-form { display: none; }
+
+	input.toggle-form:checked + label {
+	  background-color: fade(@color-lightest, 100%);
+		box-shadow: fade(@color-lightest, 70%) 0 0 0 3em inset;
+		color: @color-primary;
+	}
+}

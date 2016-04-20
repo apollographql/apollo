@@ -1,129 +1,182 @@
 <!DOCTYPE html>
-<html lang="en-us">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Apollo Stack</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="src/stylesheets/normalize.css" media="screen">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="src/stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="src/stylesheets/github-light.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="src/stylesheets/bootstrap-grid.css" media="screen">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="src/stylesheets/style.css" media="screen">
-  <script src="src/javascript/jquery-1.8.1.min.js"></script>
-  <script src="src/javascript/modernizr-2.5.3.min.js"></script>
-  <script src="src/javascript/jquery.vide.js"></script>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<html>
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
 
 
-<!--Segment track -->
-  <script type="text/javascript">
-  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
-  analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
-  analytics.page()
-  }}();
-</script>
-<!--End Segment Track-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
+    <title>Apollo - Everything you need to use GraphQL</title>
+    <meta name="description" content="Apollo is an incrementally-adoptable data stack that manages the flow of data between clients and backends">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://apollostack.com">
+    <meta property="og:title" content="Apollo – Everything you need to use GraphQL">
+    <meta property="og:description" content="Apollo is an incrementally-adoptable data stack that manages the flow of data between clients and backends">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary_image_large">
+    <meta name="twitter:site" content="@apollostack">
+    <meta name="twitter:description" content="Apollo is an incrementally-adoptable data stack that manages the flow of data between clients and backends">
 
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" sizes="16x16 32x32 64x64">
 
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="layout">
+      <div class="page">
+        <div class="nav light">
+          <div class="nav-group">
+            <div class="nav-item">
+              <a href="http://apollostack.com"><img src="img/logo-apollo-white-left.svg" class="logo"/></a>
+            </div>
+          </div>
 
-
-</head>
-
-<body>
-<div class="top-navigation-bar">
-<div class="wrapper">
-<ul class="nav-site nav-site-external">
-<li><a href="http://docs.apollostack.com/apollo-client/index.html">Docs</a></li>
-<li><a href="https://medium.com/apollo-stack/">Blog</a></li>
-<li><a href="https://twitter.com/apollostack"><i class="fa fa-twitter"></i></a></li>
-<li><a href="https://github.com/apollostack/apollo"><i class="fa fa-github"></i></a></li>
-
-</ul>
-
-</div>
-</div>
-  <div class="apollo_image">
-    <img src="images/logo-apollo.svg"/> 
-
-  </div>
-  <div class="apollo_header_title">
-    <span class="">The data stack for modern apps.</span><br><br>
-    <a target="_blank" href="https://twitter.com/intent/follow?ref_src=twsrc%5Etfw&region=follow_link&screen_name=apollostack&tw_p=followbutton" class="btn">Follow @apollostack</a>
-  </div>
-<div class="top_section_wrapper" style="width: 100%; height: 400px;" data-vide-bg="videos/landing_page_video.mp4" data-vide-options="loop: false, muted: true, position: 50% 65%">
-  </div>
-  <section class="main-content">
-    <h3>What is Apollo?</h2>
-      <p>Apollo is a work in progress, and is designed to simplify the connection of any backend data source to any client. Here's what it will do for you:</p>
-      <br>
-
-      <iframe width="830" height="467" src="https://www.youtube.com/embed/fLjtFHgSrSI" frameborder="0" allowfullscreen></iframe><br><br>
-
-
-      <div class="row">
-        <div class="col-md-4 col-sm-4 col-lg-4">
-          <img src="images/apollo-1.png" class="img-responsive center-block" />
-          <h4 class="center-text">Give your database a break</h4>
-          <p>
-            Apollo will improve your app performance by enabling <a href="https://learngraphql.com/">GraphQL
-          functionality</a> on your existing data architecture. Transfer only the data you need!
-          </p>
+          <div class="nav-group right">
+            <div class="nav-item">
+              <a class="link inverse" href="http://docs.apollostack.com/">Documentation</a>
+            </div>
+            <div class="nav-item">
+              <a class="link inverse" href="https://medium.com/apollo-stack">Blog</a>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-lg-4">
-          <img src="images/apollo-2.png" class="img-responsive center-block" />
-          <h4 class="center-text">Speed up development</h4>
-          <p>
-            Simplify complicated backend data systems by decoupling it from your front-end code, allowing developers to build apps faster.
-          </p>
+
+        <header>
+          <div class="pitch">
+            <div class="title-page">Everything you need to start using GraphQL</div>
+            <div class="subtitle-page">
+              <h1>Apollo is an incrementally-adoptable data stack that manages the flow of data between clients and backends.</h1> Based on GraphQL, it gives you a principled, unified, and scalable API for developing clients on top of data assembled from one or more backends.
+            </div>
+            <a class="btn primary round" href="http://docs.apollostack.com/">Get started</a>
+            <a class="btn ancillary inverse round js-join-newsletter" href="#">Sign up for email updates</a>
+          </div>
+        </header>
+
+        <section class="list-features">
+          <div class="item-feature grid-3">
+            <img src="img/illustration-accuracy.svg" class="image"/>
+            <div class="meta">
+              <div class="title-section">All the benefits of GraphQL</div>
+              <div class="desc-section">
+                Apollo decouples your clients from your services, so you can build new features without writing new APIs and refactor your backends without breaking your clients.  Client components fetch the exact data they need in just the right shape, assembled and filtered by the Apollo server.
+              </div>
+            </div>
+          </div>
+          <div class="item-feature grid-3">
+            <img src="img/illustration-convergence.svg" class="image"/>
+            <div class="meta">
+              <div class="title-section">Interoperable and incremental</div>
+              <div class="desc-section">
+                 Use any combination of Angular, React, Blaze, and anything else JavaScript, with native mobile coming soon. You can start using Apollo in just one component, side-by-side with REST.
+              </div>
+            </div>
+          </div>
+          <div class="item-feature grid-3">
+            <img src="img/illustration-performance.svg" class="image"/>
+            <div class="meta">
+              <div class="title-section">Great developer tools</div>
+              <div class="desc-section">
+                 Apollo comes with helpful tools that let you write your GraphQL schema in a declarative way and mock API data.  Since the Apollo client is based on Redux, you can use the Redux DevTools to understand and debug.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr>
+
+        <section class="get-started">
+          <h2 class="headline-section">Test drive Apollo Client and Server</h2>
+          <div class="desc-section">With Apollo you have everything you need to use GraphQL.  Since Apollo and REST can live side-by-side, trying it out is simple. Just start incrementally with one component in one client; no backend changes needed.</div>
+
+          <div class="feature-callout-wrapper">
+            <div class="feature-callout">
+              <img src="img/logo-apollo-client.svg" class="image"/>
+              <div class="meta">
+                <div class="title-highlight">Apollo Client</div>
+                <div class="desc-highlight">Apollo client is a well-defined GraphQL client that integrates with React and Angular. Includes browser-based debugging tools.</div>
+                <a class="btn primary round" href="https://github.com/apollostack/apollo-client" target="_blank">See the code</a>
+              </div>
+            </div>
+
+            <div class="feature-callout">
+              <img src="img/logo-apollo-server.svg" class="image"/>
+              <div class="meta">
+                <div class="title-highlight">Apollo Server</div>
+                <div class="desc-highlight">The Apollo server toolkit helps you define a GraphQL schema and write the mapping from your existing REST API to a GraphQL endpoint.</div>
+                <a class="btn primary round" href="https://github.com/apollostack/graphql-tools" target="_blank">See the code</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="list-social">
+          <div class="item-social">
+            <span class="icon-email image"></span>
+            <div class="meta">
+              <a class="title-social link js-join-newsletter" href="#">Join the newsletter</a>
+              <div class="desc-social">Sign up for email updates</div>
+            </div>
+          </div>
+          <div class="item-social">
+            <img src="img/logo-slack.svg" class="image"/>
+            <div class="meta">
+              <a class="title-social link" href="http://slack.apollostack.com/" target="_blank">Chat about Apollo</a>
+              <div class="desc-social">Join the Slack channel</div>
+            </div>
+          </div>
+          <div class="item-social">
+            <img src="img/logo-medium.svg" class="image"/>
+            <div class="meta">
+              <a class="title-social link" href="https://medium.com/apollo-stack" target="_blank">Read the blog</a>
+              <div class="desc-social">Articles on Medium</div>
+            </div>
+          </div>
+          <div class="item-social">
+            <span class="icon-twitter image"></span>
+            <div class="meta">
+              <a class="title-social link" href="https://twitter.com/apollostack" target="_blank">Follow on Twitter</a>
+              <div class="desc-social">Tweets from the team</div>
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <a href="https://meteor.com" class="link tertiary">Made by Meteor 2016</a>
+        </footer>
+      </div>
+      <div class="overlay overlay-screen-contact">
+        <div class="overlay-close">
+          <span class="icon-cross"></span>
         </div>
-        <div class="col-md-4 col-sm-4 col-lg-4">
-          <img src="images/apollo-3.png" class="img-responsive center-block" />
-          <h4 class="center-text">Boost performance</h4>
-          <p>
-            Apollo will unlock the ability to analyze and improve performance in the data-layer.
-          </p>
+        <div class="overlay-content">
+          <div class="overlay-panel">
+            <div class="overlay-heading">
+              <div class="title-overlay">Join the newsletter</div>
+            </div>
+            <form id="newsletter-form" class="fieldset">
+              <div class="input-symbol left">
+                <input type="email" name="email" placeholder="Enter your email address"/>
+                <span class="icon-email"></span>
+              </div>
+              <button type="submit" class="btn primary">Sign up</button>
+            </form>
+          </div>
         </div>
       </div>
-
-
-
-      <h3>
-        <a id="resources" class="anchor" href="#resources" aria-hidden="true">
-          <span aria-hidden="true" class="octicon octicon-link"></span>
-        </a>Resources</h3>
-      <p>
-        <ul>
-          <li>Read the <a href="http://info.meteor.com/blog/reactive-graphql">blog post about our goals for the project</a>.
-          </li>
-          <li>Read about the <a href="https://github.com/apollostack/apollo/blob/master/design/high-level-reactivity.md">high-level design of the system</a>.
-          </li>
-          <li>Watch or listen to the podcast episode: <a href="https://www.youtube.com/watch?v=g7Uy1pcODTk">YouTube</a>, <a href="https://transmission.simplecast.fm/2">Simplecast</a>, <a href="https://itunes.apple.com/us/podcast/transmission/id1078456050?mt=2">iTunes</a></li>
-        </ul>
-      </p>
-      <footer class="site-footer">
-        <center>
-          <a href="https://twitter.com/apollostack">
-            <img src="images/social-icon-twitter.png">
-          </a>
-          <a href="https://medium.com/apollo-stack">
-            <img src="images/social-icon-medium.png">
-          </a>
-          <a href="https://business.facebook.com/theapollostack">
-            <img src="images/social-icon-facebook.png">
-          </a>
-          <a href="https://plus.google.com/116297121770557500525">
-            <img src="images/social-icon-googleplus.png">
-          </a>
-        </center>
-      </footer>
-  </section>
-  <script src="src/javascript/jquery-ui-1.8.22.custom.min.js"></script>
-
-</body>
-
+    </div>
+    <!-- Scripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="js/fastclick.js"></script>
+    <script src="js/main.js"></script>
+    <!--Segment track -->
+    <script type="text/javascript">
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+      analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+      analytics.page()
+      }}();
+    </script>
+    <!--End Segment Track-->
+  </body>
 </html>

@@ -1,0 +1,38 @@
+@breakpoint: 800px;
+@page-margin: 5.55555%;
+
+
+.page-margins() {
+  @media screen and (min-width: (@breakpoint * 1)) { margin: 0 1*@page-margin; }
+  @media screen and (min-width: (@breakpoint * 1.5)) { margin: 0 1.5*@page-margin; }
+  @media screen and (min-width: (@breakpoint * 2)) { margin: 0 2*@page-margin; }
+}
+
+.std-ypadding() {
+  padding-top: 1.25rem; //20px
+  padding-bottom: 1.25rem;
+
+  @media screen and (min-width: @breakpoint) {
+    padding-top: 1.875rem; //30px
+    padding-bottom: 1.875rem;
+  }
+}
+
+.std-xpadding() {
+  padding-left: 1.25rem; //20px
+  padding-right: 1.25rem;
+
+  @media screen and (min-width: @breakpoint) {
+    padding-left: 1.875rem; //30
+    padding-right: 1.875rem;
+  }
+}
+
+.inline-block-whitespace() {
+  // Removes whitespace from display:inline-block layouts
+  // Sets font-size to 0 to remove whitespace and resets font-size for child elements
+  // Used primarily in grids
+
+  font-size: 0;
+  > * { .font-s3; }
+}

@@ -1,0 +1,60 @@
+@import "../util/index.import.less";
+
+a,
+.link {
+	.transition( all 250ms ease-out );
+	.type-bold;
+  cursor: pointer;
+  text-decoration: none;
+
+	&:visited { color: @color-darkest; }
+}
+
+
+.link {
+	&:hover { text-decoration: underline; }
+	&:focus { outline: none; } //hides outline in FF
+	&:visited { color: inherit; }
+
+	&.primary { .link(@color-primary); }
+	&.secondary { .link(@color-secondary); }
+	&.tertiary { .link(@color-dark); }
+	&.complementary { .link(@color-complementary); }
+
+	// When a file uploading is dressed as a link
+	&.upload {
+		display: inline-block;
+		overflow: hidden;
+    position: relative;
+		vertical-align: bottom;
+
+    input[type="file"] {
+			.position(absolute, 0,0,0,0);
+			opacity: 0;
+    }
+  }
+
+	//When a link is on a dark background
+	&.inverse {
+		color: @color-lightest;
+		&:link,
+		&:visited { color: @color-lightest; }
+	  &:hover { color: @color-light; }
+	  &:active { color: @color-medium; }
+	}
+
+	&.inverse-alt {
+		color: fade(@color-lightest, 70%);
+		&:link,
+		&:visited { color: fade(@color-lightest, 70%); }
+	  &:hover { color: fade(@color-lightest, 100%); }
+	  &:active { color: @color-medium; }
+	}
+
+	> [class*="icon-"] {
+		font-size: 80%;
+		display: inline-block;
+		margin-right: .25em;
+		vertical-align: baseline;
+	}
+}

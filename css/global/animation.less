@@ -1,0 +1,71 @@
+@import "../util/index.import.less";
+
+.jiggle() {
+  // Jiggle side to side
+  @jiggle-offset: 4px;
+  0%, 100% { .transform(translate3d(0,0,0)); }
+  12.5%, 62.5% { .transform(translate3d((@jiggle-offset * -1),0,0)); }
+  37.5%, 87.5% {  .transform(translate3d((@jiggle-offset),0,0));  }
+}
+
+.jump() {
+  //  Jump up and down
+  @jump-offset: 3px;
+  0% {
+    .transform(translate3d(0,(@jump-offset * .5),0) scale3d(.9,.9,.9));
+    .animation-timing-function(cubic-bezier(0.33333, 0.66667, 0.66667, 1));
+  }
+
+  69% {
+    .animation-timing-function(cubic-bezier(0.33333, 0, 0.66667, 0.33333));
+    .transform(translate3d(0,(@jump-offset*-1),0) scale3d(1,1,1));
+  }
+
+  100% { .transform(translate3d(0,0,0) scale3d(.95,.95,.95)); }
+}
+
+.spin() {
+  // Rotate dom
+  // usually used for inline spinners with icon-sync
+  from { .transform(rotate(0deg)); }
+  to { .transform(rotate(359deg)); }
+}
+
+.glow() {
+  // Loading state for skeleton templates
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+.glow-loading() {
+  // Loading Spinner ticks
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.pulse() {
+  // Graph hover state (dot)
+  @a: 1.1;
+  @b: 0.9;
+  0%, 100% { .transform(scale3d(1,1,1)); }
+  25% { .transform(scale3d(@a, @a, @a)); }
+  75% { .transform(scale3d(@b, @b, @b)); }
+}
+
+@-webkit-keyframes jump { .jump; }
+@keyframes jump { .jump; }
+
+@-webkit-keyframes jiggle { .jiggle; }
+@keyframes jiggle { .jiggle; }
+
+@-webkit-keyframes spin { .spin; }
+@keyframes spin { .spin; }
+
+@-webkit-keyframes glow { .glow(); }
+@keyframes glow { .glow(); }
+
+@-webkit-keyframes glow-loading { .glow-loading; }
+@keyframes glow-loading { .glow-loading; }
+
+@-webkit-keyframes pulse { .pulse(); }
+@keyframes pulse { .pulse(); }

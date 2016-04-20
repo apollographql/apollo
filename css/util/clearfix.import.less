@@ -1,0 +1,11 @@
+// Modern Clearfix
+// Modified from http://nicolasgallagher.com/micro-clearfix-hack/
+.clearfix() {
+  *zoom: 1;
+
+  &:after {
+    clear: both;
+    content: " "; /* 1 */
+    display: table; /* 2 */
+  }
+}

@@ -1,0 +1,6 @@
+.link(@color) {
+	color: @color;
+	&:link,
+	&:visited { color: @color; }
+	&:active { color: darken(@color, 5%); }
+}

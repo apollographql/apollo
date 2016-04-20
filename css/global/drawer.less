@@ -1,0 +1,86 @@
+@import "../util/index.import.less";
+
+.drawer {
+	background-color: @color-accent-cooler;
+	box-shadow: rgba(0,0,0,.1) 0 5px 3px -3px inset;
+	position: relative;
+	overflow: hidden;
+
+	// For generic drawer content
+	.drawer-content {
+		.std-xpadding;
+		.std-ypadding;
+	}
+
+	.separator {
+		border-bottom: 1px solid @color-medium;
+	}
+
+	// Down Arrow
+	@arrow-dimension: 6px;
+	@arrow-shadow-offset: 2px;
+	@arrow-position-default: 30px;
+	@arrow-position-quarter: 25% / 2;
+	@arrow-position-third: 33% / 2;
+	@arrow-position-half: 50%;
+	@arrow-position-twothird: 66% + (33% / 2);
+	@arrow-position-threequarter: 75% + (25% / 2);
+
+	&:before {
+		.position(absolute, 0, auto, auto, @arrow-position-default);
+		content: '';
+		display: block;
+		z-index: 2;
+
+		border-right: @arrow-dimension solid transparent;
+    border-left: @arrow-dimension solid transparent;
+		border-top: @arrow-dimension solid @color-lightest;
+	}
+
+	&:after { // arrow shadow
+		.position(absolute, (@arrow-shadow-offset/2), auto, auto, @arrow-position-default);
+		content: '';
+		display: block;
+		margin-left: -@arrow-shadow-offset;
+		z-index: 1;
+
+		border-right: (@arrow-dimension + 2px) solid transparent;
+    border-left: (@arrow-dimension + 2px) solid transparent;
+		border-top: (@arrow-dimension + 2px) solid rgba(0,0,0,.07);
+	}
+
+	// Arrow Position
+	&.arrow-quarter,
+	&.arrow-third,
+	&.arrow-half,
+	&.arrow-twothird,
+	&.arrow-threequarter {
+		&:before { margin-left: -@arrow-dimension; }
+		&:after { margin-left: -(@arrow-dimension + @arrow-shadow-offset); }
+	}
+
+	&.arrow-quarter {
+		&:before { left: @arrow-position-quarter; }
+		&:after { left: @arrow-position-quarter; }
+	}
+
+	&.arrow-third {
+		&:before { left: @arrow-position-third; }
+		&:after { left: @arrow-position-third; }
+	}
+
+	&.arrow-half {
+		&:before { left: @arrow-position-half; }
+		&:after { left: @arrow-position-half; }
+	}
+
+	&.arrow-twothird {
+		&:before { left: @arrow-position-twothird; }
+		&:after { left: @arrow-position-twothird; }
+	}
+
+	&.arrow-threequarter {
+		&:before { left: @arrow-position-threequarter; }
+		&:after { left: @arrow-position-threequarter; }
+	}
+}

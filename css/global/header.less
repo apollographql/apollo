@@ -1,0 +1,309 @@
+//
+
+@header-gradient-stop1: #112b39 ;
+@header-gradient-stop2: #112b49 ;
+
+.header {
+	.clearfix;
+	.std-xpadding;
+	position: relative;
+	z-index: 2;
+
+	padding-top: 3rem;
+	@media screen and (min-width: @breakpoint) { padding-top: 4rem; }
+
+	.background-image(
+		linear-gradient(95deg, @header-gradient-stop1 0%, @header-gradient-stop2 100%)
+	);
+
+	.header-actions {
+		overflow: hidden;
+
+		.action-group {
+			float: left;
+
+			&.right { float: right; }
+		}
+
+		.btn-spacing {
+			display: inline-block;
+			line-height: 20px !important;
+			padding: .25rem 0;
+		}
+
+		.link { .font-s1; }
+	}
+
+	.overview {
+		text-align: center;
+
+		.status-wrapper {
+			margin-bottom: .5rem;
+
+			@media screen and (min-width: @breakpoint) { margin-bottom: .5rem; }
+		}
+
+		.title {
+      .type-light;
+			.font-m3;
+      display: inline-block;
+      max-width: 100%;
+      padding-right: 1.25rem;
+      position: relative;
+      vertical-align: top;
+
+			color: @color-lightest;
+
+      @media screen and (min-width: @breakpoint) {
+        .font-l3;
+        max-width: 75%;
+      }
+
+      .truncate {
+        .ellipsized;
+        display: block;
+			  padding-bottom: .25rem;
+				@media screen and (min-width: @breakpoint) { padding-bottom: .5rem; }
+      }
+
+      .offsite {
+        .position(absolute, 50%, 0);
+        margin-top: -.65em;
+
+        .font-s2;
+        color: @color-mediumdark;
+      }
+    }
+
+		.detail {
+			.font-s1;
+			color: @color-mediumdark;
+
+			> * {
+				margin: 0 .5rem;
+				&:first-child { margin-left: 0; }
+				&:last-child { margin-right: 0; }
+			}
+
+			@media screen and (min-width: @breakpoint) { .font-s2; }
+		}
+
+		.version { color: @color-complementary; }
+
+		&.loading {
+			.title > *,
+			.detail > *,
+			.version {
+				color: transparent;
+				background-color: fade(@color-lightest, 10%);
+			}
+
+			.title > * {
+				margin-bottom: .5rem;
+				padding-bottom: 0;
+			}
+		}
+	}
+
+	// Custom spacing for org pages
+	&.organization .overview {
+		// overview default spacing
+		margin-bottom: 1rem;
+		margin-top: .75rem;
+		@media screen and (min-width: @breakpoint) {
+			margin-bottom: 1.25rem;
+			margin-top: 1rem;
+		}
+
+		.title { padding-right: 0; }
+	}
+
+	// Custom spacing for app pages
+	&.application .overview {
+		// overview spacing app header pages
+		margin-top: 0;
+		margin-bottom: 1.25rem;
+		@media screen and (min-width: @breakpoint) {
+			margin-top: 0;
+			margin-bottom: 2rem;
+		}
+	}
+
+	&.help {
+		background-color: @color-ancillary;
+	  background-image: none;
+		z-index: 0;
+	}
+
+	// Custom Spacing for help and admin pages (search and results lists)
+	&.help .overview,
+	&.admin .overview {
+		// overview default spacing
+		margin-top: .75rem;
+		margin-bottom: 2rem;
+		@media screen and (min-width: @breakpoint) {
+			margin-bottom: 3.5rem;
+			margin-top: 2.5rem;
+		}
+
+		.title { padding-right: 0; }
+	}
+
+	.activity-toggle {
+		.std-xpadding;
+		.position(absolute, auto, 0, .5rem);
+
+		@media screen and (min-width: (@breakpoint * 1.666)) {
+			display: none;
+		}
+	}
+
+	.header-tabs {
+		margin: 0 auto;
+		text-align: center;
+
+		.tab {
+			.transition(all 300ms ease-out);
+			display: inline-block;
+			padding: 0 1rem .5rem;
+
+			position: relative;
+
+			color: @color-mediumdark;
+
+			.text {
+				.font-s1;
+				.subheading-caps(center);
+				display: none;
+			}
+
+			[class*="icon-"] { .font-s3; }
+
+			@media screen and (min-width: @breakpoint) {
+				padding: 0 4% .75rem;
+
+				.text { display: inline; }
+				[class*="icon-"] { display: none; }
+			}
+
+			&:hover {
+				color: @color-mediumlight;
+				text-shadow: fade(@color-lightest, 15%) 0 0 3px;
+			}
+
+			&:before,
+			&:after {
+				.transition(all 300ms @easing);
+				.position(absolute, auto, auto, 0, 50%);
+				.transform(translate3d(-50%, 50%, 0));
+				border-radius: 3em;
+				content: '';
+			}
+
+			&:before {
+				.transition(all 300ms @easing 100ms);
+
+				height: 4px;
+				width: 4px;
+
+				background-color: @color-lightest;
+				z-index: 1;
+			}
+
+			&:after {
+				height: 8px;
+				width: 8px;
+
+				background-color: @header-gradient-stop2;
+			}
+
+			&.active {
+				color: @color-primary;
+
+				&:before {
+					height: 6px;
+					width: 6px;
+
+					background-color: @color-primary;
+				}
+			}
+		}
+	}
+}
+
+.subheader {
+	.transform(translate3d(0,0,0));
+	.position(relative, 0, 0, auto, 0, auto, 3rem);
+	text-align: left;
+	z-index: 3;
+
+	@media screen and (min-width: @breakpoint) {
+		height: 4rem;
+		text-align: center;
+	}
+
+	.background-image(
+		linear-gradient(95deg, fade(@header-gradient-stop1, 95%) 0%, fade(@header-gradient-stop2, 95%) 100%)
+	);
+
+	.title-subheader {
+		.type-light;
+		.font-m1;
+		.ellipsized;
+
+		color: @color-lightest;
+		display: inline-block;
+		height: 3rem;
+		line-height: 3rem !important;
+		position: relative;
+		max-width: 80%;
+		padding-left: 1.25rem;
+
+		@media screen and (min-width: @breakpoint) {
+			.font-m2;
+			top: .5rem;
+			max-width: 40%;
+			padding-left: 0;
+		}
+	}
+
+	.status-wrapper {
+		margin-top: 1rem;
+		margin-right: .5rem;
+		vertical-align: top;
+	}
+
+	.subheader-group {
+    .position(absolute, 0, auto, auto, 0);
+		@media screen and (min-width: @breakpoint) { top: .5rem; }
+		.std-xpadding;
+    z-index: 1;
+
+    &.right {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  .subheader-item {
+    cursor: pointer;
+    display: inline-block;
+    line-height: 3rem;
+    height: 3rem;
+    vertical-align: top;
+
+		& + .subheader-item {
+			margin-left: .75rem;
+			@media screen and (min-width: @breakpoint) { margin-left: 1.875rem;  }
+		}
+
+    .link {
+			.font-s1;
+			line-height: 1;
+
+			.type-semibold;
+		}
+
+		.btn { vertical-align: middle; }
+  }
+}

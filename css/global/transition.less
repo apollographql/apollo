@@ -1,0 +1,122 @@
+@import "../util/index.import.less";
+
+@ltrans-duration: 250ms;
+@sltrans-duration: 350ms;
+
+.ltrans-enter { opacity: 0.01; }
+
+.ltrans-enter.ltrans-enter-active {
+  transition: opacity @ltrans-duration ease-out;
+  opacity: 1;
+}
+
+.ltrans-leave { opacity: 1; }
+
+.ltrans-leave.ltrans-leave-active {
+  transition: opacity @ltrans-duration ease-out;
+  opacity: 0.99;
+}
+
+
+.sltrans-enter { opacity: 0.01; }
+
+.sltrans-enter.sltrans-enter-active {
+  transition: opacity @sltrans-duration ease-out;
+  opacity: 1;
+}
+
+.sltrans-leave { opacity: 1 }
+
+.sltrans-leave.sltrans-leave-active {
+  transition: opacity @sltrans-duration ease-out;
+  opacity: .99;
+}
+
+
+
+.transition-layout {
+  .position(absolute, 0, 0, 0, 0);
+
+  &:first-child { z-index: 1; }
+
+  &.layout-auth,
+  &.layout-intermediate {
+    &.ltrans-enter {
+      .center > * {
+        .transform(translateY(-25%));
+        opacity: .01;
+      }
+    }
+
+    &.ltrans-enter-active {
+      .center > * {
+        .transform(translateY(0));
+        .transition(all @ltrans-duration @easing);
+        opacity: 1;
+      }
+    }
+
+    &.ltrans-leave {
+      .center > * {
+        .transform(translateY(0));
+        opacity: 1;
+      }
+    }
+
+    &.ltrans-leave-active {
+      .center > * {
+        .transform(translateY(25%));
+        .transition(all @ltrans-duration @easing);
+        opacity: .01;
+      }
+    }
+  }
+}
+
+
+.transition-sublayout {
+  .position(absolute, 0, 0, 0, 0);
+
+  &:first-child {
+    z-index: 1;
+  }
+
+  &.sltrans-enter {
+    .header { opacity: 0.01; }
+
+    .lower {
+      .transform(translateY(5%));
+      opacity: 0.01;
+    }
+  }
+
+  &.sltrans-enter-active {
+    .header {
+      .transition(all @sltrans-duration * .75 ease-out );
+      opacity: 1;
+    }
+
+    .lower {
+      .transform(translateY(0%));
+      .transition(all @sltrans-duration @easing);
+      opacity: 1;
+    }
+  }
+
+  &.sltrans-leave {
+    .header { opacity: 1; }
+  }
+
+  &.sltrans-leave-active {
+    .header {
+      .transition(all @sltrans-duration * 1.25 ease-out );
+      opacity: 0.01;
+    }
+  }
+}
+
+.transition-microlayout {
+  &.velocity-animating {
+    .position(absolute, 0, 0, 0, 0);
+  }
+}

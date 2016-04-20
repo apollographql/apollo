@@ -1,0 +1,76 @@
+@import "../util/index.import.less";
+
+.overlay {
+  .position(fixed, 0, 0, 0, 0);
+  .backface-visibility(hidden);
+  display: block;
+  overflow-y: auto;
+  z-index: 10;
+  -webkit-overflow-scrolling: touch;
+
+  .background-image(
+    linear-gradient(top, rgba(240, 240, 255, 0.98) 0%,rgba(245, 245, 245, 0.96) 100%)
+  );
+
+  .overlay-close {
+    .position(absolute, 0, 0, auto, auto, 3rem, 3rem);
+    line-height: 3rem;
+    text-align: center;
+    z-index: 1;
+
+    cursor: pointer;
+    font-size: 1em;
+
+
+    @media screen and (min-width: @breakpoint) {
+      right: .75rem;
+      top: .75rem;
+
+      font-size: 1.5em;
+    }
+
+    .icon-cross {
+      display: inline-block;
+      vertical-align: middle;
+
+      color: @color-mediumdark;
+
+      .font-s2;
+      @media screen and (min-width: @breakpoint) { .font-m2; }
+    }
+  }
+}
+
+.overlay-content {
+  .page-margins;
+
+  padding-top: 3rem;
+
+  @media screen and (min-width: @breakpoint) {
+    .position(absolute, 45%, 0, auto, 0);
+    margin-top: -160px / 2;
+  }
+
+  .overlay-panel {
+    margin: 0 auto;
+    width: 400px;
+  }
+
+  .overlay-heading {
+    .std-xpadding;
+    @media screen and (min-width: @breakpoint) {
+      text-align: center;
+    }
+  }
+
+  .title-overlay {
+    margin-bottom: .75rem;
+    .type-light;
+    .font-m2;
+
+    @media screen and (min-width: @breakpoint) {
+      margin-bottom: 1.5rem;
+      .font-l2;
+    }
+  }
+}

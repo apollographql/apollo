@@ -1,0 +1,214 @@
+//Taken from borealis input and textarea
+
+.fieldset {
+  .clearfix;
+
+	@fieldset-spacing: 1.25rem; //20px
+
+	// All form components are wrapped in custom DOM
+  // This is generic spacing for labelled and minimal forms
+	// NOTE: Wrap any custom layouts in .fieldset-group
+
+  > .input-label,
+  > .input-symbol,
+  > .textarea,
+  > .textarea-label,
+  > .select,
+  > .select-label,
+  > .btn {
+    display: block;
+    width: 100%;
+  }
+
+  //Minimal form spacing
+	> .input-symbol,
+  > .textarea,
+  > .select,
+  > .note-form,
+  > .btn-group {
+    margin-bottom: 1px;
+    &:last-child:not(:only-child) { margin-bottom: 0; }
+  }
+
+  //Labelled form spacing
+  > .input-label,
+  > .textarea-label,
+  > .select-label,
+  .fieldset-group {
+    margin-bottom: @fieldset-spacing;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  //Checkbox & Radio spacing
+  > label.checkbox,
+ 	> label.radio {
+    .font-s2;
+    margin-bottom: @fieldset-spacing - .25rem;
+
+		// Affordance for visual space when the checkbox is sandwiched
+		// between a form element and a button
+		& + .btn {
+			margin-top: @fieldset-spacing - .5rem;
+		}
+  }
+}
+
+
+textarea {
+  .font-s2;
+	.placeholder(@color-mediumdark);
+
+  padding: .7111em 1em; //40
+
+  background: @color-lightest;
+  border:none;
+  box-sizing: border-box;
+  border-radius: 0;
+  color: @color-darkest;
+  display: block;
+  outline: none;
+  width: 100%;
+  -webkit-appearance: none;
+
+  &[disabled] { opacity: .5; }
+
+  &.alert { box-shadow: @color-negative 0 0 1px 0 inset; }
+
+  &.inverse {
+    .placeholder(@color-medium);
+    background-color: @color-darkest;
+    color: @color-lightest;
+  }
+
+	// a form input with no chrome at all (ie. appears just as text)
+	&.nochrome {
+		padding: 0;
+
+		border: none;
+		box-shadow: none;
+		background: none;
+
+		&:focus,
+		&:active,
+		&:hover {}
+	}
+}
+
+textarea.secondary {
+    box-shadow: @color-mediumlight 0 0 0 1px inset;
+}
+
+
+input {
+  &.hidden { display: none; }
+}
+
+// Input's look like text fields
+input:not([type="checkbox"]):not([type="number"]):not([type="radio"]):not([type=submit]):not([type=file]),
+input[type="number"] {
+  &:extend(textarea all);
+}
+
+// Remove default browser controls from number inputs for .cardinal
+input[type="number"] {
+  .appearance(textfield);
+}
+
+/* Remove controls from Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Removes leftover margin */
+}
+
+input.secondary {
+  &:extend(textarea.secondary all);
+}
+
+// Inputs with icons inside of them
+.input-symbol {
+	.font-s2;
+	display: inline-block;
+  overflow: hidden;
+  position: relative;
+
+	> [class*="icon-"] {
+    .transition( all 150ms ease-out );
+		.position(absolute, 50%, auto, auto, auto, 1em, 1em);
+		font-size: 1em;
+		margin-top: -.5em; //don't use transforms here, we animate this for alerts
+		z-index: 1;
+
+    background: transparent;
+    color: @color-mediumdark;
+
+    &.inverse { color: @color-mediumlight; }
+  }
+
+	input:focus + [class*="icon-"] {
+    color: @color-darker;
+  }
+
+  > [class*="icon-"] { left: .8em; }
+  > input { padding-left: 2.5em  !important; }
+
+  &.right {
+		// Often used in conjunction with a button
+		// e.g., Clearing a search field, submitting a single input form (mailing list)
+		> [class*="icon-"] {
+      right: .8em;
+      left: auto;
+    }
+
+    > input {
+      padding-right: 2.5em  !important;
+      padding-left: 1em !important;
+    }
+
+    &:before { right: 2.5rem; }
+  }
+
+  > input,
+  > button {
+    position: relative;
+    width: 100%;
+  }
+
+  // Errors
+  &:before {
+    .position(absolute, 50%, 1.25rem);
+    .transform(translate3d(100%, -50%, 0));
+    .transition(all 200ms ease-out);
+		.font-s1;
+		.type-italic;
+		content: attr(data-error);
+		line-height: 1em;
+    opacity: 0;
+    padding: .25em 0 .25em .5em;
+		pointer-events: none;
+    z-index: 1;
+
+		background: rgba(255,255,255,.9);
+    color: @color-negative;
+  }
+
+  &[data-error] {
+    [class*="icon-"] {
+      .animation(jiggle 700ms ease-out);
+      color: @color-negative;
+    }
+
+    &:before {
+      .transform(translate3d(0%, -50%, 0));
+      opacity: 1;
+
+      color: @color-negative;
+    }
+  }
+}
+
+// Hacks for various browsers
+input:-webkit-autofill {
+  //prevents autofill yellow backgrounds
+  -webkit-box-shadow: 0 0 0 3em @color-lightest inset;
+}

@@ -1,0 +1,115 @@
+@import "../util/index.import.less";
+
+// Tables
+.table-view {
+  float: left;
+  margin: 1.25em 0;
+  text-align: left;
+  table-layout: fixed;
+	width: 100%;
+
+  th:first-of-type,
+  td:first-of-type { padding-left: 30px; }
+
+  th {
+		.font-s2;
+    color: @color-darker;
+
+    > span {
+      .ellipsized();
+      display: inline-block;
+      padding: 0 0 .75rem;
+      vertical-align: bottom;
+    }
+
+    &:first-of-type { width: 25%; }
+
+    &:not(:first-of-type) > span {
+      padding-left: .86em;
+      padding-right: .86em;
+    }
+
+    &:not(.sortable) { .type-bold; }
+
+    //Sortable headings
+    &.sortable {
+      .transition( all 200ms ease-in );
+      color: @color-dark;
+
+      &:hover {
+        color: @color-darkest;
+        cursor: pointer;
+      }
+    }
+
+    //Sortable arrow colors/animation
+
+		[class*="icon-"] {
+			.transition(all 350ms @easing);
+			display: inline-block;
+			margin-left: .5em;
+
+			font-size:75%;
+		}
+
+    &.ascending [class*="icon-"] {
+			.transform(rotate(180deg));
+			color: @color-positive;
+		}
+
+    &.descending [class*="icon-"] { color: @color-negative; }
+
+
+  }
+
+  tbody tr {
+    background: @color-lightest;
+
+		&:nth-child(odd) {
+			background: @color-lighter;
+		}
+
+    &:not(:nth-child(odd)):last-child {
+      border-bottom: 1px solid @color-lighter;
+    }
+
+
+    td {
+      .font-s2;
+      line-height: 20px;
+      padding-top: .625rem;
+      padding-bottom: .625rem;
+
+      &.truncate { .ellipsized; }
+      &:last-of-type { padding-right: 30px; }
+
+			&.nochrome { //reset
+				padding: 0;
+			}
+
+      .title {
+        .ellipsized;
+				.type-normal;
+
+        display: inline-block;
+        max-width: 100%;
+        padding-right: .25em;
+        position: relative;
+        vertical-align: top;
+      }
+
+			.title + a[class*="icon-"] {
+				color: @color-medium;
+				font-size: 90%;
+				display: inline-block;
+				margin-left: .5em;
+				&:hover { color: @color-dark; }
+			}
+
+      &:not(:first-of-type) {
+        padding-left: .75em;
+        padding-right: .75em;
+      }
+    }
+  }
+}

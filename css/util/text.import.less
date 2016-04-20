@@ -1,0 +1,25 @@
+.subheading-caps() {
+  .type-bold;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+}
+
+.subheading-caps(center) {
+  .subheading-caps();
+  text-indent: .35em;
+}
+
+.ellipsized() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.force-wrap() {
+  word-wrap: break-word;
+  word-break: break-all;
+ -ms-word-break: break-all;
+  word-break: break-word;
+
+  .hyphens(auto);
+}
