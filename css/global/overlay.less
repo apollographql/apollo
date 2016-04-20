@@ -44,12 +44,10 @@
 .overlay-content {
   .page-margins;
 
-  padding-top: 3rem;
+  .position(absolute, 45%, 0, auto, 0);
+  margin-top: -160px / 2;
 
-  @media screen and (min-width: @breakpoint) {
-    .position(absolute, 45%, 0, auto, 0);
-    margin-top: -160px / 2;
-  }
+
 
   .overlay-panel {
     margin: 0 auto;
@@ -58,18 +56,16 @@
 
   .overlay-heading {
     .std-xpadding;
-    @media screen and (min-width: @breakpoint) {
-      text-align: center;
-    }
+    text-align: center;
   }
 
   .title-overlay {
     margin-bottom: .75rem;
     .type-light;
-    .font-m2;
+    .font-m3;
 
     @media screen and (min-width: @breakpoint) {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       .font-l2;
     }
   }

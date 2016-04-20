@@ -44,6 +44,8 @@ header {
 	.pitch {
 		.page-margins;
 		.std-xpadding;
+		position: relative;
+		z-index: 1;
 
 		@media screen and (min-width: @breakpoint) {
 			position: absolute;
@@ -51,7 +53,7 @@ header {
 			top:50%;
 			max-width: 600px;
 			width: 50%;
-			z-index: 1;
+
 		}
 	}
 
