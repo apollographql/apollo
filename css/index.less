@@ -177,7 +177,16 @@ section.get-started {
 		.feature-callout {
 			.flex(1);
 			.std-xpadding;
-			.std-ypadding;
+
+		  padding-top: 1.875rem; //30px
+			padding-bottom: 1.875rem;
+
+		  @media screen and (min-width: @breakpoint) {
+				padding-top: 2.5rem; //40px
+			  padding-bottom: 2.5rem;
+		  }
+
+
 			background: @color-light;
 
 			&:not(:last-child) { margin-bottom: 1rem; }
@@ -218,18 +227,17 @@ section.get-started {
 	}
 }
 
-section.list-social {
+section.list-contact {
 	.page-margins;
 	background: @color-lightest;
 	overflow: hidden;
 
 	margin-bottom: 1rem;
 	@media screen and (min-width: @breakpoint) {
-		.display(flex);
 		margin-bottom: 3rem;
 	}
 
-	.item-social {
+	.item-contact {
 		.std-xpadding;
 		width: 50%;
 		min-width: 240px;
@@ -238,8 +246,7 @@ section.list-social {
 		&:not(:last-child) { margin-bottom: 1.5rem; }
 
 		@media screen and (min-width: @breakpoint) {
-			.flex(1);
-			width: auto;
+			width: 25%;
 			min-width: auto;
 		}
 
@@ -258,13 +265,13 @@ section.list-social {
 		.meta {
 			overflow: hidden;
 
-			.title-social {
+			.title-contact {
 				.type-semibold;
 				display: block;
 				line-height: 1.1;
 			}
 
-			.desc-social {
+			.desc-contact {
 				.font-s2;
 				line-height: 1.1;
 			}
