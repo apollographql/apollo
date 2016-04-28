@@ -1,6 +1,8 @@
 $(function() {
   FastClick.attach(document.body);
 
+  $('.page').focus();
+
   $('.js-join-newsletter').click(function(e) {
     e.preventDefault();
     $('.layout').addClass('contact-open');
