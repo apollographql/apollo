@@ -8,6 +8,11 @@ $(function() {
     $('.layout').addClass('contact-open');
   });
 
+  $('.js-schedule-consultation').click(function(e) {
+    e.preventDefault();
+    $('.layout').addClass('contact-open');
+  });
+
   $('.overlay-close').click(function(e) {
     e.preventDefault();
     $('.layout').removeClass('contact-open');
@@ -20,4 +25,18 @@ $(function() {
     analytics.track('web.apollo-newsletter');
     $('.layout').removeClass('contact-open');
   })
+    $('#consultation-form').submit(function(e) {
+    e.preventDefault()
+    var email = event.target.email.value;
+    var firstname = event.target.firstname.value;
+    var lastname = event.target.lastname.value;
+    var company = event.target.company.value;
+    var message = event.target.message.value;
+
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, message__c: message});
+    $('.layout').removeClass('contact-open');
+    analytics.track('web.apollo-devsub');
+  })
 });
+
+
