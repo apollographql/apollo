@@ -34,7 +34,7 @@ $(function() {
     var message = event.target.message.value;
     var latestformsubmit = 'Apollo Developer Support'
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, latestFormSubmit: latestformsubmit});
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-devsub');
     $('.layout').removeClass('contact-open');
   })
