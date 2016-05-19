@@ -33,7 +33,7 @@ $(function() {
     var company = event.target.company.value;
     var message = event.target.message.value;
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, message__c: message});
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message});
     $('.layout').removeClass('contact-open');
     analytics.track('web.apollo-devsub');
   })
