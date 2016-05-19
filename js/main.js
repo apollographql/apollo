@@ -21,7 +21,8 @@ $(function() {
   $('#newsletter-form').submit(function(e) {
     e.preventDefault()
     var email = event.target.email.value;
-    analytics.identify(email, {email: email});
+    var latestformsubmit = 'Apollo Newsletter Subscription'
+    analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
     $('.layout').removeClass('contact-open');
   })
