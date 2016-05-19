@@ -32,10 +32,11 @@ $(function() {
     var lastname = event.target.lastname.value;
     var company = event.target.company.value;
     var message = event.target.message.value;
+    var latestformsubmit = 'Apollo Developer Support'
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message});
-    $('.layout').removeClass('contact-open');
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, latestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-devsub');
+    $('.layout').removeClass('contact-open');
   })
 });
 
