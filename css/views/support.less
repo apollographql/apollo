@@ -1,8 +1,16 @@
 // support styles here
 
 .layout.support {
+	section.get-started .desc-section {
+		margin-bottom: 1rem;
+
+		@media screen and (min-width: @breakpoint) {
+			margin-bottom: 2rem;
+		}
+	}
 	.consultation-form {
   max-width: 400px;
+	margin: 0 auto;
 
 	  &.labeled {
 	    .fieldset-group {
@@ -15,16 +23,15 @@
 	      }
 	    }
 
-	    .input-symbol {
+	    .input-symbol,
+			.textarea {
 	      margin-bottom: .25rem;
 	      @media screen and (min-width: @breakpoint) { margin-bottom: 1rem; }
-
-	      input { &:extend(input.secondary); }
 	    }
 
-			textarea {
-				&:extend(input.secondary); 
-			}
+			input,
+			textarea { &:extend(input.secondary); }
+
 	  }
 
 		.fieldset-group {
