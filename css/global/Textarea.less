@@ -1,0 +1,50 @@
+// Input's look like text fields
+textarea {
+  .font-s2;
+	.placeholder(@color-mediumdark);
+
+  padding: .7111em 1em; //40
+
+  background: @color-lightest;
+  border:none;
+  box-sizing: border-box;
+  border-radius: 0;
+  color: @color-darkest;
+  display: block;
+  outline: none;
+  width: 100%;
+  -webkit-appearance: none;
+
+  &[disabled] { opacity: .5; }
+
+  &.small {
+    font-size: 13px;
+    line-height: 18px;
+    padding: .38em 1em; //40
+  }
+
+  &.alert { box-shadow: @color-negative 0 0 1px 0 inset; }
+
+  &.inverse {
+    .placeholder(@color-medium);
+    background-color: @color-darkest;
+    color: @color-lightest;
+  }
+
+	// a form input with no chrome at all (ie. appears just as text)
+	&.nochrome {
+		padding: 0;
+
+		border: none;
+		box-shadow: none;
+		background: none;
+
+		&:focus,
+		&:active,
+		&:hover {}
+	}
+}
+
+textarea.secondary {
+    box-shadow: @color-mediumlight 0 0 0 1px inset;
+}

@@ -1,0 +1,188 @@
+//@import "../util/index.import.less";
+//@import "icon.less";
+
+// Select Theme
+.select{
+  display: inline-block;
+
+  select {
+    .font-s2;
+    border: none;
+		border-radius: 0;
+    color: @color-darkest;
+    line-height: inherit;
+  	margin: 0;
+  	outline: none;
+
+  	&[disabled] {
+    	opacity: .5;
+  	}
+  }
+}
+
+
+// Palette
+.select {
+	//down arrow
+  &:after {}
+	// background of arrow
+  &:before { background-color: @color-light; }
+	// background
+	select { background-color: @color-light; }
+
+	&.inverse {
+		//down arrow
+	  &:after { color: @color-lightest; }
+		// background of arrow
+	  &:before { background-color: @color-darker; }
+		// background
+		select {
+			background-color: @color-darker;
+			color: @color-lightest;
+		}
+	}
+
+	&.nochrome {
+		// down arrow
+	  &:after {
+			border: none;
+			right: 0;
+		}
+		// bakcground of arrow
+	  &:before { content: none;  }
+		// background
+	  select {
+			padding: 11px 2em 11px 0;
+
+	    .type-bold;
+	    background-color: transparent;
+	    text-decoration: none;
+	  }
+	}
+}
+
+// Select layout
+.select {
+  display: inline-block;
+  height: 40px;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+
+  select {
+    .appearance(none);
+		border: 0;
+		padding: 11px 3em 11px 1em;
+		position: relative;
+		outline: none;
+    width: 100%;
+  }
+
+  &:before,
+	&:after {
+		position: absolute;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	&:after {
+    //position the icon-font
+    font-size: .75em;
+    height: 5px;
+    margin-top: -.5em;
+		right: 12px;
+		top: 50%;
+
+    // Taken from package percolate:icons/edited-style.less
+    font-family: 'percolate';
+  	speak: none;
+  	font-style: normal;
+  	font-weight: normal;
+  	font-variant: normal;
+  	text-transform: none;
+  	line-height: 1;
+  	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;
+
+  	/* Down arrow */
+  	&:extend(.icon-arrow-down:before);
+	}
+
+	&:before {
+  	content: "";
+	  bottom: 0;
+		right: 0;
+		top: 0;
+		width: 2em;
+	}
+
+	&.select-symbol {
+		//refer to .input-symbol
+	  select { padding-left: 2.5em; }
+
+		[class*="icon-"] {
+	    .transition( all 150ms ease-out );
+			.position(absolute, 50%, auto, auto, .8em, 1em, 1em);
+			font-size: 1em;
+			margin-top: -.5em;
+			z-index: 1;
+
+	    color: @color-mediumdark;
+	  }
+
+		&.inverse [class*="icon-"] { color: @color-mediumlight; }
+
+		select:focus + [class*="icon-"] {
+	    color: @color-darker;
+	  }
+	}
+
+	&[data-error] {
+    [class*="icon"] {
+      .animation(jiggle 700ms ease-out);
+      color: @color-negative;
+    }
+
+		// Error message
+    &:before {
+      .transition(all 300ms @easing);
+			.font-s1;
+			.type-italic;
+
+      color: @color-negative;
+      content: attr(data-error);
+      line-height: 40px;
+      padding-right: 2.75em;
+
+      //reset c-select
+      width: auto;
+      min-width: 2rem;
+    }
+	}
+}
+
+//FF styling/hack
+@-moz-document url-prefix() {
+	.select select {
+		padding-right: 2em;
+		padding-top: 10px; /* off by 1px */
+		&:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
+	}
+
+	.select.nochrome	select {
+		-moz-appearance: none;
+		padding-right: 1em;
+		padding-top: 9px; /* off by 1px */
+    text-indent: 0.01px;
+    text-overflow: '';
+	}
+}
+
+.select-label {
+  .select {
+    width: 100%;
+  }
+}
