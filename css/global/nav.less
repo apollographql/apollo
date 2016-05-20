@@ -9,11 +9,13 @@
 
   &.dark {
     color: @color-darker;
+		a { .link(@color-darker); }
     svg { fill: @color-darkest; }
   }
 
   &.light {
     color: @color-lightest;
+		a { .link(@color-lightest); }
     svg { fill: @color-lightest; }
   }
 
