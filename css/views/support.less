@@ -8,32 +8,32 @@
 			margin-bottom: 2rem;
 		}
 	}
+
 	.consultation-form {
-  max-width: 400px;
-	margin: 0 auto;
+	  max-width: 400px;
+		margin: 0 auto;
 
-	  &.labeled {
-	    .fieldset-group {
-	      margin-bottom: 1rem;
-	      @media screen and (max-width: (@breakpoint - 1px )) { margin-bottom: 0; }
+	  //Styling
+    .fieldset-group {
+      margin-bottom: 1rem !important;
+      @media screen and (max-width: (@breakpoint - 1px )) { margin-bottom: 0 !important; }
 
-	      .input-symbol {
-	        &:first-child { margin-right: 5px; }
-	        &:last-child { margin-left: 5px; }
-	      }
-	    }
+      .input-symbol {
+        &:first-child { margin-right: 5px; }
+        &:last-child { margin-left: 5px; }
+      }
+    }
 
-	    .input-symbol,
-			.textarea {
-	      margin-bottom: .25rem;
-	      @media screen and (min-width: @breakpoint) { margin-bottom: 1rem; }
-	    }
+    .input-symbol,
+		.textarea {
+      margin-bottom: .25rem;
+      @media screen and (min-width: @breakpoint) { margin-bottom: 1rem; }
+    }
 
-			input,
-			textarea { &:extend(input.secondary); }
+		input,
+		textarea { &:extend(input.secondary); }
 
-	  }
-
+		//Layout
 		.fieldset-group {
 	    .display(flex);
 			.flex-direction(column);

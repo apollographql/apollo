@@ -88,33 +88,41 @@
           <h2 class="headline-section">Schedule a free consultation</h2>
           <div class="desc-section">Get initial technical recommendations to ensure your project’s success. Tell us how you’re using GraphQL by scheduling a free 30 minute technical consultation.</div>
 
-          <form id="consultation-form" class="consultation-form fieldset labeled">
-            <div class="fieldset-group">
-              <div class="input-symbol left">
-                <input type="text" name="firstname" placeholder="First Name"/>
-                <span class="icon-user"></span>
+          <form id="consultation-form" class="consultation-form form-confirmable">
+            <div class="fieldset">
+              <div class="fieldset-group">
+                <div class="input-symbol left">
+                  <input type="text" name="firstname" placeholder="First Name"/>
+                  <span class="icon-user"></span>
+                </div>
+
+                <div class="input-symbol left">
+                  <input type="text" name="lastname" placeholder="Last Name"/>
+                  <span class="icon-user"></span>
+                </div>
               </div>
 
               <div class="input-symbol left">
-                <input type="text" name="lastname" placeholder="Last Name"/>
-                <span class="icon-user"></span>
+                <input type="text" name="company" placeholder="Company Name"/>
+                <span class="icon-admin"></span>
+              </div>
+              <div class="input-symbol left">
+                <input type="email" name="email" placeholder="Email Address"/>
+                <span class="icon-email"></span>
+              </div>
+
+              <div class="textarea">
+                <textarea name="message" rows="5" placeholder="How are you using GraphQL?"/></textarea>
+              </div>
+
+              <button type="submit" class="btn primary">Schedule now</button>
+            </div>
+
+            <div class="form-confirmation">
+              <div class="note-form">
+                Thank you! We'll be in touch shortly.
               </div>
             </div>
-
-            <div class="input-symbol left">
-              <input type="text" name="company" placeholder="Company Name"/>
-              <span class="icon-admin"></span>
-            </div>
-            <div class="input-symbol left">
-              <input type="email" name="email" placeholder="Email Address"/>
-              <span class="icon-email"></span>
-            </div>
-
-            <div class="textarea">
-              <textarea name="message" rows="5" placeholder="How are you using GraphQL?"/></textarea>
-            </div>
-
-            <button type="submit" class="btn primary">Schedule now</button>
           </form>
         </section>
 

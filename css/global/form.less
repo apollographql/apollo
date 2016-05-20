@@ -1,5 +1,3 @@
-
-
 // Form Spacing
 // Generic spacing for form elements
 // Add class .fieldset
@@ -126,4 +124,36 @@ label {
   .font-s2;
   background-color: @color-neutral;
   color: @color-darker;
+}
+
+
+// A form that uses basic form confirmation
+.form-confirmable {
+	.fieldset {
+		.transition(all 300ms @easing);
+		max-height: 30em;
+		overflow: hidden;
+		opacity: 1;
+	}
+
+	.form-confirmation {
+		.transition(all 300ms @easing);
+		max-height: 0;
+		overflow: hidden;
+		opacity: 0;
+	}
+
+	&.confirmed {
+		.fieldset {
+			max-height: 0;
+			margin: 0;
+			padding: 0;
+			opacity: 0;
+		}
+
+		.form-confirmation {
+			max-height: 30em;
+			opacity: 1;
+		}
+	}
 }

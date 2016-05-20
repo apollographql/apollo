@@ -18,7 +18,11 @@ $(function() {
     var email = event.target.email.value;
     analytics.identify(email, {email: email});
     analytics.track('web.apollo-newsletter');
-    $('.layout').removeClass('contact-open');
+    $('.newsletter-form').addClass('confirmed');
+
+    setTimeout(function(){
+      $('.layout').removeClass('contact-open');
+    }, 1200);
   })
 
   $('#consultation-form').submit(function(e) {
@@ -30,7 +34,8 @@ $(function() {
     var message = event.target.message.value;
 
     analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, message__c: message});
-    $('.consultation-form').removeClass('labeled');
+    $('.consultation-form').addClass('confirmed');
+
     analytics.track('web.apollo-devsub');
   })
 });
