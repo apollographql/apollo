@@ -21,17 +21,17 @@
     <meta name="twitter:image" content="http://www.apollostack.com/img/share-image.png">
 
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-    <link rel="shortcut icon" type="image/png" href="../img/favicon.png" sizes="16x16 32x32 64x64">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" sizes="16x16 32x32 64x64">
 
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div class="layout">
+    <div class="layout support">
       <div class="page" tabindex="1">
         <div class="nav light">
           <div class="nav-group">
             <div class="nav-item">
-              <a href="http://apollostack.com"><img src="../img/logo-apollo-white-left.svg" class="logo"/></a>
+              <a href="http://apollostack.com"><img src="img/logo-apollo-white-left.svg" class="logo"/></a>
             </div>
           </div>
 
@@ -43,14 +43,14 @@
               <a class="link" href="https://medium.com/apollo-stack">Blog</a>
             </div>
             <div class="nav-item">
-              <a class="link" href="services/support.html">Support</a>
+              <a class="link" href="graphql-support.html">Support</a>
             </div>
           </div>
         </div>
 
         <header class="support">
           <div class="pitch">
-            <img src="../img/illustration-compass.svg" class="image"/>
+            <img src="img/illustration-compass.svg" class="image"/>
             <h1 class="title-page">GraphQL Support</h1>
             <div class="subtitle-page">
              A paid program that provides architectural best practices and support for your GraphQL project.
@@ -86,25 +86,35 @@
           </div>
         </header>
 
-
-
-
-
         <section class="get-started">
           <h2 class="headline-section">Schedule a free consultation</h2>
           <div class="desc-section">Get initial technical recommendations to ensure your project’s success. Tell us how you’re using GraphQL by scheduling a free 30 minute technical consultation.</div>
 
-          <form id="consultation-form" class="fieldset labeled">
+          <form id="consultation-form" class="consultation-form fieldset labeled">
+            <div class="fieldset-group">
+              <div class="input-symbol left">
+                <input type="text" name="firstname" placeholder="First Name"/>
+                <span class="icon-user"></span>
+              </div>
+
+              <div class="input-symbol left">
+                <input type="text" name="lastname" placeholder="Last Name"/>
+                <span class="icon-user"></span>
+              </div>
+            </div>
+
             <div class="input-symbol left">
-              <input type="text" name="firstname" placeholder="First Name"/></div>
-                            <div class="input-symbol left">
-              <input type="text" name="lastname" placeholder="Last Name"/></div>
-                            <div class="input-symbol left">
-              <input type="text" name="company" placeholder="Company Name"/></div>
-                            <div class="input-symbol left">
-              <input type="email" name="email" placeholder="Email Address"/></div>
-                            <div class="input-symbol left">
-              <input type="textarea" name="message" placeholder="How are you using GraphQL?"/></div>
+              <input type="text" name="company" placeholder="Company Name"/>
+              <span class="icon-admin"></span>
+            </div>
+            <div class="input-symbol left">
+              <input type="email" name="email" placeholder="Email Address"/>
+              <span class="icon-email"></span>
+            </div>
+
+            <div class="textarea">
+              <textarea name="message" rows="3" placeholder="How are you using GraphQL?"/></textarea>
+            </div>
 
             <button type="submit" class="btn primary">Submit</button>
           </form>
@@ -120,14 +130,14 @@
               </div>
             </div>
             <div class="item-contact">
-              <img src="../img/logo-slack.svg" class="image"/>
+              <img src="img/logo-slack.svg" class="image"/>
               <div class="meta">
                 <a class="title-contact link tertiary" href="http://slack.apollostack.com/" target="_blank">Chat about Apollo</a>
                 <div class="desc-contact">Join the Slack channel</div>
               </div>
             </div>
             <div class="item-contact">
-              <img src="../img/logo-medium.svg" class="image"/>
+              <img src="img/logo-medium.svg" class="image"/>
               <div class="meta">
                 <a class="title-contact link tertiary" href="https://medium.com/apollo-stack" target="_blank">Read the blog</a>
                 <div class="desc-contact">Articles on Medium</div>
