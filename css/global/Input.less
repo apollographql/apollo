@@ -1,0 +1,133 @@
+input {
+  &.hidden { display: none; }
+}
+
+// Input's look like text fields
+input:not([type="checkbox"]):not([type="number"]):not([type="radio"]):not([type=submit]):not([type=file]),
+input[type="number"] {
+  &:extend(textarea all);
+  overflow: inherit;
+}
+
+// Remove default browser controls from number inputs for .cardinal
+input[type="number"] {
+  .appearance(textfield);
+}
+
+/* Remove controls from Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Removes leftover margin */
+}
+
+input.secondary {
+  &:extend(textarea.secondary all);
+}
+
+// Inputs with icons inside of them
+.input-symbol {
+	.font-s2;
+	display: inline-block;
+  overflow: hidden;
+  position: relative;
+
+	> [class*="icon-"] {
+    .transition( all 150ms ease-out );
+		.position(absolute, 50%, auto, auto, auto, 1em, 1em);
+		font-size: 1em;
+		margin-top: -.5em; //don't use transforms here, we animate this for alerts
+		z-index: 1;
+
+    background: transparent;
+    color: @color-mediumdark;
+
+    &.inverse { color: @color-mediumlight; }
+  }
+
+	input:focus + [class*="icon-"] {
+    color: @color-darker;
+  }
+
+  > [class*="icon-"] { left: .8em; }
+  > input { padding-left: 2.5em  !important; }
+
+  &.right {
+		// Often used in conjunction with a button
+		// e.g., Clearing a search field, submitting a single input form (mailing list)
+		> [class*="icon-"] {
+      right: .8em;
+      left: auto;
+    }
+
+    > input {
+      padding-right: 2.5em  !important;
+      padding-left: 1em !important;
+    }
+
+    &:before { right: 2.5rem; }
+  }
+
+  &.round {
+    input:not([type="checkbox"]):not([type="number"]):not([type="radio"]):not([type=submit]):not([type=file]),
+    input[type="number"] {
+      border-radius: 3rem;
+      padding-left: 2.75em  !important;
+    }
+
+    > [class*="icon-"] {
+      left: 1.25em;
+      font-size: 95%;
+    }
+  }
+
+  &.small {
+    font-size: 13px;
+    input:not([type="checkbox"]):not([type="number"]):not([type="radio"]):not([type=submit]):not([type=file]),
+    input[type="number"] { &:extend(textarea.small); }
+  }
+
+  > input,
+  > button {
+    position: relative;
+    width: 100%;
+  }
+
+  // Errors
+  &:before {
+    .position(absolute, 50%, 1.25rem);
+    .transform(translate3d(100%, -50%, 0));
+    .transition(all 200ms ease-out);
+		.font-s1;
+		.type-italic;
+		content: attr(data-error);
+		line-height: 1em;
+    opacity: 0;
+    padding: .25em 0 .25em .5em;
+		pointer-events: none;
+    z-index: 1;
+
+		background: rgba(255,255,255,.9);
+    color: @color-negative;
+  }
+
+  &[data-error] {
+    [class*="icon-"] {
+      .animation(jiggle 700ms ease-out);
+      color: @color-negative;
+    }
+
+    &:before {
+      .transform(translate3d(0%, -50%, 0));
+      opacity: 1;
+
+      color: @color-negative;
+    }
+  }
+}
+
+// Hacks for various browsers
+input:-webkit-autofill {
+  //prevents autofill yellow backgrounds
+  -webkit-box-shadow: 0 0 0 3em @color-lightest inset;
+}

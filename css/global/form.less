@@ -1,5 +1,6 @@
-//Taken from borealis input and textarea
-
+// Form Spacing
+// Generic spacing for form elements
+// Add class .fieldset
 .fieldset {
   .clearfix;
 
@@ -54,161 +55,105 @@
 }
 
 
-textarea {
+/* Generic */
+legend {
+  float: left;
+  margin-bottom: 1em;
+  width: 100%; // Forces 100% width, not a block element
+
+	.font-s1;
+	.subheading-caps;
+	color: @color-dark;
+}
+
+
+label {
   .font-s2;
-	.placeholder(@color-mediumdark);
-
-  padding: .7111em 1em; //40
-
-  background: @color-lightest;
-  border:none;
-  box-sizing: border-box;
-  border-radius: 0;
-  color: @color-darkest;
+	.type-bold;
+  clear: both;
   display: block;
-  outline: none;
-  width: 100%;
-  -webkit-appearance: none;
+  margin-bottom: .25em;
 
-  &[disabled] { opacity: .5; }
+  &.hidden { display: none; }
 
-  &.alert { box-shadow: @color-negative 0 0 1px 0 inset; }
+	.sublabel,
+  .alert {
+		.font-s1;
+		.type-normal;
 
-  &.inverse {
-    .placeholder(@color-medium);
-    background-color: @color-darkest;
-    color: @color-lightest;
+		margin-left: .5em;
+
+    color: @color-dark;
   }
 
-	// a form input with no chrome at all (ie. appears just as text)
-	&.nochrome {
-		padding: 0;
-
-		border: none;
-		box-shadow: none;
-		background: none;
-
-		&:focus,
-		&:active,
-		&:hover {}
+	.alert {
+		.type-italic;
+		color: @color-negative;
 	}
 }
 
-textarea.secondary {
-    box-shadow: @color-mediumlight 0 0 0 1px inset;
-}
+// Character counts and help text beneath forms
+.subtext-form {
+  .font-s1;
+	.ellipsized;
 
+  display: block;
+  line-height: 2em;
+	padding: 0 1.16em; //0 14px
 
-input {
-  &.hidden { display: none; }
-}
+	background-color: @color-light;
+  color: @color-mediumdark;
 
-// Input's look like text fields
-input:not([type="checkbox"]):not([type="number"]):not([type="radio"]):not([type=submit]):not([type=file]),
-input[type="number"] {
-  &:extend(textarea all);
-}
+	&.nochrome {
+		background-color: transparent;
+    padding: 0;
+	}
 
-// Remove default browser controls from number inputs for .cardinal
-input[type="number"] {
-  .appearance(textfield);
-}
+  &.right { text-align: right; }
 
-/* Remove controls from Safari and Chrome */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0; /* Removes leftover margin */
-}
-
-input.secondary {
-  &:extend(textarea.secondary all);
-}
-
-// Inputs with icons inside of them
-.input-symbol {
-	.font-s2;
-	display: inline-block;
-  overflow: hidden;
-  position: relative;
-
-	> [class*="icon-"] {
-    .transition( all 150ms ease-out );
-		.position(absolute, 50%, auto, auto, auto, 1em, 1em);
-		font-size: 1em;
-		margin-top: -.5em; //don't use transforms here, we animate this for alerts
-		z-index: 1;
-
-    background: transparent;
-    color: @color-mediumdark;
-
-    &.inverse { color: @color-mediumlight; }
-  }
-
-	input:focus + [class*="icon-"] {
-    color: @color-darker;
-  }
-
-  > [class*="icon-"] { left: .8em; }
-  > input { padding-left: 2.5em  !important; }
-
-  &.right {
-		// Often used in conjunction with a button
-		// e.g., Clearing a search field, submitting a single input form (mailing list)
-		> [class*="icon-"] {
-      right: .8em;
-      left: auto;
-    }
-
-    > input {
-      padding-right: 2.5em  !important;
-      padding-left: 1em !important;
-    }
-
-    &:before { right: 2.5rem; }
-  }
-
-  > input,
-  > button {
-    position: relative;
-    width: 100%;
-  }
-
-  // Errors
-  &:before {
-    .position(absolute, 50%, 1.25rem);
-    .transform(translate3d(100%, -50%, 0));
-    .transition(all 200ms ease-out);
-		.font-s1;
-		.type-italic;
-		content: attr(data-error);
-		line-height: 1em;
-    opacity: 0;
-    padding: .25em 0 .25em .5em;
-		pointer-events: none;
-    z-index: 1;
-
-		background: rgba(255,255,255,.9);
+  .alert {
+    .type-italic;
     color: @color-negative;
   }
-
-  &[data-error] {
-    [class*="icon-"] {
-      .animation(jiggle 700ms ease-out);
-      color: @color-negative;
-    }
-
-    &:before {
-      .transform(translate3d(0%, -50%, 0));
-      opacity: 1;
-
-      color: @color-negative;
-    }
-  }
 }
 
-// Hacks for various browsers
-input:-webkit-autofill {
-  //prevents autofill yellow backgrounds
-  -webkit-box-shadow: 0 0 0 3em @color-lightest inset;
+.note-form {
+  padding: .7111em 1em;
+  text-align: center;
+
+  .font-s2;
+  background-color: @color-neutral;
+  color: @color-darker;
+}
+
+
+// A form that uses basic form confirmation
+.form-confirmable {
+	.fieldset {
+		.transition(all 300ms @easing);
+		max-height: 30em;
+		overflow: hidden;
+		opacity: 1;
+	}
+
+	.form-confirmation {
+		.transition(all 300ms @easing);
+		max-height: 0;
+		overflow: hidden;
+		opacity: 0;
+	}
+
+	&.confirmed {
+		.fieldset {
+			max-height: 0;
+			margin: 0;
+			padding: 0;
+			opacity: 0;
+		}
+
+		.form-confirmation {
+			max-height: 30em;
+			opacity: 1;
+		}
+	}
 }

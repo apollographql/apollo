@@ -8,11 +8,6 @@ $(function() {
     $('.layout').addClass('contact-open');
   });
 
-  $('.js-schedule-consultation').click(function(e) {
-    e.preventDefault();
-    $('.layout').addClass('contact-open');
-  });
-
   $('.overlay-close').click(function(e) {
     e.preventDefault();
     $('.layout').removeClass('contact-open');
@@ -24,9 +19,14 @@ $(function() {
     var latestformsubmit = 'Apollo Newsletter Subscription'
     analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
-    $('.layout').removeClass('contact-open');
+    $('.newsletter-form').addClass('confirmed');
+
+    setTimeout(function(){
+      $('.layout').removeClass('contact-open');
+    }, 1200);
   })
-    $('#consultation-form').submit(function(e) {
+
+  $('#consultation-form').submit(function(e) {
     e.preventDefault()
     var email = event.target.email.value;
     var firstname = event.target.firstname.value;
@@ -36,9 +36,8 @@ $(function() {
     var latestformsubmit = 'Apollo Developer Support'
 
     analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
+    $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-devsub');
     $('.layout').removeClass('contact-open');
   })
 });
-
-

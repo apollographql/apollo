@@ -1,0 +1,56 @@
+// support styles here
+
+.layout.support {
+	section.get-started .desc-section {
+		margin-bottom: 1rem;
+
+		@media screen and (min-width: @breakpoint) {
+			margin-bottom: 2rem;
+		}
+	}
+
+	.consultation-form {
+	  max-width: 400px;
+		margin: 0 auto;
+
+	  //Styling
+    .fieldset-group {
+      margin-bottom: 1rem !important;
+      @media screen and (max-width: (@breakpoint - 1px )) { margin-bottom: 0 !important; }
+
+      .input-symbol {
+        &:first-child { margin-right: 5px; }
+        &:last-child { margin-left: 5px; }
+      }
+    }
+
+    .input-symbol,
+		.textarea {
+      margin-bottom: .25rem;
+      @media screen and (min-width: @breakpoint) { margin-bottom: 1rem; }
+    }
+
+		input,
+		textarea { &:extend(input.secondary); }
+
+		//Layout
+		.fieldset-group {
+	    .display(flex);
+			.flex-direction(column);
+			@media screen and (min-width: @breakpoint) { .flex-direction(row); }
+
+	    margin-bottom: 1px;
+
+	    .input-symbol {
+	      @media screen and (min-width: @breakpoint) {
+	        .flex(1);
+	        margin-bottom: 0;
+	      }
+
+	      &:last-child { margin-left: 1px; }
+	    }
+	  }
+
+	  .input-symbol { vertical-align: top; }
+	}
+}
