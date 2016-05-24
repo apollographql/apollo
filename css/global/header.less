@@ -1,6 +1,38 @@
 header {
 	overflow: hidden;
 	position: relative;
+}
+
+header.home {
+	padding-top: 7.5rem;
+	padding-bottom: 5rem;
+	min-height: 400px;
+	width: 100%;
+
+	@media screen and (min-width: @breakpoint) {
+		padding-top: 9rem;
+
+		height: 40%;
+		min-height: 600px;
+	}
+
+	color: @color-lightest;
+	.background-image( linear-gradient(110deg, #233558 0%, #5e405c 100%) );
+
+	&:after {
+		.position(absolute, 0,0,0,0);
+		.transform(translate3d(45%, 0%, 0));
+		.background-image( url('img/bg-image-orbit.svg'));
+		background-size: cover;
+		background-repeat: no-repeat;
+		content: '';
+		z-index: 0;
+
+		opacity: .3;
+		@media screen and (min-width: @breakpoint) {
+			opacity: 1;
+		}
+	}
 
 	.title-page {
 		.type-light;
@@ -22,36 +54,6 @@ header {
 		h1 {
 			font-size: inherit;
 			display: inline;
-		}
-	}
-}
-
-header.home {
-	padding-top: 9rem;
-	padding-bottom: 5rem;
-	min-height: 400px;
-	width: 100%;
-
-	@media screen and (min-width: @breakpoint) {
-		height: 40%;
-		min-height: 600px;
-	}
-
-	color: @color-lightest;
-	.background-image( linear-gradient(110deg, #233558 0%, #5e405c 100%) );
-
-	&:after {
-		.position(absolute, 0,0,0,0);
-		.transform(translate3d(45%, 0%, 0));
-		.background-image( url('img/bg-image-orbit.svg'));
-		background-size: cover;
-		background-repeat: no-repeat;
-		content: '';
-		z-index: 0;
-
-		opacity: .3;
-		@media screen and (min-width: @breakpoint) {
-			opacity: 1;
 		}
 	}
 
@@ -81,8 +83,12 @@ header.home {
 }
 
 header.support {
-	padding-top: 9rem;
-	padding-bottom: 5rem;
+	padding-top: 7.5rem;
+	@media screen and (min-width: @breakpoint) {
+		padding-top: 9rem;
+		padding-bottom: 5rem;
+	}
+
 	min-height: 400px;
 	width: 100%;
 
@@ -93,22 +99,26 @@ header.support {
 		.position(absolute, 0,0,0,0);
 		//.transform(translate3d(45%, 0%, 0));
 		.background-image( url('img/bg-image-orbit-flat.svg'));
-		background-size: 150%;
+		background-size: 250%;
 		background-repeat: no-repeat;
 		background-position: center 10%;
 		content: '';
 		z-index: 0;
 
-		opacity: .3;
-		@media screen and (min-width: @breakpoint) { opacity: .6; }
+		opacity: .6;
+
+		@media screen and (min-width: @breakpoint) {
+			background-size: 150%;
+		}
 	}
 
 	.pitch {
 		.page-margins;
 		.std-xpadding;
 		position: relative;
-		text-align: center;
 		z-index: 1;
+
+		@media screen and (min-width: @breakpoint) { text-align: center; }
 	}
 
 	.pitch-follow-up {
@@ -126,6 +136,12 @@ header.support {
 			.std-ypadding;
 			background: fade(black, 10);
 
+			@media screen and (max-width: (@breakpoint - 1px)) {
+				padding-bottom: 0;
+				&:last-child { padding-bottom: 2.5rem;}
+
+			}
+
 			@media screen and (min-width: @breakpoint) {
 				&:first-child { margin-right: 20px;}
 				&:last-child { margin-left: 20px;}
@@ -134,7 +150,7 @@ header.support {
 
 		.title-section {
 			.type-bold;
-			margin-bottom: .5rem;
+			@media screen and (min-width: @breakpoint) { margin-bottom: .5rem; } 
 		}
 
 		.desc-section {
@@ -143,15 +159,29 @@ header.support {
 	}
 
 	.title-page {
-		.font-l3;
+		.type-light;
+		.font-l1;
+		margin-bottom: .5rem;
+
+		@media screen and (min-width: @breakpoint) {
+			.font-l3;
+			margin-bottom: .75rem;
+		}
 	}
 
 	.subtitle-page {
-		.font-m2;
-		.type-light;
-		line-height: 28px;
+		.font-s3;
+		line-height: 26px;
+		margin-bottom: 1.5rem;
+
 		display: inline-block;
 		max-width: 600px;
-		margin-bottom: 3rem;
+
+		@media screen and (min-width: @breakpoint) {
+			.font-m2;
+			.type-light;
+			line-height: 28px;
+			margin-bottom: 3rem;
+		}
 	}
 }
