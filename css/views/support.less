@@ -10,8 +10,12 @@
 	}
 
 	.consultation-form {
-	  max-width: 400px;
-		margin: 0 auto;
+		.std-xpadding;
+
+		@media screen and (min-width: @breakpoint) {
+			max-width: 600px;
+			margin: 0 auto;
+		}
 
 	  //Styling
     .fieldset-group {
@@ -19,8 +23,10 @@
       @media screen and (max-width: (@breakpoint - 1px )) { margin-bottom: 0 !important; }
 
       .input-symbol {
-        &:first-child { margin-right: 5px; }
-        &:last-child { margin-left: 5px; }
+				@media screen and (min-width: @breakpoint) {
+					&:first-child { margin-right: 5px; }
+	        &:last-child { margin-left: 5px; }
+				}
       }
     }
 
