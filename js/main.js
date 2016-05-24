@@ -16,7 +16,8 @@ $(function() {
   $('#newsletter-form').submit(function(e) {
     e.preventDefault()
     var email = event.target.email.value;
-    analytics.identify(email, {email: email});
+    var latestformsubmit = 'Apollo Newsletter Subscription'
+    analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
     $('.newsletter-form').addClass('confirmed');
 
@@ -32,10 +33,11 @@ $(function() {
     var lastname = event.target.lastname.value;
     var company = event.target.company.value;
     var message = event.target.message.value;
+    var latestformsubmit = 'Apollo Developer Support'
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, message__c: message});
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
     $('.consultation-form').addClass('confirmed');
-
     analytics.track('web.apollo-devsub');
+    $('.layout').removeClass('contact-open');
   })
 });
