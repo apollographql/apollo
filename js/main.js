@@ -5,17 +5,17 @@ $(function() {
 
   $('.js-join-newsletter').click(function(e) {
     e.preventDefault();
-    $('.layout').addClass('contact-open');
+    $('.layout').addClass('overlay-open contact');
   });
 
-    $('.js-join-slack').click(function(e) {
+  $('.js-join-slack').click(function(e) {
     e.preventDefault();
-    $('.layout').addClass('contact-open');
+    $('.layout').addClass('overlay-open slack');
   });
 
   $('.overlay-close').click(function(e) {
     e.preventDefault();
-    $('.layout').removeClass('contact-open');
+    $('.layout').removeClass('overlay-open');
   });
 
   $('#newsletter-form').submit(function(e) {
@@ -27,11 +27,11 @@ $(function() {
     $('.newsletter-form').addClass('confirmed');
 
     setTimeout(function(){
-      $('.layout').removeClass('contact-open');
+      $('.layout').removeClass('overlay-open');
     }, 1200);
   })
 
-    $('#slack-form').submit(function(e) {
+  $('#slack-form').submit(function(e) {
     e.preventDefault()
     var email = event.target.email.value;
     var latestformsubmit = 'Apollo Slack Signup'
@@ -42,7 +42,7 @@ $(function() {
     $('.slack-form').addClass('confirmed');
 
     setTimeout(function(){
-      $('.layout').removeClass('contact-open');
+      $('.layout').removeClass('overlay-open');
     }, 1200);
   })
 
@@ -58,6 +58,5 @@ $(function() {
     analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
     $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-devsub');
-    $('.layout').removeClass('contact-open');
   })
 });

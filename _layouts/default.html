@@ -62,8 +62,8 @@
             <div class="item-contact">
               <img src="img/logo-slack.svg" class="image"/>
               <div class="meta">
-                <a class="title-contact link tertiary" href="{{ site.url_slack }}" target="_blank">Chat about Apollo</a>
-                <div class="desc-contact">Join the Slack channel</div>
+                <a class="title-contact link tertiary js-join-slack" href="">Chat about Apollo</a>
+                <div class="desc-contact">Join the Slack channel!!!</div>
               </div>
             </div>
             <div class="item-contact">
@@ -114,6 +114,35 @@
           </div>
         </div>
       </div>
+
+
+      <div class="overlay overlay-screen-slack">
+        <div class="overlay-close">
+          <span class="icon-cross"></span>
+        </div>
+        <div class="overlay-content">
+          <div class="overlay-panel">
+            <div class="overlay-heading">
+              <div class="title-overlay">Join Slack Group</div>
+            </div>
+            <form id="slack-form" class="newsletter-form form-confirmable">
+              <div class="fieldset">
+                <div class="input-symbol left">
+                  <input type="email" name="email" placeholder="Enter your email address"/>
+                  <span class="icon-email"></span>
+                </div>
+                <button type="submit" class="btn primary">Sign up</button>
+              </div>
+              <div class="form-confirmation">
+                <div class="note-form">
+                  Thank you! Check your email for your invitation.
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
     <!-- Scripts -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>

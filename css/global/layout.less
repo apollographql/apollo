@@ -1,21 +1,31 @@
 @transition-time: 300ms;
 
 .layout {
-  &.contact-open {
-    .overlay-screen-contact {
-      opacity: 1;
-      z-index: 9;
-    }
-
+  &.overlay-open {
     .page {
       opacity: 1;
       .transform( scale3d(0.85, 0.85, 1) );
       .transition( all @transition-time * 2 ease-out);
     }
   }
+
+  &.overlay-open.contact {
+    .overlay {
+      opacity: 1;
+      z-index: 9;
+    }
+  }
+
+  &.overlay-open.slack {
+    .overlay {
+      opacity: 1;
+      z-index: 9;
+    }
+  }
 }
 
-.overlay-screen-contact {
+.overlay-screen-contact,
+.overlay-screen-slack {
   .transition(all @transition-time - 50ms ease-in-out);
   .transform(translate3d(0,0,0));
   opacity: 0;
