@@ -8,6 +8,11 @@ $(function() {
     $('.layout').addClass('contact-open');
   });
 
+    $('.js-join-slack').click(function(e) {
+    e.preventDefault();
+    $('.layout').addClass('contact-open');
+  });
+
   $('.overlay-close').click(function(e) {
     e.preventDefault();
     $('.layout').removeClass('contact-open');
@@ -19,7 +24,24 @@ $(function() {
     var latestformsubmit = 'Apollo Newsletter Subscription'
     analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
+        var inviteuri = "https://29268947-a94c-4d45-baa2-9641a9848cad.trayapp.io?email=" + email
+    $.get(inviteuri);
     $('.newsletter-form').addClass('confirmed');
+
+    setTimeout(function(){
+      $('.layout').removeClass('contact-open');
+    }, 1200);
+  })
+
+    $('#slack-form').submit(function(e) {
+    e.preventDefault()
+    var email = event.target.email.value;
+    var latestformsubmit = 'Apollo Slack Signup'
+    var inviteuri = "https://29268947-a94c-4d45-baa2-9641a9848cad.trayapp.io?email=" + email
+    $.get(inviteuri);
+    analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
+    analytics.track('web.apollo-slack');
+    $('.slack-form').addClass('confirmed');
 
     setTimeout(function(){
       $('.layout').removeClass('contact-open');
