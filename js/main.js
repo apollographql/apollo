@@ -24,8 +24,6 @@ $(function() {
     var latestformsubmit = 'Apollo Newsletter Subscription'
     analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
-        var inviteuri = "https://29268947-a94c-4d45-baa2-9641a9848cad.trayapp.io?email=" + email
-    $.get(inviteuri);
     $('.newsletter-form').addClass('confirmed');
 
     setTimeout(function(){
