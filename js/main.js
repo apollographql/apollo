@@ -15,7 +15,7 @@ $(function() {
 
   $('.overlay-close').click(function(e) {
     e.preventDefault();
-    $('.layout').removeClass('overlay-open');
+    $('.layout').attr('class', 'layout');
   });
 
   $('#newsletter-form').submit(function(e) {
@@ -27,7 +27,7 @@ $(function() {
     $('.newsletter-form').addClass('confirmed');
 
     setTimeout(function(){
-      $('.layout').removeClass('overlay-open');
+      $('.layout').attr('class', 'layout');
     }, 1200);
   })
 
@@ -42,7 +42,7 @@ $(function() {
     $('.slack-form').addClass('confirmed');
 
     setTimeout(function(){
-      $('.layout').removeClass('overlay-open');
+      $('.layout').attr('class', 'layout');
     }, 1200);
   })
 
