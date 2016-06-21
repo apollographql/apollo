@@ -3,6 +3,11 @@ $(function() {
 
   $('.page').focus();
 
+  if (location.hash == "#slack"){
+    $('.layout').addClass('overlay-open slack');
+  }
+
+
   $('.js-join-newsletter').click(function(e) {
     e.preventDefault();
     $('.layout').addClass('overlay-open contact');
@@ -59,4 +64,5 @@ $(function() {
     $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-devsub');
   })
-});
+}
+);
