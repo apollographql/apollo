@@ -64,4 +64,19 @@ $(function() {
     $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-devsub');
   });
+
+
+    $('#optics-form').submit(function(e) {
+    e.preventDefault();
+    var email = e.target.email.value;
+    var firstname = e.target.firstname.value;
+    var lastname = e.target.lastname.value;
+    var company = e.target.company.value;
+    var message = e.target.message.value;
+    var latestformsubmit = 'Apollo Optics Contact';
+
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
+    $('.consultation-form').addClass('confirmed');
+    analytics.track('web.apollo-optics');
+  });
 });
