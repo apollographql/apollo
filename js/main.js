@@ -72,10 +72,11 @@ $(function() {
     var firstname = e.target.firstname.value;
     var lastname = e.target.lastname.value;
     var company = e.target.company.value;
+    var existingGraphQLLanguage = e.target.existingGraphQLLanguage.value;
     var message = e.target.message.value;
     var latestformsubmit = 'Apollo Optics Contact';
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, LatestFormSubmit: latestformsubmit});
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, existingGraphQLLanguage: existingGraphQLLanguage, LatestFormSubmit: latestformsubmit});
     $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-optics');
   });
