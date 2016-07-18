@@ -175,13 +175,20 @@ section.get-started {
     }
 
     .input-symbol,
-		.textarea {
+		.textarea,
+		.select {
       margin-bottom: .25rem;
       @media screen and (min-width: @breakpoint) { margin-bottom: 1rem; }
     }
 
 		input,
-		textarea { &:extend(input.secondary); }
+		textarea,
+		select { &:extend(input.secondary); }
+
+		select,
+		.select:before {
+			background: @color-lightest;
+		}
 
 		//Layout
 		.fieldset-group {
@@ -210,7 +217,7 @@ section.get-started {
 
 		@media screen and (min-width: @breakpoint) {
 			margin-top: -2rem;
-			
+
 		}
 	}
 
