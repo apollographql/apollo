@@ -76,7 +76,7 @@ $(function() {
     var message = e.target.message.value;
     var latestformsubmit = 'Apollo Optics Contact';
 
-    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, existingGraphQLLanguage: existingGraphQLLanguage, LatestFormSubmit: latestformsubmit});
+    analytics.identify(email, {email: email, firstName: firstname, lastName: lastname, company: company, Message__c: message, Existing_GraphQL_Language__c: existingGraphQLLanguage, LatestFormSubmit: latestformsubmit});
     $('.consultation-form').addClass('confirmed');
     analytics.track('web.apollo-optics');
   });
