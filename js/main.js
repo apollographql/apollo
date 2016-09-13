@@ -6,7 +6,10 @@ $(function() {
   if (location.hash == "#slack"){
     $('.layout').addClass('overlay-open slack');
   }
-
+  
+  if (location.hash == "#newsletter"){
+    $('.layout').addClass('overlay-open contact');
+  }
 
   $('.js-join-newsletter').click(function(e) {
     e.preventDefault();
