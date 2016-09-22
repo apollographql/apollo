@@ -20,7 +20,7 @@ url: "http://apollostack.com" # the base hostname & protocol for your site
 markdown: kramdown
 
 # Sites
-url_docs: http://docs.apollostack.com
+url_docs: http://dev.apollodata.com
 url_blog: https://medium.com/apollo-stack
 url_slack: http://slack.apollostack.com
 
