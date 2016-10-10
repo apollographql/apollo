@@ -5,7 +5,7 @@
   <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,300,500,600,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/icon-fonts.css">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" type="text/css" href="css/remodal.css">
-  <link rel="stylesheet" type="text/css" href="css/icon-fonts.css">
+
   <link rel="stylesheet" type="text/css" href="css/style-apollo.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
 
@@ -25,44 +25,129 @@
 </head>
 
 <body>
-<div class="wrap-page apollo">
+<div class="wrap-page apollo optics-page">
   <header>
     <section class="container-apollo">
-
+      <div class="left-header logo">
+        <img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" />
+      </div>
+      <div class="right-header nav-primary">
+        <nav class="nav-primary">
+          <a class="menu-primary" href="#">Developers</a>
+          <a class="menu-primary" href="#">Optics</a>
+          <a class="menu-primary active" href="#">Training & Support</a>
+          <a class="menu-primary" href="#">Blog</a>
+        </nav>
+      </div>
     </section>
-
   </header>
 
-  <section class="main-content-apollo">
+  <section class="main-content-apollo optics-content">
+    <div class="container-apollo ">
+      <section class="general-page">
+          <h3 class="title-page">Training and support</h3>
+          <span>Apollo delivers training and developer support for GraphQL</span>
+          <img class="images-responsive" src="images/support-1000x360@2x.jpg" alt="Apollo supports"/>
+      </section>
 
+
+      <section class="list-support">
+        <div class="items-support">
+          <h3>GraphQL developer training</h3>
+          <span>Get hands-on training from experts. Customize learning to cover fundamental and advanced GraphQL topics.  </span>
+        </div>
+        <div class="items-support">
+          <h3>Architectural reviews & support</h3>
+          <span>Schedule in-depth architectural sessions to ensure an optimal GraphQL implementation. Receive timely responses to your toughest GraphQL questions. </span>
+        </div>
+        <div class="items-support">
+          <h3>Access to Apollo engineers</h3>
+          <span>Collaborate directly with the engineering team behind Apollo. Influence our roadmap to accelerate your project.</span>
+        </div>
+      </section>
+    </div>
+    <section class="form-request">
+      <form class="request-graphQL-help">
+        <h3 class="title-form">Request GraphQL help</h3>
+        <div class="haft-form form-custom">
+          <div class="form-left">
+            <i class="icon-user-textbox"></i>
+            <input type="text" placeholder="First name" class="txt-custom"/>
+          </div>
+          <div class="form-right">
+            <i class="icon-user-textbox"></i>
+            <input type="text" placeholder="Last name" class="txt-custom"/>
+          </div>
+        </div>
+        <div class="full-form form-custom">
+            <i class="icon-company-texbox"></i>
+            <input type="text" placeholder="Company name" class="txt-custom">
+        </div>
+        <div class="full-form form-custom">
+            <i class="icon-email-textbox"></i>
+            <input type="text" placeholder="Email address" class="txt-custom">
+        </div>
+        <div class="full-form form-custom">
+            <textarea type="textarea"  placeholder="Tell us about your GraphQL project" class="txt-custom"></textarea>
+        </div>
+        <div class="des-form">
+          <label>What services are you interested in?</label>
+          <section class="check-block">
+            <div class="left-checlbox">
+              <div class="checkbox-custom">
+                <input type="checkbox" value="None" id="training" name="check" />
+                <label for="training"><span>Training</span></label>
+              </div>
+            </div>
+            <div class="right-checlbox">
+              <div class="checkbox-custom">
+                <input type="checkbox" value="None" id="developer" name="check" />
+                <label for="developer"><span>Developer support</span></label>
+              </div>
+          </div>
+          </section>
+        </div>
+        <div class="action-form">
+          <a href="#" class="action-btn-form">Contact Sales</a>
+        </div>
+      </form>
+    </section>
   </section>
 
   <footer class="footer-apollo">
     <section class="container-apollo">
       <div class="footer-list">
         <div class="footer-items">
-          <i class="icon-company-texbox"></i>
-          <span class="line-one">Get email updates </span>
-          <span class="line-two">Sign up for our mailing list</span>
+          <i class="icon-logo-email"></i>
+          <a href="#" class="more-info-footer">
+            <span class="line-one">Get email updates </span>
+            <span class="line-two">Sign up for our mailing list</span>
+          </a>
         </div>
         <div class="footer-items">
-          <i class="icon-company-texbox"></i>
-          <span class="line-one">Chat about Apollo </span>
-          <span class="line-two">Join the Slack channel</span>
+          <i class="icon-logo-slack"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i><i class="path5"></i><i class="path6"></i><i class="path7"></i><i class="path8"></i></i>
+          <a href="#" class="more-info-footer">
+            <span class="line-one">Chat about Apollo </span>
+            <span class="line-two">Join the Slack channel</span>
+          </a>
         </div>
         <div class="footer-items">
-          <i class="icon-company-texbox"></i>
-          <span class="line-one">Read more on Medium</span>
-          <span class="line-two"> The latest on Apollo</span>
+          <i class="icon-logo-medium"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i></i>
+          <a href="#" class="more-info-footer">
+            <span class="line-one">Read more on Medium</span>
+            <span class="line-two"> The latest on Apollo</span>
+          </a>
         </div>
         <div class="footer-items">
-          <i class="icon-company-texbox"></i>
-          <span class="line-one">Follow on Twitter </span>
-          <span class="line-two">Tweets from the team</span>
+          <i class="icon-logo-twitter"></i>
+          <a href="#" class="more-info-footer">
+            <span class="line-one">Follow on Twitter </span>
+            <span class="line-two">Tweets from the team</span>
+          </a>
         </div>
       </div>
 
-      <span class="">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
+      <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
     </section>
   </footer>
 
