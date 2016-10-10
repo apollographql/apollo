@@ -61,7 +61,16 @@ a:hover {
     margin: 0 auto;
     padding: 0 12px;
 }
-
+.training-page{
+  background-image: url('../images/bg-apollodata-support-1200x600@2x.jpg');
+  background-repeat: no-repeat;
+  background-position: center -300px;
+}
+.optics-page{
+  background-image: url('../images/bg-apollodata-optics-pricing-1200x600@2x.jpg');
+  background-repeat: no-repeat;
+  background-position: center top;
+}
 /*Header Style*/
 header {
   display: inline-block;
