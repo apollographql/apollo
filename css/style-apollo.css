@@ -52,6 +52,10 @@ a:hover {
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
 }
+.link-default{
+  color: #565999;
+  font-weight: 600
+}
 .container-apollo {
     z-index: 2;
     display: block;
@@ -67,6 +71,11 @@ a:hover {
   background-position: center -300px;
 }
 .optics-page{
+  background-image: url('../images/bg-apollodata-optics-1200x600@2x.jpg');
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+.pricing-page{
   background-image: url('../images/bg-apollodata-optics-pricing-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: center top;
@@ -389,4 +398,448 @@ header .right-header{
 .made-apollo a{
   font-weight: 600;
   color:#fff
+}
+
+
+
+
+
+
+/*optics Page*/
+
+.list-frequently{
+  display: inline-block;
+  width: 100%;
+}
+.items-frequently {
+  display: inline-block;
+  width: calc(50% - 35px);
+  float: left;
+  margin-top: 40px;
+  min-height: 140px;
+}
+.items-frequently:nth-child(even){
+  padding-right: 35px
+}
+.items-frequently:nth-child(odd){
+  padding-left: 35px
+}
+.items-frequently h3 {
+    color: #333333;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+}
+.items-frequently span a{
+  color:#565999;
+  font-weight: 600
+}
+.items-frequently span {
+    color: #444444;
+    font-size: 15px;
+    line-height: 24px;
+}
+.title-block{
+  font-size: 36px;
+  line-height: 36px;
+  color: #333333;
+  display: inline-block;
+  width: 100%;
+  margin-top: 40px;
+  font-family: 300
+}
+.request-pricing{
+  display: inline-block;
+  width: 100%;
+  background-color: #f8f8f8;
+  padding-bottom: 60px;
+}
+
+.left-monthly-price{
+  display: inline-block;
+  float: left;
+  width: 25%;
+}
+.right-monthly-price{
+  display: inline-block;
+  width: 75%;
+  float: right;
+}
+.left-monthly-price .title-block{
+  font-size: 28px;
+}
+.table-build{
+  display: inline-block;
+  width: calc(100%);
+  margin-top: 50px;
+  border: 1px solid #cccccc;
+}
+.header-table{
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #ccc
+}
+.content-table{
+  display: inline-block;
+  width: 100%;
+}
+.line-table{
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  height 30px;
+  line-height: 30px
+}
+.line-table:last-child{
+  border: none;
+}
+.header-table span{
+  display: inline-block;
+  width: 23%;
+  color: #333333;
+  min-height: 30px;
+  line-height: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  float: left;
+}
+.right-monthly-price .header-table span:first-child{
+  padding-left: 20px;
+  width: calc(34% - 20px)
+}
+.right-monthly-price .header-table span:last-child{
+  width: 20%
+}
+.right-monthly-price .content-table span:first-child{
+  padding-left: 20px;
+  width: calc(34% - 20px)
+}
+.right-monthly-price .content-table span:last-child{
+width: 20%
+}
+.content-table span{
+  display: inline-block;
+  width: 23%;
+  color: #333333;
+  font-size: 13px;
+  float: left;
+}
+.content-table span a{
+  color: #565999;
+  font-weight: 600
+}
+
+
+.list-plans .header-table span{
+  width: 100%;
+}
+
+.list-plans .table-build{
+  border-left: none;
+  border-right: none;
+  margin-top:0px;
+  margin-bottom: 60px
+}
+.list-plans .content-table span{
+  font-size: 15px;
+  width: 25%;
+  line-height: 24px;
+}
+.list-plans .line-table{
+  line-height: 20px;
+  padding: 10px 0px;
+  float: left;
+}
+.list-plans .line-table span:first-child{
+  font-weight: 600
+}
+
+.list-plans .block-table{
+  display: inline-block;
+  width: 25%;
+  float: left;
+}
+
+.list-plans .header-table span.one-plans-title{
+  font-size: 36px;
+    line-height: 36px;
+    font-weight: 100;
+    margin-top: 25px;
+}
+.block-table h3{
+  font-size: 16px;
+  color: #565999;
+  font-weight: 600;
+  display: inline-block;
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+.list-plans .header-table span.des-title-plans{
+  color: #333333;
+font-weight: 100;
+line-height: 20px;
+margin-bottom: 15px;
+}
+.list-plans .header-table span.des{
+  color: #666666;
+  font-weight: 100;
+  font-size: 11px
+}
+.list-plans .header-table span.price-all{
+  color: #333333;
+  min-height: 40px;
+  font-weight: 100;
+  font-size: 48px;
+  margin: 12px 0px;
+}
+.list-plans .header-table span.price-all time{
+  font-size: 20px;
+}
+.list-plans .header-table span.des-plans-price{
+  color: #999999;
+  font-weight: 100;
+  font-size: 14px;
+  line-height: 20px;
+  font-style: italic;
+  margin-bottom: 25px;
+  margin-top: 20px;
+}
+.group-block-table{
+  display: inline-block;
+  width: 50%;
+}
+.group-block-table .block-table{
+  width: 50%;
+}
+.btn-primary-apollo{
+  display: inline-block;
+    width: 100%;
+    line-height: 43px;
+    margin-top: 25px;
+    color: #fff;
+    font-weight: 600;
+    background: #2ca699;
+    text-align: center;
+    border-radius: 40px;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.text-center{
+  text-align: center;
+}
+.btn-primary-apollo i{
+  position: relative;
+    top: 1px;
+    margin-right: 10px;
+}
+
+
+
+
+.block-built-optics{
+  display: inline-block;
+  width: 100%;
+  float: left;
+  margin-top: 50px;
+  background-image: url(../images/ss-optics-apollodata-660x560@2x.png);
+  background-repeat: no-repeat;
+  background-position: calc(100%) top;
+  background-size: contain;
+  min-height: 580px;
+}
+.left-built-app{
+  display: inline-block;
+  width: 55%;
+  float: left;
+  padding-top: 150px;
+}
+.left-built-app h3{
+  font-size: 48px;
+  color: #333333;
+  line-height: 48px;
+  font-weight: 100;
+}
+.left-built-app span{
+  font-size: 20px;
+  color: #444444;
+  margin-top: 20px;
+  display: inline-block;
+  width: 100%;
+}
+.left-built-app p{
+  font-size: 12px;
+  margin: 15px 0px;
+}
+.left-built-app p a{
+  color:#565999
+}
+.left-built-app .btn-primary-apollo{
+  max-width: 220px;
+}
+.right-built-app{
+  /*display: inline-block;*/
+  width: 50%;
+  display: none;
+  float: right;
+}
+.right-built-app img{
+  max-width: 100%;
+  width: 100%;
+}
+.apollo-testimonial .des-tes:after{
+
+
+}
+.apollo-testimonial span{
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
+  text-align: center;
+  color:#333333;
+  font-size: 16px;
+}
+.img-testimonial{
+  max-width: 176px;
+  width: 100%;
+  display: block;
+  margin:  20px auto;
+}
+.testimonial-block{
+  display: inline-block;
+width: 100%;
+padding: 30px 0px;
+border-top: 1px solid #eeeeee;
+border-bottom: 1px solid #eeeeee;
+}
+.unslider-arrow.next{
+  position: absolute;
+  right: 0px;
+  background-image: url(../images/next-testimonial.svg);
+  top: calc(50% - 14px);
+  text-indent: -10000px;
+  width: 28px;
+  height: 28px;
+  color:#a7a7a7;
+  background-repeat: no-repeat;
+  border-radius: 100%;
+  background-position: center;
+  box-shadow: 0px 0px 0px 1px #a7a7a7;
+}
+.unslider-nav{
+  display: none
+}
+.unslider-arrow.prev{
+  position: absolute;
+  left: 0px;
+  top: calc(50% - 14px);
+    background-image: url(../images/pre-testimonial.svg);
+  top: calc(50% - 14px);
+  text-indent: -10000px;
+  width: 28px;
+  height: 28px;
+  color:#a7a7a7;
+  background-repeat: no-repeat;
+  border-radius: 100%;
+  background-position: center;
+  box-shadow: 0px 0px 0px 1px #a7a7a7;
+}
+.analytis-block{
+  display: inline-block;
+    width: 100%;
+    padding: 0px 0px 60px 0px;
+}
+.analytis-block .general-page span{
+  margin-bottom:15px
+}
+.link-default-green{
+  color: #2ca699;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 100%;
+}
+.support-servers{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.support-servers i{
+  margin-right: 25px;
+  position: relative;
+  color:#464646;
+  font-size: 25px;
+}
+.support-servers .icon-logo-hapi-monochrome{
+  top: 1px;
+  color:#534d4e
+}
+.support-servers .icon-logo-koa-monochrome{
+  top: -6px;
+  color:#000000
+
+}
+.support-servers .icon-logo-ruby-monochrome{
+  top: -1px;
+  color:#707070;
+}
+.support-servers h3{
+  font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 20px;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.block-2col-optics{
+  display: inline-block;
+  width: 100%;
+  padding:  50px 0px
+}
+.left-2col-app{
+  display: inline-block;
+  width: 40%;
+  float: left;
+}
+.right-2col-app{
+  display: inline-block;
+  width: 60%;
+  float: right;
+}
+.title-2col{
+  display: inline-block;
+  width: 100%;
+  margin-top: 40px;
+  line-height: 36px;
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+.des-2col{
+  display: inline-block;
+  width: calc(100% - 150px);
+  color: #444;
+  line-height: 24px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+.content-right{
+  width: calc(60% - 80px);
+  padding-left: 80px;
+  padding-top: 80px;
+}
+.circle{
+  border-radius: 100%;
+      box-shadow: 0px 0px 17px 0px rgba(0,0,0,0.1);
+}
+.visualize{
+  background-image: url(../images/trace-blurred-1200x480@2x.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
