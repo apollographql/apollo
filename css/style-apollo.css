@@ -100,8 +100,7 @@ header .right-header{
   float: right;
 }
 .logo img{
-  max-width:  120px;
-  width: 100%;
+  width:  120px;
 }
 .nav-primary {
   text-align: right;
@@ -281,7 +280,7 @@ header .right-header{
 }
 .left-checlbox{
   display: inline-block;
-  width: 25%;
+  width: 30%;
   float: left;
 }
 .right-checlbox{
@@ -1137,9 +1136,12 @@ border-bottom: 1px solid #eeeeee;
   display: inline-block;
   width: 100%;
   height: 3px;
-  background: #fff;
+  background: #333;
   float: left;
   margin-bottom: 10px;
+}
+.home-page .menu-mobile span{
+  background: #fff;
 }
 .menu-mobile{
   display: none

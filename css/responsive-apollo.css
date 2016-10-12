@@ -1,5 +1,6 @@
 /*Responsive home page*/
 @media (max-width:840px) {
+  /*Responsive home page*/
   .left-opensource{
     width: 100%;
     min-height: 150px;
@@ -20,15 +21,24 @@
     width: 100%;
     margin: 0 auto;
   }
+  /*End Responsive home page*/
 }
 
 @media (max-width:768px) {
+  /*Responsive home page*/
   header{
     position: relative;
     z-index: 4;
   }
   .home-page .general-page .title-page {
     margin-top: 100px;
+  }
+  .general-page .title-page{
+    font-size: 38px;
+    line-height: 38px;
+  }
+  .general-page span{
+    font-size: 18px
   }
   .home-page .general-page span{
     margin-bottom: 150px
@@ -47,7 +57,7 @@
   .nav-primary{
     line-height: 30px;
   }
-  .home-page .nav-primary a.menu-primary{
+  .apollo .nav-primary a.menu-primary{
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -57,7 +67,7 @@
     font-size: 16px;
     margin: 0px;
   }
-  .home-page .nav-primary a.menu-primary:hover{
+  .apollo .nav-primary a.menu-primary:hover{
     color:#fff;
     background: #2ca699;
     opacity: 1;
@@ -73,9 +83,16 @@
     left: 0px;
     top: 60px;
   }
+  /* End Responsive home page*/
+  /*Responsive Training-support page*/
+  .items-support{
+    width: 100%;
+    padding: 0px;
+  }
 }
 
 @media (max-width:500px) {
+  /*Responsive home page*/
     .footer-list{
       max-width: 290px
     }
@@ -86,9 +103,11 @@
     .made-apollo{
       margin-top: 0px;
     }
-  }
+  /*End Responsive home page*/
+}
 
 @media (max-width:480px) {
+  /*Responsive home page*/
   .ldes-content span{
     font-size: 14px;
   }
@@ -102,14 +121,37 @@
     width: 100%;
   }
   .general-page .title-page{
-    font-size: 38px;
-    line-height: 38px;
+    font-size: 32px;
+    line-height: 32px;
   }
   .general-page span{
-    font-size: 18px;
+    font-size: 16px;
 
   }
   .home-page .general-page span{
     margin-bottom: 100px
   }
+  /*End Responsive home page*/
+
+
+  /*Responsive training-support page*/
+  .haft-form .form-right,
+  .haft-form .form-left{
+    width: 100%
+  }
+  .items-support span{
+    font-size: 14px;
+  }
+  .items-support h3{
+    font-size: 18px;
+  }
+  .request-graphQL-help{
+    width: calc(100% - 24px);
+    padding: 0 12px;
+  }
+  .haft-form .form-left{
+    margin-bottom: 15px;
+  }
+  /*End Responsive training-support page*/
+
 }
