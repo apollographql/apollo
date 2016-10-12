@@ -84,11 +84,83 @@
     top: 60px;
   }
   /* End Responsive home page*/
+
   /*Responsive Training-support page*/
   .items-support{
     width: 100%;
     padding: 0px;
   }
+  /*End Responsive Training-support page*/
+  /*Responsive Optics page*/
+  .logo-support-servers h3{
+    width: 100%;
+    margin-bottom: 25px;
+    margin-right: 0px;
+    margin-left: 0px;
+    text-align: center;
+  }
+  .logo-support-servers h3 br{
+    display: none
+  }
+  .analytis-block .general-page span br{
+    display: none
+  }
+  .support-servers i{
+    display: inline-block;
+    margin-top: 15px
+  }
+  .left-2col-app{
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    float: none;
+  }
+  .easiest-block .general-page .title-page{
+    font-size: 28px
+  }
+  .des-2col{
+    width: 100%
+  }
+  .left-built-app{
+    width: 100%;
+    padding-top: 30px;
+  }
+  .block-built-optics{
+    background: none;
+  }
+  .right-built-app{
+    display: inline-block;
+    width: 100%;
+  }
+  .testimonial-block .container-apollo{
+    padding:  0 20px;
+    width: calc(100% - 40px);
+  }
+  .img-testimonial{
+    max-width: 140px;
+  }
+  .apollo-testimonial span{
+    font-size: 14px;
+  }
+
+  .left-built-app h3{
+    font-size: 28px;
+    line-height:32px;
+  }
+  .block-2col-optics{
+    padding: 25px 0px;
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+  }
+  .title-2col{
+    margin-top: 10px;
+  }
+  .right-2col-app{
+    width:100%;
+    padding-top: 0px;
+    padding-left: 0px;
+  }
+  /*End Responsive Optics page*/
 }
 
 @media (max-width:500px) {

@@ -727,7 +727,7 @@ border-bottom: 1px solid #eeeeee;
 }
 .unslider-arrow.next{
   position: absolute;
-  right: 0px;
+  right: 2px;
   background-image: url(../images/next-testimonial.svg);
   top: calc(50% - 14px);
   text-indent: -10000px;
@@ -744,7 +744,7 @@ border-bottom: 1px solid #eeeeee;
 }
 .unslider-arrow.prev{
   position: absolute;
-  left: 0px;
+  left: 2px;
   top: calc(50% - 14px);
     background-image: url(../images/pre-testimonial.svg);
   top: calc(50% - 14px);
@@ -856,12 +856,14 @@ border-bottom: 1px solid #eeeeee;
 .logo-support-servers {
   display: inline-block;
   width: 100%;
+  text-align: center;
   padding:  50px 0px;
   border-top: 1px solid #eeeeee;
 }
 .logo-support-servers h3{
   color: #999999;
   font-weight: 600;
+  text-align: left;
   display: inline-block;
   margin-right: 50px;
 }
@@ -874,6 +876,8 @@ border-bottom: 1px solid #eeeeee;
   top: -8px;
   font-size: 18px;
   color: #999999;
+  display: inline-block;
+  margin-top: 15px;
   -webkit-transition: all 0.15s ease;
   transition: all 0.15s ease;
   margin-right: 38px;
@@ -889,7 +893,7 @@ border-bottom: 1px solid #eeeeee;
       font-size: 30px;
 }
 .logo-support-servers i:last-child{
-  margin: 0px
+  margin-right: 0px
 }
 
 .logo-support-servers  .icon-logo-facebook:hover{
