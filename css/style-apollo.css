@@ -616,7 +616,7 @@ margin-bottom: 15px;
 .btn-primary-apollo{
   display: inline-block;
     width: 100%;
-    line-height: 43px;
+    line-height: 40px;
     margin-top: 25px;
     color: #fff;
     font-weight: 600;
@@ -625,7 +625,7 @@ margin-bottom: 15px;
     border-radius: 40px;
     text-transform: uppercase;
     font-size: 14px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
 }
 .text-center{
   text-align: center;
@@ -677,7 +677,7 @@ margin-bottom: 15px;
   color:#565999
 }
 .left-built-app .btn-primary-apollo{
-  max-width: 220px;
+  max-width: 250px;
 }
 .right-built-app{
   /*display: inline-block;*/
@@ -688,6 +688,8 @@ margin-bottom: 15px;
 .right-built-app img{
   max-width: 100%;
   width: 100%;
+  float: left;
+
 }
 .apollo-testimonial .des-tes:after{
 
@@ -842,4 +844,99 @@ border-bottom: 1px solid #eeeeee;
   background-image: url(../images/trace-blurred-1200x480@2x.jpg);
   background-size: contain;
   background-repeat: no-repeat;
+}
+.logo-support-servers {
+  display: inline-block;
+  width: 100%;
+  padding:  50px 0px;
+  border-top: 1px solid #eeeeee;
+}
+.logo-support-servers h3{
+  color: #999999;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 50px;
+}
+.logo-support-servers .riotlogo-gamge{
+  max-width: 55px;
+  top: 0px;
+}
+.logo-support-servers i,.logo-support-servers img{
+  position: relative;
+  top: -8px;
+  font-size: 18px;
+  color: #999999;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  margin-right: 38px;
+  cursor: pointer;
+}
+.logo-support-servers  .icon-logo-airbnb{
+      font-size: 30px;
+}
+.logo-support-servers  .icon-logo-twitter{
+      font-size: 30px;
+}
+.logo-support-servers  .icon-logo-samsung{
+      font-size: 30px;
+}
+.logo-support-servers i:last-child{
+  margin: 0px
+}
+
+.logo-support-servers  .icon-logo-facebook:hover{
+  color: #3a579d
+}
+.logo-support-servers .icon-logo-github:hover{
+  color:#333333
+}
+.logo-support-servers  .icon-logo-airbnb:hover{
+    color:#ff585d
+}
+.logo-support-servers  .icon-logo-twitter:hover{
+    color:#139ae8
+}
+.logo-support-servers  .icon-logo-samsung:hover{
+  color:#034ea2
+}
+.logo-support-servers  .zendesk-logo:hover{
+  color:#78a300
+}
+.logo-support-servers  .riotlogo-gamge{}
+.easiest-block{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background: #dfecf2
+}
+.easiest-block .general-page .title-page{
+  font-size: 32px;
+  margin-top: 40px;
+}
+.easiest-block .btn-primary-apollo{
+  max-width: 250px;
+  margin-top: 0px;
+}
+.easiest-block  p {
+    font-size: 12px;
+    margin: 15px 0px;
+}
+.pricing-built .left-built-app{
+  width: 50%;
+  padding: 30px 0px 0px 0px
+}
+.pricing-built.block-built-optics{
+  background-image: none;
+  min-height: 150px;
+  background-color: #dfecf2;
+  padding-top: 30px;
+
+}
+.pricing-built .right-built-app{
+  display: inline-block;
+}
+.pricing-built .left-built-app h3{
+  font-size: 28px;
+  width: 100%;
+  line-height: 30px
 }
