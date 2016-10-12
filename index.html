@@ -15,6 +15,7 @@
   <link rel="stylesheet" type="text/css" href="css/remodal.css">
 
   <link rel="stylesheet" type="text/css" href="css/style-apollo.css">
+  <link rel="stylesheet" type="text/css" href="css/responsive-apollo.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -24,11 +25,12 @@
 </head>
 
 <body>
-<div class="wrap-page apollo training-page">
+<div class="wrap-page apollo home-page">
+  <div class="bg-home-custom"></div>
   <header>
     <section class="container-apollo">
       <div class="left-header logo">
-        <img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" />
+        <img src="images/logo-apollo-white-left.svg" alt="Apollo Logo" />
       </div>
       <div class="menu-mobile">
         <a href="#">
@@ -37,84 +39,69 @@
           <span></span>
         </a>
       </div>
-      <div class="right-header nav-primary">
+      <div class="right-header nav-primary">        
         <nav class="nav-primary">
           <a class="menu-primary" href="developer.html">Developers</a>
           <a class="menu-primary" href="optics.html">Optics</a>
-          <a class="menu-primary active" href="training.html">Training & Support</a>
+          <a class="menu-primary" href="training.html">Training & Support</a>
           <a class="menu-primary" href="#">Blog</a>
         </nav>
       </div>
     </section>
   </header>
 
-  <section class="main-content-apollo training-content">
-    <div class="container-apollo">
+  <section class="main-content-apollo home-content">
+    <div class="container-apollo title-home-page">
       <section class="general-page">
-          <h3 class="title-page">Training and support</h3>
-          <span>Apollo delivers training and developer support for GraphQL</span>
-          <img class="images-responsive" src="images/support-1000x360@2x.jpg" alt="Apollo supports"/>
-      </section>
-      <section class="list-support">
-        <div class="items-support">
-          <h3>GraphQL developer training</h3>
-          <span>Get hands-on training from experts. Customize learning to cover fundamental and advanced GraphQL topics.  </span>
-        </div>
-        <div class="items-support">
-          <h3>Architectural reviews & support</h3>
-          <span>Schedule in-depth architectural sessions to ensure an optimal GraphQL implementation. Receive timely responses to your toughest GraphQL questions. </span>
-        </div>
-        <div class="items-support">
-          <h3>Access to Apollo engineers</h3>
-          <span>Collaborate directly with the engineering team behind Apollo. Influence our roadmap to accelerate your project.</span>
-        </div>
+          <h3 class="title-page">Tools & products for GraphQL</h3>
+          <span>We make open source software and commercial tools to help developers use GraphQL</span>
+          <div class="we-work">
+            <label>We work with</label>
+            <div class="list-logo-work">
+                <i class="icon-logo-shopify-monochrome"></i>
+                <i class="icon-logo-coursera-monochrome"></i>
+                <i class="icon-logo-jet-monochrome"></i>
+                <i class="icon-logo-creditkarma-monochrome"></i>
+                <i class="icon-logo-legacy-monochrome"></i>
+            </div>
+          </div>
       </section>
     </div>
-    <section class="form-request">
-      <form class="request-graphQL-help">
-        <h3 class="title-form">Request GraphQL help</h3>
-        <div class="haft-form form-custom">
-          <div class="form-left">
-            <i class="icon-user-textbox"></i>
-            <input type="text" placeholder="First name" class="txt-custom"/>
+    <section class="opensource-commercial">
+      <div class="container-apollo">
+        <div class="left-opensource">
+          <div class="ldes-content">
+            <label>open source</label>
+            <h3>Clients & tools</h3>
+            <span>Explore our flexible, 100% GraphQL-compliant open source clients, tools, and docs.</span>
+            <a href="#" class="btn-primary-apollo">Learn more</a>
           </div>
-          <div class="form-right">
-            <i class="icon-user-textbox"></i>
-            <input type="text" placeholder="Last name" class="txt-custom"/>
+          <div class="rlogo-content">
+            <span class="icon-logo-graphql-monochrome text-right"></span>
+            <span class="icon-logo-angular-monochrome text-center"></span>
+            <span class="icon-logo-reactjs-monochrome text-left"></span>
+            <span class="icon-logo-swift-monochrome text-right"></span>
+            <span class="icon-logo-android-monochrome text-center"></span>
+            <span class="icon-logo-apple-monochrome text-left"></span>
           </div>
         </div>
-        <div class="full-form form-custom">
-            <i class="icon-company-texbox"></i>
-            <input type="text" placeholder="Company name" class="txt-custom">
-        </div>
-        <div class="full-form form-custom">
-            <i class="icon-email-textbox"></i>
-            <input type="text" placeholder="Email address" class="txt-custom">
-        </div>
-        <div class="full-form form-custom">
-            <textarea type="textarea"  placeholder="Tell us about your GraphQL project" class="txt-custom"></textarea>
-        </div>
-        <div class="des-form">
-          <label>What services are you interested in?</label>
-          <section class="check-block">
-            <div class="left-checlbox">
-              <div class="checkbox-custom">
-                <input type="checkbox" value="None" id="training" name="check" />
-                <label for="training"><span>Training</span></label>
-              </div>
-            </div>
-            <div class="right-checlbox">
-              <div class="checkbox-custom">
-                <input type="checkbox" value="None" id="developer" name="check" />
-                <label for="developer"><span>Developer support</span></label>
-              </div>
+        <div class="right-commercial">
+          <div class="ldes-content">
+            <label>commercial</label>
+            <h3>Optics</h3>
+            <span>Track schemas, manage query performance, and benchmark resolvers. Use Optics with any JavaScript server. </span>
+            <a href="#" class="btn-primary-apollo">Learn more</a>
           </div>
-          </section>
+          <div class="rlogo-content">
+            <img class="images-responsive" src="images/ss-optics-apollodata-170x150@2x.jpg" />
+          </div>
         </div>
-        <div class="action-form">
-          <a href="#" class="action-btn-form">Contact Sales</a>
-        </div>
-      </form>
+      </div>
+    </section>
+    <section class="illustration-block">
+      <div class="container-apollo">
+        <span>  <i  class="icon-illustration-chat"></i>Get training & support direct from GraphQL experts and Apollo engineers.<a href="#" class="link-default-green"> Request help »</a></span>
+      </div>
     </section>
   </section>
 
@@ -150,7 +137,6 @@
           </a>
         </div>
       </div>
-
       <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
     </section>
   </footer>

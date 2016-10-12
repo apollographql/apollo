@@ -6,4 +6,10 @@ wow = new WOW({
   live:         true        // default
 })
 wow.init();
-$('.apollo-testimonial').unslider();
+if($('.apollo-testimonial').length > 0){
+  $('.apollo-testimonial').unslider();
+}
+
+$('.menu-mobile a').on( "click", function() {
+    $('.right-header').toggleClass('mobile-active');
+});

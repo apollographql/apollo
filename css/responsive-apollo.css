@@ -1,0 +1,115 @@
+/*Responsive home page*/
+@media (max-width:840px) {
+  .left-opensource{
+    width: 100%;
+    min-height: 150px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  .right-commercial{
+    width: 100%;
+  }
+  .footer-items{
+    width: calc(50% - 30px);
+    margin-bottom: 40px;
+    padding-left: 30px;
+  }
+  .footer-list{
+    display: block;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width:768px) {
+  header{
+    position: relative;
+    z-index: 4;
+  }
+  .home-page .general-page .title-page {
+    margin-top: 100px;
+  }
+  .home-page .general-page span{
+    margin-bottom: 150px
+  }
+  .nav-primary{
+    display: inline-block;
+    width: 100%;
+  }
+  .menu-mobile{
+    display: inline-block;
+    width: 40px;
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+  }
+  .nav-primary{
+    line-height: 30px;
+  }
+  .home-page .nav-primary a.menu-primary{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: #eee;
+    padding: 15px 0px;
+    color:#444;
+    font-size: 16px;
+    margin: 0px;
+  }
+  .home-page .nav-primary a.menu-primary:hover{
+    color:#fff;
+    background: #2ca699;
+    opacity: 1;
+  }
+  header .right-header.mobile-active{
+    display: inline-block;
+  }
+  header .right-header{
+    width: 100%;
+    display: none;
+    z-index: 9;
+    position: absolute;
+    left: 0px;
+    top: 60px;
+  }
+}
+
+@media (max-width:500px) {
+    .footer-list{
+      max-width: 290px
+    }
+    .footer-items{
+      width: 100%;
+      padding-left: 0px;
+    }
+    .made-apollo{
+      margin-top: 0px;
+    }
+  }
+
+@media (max-width:480px) {
+  .ldes-content span{
+    font-size: 14px;
+  }
+  .illustration-block span{
+    font-size: 14px;
+  }
+  .ldes-content{
+    width: 100%;
+  }
+  .rlogo-content{
+    width: 100%;
+  }
+  .general-page .title-page{
+    font-size: 38px;
+    line-height: 38px;
+  }
+  .general-page span{
+    font-size: 18px;
+
+  }
+  .home-page .general-page span{
+    margin-bottom: 100px
+  }
+}

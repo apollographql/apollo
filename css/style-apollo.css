@@ -70,6 +70,9 @@ a:hover {
   background-repeat: no-repeat;
   background-position: center -300px;
 }
+.home-page{
+
+}
 .optics-page{
   background-image: url('../images/bg-apollodata-optics-1200x600@2x.jpg');
   background-repeat: no-repeat;
@@ -630,6 +633,12 @@ margin-bottom: 15px;
 .text-center{
   text-align: center;
 }
+.text-left{
+  text-align: left;
+}
+.text-right{
+  text-align: right;
+}
 .btn-primary-apollo i{
   position: relative;
     top: 1px;
@@ -939,4 +948,203 @@ border-bottom: 1px solid #eeeeee;
   font-size: 28px;
   width: 100%;
   line-height: 30px
+}
+
+
+
+
+.title-home-page{min-height: 500px;}
+.bg-home-custom{
+  background-image: url('../images/bg-apollodata-home-1200x600@2x.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;;
+  display: inline-block;
+  width: 100%;
+  min-height: 665px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+}
+.home-page .nav-primary a.menu-primary{
+  color:#fff
+}
+.home-page .general-page{
+  color: #fff
+}
+.home-page .general-page .title-page{
+      margin-top: 150px;
+}
+.home-page .general-page span{
+  margin-bottom: 230px
+}
+.we-work{
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 30px;
+  text-align: center;
+}
+.we-work label{
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 15px;
+  letter-spacing: 3px;
+  opacity: 0.5;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.list-logo-work i{
+  font-size: 24px;
+  margin-right: 25px;
+  opacity: .5;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 10px;
+  transition: all 0.3 ease;
+}
+.list-logo-work .icon-logo-coursera-monochrome{
+  font-size: 18px
+}
+.list-logo-work .icon-logo-jet-monochrome{
+  font-size: 20px
+}
+.list-logo-work i:hover{
+  opacity: 1
+}
+.opensource-commercial{
+  display: inline-block;
+  width: 100%;
+  float: left;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+.left-opensource{
+  border-right: 1px solid #eee;
+  display: inline-block;
+  width: 48%;
+  float: left;
+  padding-bottom: 30px;
+  min-height: 240px;
+  padding-top: 30px;
+}
+.right-commercial{
+  padding-bottom: 30px;
+  display: inline-block;
+  padding-top: 30px;
+  width: 48%;
+  float: right;
+}
+.rlogo-content{
+  display: inline-block;
+  width: 45%;
+  float: right;
+  padding-top: 40px;
+}
+.ldes-content{
+  display: inline-block;
+  width: 55%;
+  float: left;
+}
+.ldes-content label{
+  font-size: 13px;
+    color: #999999;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+.ldes-content h3{
+  font-size: 32px;
+  display: inline-block;
+  width: 100%;
+  margin: 15px 0px;
+    color: #333333;
+    font-weight: 300;
+}
+.ldes-content span{
+  font-size: 16px;
+  display: inline-block;
+  width: 100%;
+  color: #444;
+  line-height: 24px;
+}
+.ldes-content .btn-primary-apollo{
+  width: 170px;
+  line-height: 32px;
+}
+.rlogo-content span{
+  display: inline-block;
+  width: 33.33%;
+  float: left;
+  cursor: pointer;
+  font-size: 36px;
+  color:#999999;
+  margin-bottom: 15px;
+}
+.illustration-block{
+  display: inline-block;
+  width: 100%;
+  padding: 20px 0px;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+.illustration-block .container-apollo{
+  display: table;
+}
+.illustration-block .icon-illustration-chat{
+  font-size: 60px;
+  color: #2ca699;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+.illustration-block span{
+  color: #333333;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.illustration-block span a{
+  width: auto;
+  margin-left: 5px;
+  margin-bottom: 0px;
+}
+.icon-logo-graphql-monochrome:hover{
+  color:#e535ab
+}
+.icon-logo-angular-monochrome:hover{
+  color:#e23337
+}
+.icon-logo-reactjs-monochrome:hover{
+  color:#00d8ff
+}
+.icon-logo-swift-monochrome:hover{
+  color:#fe3b25
+}
+.icon-logo-android-monochrome:hover{
+  color:#97c03e
+}
+.icon-logo-apple-monochrome:hover{
+  color:#666666
+}
+.menu-mobile{
+  display: inline-block;
+  width: 40px;
+  cursor: pointer;
+}
+.menu-mobile span{
+  display: inline-block;
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  float: left;
+  margin-bottom: 10px;
+}
+.menu-mobile{
+  display: none
+}
+.menu-mobile a {
+  display: inline-block;
+  width: 100%;
 }
