@@ -69,6 +69,13 @@ a:hover {
   background-image: url('../images/bg-apollodata-support-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: center -300px;
+
+/*background: -webkit-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
+background: -o-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
+background: -ms-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
+background: -moz-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
+background: linear-gradient(18deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);*/
+
 }
 .home-page{
 
@@ -77,6 +84,14 @@ a:hover {
   background-image: url('../images/bg-apollodata-optics-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: center top;
+
+
+/*background: -webkit-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
+background: -o-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
+background: -ms-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
+background: -moz-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
+background: linear-gradient(79deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);*/
+
 }
 .pricing-page{
   background-image: url('../images/bg-apollodata-optics-pricing-1200x600@2x.jpg');
@@ -761,6 +776,12 @@ border-bottom: 1px solid #eeeeee;
   display: inline-block;
     width: 100%;
     padding: 0px 0px 60px 0px;
+    background: -webkit-linear-gradient(top, rgb(255, 255, 255) 0%, rgb(242, 252, 252) 100%);
+    background: -o-linear-gradient(top, rgb(255, 255, 255) 0%, rgb(242, 252, 252) 100%);
+    background: -ms-linear-gradient(top, rgb(255, 255, 255) 0%, rgb(242, 252, 252) 100%);
+    background: -moz-linear-gradient(top, rgb(255, 255, 255) 0%, rgb(242, 252, 252) 100%);
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(242, 252, 252) 100%);
+
 }
 .analytis-block .general-page span{
   margin-bottom:15px

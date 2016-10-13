@@ -1,3 +1,42 @@
+@media (min-width:1580px){
+  .block-built-optics{
+      background-position: calc(100%) top;
+  }
+}
+@media (max-width:1580px){
+  .block-built-optics{
+      background-position: calc(120%) top;
+  }
+}
+@media (max-width:1369px){
+  .block-built-optics{
+      background-position: calc(150%) top;
+  }
+}
+@media (max-width:1169px){
+  .block-built-optics{
+      background-position: calc(180%) top;
+  }
+}
+@media (max-width:1100px){
+  .block-built-optics{
+      background-image: none;
+  }
+  .left-built-app{
+    display: block;
+    margin: 0 auto;
+    float: none;
+    padding-top: 40px;
+  }
+  .right-built-app img{
+    position: relative;
+    left: -20px
+  }
+  .right-built-app{
+    display: inline-block;
+    width: 100%
+  }
+}
 /*Responsive home page*/
 @media (max-width:840px) {
   /*Responsive home page*/
