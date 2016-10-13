@@ -109,6 +109,9 @@ header .left-header{
   display: inline-block;
   float: left;
 }
+header .left-header a:hover{
+  opacity: 1
+}
 header .right-header{
   width:  70%;
   display: inline-block;
