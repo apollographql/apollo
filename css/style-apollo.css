@@ -36,13 +36,6 @@ body {
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /*
-  background-image: url('../graphql-summit.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 2800px;
-  background-color: #ce42ab;
-  */
 }
 a{
   text-decoration: none;
@@ -65,34 +58,51 @@ a:hover {
     margin: 0 auto;
     padding: 0 12px;
 }
-.training-page{
-  background-image: url('../images/bg-apollodata-support-1200x600@2x.jpg');
-  background-repeat: no-repeat;
-  background-position: center -300px;
 
-/*background: -webkit-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
-background: -o-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
-background: -ms-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
-background: -moz-linear-gradient(72deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);
-background: linear-gradient(18deg, rgb(255, 254, 255) 0%, rgb(246, 232, 246) 100%);*/
+.bg-optics-custom{
+  display: inline-block;
+  width: 100%;
+  min-height: 728px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+  background: -webkit-linear-gradient(bottom, rgb(248, 249, 250) 56%, rgb(252, 243, 229) 100%);
+  background: -o-linear-gradient(bottom, rgb(248, 249, 250) 56%, rgb(252, 243, 229) 100%);
+  background: -ms-linear-gradient(bottom, rgb(248, 249, 250) 56%, rgb(252, 243, 229) 100%);
+  background: -moz-linear-gradient(bottom, rgb(248, 249, 250) 56%, rgb(252, 243, 229) 100%);
+  background: linear-gradient(to top, rgb(248, 249, 250) 56%, rgb(252, 243, 229) 100%);
+}
+
+.bg-training-custom{
+  display: inline-block;
+  width: 100%;
+  min-height: 665px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+  background: -webkit-linear-gradient(70deg, rgb(255, 255, 255) 0%, rgb(255, 254, 255) 21%, rgb(255, 255, 255) 45%, rgb(246, 232, 246) 72%, rgb(255, 255, 255) 92%);
+  background: -o-linear-gradient(70deg, rgb(255, 255, 255) 0%, rgb(255, 254, 255) 21%, rgb(255, 255, 255) 45%, rgb(246, 232, 246) 72%, rgb(255, 255, 255) 92%);
+  background: -ms-linear-gradient(70deg, rgb(255, 255, 255) 0%, rgb(255, 254, 255) 21%, rgb(255, 255, 255) 45%, rgb(246, 232, 246) 72%, rgb(255, 255, 255) 92%);
+  background: -moz-linear-gradient(70deg, rgb(255, 255, 255) 0%, rgb(255, 254, 255) 21%, rgb(255, 255, 255) 45%, rgb(246, 232, 246) 72%, rgb(255, 255, 255) 92%);
+  background: linear-gradient(20deg, rgb(255, 255, 255) 0%, rgb(255, 254, 255) 21%, rgb(255, 255, 255) 45%, rgb(246, 232, 246) 72%, rgb(255, 255, 255) 92%);
 
 }
-.home-page{
 
-}
+/*
 .optics-page{
   background-image: url('../images/bg-apollodata-optics-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: center top;
 
+}*/
+/*.training-page{
+  background-image: url('../images/bg-apollodata-support-1200x600@2x.jpg');
+  background-repeat: no-repeat;
+  background-position: center -300px;
 
-/*background: -webkit-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
-background: -o-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
-background: -ms-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
-background: -moz-linear-gradient(11deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);
-background: linear-gradient(79deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100%);*/
-
-}
+}*/
 .pricing-page{
   background-image: url('../images/bg-apollodata-pricing-1200x600@2x.jpg');
   background-repeat: no-repeat;
@@ -1005,15 +1015,12 @@ border-bottom: 1px solid #eeeeee;
   line-height: 30px
 }
 
-
-
-
 .title-home-page{min-height: 500px;}
 .bg-home-custom{
   background-image: url('../images/bg-apollodata-home-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: cover;;
+  background-size: cover;
   display: inline-block;
   width: 100%;
   min-height: 665px;
