@@ -435,10 +435,10 @@ header .right-header{
   margin-top: 40px;
   min-height: 140px;
 }
-.items-frequently:nth-child(even){
+.items-frequently:first-child{
   padding-right: 35px
 }
-.items-frequently:nth-child(odd){
+.items-frequently:last-child{
   padding-left: 35px
 }
 .items-frequently h3 {
@@ -454,6 +454,7 @@ header .right-header{
 }
 .items-frequently span {
     color: #444444;
+    font-weight: 400;
     font-size: 15px;
     line-height: 24px;
 }
@@ -576,6 +577,33 @@ width: 20%
   display: inline-block;
   width: 25%;
   float: left;
+}
+
+.version-mobile{
+  display: none
+}
+.version-mobile .list-plans .block-table:first-child{
+  width:50%;
+}
+.version-mobile .list-plans .block-table:last-child{
+  width:50%;
+}
+.version-mobile .list-plans .content-table span:first-child{
+  width: 50%
+}
+.version-mobile .list-plans .content-table span:last-child{
+  width: 50%
+}
+.version-mobile .list-plans .group-block-table .block-table{
+  width: 100%;
+}
+.version-mobile .btn-primary-apollo{
+  max-width: 220px;
+  width: 100%;
+}
+.version-mobile .list-plans .header-table span.des-plans-price{
+  max-width: 220px;
+  width: 100%;
 }
 
 .list-plans .header-table span.one-plans-title{
@@ -1172,6 +1200,10 @@ border-bottom: 1px solid #eeeeee;
   display: none
 }
 .menu-mobile a {
+  display: inline-block;
+  width: 100%;
+}
+.line-one{
   display: inline-block;
   width: 100%;
 }

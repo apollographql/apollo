@@ -61,9 +61,40 @@
     margin: 0 auto;
   }
   /*End Responsive home page*/
+  /*Resposive pricing page*/
+  .left-monthly-price{
+    width: 100%;
+  }
+  .right-monthly-price{
+    width: 100%;
+  }
+  /*End resposive pricing page*/
 }
 
 @media (max-width:768px) {
+  /*Responsive pricing page*/
+  .version-web{
+    display: none
+  }
+  .version-mobile{
+    display: inline-block;
+    width: 100%
+  }
+  .pricing-built .left-built-app{
+    width: 100%
+  }
+  .list-plans .content-table span br{
+    display: none
+  }
+  .items-frequently{
+    width: 100%;
+    min-height: auto;
+    padding: 0px
+  }
+  .items-frequently:last-child{
+    padding: 0px
+  }
+  /*End Responsive pricing page*/
   /*Responsive home page*/
   header{
     position: relative;
@@ -218,6 +249,25 @@
 }
 
 @media (max-width:480px) {
+
+  .version-mobile .btn-primary-apollo{
+    font-size: 11px
+  }
+  .version-mobile .list-plans .header-table .block-table{
+    width: 30%;
+  }
+  .version-mobile .list-plans .header-table .group-block-table .block-table{
+    width: 100%
+  }
+  .version-mobile .list-plans .header-table .block-table:last-child{
+    width: 100%;
+  }
+  .version-mobile .group-block-table{
+    width: 100%
+  }
+  .version-mobile .list-plans .content-table span{
+    font-size: 14px
+  }
   /*Responsive home page*/
   .ldes-content span{
     font-size: 14px;
