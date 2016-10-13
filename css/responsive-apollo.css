@@ -87,7 +87,7 @@
     display: none
   }
   .items-frequently{
-    width: 100%;
+    width: calc(100% - 35px);
     min-height: auto;
     padding: 0px
   }

@@ -94,7 +94,7 @@ background: linear-gradient(79deg, rgb(248, 249, 250) 0%, rgb(252, 243, 229) 100
 
 }
 .pricing-page{
-  background-image: url('../images/bg-apollodata-optics-pricing-1200x600@2x.jpg');
+  background-image: url('../images/bg-apollodata-pricing-1200x600@2x.jpg');
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -630,7 +630,7 @@ margin-bottom: 15px;
 .list-plans .header-table span.des{
   color: #666666;
   font-weight: 100;
-  font-size: 11px
+  font-size: 12px
 }
 .list-plans .header-table span.price-all{
   color: #333333;
@@ -664,13 +664,13 @@ margin-bottom: 15px;
     line-height: 40px;
     margin-top: 25px;
     color: #fff;
-    font-weight: 600;
+    font-weight: 700;
     background: #2ca699;
     text-align: center;
     border-radius: 40px;
     text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 3px;
+    font-size: 13px;
+    letter-spacing: 4px;
 }
 .text-center{
   text-align: center;
@@ -1101,11 +1101,11 @@ border-bottom: 1px solid #eeeeee;
   float: left;
 }
 .ldes-content label{
-  font-size: 13px;
-    color: #999999;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 2px;
+  font-size: 12px;
+  color: #999999;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 5px;
 }
 .ldes-content h3{
   font-size: 32px;
