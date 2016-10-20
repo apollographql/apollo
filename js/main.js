@@ -1,12 +1,29 @@
 $(function() {
+  // Designveloper Dev
+  wow = new WOW({
+    boxClass:     'wow',      // default
+    animateClass: 'animated', // default
+    offset:       0,          // default
+    mobile:       true,       // default
+    live:         true        // default
+  })
+  wow.init();
+  if($('.apollo-testimonial').length > 0){
+    $('.apollo-testimonial').unslider();
+  }
+
+  $('.menu-mobile a').on( "click", function() {
+      $('.right-header').toggleClass('mobile-active');
+  });
+  // End Designveloper Dev
+
   FastClick.attach(document.body);
 
   $('.page').focus();
-
   if (location.hash == "#slack"){
     $('.layout').addClass('overlay-open slack');
   }
-  
+
   if (location.hash == "#newsletter"){
     $('.layout').addClass('overlay-open contact');
   }
@@ -33,7 +50,6 @@ $(function() {
     analytics.identify(email, {email: email, LatestFormSubmit: latestformsubmit});
     analytics.track('web.apollo-newsletter');
     $('.newsletter-form').addClass('confirmed');
-
     setTimeout(function(){
       $('.layout').attr('class', 'layout');
     }, 1200);

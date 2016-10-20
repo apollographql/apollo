@@ -14,6 +14,7 @@
 
   <link rel="stylesheet" href="css/unslider.css">
   <link rel="stylesheet" type="text/css" href="css/style-apollo.css">
+  <link rel="stylesheet" type="text/css" href="css/overlay.css">
   <link rel="stylesheet" type="text/css" href="css/responsive-apollo.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
 
@@ -40,182 +41,250 @@
   <meta name="theme-color" content="#ffffff">
 </head>
 
-<body>
-<div class="wrap-page apollo optics-page">
-  <div class="bg-optics-custom"></div>
-  <header>
-    <section class="container-apollo">
-      <div class="left-header logo wow fadeIn" data-wow-delay=".5s">
-        <a href="index.html"><img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" /></a>
-      </div>
-      <div class="menu-mobile">
-        <a href="#">
-          <span></span>
-          <span></span>
-          <span></span>
-        </a>
-      </div>
-      <div class="right-header nav-primary">
-        <nav class="nav-primary">
-          <a class="menu-primary" href="http://dev.apollodata.com/">Developers</a>
-          <a class="menu-primary active" href="optics.html">Optics</a>
-          <a class="menu-primary" href="training.html">Training & Support</a>
-          <a class="menu-primary" href="https://medium.com/apollo-stack">Blog</a>
-        </nav>
-      </div>
-    </section>
-  </header>
+<body class="layout">
+  <div class="wrap-page apollo optics-page">
+    <div class="page">
+      <div class="bg-optics-custom"></div>
+      <header>
+        <section class="container-apollo">
+          <div class="left-header logo wow fadeIn" data-wow-delay=".5s">
+            <a href="index.html"><img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" /></a>
+          </div>
+          <div class="menu-mobile">
+            <a href="#">
+              <span></span>
+              <span></span>
+              <span></span>
+            </a>
+          </div>
+          <div class="right-header nav-primary">
+            <nav class="nav-primary">
+              <a class="menu-primary" href="http://dev.apollodata.com/">Developers</a>
+              <a class="menu-primary active" href="optics.html">Optics</a>
+              <a class="menu-primary" href="training.html">Training & Support</a>
+              <a class="menu-primary" href="https://medium.com/apollo-stack">Blog</a>
+            </nav>
+          </div>
+        </section>
+      </header>
 
-  <section class="main-content-apollo optics-content">
-    <section class="block-built-optics">
-      <div class="container-apollo">
-        <div class="left-built-app wow fadeIn" data-wow-delay=".5s">
-          <h3>Build apps with confidence using Optics</h3>
-          <span>The easiest way to get insights into GraphQL</span>
-          <a href="#" class="btn-primary-apollo"><i class="icon-icon-github"></i>Try optics free</a>
-          <p>No credit card required • <a class="link-default" href="pricing.html"> View detailed pricing » </a></p>
-        </div>
-        <div class="right-built-app wow fadeIn">
-          <img src="images/ss-optics-apollodata-660x560@2x.png"/>
-        </div>
+      <section class="main-content-apollo optics-content">
+        <section class="block-built-optics">
+          <div class="container-apollo">
+            <div class="left-built-app wow fadeIn" data-wow-delay=".5s">
+              <h3>Build apps with confidence using Optics</h3>
+              <span>The easiest way to get insights into GraphQL</span>
+              <a href="#" class="btn-primary-apollo"><i class="icon-icon-github"></i>Try optics free</a>
+              <p>No credit card required • <a class="link-default" href="pricing.html"> View detailed pricing » </a></p>
+            </div>
+            <div class="right-built-app wow fadeIn">
+              <img src="images/ss-optics-apollodata-660x560@2x.png"/>
+            </div>
+          </div>
+        </section>
+        <section class="testimonial-block">
+          <div class="container-apollo  wow fadeIn" data-wow-delay=".5s">
+            <div class="apollo-testimonial">
+              <ul>
+                <li>
+                  <div>
+                    <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
+                    <span>-James Baxley III, Director of Engineering</span>
+                    <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
+                    <span>-James Baxley III, Director of Engineering</span>
+                    <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
+                    <span class="author-testimonial">-James Baxley III, Director of Engineering</span>
+                    <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="analytis-block wow fadeIn" data-wow-delay=".5s">
+          <div class="container-apollo">
+            <section class="general-page text-center">
+                <h3 class="title-page">Analytics for GraphQL</h3>
+                <span>Optics is engineered specifically to deliver app insights for popular GraphQL<br/> servers. Answer tough performance questions where existing tools fall short.</span>
+                <a href="#" class="link-default-green">Get insights in minutes »</a>
+                <img class="images-responsive wow fadeIn" data-wow-delay=".7s" src="images/schema-1000x360@2x.png" alt="Apollo supports"/>
+            </section>
+            <div class="support-servers">
+              <h3>Supported Servers</h3>
+              <i class="icon-logo-express-monochrome wow fadeIn" data-wow-delay=".9s"></i>
+              <i class="icon-logo-hapi-monochrome wow fadeIn" data-wow-delay="1.1s"></i>
+              <i class="icon-logo-koa-monochrome wow fadeIn" data-wow-delay="1.3s"></i>
+              <i class="icon-logo-ruby-monochrome wow fadeIn" data-wow-delay="1.5s"></i>
+            </div>
+          </div>
+        </section>
+        <section class="block-2col-optics wow fadeIn" data-wow-delay="1.7s">
+          <div class="container-apollo">
+            <div class="left-2col-app">
+              <h3 class="title-2col">Fix performance hotspots</h3>
+              <span class="des-2col">Identify queries that require attention and optimization through latency histograms and usage benchmarks.</span>
+              <a href="#" class="link-default-green">Find performance problems »</a>
+            </div>
+            <div class="right-2col-app wow fadeIn">
+              <img class="images-responsive" src="images/histogram-540x220@2x.jpg"/>
+            </div>
+          </div>
+        </section>
+        <section class="block-2col-optics visualize wow fadeIn" data-wow-delay=".5s">
+          <div class="container-apollo">
+            <div class="left-2col-app">
+              <img class="images-responsive circle" src="images/trace-400x400@2x.png"/>
+            </div>
+            <div class="right-2col-app content-right">
+              <h3 class="title-2col">Visualize everything</h3>
+              <span class="des-2col">Inspect and analyze the usage of your entire GraphQL schema through resolver execution frequency across queries.</span>
+              <a href="#" class="link-default-green">Find performance problems »</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="logo-support-servers">
+          <div class="container-apollo">
+            <h3 class="wow fadeIn" data-wow-delay=".5s">Supported ServersLoved <br/> by companies like:</h3>
+            <i class="icon-logo-facebook wow fadeIn" data-wow-delay="0.7s"></i>
+            <i class="icon-logo-github wow fadeIn" data-wow-delay=".9s"></i>
+            <img class="zendesk-logo wow fadeIn" data-wow-delay="1.1s" src="images/logo-zendesk.svg"/>
+            <img class="riotlogo-gamge wow fadeIn" data-wow-delay="1.3s" src="images/logo-riot.png"/>
+            <i class="icon-logo-airbnb wow fadeIn" data-wow-delay="1.5s"></i>
+            <i class="icon-logo-twitter wow fadeIn" data-wow-delay="1.7s"></i>
+            <i class="icon-logo-samsung wow fadeIn" data-wow-delay="1.9s"></i>
+          </div>
+        </section>
+
+
+
+        <section class="easiest-block">
+          <div class="container-apollo  wow fadeIn" data-wow-delay="2.2s">
+            <section class="general-page">
+                <h3 class="title-page">The easiest way to get insights about GraphQL</h3>
+                <a href="#" class="btn-primary-apollo"><i class="icon-icon-github"></i>Start free trial</a>
+                <p>No credit card required • <a class="link-default" href="pricing.html"> View detailed pricing » </a></p>
+            </section>
+
+          </div>
+        </section>
+      </section>
+
+      <footer class="footer-apollo">
+        <section class="container-apollo">
+          <div class="footer-list">
+            <div class="footer-items">
+              <i class="icon-logo-email"></i>
+                <a href="#" class="more-info-footer js-join-newsletter">
+                <span class="line-one">Get email updates </span>
+                <span class="line-two">Sign up for our mailing list</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-slack"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i><i class="path5"></i><i class="path6"></i><i class="path7"></i><i class="path8"></i></i>
+              <a href="#" class="more-info-footer js-join-slack">
+                <span class="line-one">Chat about Apollo </span>
+                <span class="line-two">Join the Slack channel</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-medium"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i></i>
+              <a href="#" class="more-info-footer">
+                <span class="line-one">Read more on Medium</span>
+                <span class="line-two"> The latest on Apollo</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-twitter"></i>
+              <a href="#" class="more-info-footer">
+                <span class="line-one">Follow on Twitter </span>
+                <span class="line-two">Tweets from the team</span>
+              </a>
+            </div>
+          </div>
+          <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
+        </section>
+      </footer>
+    </div>
+
+    <div class="overlay overlay-screen-contact">
+      <div class="overlay-close">
+        <span class="icon-close"></span>
       </div>
-    </section>
-    <section class="testimonial-block">
-      <div class="container-apollo  wow fadeIn" data-wow-delay=".5s">
-        <div class="apollo-testimonial">
-          <ul>
-            <li>
-              <div>
-                <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
-                <span>-James Baxley III, Director of Engineering</span>
-                <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
+      <div class="overlay-content">
+        <div class="overlay-panel">
+          <div class="overlay-heading">
+            <div class="title-overlay">Join the newsletter</div>
+          </div>
+          <form id="newsletter-form" class="newsletter-form form-confirmable">
+            <div class="fieldset">
+              <div class="input-symbol left">
+                <i class="icon-email-textbox"></i>
+                <input type="email" name="email" placeholder="Enter your email address"/>
+                <span class="icon-email"></span>
               </div>
-            </li>
-            <li>
-              <div>
-                <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
-                <span>-James Baxley III, Director of Engineering</span>
-                <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
+              <button type="submit" class="btn primary">Sign up</button>
+            </div>
+            <div class="form-confirmation">
+              <div class="note-form">
+                Thank you! We'll be in touch shortly.
               </div>
-            </li>
-            <li>
-              <div>
-                <span class="des-tes">"Optics was the fastest way for us to take GraphQL projects from prototype to production."</span>
-                <span class="author-testimonial">-James Baxley III, Director of Engineering</span>
-                <img class="img-testimonial" src="images/logo-newspring-88x23@2x.png"/>
-              </div>
-            </li>
-          </ul>
+            </div>
+          </form>
         </div>
       </div>
-    </section>
-
-<section class="analytis-block wow fadeIn" data-wow-delay=".5s">
-  <div class="container-apollo">
-    <section class="general-page text-center">
-        <h3 class="title-page">Analytics for GraphQL</h3>
-        <span>Optics is engineered specifically to deliver app insights for popular GraphQL<br/> servers. Answer tough performance questions where existing tools fall short.</span>
-        <a href="#" class="link-default-green">Get insights in minutes »</a>
-        <img class="images-responsive wow fadeIn" data-wow-delay=".7s" src="images/schema-1000x360@2x.png" alt="Apollo supports"/>
-    </section>
-    <div class="support-servers">
-      <h3>Supported Servers</h3>
-      <i class="icon-logo-express-monochrome wow fadeIn" data-wow-delay=".9s"></i>
-      <i class="icon-logo-hapi-monochrome wow fadeIn" data-wow-delay="1.1s"></i>
-      <i class="icon-logo-koa-monochrome wow fadeIn" data-wow-delay="1.3s"></i>
-      <i class="icon-logo-ruby-monochrome wow fadeIn" data-wow-delay="1.5s"></i>
     </div>
-  </div>
-</section>
-<section class="block-2col-optics wow fadeIn" data-wow-delay="1.7s">
-  <div class="container-apollo">
-    <div class="left-2col-app">
-      <h3 class="title-2col">Fix performance hotspots</h3>
-      <span class="des-2col">Identify queries that require attention and optimization through latency histograms and usage benchmarks.</span>
-      <a href="#" class="link-default-green">Find performance problems »</a>
-    </div>
-    <div class="right-2col-app wow fadeIn">
-      <img class="images-responsive" src="images/histogram-540x220@2x.jpg"/>
-    </div>
-  </div>
-</section>
-<section class="block-2col-optics visualize wow fadeIn" data-wow-delay=".5s">
-  <div class="container-apollo">
-    <div class="left-2col-app">
-      <img class="images-responsive circle" src="images/trace-400x400@2x.png"/>
-    </div>
-    <div class="right-2col-app content-right">
-      <h3 class="title-2col">Visualize everything</h3>
-      <span class="des-2col">Inspect and analyze the usage of your entire GraphQL schema through resolver execution frequency across queries.</span>
-      <a href="#" class="link-default-green">Find performance problems »</a>
-    </div>
-  </div>
-</section>
-
-<section class="logo-support-servers">
-  <div class="container-apollo">
-    <h3 class="wow fadeIn" data-wow-delay=".5s">Supported ServersLoved <br/> by companies like:</h3>
-    <i class="icon-logo-facebook wow fadeIn" data-wow-delay="0.7s"></i>
-    <i class="icon-logo-github wow fadeIn" data-wow-delay=".9s"></i>
-    <img class="zendesk-logo wow fadeIn" data-wow-delay="1.1s" src="images/logo-zendesk.svg"/>
-    <img class="riotlogo-gamge wow fadeIn" data-wow-delay="1.3s" src="images/logo-riot.png"/>
-    <i class="icon-logo-airbnb wow fadeIn" data-wow-delay="1.5s"></i>
-    <i class="icon-logo-twitter wow fadeIn" data-wow-delay="1.7s"></i>
-    <i class="icon-logo-samsung wow fadeIn" data-wow-delay="1.9s"></i>
-  </div>
-</section>
 
 
-
-<section class="easiest-block">
-  <div class="container-apollo  wow fadeIn" data-wow-delay="2.2s">
-    <section class="general-page">
-        <h3 class="title-page">The easiest way to get insights about GraphQL</h3>
-        <a href="#" class="btn-primary-apollo"><i class="icon-icon-github"></i>Start free trial</a>
-        <p>No credit card required • <a class="link-default" href="pricing.html"> View detailed pricing » </a></p>
-    </section>
-
-  </div>
-</section>
-  </section>
-
-  <footer class="footer-apollo">
-    <section class="container-apollo">
-      <div class="footer-list">
-        <div class="footer-items">
-          <i class="icon-logo-email"></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Get email updates </span>
-            <span class="line-two">Sign up for our mailing list</span>
-          </a>
-        </div>
-        <div class="footer-items">
-          <i class="icon-logo-slack"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i><i class="path5"></i><i class="path6"></i><i class="path7"></i><i class="path8"></i></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Chat about Apollo </span>
-            <span class="line-two">Join the Slack channel</span>
-          </a>
-        </div>
-        <div class="footer-items">
-          <i class="icon-logo-medium"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Read more on Medium</span>
-            <span class="line-two"> The latest on Apollo</span>
-          </a>
-        </div>
-        <div class="footer-items">
-          <i class="icon-logo-twitter"></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Follow on Twitter </span>
-            <span class="line-two">Tweets from the team</span>
-          </a>
+    <div class="overlay overlay-screen-slack">
+      <div class="overlay-close">
+        <span class="icon-close"></span>
+      </div>
+      <div class="overlay-content">
+        <div class="overlay-panel">
+          <div class="overlay-heading">
+            <div class="title-overlay">Join Apollo Slack</div>
+          </div>
+          <form id="slack-form" class="slack-form form-confirmable">
+            <div class="fieldset">
+              <div class="input-symbol left">
+                <i class="icon-email-textbox"></i>
+                <input type="email" name="email" placeholder="Enter your email address"/>
+                <span class="icon-email"></span>
+              </div>
+              <button type="submit" class="btn primary">Get my invite</button>
+            </div>
+            <div class="form-confirmation">
+              <div class="note-form">
+                Thank you! Check your email for your invite.
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-      <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
-    </section>
-  </footer>
+    </div>
 
-
-  <script src="js/custom.js"></script>
+  </div>
+  <script src="js/fastclick.js"></script>
+  <script src="js/main.js"></script>
+  <!--Segment track -->
+  <script type="text/javascript">
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+    analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+    analytics.page()
+    }}();
+  </script>
+<!--End Segment Track-->
 </body>
 </html>

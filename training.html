@@ -14,6 +14,7 @@
 
 
   <link rel="stylesheet" type="text/css" href="css/style-apollo.css">
+  <link rel="stylesheet" type="text/css" href="css/overlay.css">
   <link rel="stylesheet" type="text/css" href="css/responsive-apollo.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
 
@@ -38,141 +39,210 @@
   <meta name="theme-color" content="#ffffff">
 </head>
 
-<body>
-<div class="wrap-page apollo training-page">
-  <div class="bg-training-custom"></div>
-  <header>
-    <section class="container-apollo">
+<body class="layout">
+  <div class="wrap-page apollo training-page">
+    <div class="page">
+      <div class="bg-training-custom"></div>
+      <header>
+        <section class="container-apollo">
 
-      <div class="left-header logo wow fadeIn" data-wow-delay=".5s">
-        <a href="index.html"><img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" /></a>
-      </div>
-      <div class="menu-mobile">
-        <a href="#">
-          <span></span>
-          <span></span>
-          <span></span>
-        </a>
-      </div>
-      <div class="right-header nav-primary">
-        <nav class="nav-primary">
-          <a class="menu-primary" href="http://dev.apollodata.com/">Developers</a>
-          <a class="menu-primary" href="optics.html">Optics</a>
-          <a class="menu-primary active" href="training.html">Training & Support</a>
-          <a class="menu-primary" href="https://medium.com/apollo-stack">Blog</a>
-        </nav>
-      </div>
-    </section>
-  </header>
+          <div class="left-header logo wow fadeIn" data-wow-delay=".5s">
+            <a href="index.html"><img src="images/logo-apollo-space-left.svg" alt="Apollo Logo" /></a>
+          </div>
+          <div class="menu-mobile">
+            <a href="#">
+              <span></span>
+              <span></span>
+              <span></span>
+            </a>
+          </div>
+          <div class="right-header nav-primary">
+            <nav class="nav-primary">
+              <a class="menu-primary" href="http://dev.apollodata.com/">Developers</a>
+              <a class="menu-primary" href="optics.html">Optics</a>
+              <a class="menu-primary active" href="training.html">Training & Support</a>
+              <a class="menu-primary" href="https://medium.com/apollo-stack">Blog</a>
+            </nav>
+          </div>
+        </section>
+      </header>
 
-  <section class="main-content-apollo training-content">
-    <div class="container-apollo">
-      <section class="general-page wow fadeIn" data-wow-delay=".5s">
-          <h3 class="title-page">Training and support</h3>
-          <span>Apollo delivers training and developer support for GraphQL</span>
-          <img class="images-responsive wow fadeIn" data-wow-delay=".7s" src="images/support-1000x360@2x.jpg" alt="Apollo supports"/>
-      </section>
-      <section class="list-support">
-        <div class="items-support wow fadeIn" data-wow-delay=".9s">
-          <h3>GraphQL developer training</h3>
-          <span>Get hands-on training from experts. Customize learning to cover fundamental and advanced GraphQL topics.  </span>
-        </div>
-        <div class="items-support wow fadeIn" data-wow-delay="1.1s">
-          <h3>Architectural reviews & support</h3>
-          <span>Schedule in-depth architectural sessions to ensure an optimal GraphQL implementation. Receive timely responses to your toughest GraphQL questions. </span>
-        </div>
-        <div class="items-support wow fadeIn" data-wow-delay="1.3s">
-          <h3>Access to Apollo engineers</h3>
-          <span>Collaborate directly with the engineering team behind Apollo. Influence our roadmap to accelerate your project.</span>
-        </div>
-      </section>
-    </div>
-    <section class="form-request wow fadeIn" data-wow-delay=".5s">
-      <form class="request-graphQL-help">
-        <h3 class="title-form">Request GraphQL help</h3>
-        <div class="haft-form form-custom">
-          <div class="form-left">
-            <i class="icon-user-textbox"></i>
-            <input type="text" placeholder="First name" class="txt-custom"/>
-          </div>
-          <div class="form-right">
-            <i class="icon-user-textbox"></i>
-            <input type="text" placeholder="Last name" class="txt-custom"/>
-          </div>
-        </div>
-        <div class="full-form form-custom">
-            <i class="icon-company-texbox"></i>
-            <input type="text" placeholder="Company name" class="txt-custom">
-        </div>
-        <div class="full-form form-custom">
-            <i class="icon-email-textbox"></i>
-            <input type="text" placeholder="Email address" class="txt-custom">
-        </div>
-        <div class="full-form form-custom">
-            <textarea type="textarea"  placeholder="Tell us about your GraphQL project" class="txt-custom"></textarea>
-        </div>
-        <div class="des-form">
-          <label>What services are you interested in?</label>
-          <section class="check-block">
-            <div class="left-checlbox">
-              <div class="checkbox-custom">
-                <input type="checkbox" value="None" id="training" name="check" />
-                <label for="training"><span>Training</span></label>
-              </div>
+      <section class="main-content-apollo training-content">
+        <div class="container-apollo">
+          <section class="general-page wow fadeIn" data-wow-delay=".5s">
+              <h3 class="title-page">Training and support</h3>
+              <span>Apollo delivers training and developer support for GraphQL</span>
+              <img class="images-responsive wow fadeIn" data-wow-delay=".7s" src="images/support-1000x360@2x.jpg" alt="Apollo supports"/>
+          </section>
+          <section class="list-support">
+            <div class="items-support wow fadeIn" data-wow-delay=".9s">
+              <h3>GraphQL developer training</h3>
+              <span>Get hands-on training from experts. Customize learning to cover fundamental and advanced GraphQL topics.  </span>
             </div>
-            <div class="right-checlbox">
-              <div class="checkbox-custom">
-                <input type="checkbox" value="None" id="developer" name="check" />
-                <label for="developer"><span>Developer support</span></label>
-              </div>
-          </div>
+            <div class="items-support wow fadeIn" data-wow-delay="1.1s">
+              <h3>Architectural reviews & support</h3>
+              <span>Schedule in-depth architectural sessions to ensure an optimal GraphQL implementation. Receive timely responses to your toughest GraphQL questions. </span>
+            </div>
+            <div class="items-support wow fadeIn" data-wow-delay="1.3s">
+              <h3>Access to Apollo engineers</h3>
+              <span>Collaborate directly with the engineering team behind Apollo. Influence our roadmap to accelerate your project.</span>
+            </div>
           </section>
         </div>
-        <div class="action-form">
-          <a href="#" class="action-btn-form">Contact Sales</a>
-        </div>
-      </form>
-    </section>
-  </section>
+        <section class="form-request wow fadeIn" data-wow-delay=".5s">
 
-  <footer class="footer-apollo">
-    <section class="container-apollo">
-      <div class="footer-list">
-        <div class="footer-items">
-          <i class="icon-logo-email"></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Get email updates </span>
-            <span class="line-two">Sign up for our mailing list</span>
-          </a>
+          <form id="consultation-form" class="consultation-form form-confirmable request-graphQL-help">
+            <h3 class="title-form">Request GraphQL help</h3>
+            <div class="haft-form form-custom">
+              <div class="form-left">
+                <i class="icon-user-textbox"></i>
+                <input type="text" name="firstname" placeholder="First name" class="txt-custom"/>
+              </div>
+              <div class="form-right">
+                <i class="icon-user-textbox"></i>
+                <input type="text" placeholder="Last name" name="lastname" class="txt-custom"/>
+              </div>
+            </div>
+            <div class="full-form form-custom">
+                <i class="icon-company-texbox"></i>
+                <input type="text" placeholder="Company name" name="company" class="txt-custom">
+            </div>
+            <div class="full-form form-custom">
+                <i class="icon-email-textbox"></i>
+                <input type="text" placeholder="Email address" name="email" class="txt-custom">
+            </div>
+            <div class="full-form form-custom">
+                <textarea type="textarea"  name="message" placeholder="Tell us about your GraphQL project" class="txt-custom"></textarea>
+            </div>
+            <div class="des-form">
+              <label>What services are you interested in?</label>
+              <section class="check-block">
+                <div class="left-checlbox">
+                  <div class="checkbox-custom">
+                    <input type="checkbox" value="None" id="training" name="check" />
+                    <label for="training"><span>Training</span></label>
+                  </div>
+                </div>
+                <div class="right-checlbox">
+                  <div class="checkbox-custom">
+                    <input type="checkbox" value="None" id="developer" name="check" />
+                    <label for="developer"><span>Developer support</span></label>
+                  </div>
+              </div>
+              </section>
+            </div>
+            <div class="action-form">
+              <button type="submit" class="action-btn-form">Contact Sales</button>
+            </div>
+          </form>
+
+        </section>
+      </section>
+
+      <footer class="footer-apollo">
+        <section class="container-apollo">
+          <div class="footer-list">
+            <div class="footer-items">
+              <i class="icon-logo-email"></i>
+              <a href="#" class="more-info-footer js-join-newsletter">
+                <span class="line-one">Get email updates </span>
+                <span class="line-two">Sign up for our mailing list</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-slack"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i><i class="path5"></i><i class="path6"></i><i class="path7"></i><i class="path8"></i></i>
+              <a href="#" class="more-info-footer js-join-slack">
+                <span class="line-one">Chat about Apollo </span>
+                <span class="line-two">Join the Slack channel</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-medium"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i></i>
+              <a href="#" class="more-info-footer">
+                <span class="line-one">Read more on Medium</span>
+                <span class="line-two"> The latest on Apollo</span>
+              </a>
+            </div>
+            <div class="footer-items">
+              <i class="icon-logo-twitter"></i>
+              <a href="#" class="more-info-footer">
+                <span class="line-one">Follow on Twitter </span>
+                <span class="line-two">Tweets from the team</span>
+              </a>
+            </div>
+          </div>
+
+          <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
+        </section>
+      </footer>
+    </div>
+
+      <div class="overlay overlay-screen-contact">
+        <div class="overlay-close">
+          <span class="icon-close"></span>
         </div>
-        <div class="footer-items">
-          <i class="icon-logo-slack"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i><i class="path5"></i><i class="path6"></i><i class="path7"></i><i class="path8"></i></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Chat about Apollo </span>
-            <span class="line-two">Join the Slack channel</span>
-          </a>
-        </div>
-        <div class="footer-items">
-          <i class="icon-logo-medium"><i class="path1"></i><i class="path2"></i><i class="path3"></i><i class="path4"></i></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Read more on Medium</span>
-            <span class="line-two"> The latest on Apollo</span>
-          </a>
-        </div>
-        <div class="footer-items">
-          <i class="icon-logo-twitter"></i>
-          <a href="#" class="more-info-footer">
-            <span class="line-one">Follow on Twitter </span>
-            <span class="line-two">Tweets from the team</span>
-          </a>
+        <div class="overlay-content">
+          <div class="overlay-panel">
+            <div class="overlay-heading">
+              <div class="title-overlay">Join the newsletter</div>
+            </div>
+            <form id="newsletter-form" class="newsletter-form form-confirmable">
+              <div class="fieldset">
+                <div class="input-symbol left">
+                  <i class="icon-email-textbox"></i>
+                  <input type="email" name="email" placeholder="Enter your email address"/>
+                  <span class="icon-email"></span>
+                </div>
+                <button type="submit" class="btn primary">Sign up</button>
+              </div>
+              <div class="form-confirmation">
+                <div class="note-form">
+                  Thank you! We'll be in touch shortly.
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
-      <span class="made-apollo">Made by Meteor Development Group. Want to help build Apollo? <a href="#">Join our team</a></span>
-    </section>
-  </footer>
 
-
-  <script src="js/custom.js"></script>
+      <div class="overlay overlay-screen-slack">
+        <div class="overlay-close">
+          <span class="icon-close"></span>
+        </div>
+        <div class="overlay-content">
+          <div class="overlay-panel">
+            <div class="overlay-heading">
+              <div class="title-overlay">Join Apollo Slack</div>
+            </div>
+            <form id="slack-form" class="slack-form form-confirmable">
+              <div class="fieldset">
+                <div class="input-symbol left">
+                  <i class="icon-email-textbox"></i>
+                  <input type="email" name="email" placeholder="Enter your email address"/>
+                  <span class="icon-email"></span>
+                </div>
+                <button type="submit" class="btn primary">Get my invite</button>
+              </div>
+              <div class="form-confirmation">
+                <div class="note-form">
+                  Thank you! Check your email for your invite.
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+  <script src="js/fastclick.js"></script>
+  <script src="js/main.js"></script>
+  <!--Segment track -->
+  <script type="text/javascript">
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+    analytics.load("wgrIo8Bul0Ujl8USETG3DB6hONdy4kTg");
+    analytics.page()
+    }}();
+  </script>
+  <!--End Segment Track-->
 </body>
 </html>

@@ -298,13 +298,20 @@ header .right-header{
   text-align: center;
   font-size: 12px;
   width: 100%;
-  padding: 10px 0px;
+  padding: 12px 0px;
   margin-top: 20px;
   background: #2ca699;
   color: #fff;
+  border: none;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 1px;
+}
+.action-btn-form:hover{
+  opacity: .7
+}
+.action-btn-form:focus{
+  outline: none;
 }
 .left-checlbox{
   display: inline-block;
