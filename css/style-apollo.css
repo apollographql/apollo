@@ -285,7 +285,7 @@ header .right-header{
   width: 100%;
   color: #333333;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
   margin-bottom: 15px;
 }
 
@@ -801,6 +801,8 @@ border-bottom: 1px solid #eeeeee;
   border-radius: 100%;
   background-position: center;
   box-shadow: 0px 0px 0px 1px #a7a7a7;
+  /*remove the below line when ready to have more quotes */
+    display: none;
 }
 .unslider-nav{
   display: none
@@ -819,6 +821,8 @@ border-bottom: 1px solid #eeeeee;
   border-radius: 100%;
   background-position: center;
   box-shadow: 0px 0px 0px 1px #a7a7a7;
+    /*remove the below line when ready to have more quotes */
+    display: none;
 }
 .analytis-block{
   display: inline-block;
