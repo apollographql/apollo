@@ -1,3 +1,17 @@
+#overlay {
+    background: 0 0 rgba(0,0,0,0.8);
+    display: none;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    -moz-transition: all 0.2s linear 0s;
+    -webkit-transition: all 0.2s linear 0s;
+    -ms-transition: all 0.2s linear 0s;
+    transition: all 0.2s linear 0s;
+    width: 100%;
+    z-index: 2;
+}
 .overlay {
     position: fixed;
     top: 0;

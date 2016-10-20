@@ -130,21 +130,21 @@ header .right-header{
 .logo img{
   width:  120px;
 }
-.nav-primary {
+.primary-block-menu {
   text-align: right;
   line-height:  45px;
 }
-.nav-primary a.menu-primary{
+.primary-block-menu a.menu-primary{
   font-size: 14px;
   color: #444444;
   font-weight: 600;
   margin: 0 15px;
 }
-.nav-primary a.menu-primary:last-child{
+.primary-block-menu a.menu-primary:last-child{
   margin-right: 0px
 }
-.nav-primary a.menu-primary.active,
-.nav-primary a.menu-primary:hover{
+.primary-block-menu a.menu-primary.active,
+.primary-block-menu a.menu-primary:hover{
   color:#2ca699;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -1036,7 +1036,7 @@ border-bottom: 1px solid #eeeeee;
   top: 0px;
   z-index: -1;
 }
-.home-page .nav-primary a.menu-primary{
+.home-page .primary-block-menu a.menu-primary{
   color:#fff
 }
 .home-page .general-page{

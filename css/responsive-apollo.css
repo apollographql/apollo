@@ -39,6 +39,52 @@
 }
 /*Responsive home page*/
 @media (max-width:840px) {
+
+
+  /*Menu responsive*/
+  .primary-block-menu {
+  	height: 100%;
+  	position: fixed;
+  	top: 0;
+  	right: -400px;
+  	transition: all 0.2s linear 0s;
+  	width: 0;
+  }
+
+  .primary-block-menu .on-mobile {
+  	display: inline-block;
+  }
+
+  .primary-block-menu .on-mobile .title-menu {
+  	font-size: 22px;
+  	text-align: center;
+  	margin-top: 40px;
+  	border-bottom: 1px solid #fff;
+  	padding-bottom: 10px;
+  	margin-bottom: 25px;
+  	color: #fff;
+  }
+
+  .primary-block-menu .menu-primary {
+  	width: 100%;
+  	display: inline-block;
+  	margin-right: 0px;
+  	margin-bottom: 15px;
+  	color: #000;
+  	padding-bottom: 5px;
+  	text-align: center;
+  }
+
+  .primary-block-menu.slide-in {
+  	background-color: #eee;
+    padding-top: 50px;
+  	right: 0;
+  	overflow-y: scroll;
+  	width: 280px;
+  	z-index: 100;
+  }
+
+
   /*Responsive home page*/
   .left-opensource{
     width: 100%;
@@ -113,10 +159,7 @@
   .home-page .general-page span{
     margin-bottom: 150px
   }
-  .nav-primary{
-    display: inline-block;
-    width: 100%;
-  }
+
   .menu-mobile{
     display: inline-block;
     width: 40px;
@@ -124,10 +167,10 @@
     float: right;
     margin-top: 10px;
   }
-  .nav-primary{
+  .primary-block-menu{
     line-height: 30px;
   }
-  .apollo .nav-primary a.menu-primary{
+  .apollo .primary-block-menu a.menu-primary{
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -137,7 +180,7 @@
     font-size: 16px;
     margin: 0px;
   }
-  .apollo .nav-primary a.menu-primary:hover{
+  .apollo .primary-block-menu a.menu-primary:hover{
     color:#fff;
     background: #2ca699;
     opacity: 1;
@@ -145,14 +188,7 @@
   header .right-header.mobile-active{
     display: inline-block;
   }
-  header .right-header{
-    width: 100%;
-    display: none;
-    z-index: 9;
-    position: absolute;
-    left: 0px;
-    top: 60px;
-  }
+
   /* End Responsive home page*/
 
   /*Responsive Training-support page*/

@@ -8,13 +8,22 @@ $(function() {
     live:         true        // default
   })
   wow.init();
+  $('.menu-mobile').click(function() {
+    $('.primary-block-menu').addClass('slide-in');
+    $('html').css("overflow", "hidden");
+    $('#overlay').show();
+    return false;
+  });
+  $('#overlay, .responsive-nav-close').click(function() {
+    $('.primary-block-menu').removeClass('slide-in');
+    $('html').css("overflow", "auto");
+    $('#overlay').hide();
+    return false;
+  });
   if($('.apollo-testimonial').length > 0){
     $('.apollo-testimonial').unslider();
   }
 
-  $('.menu-mobile a').on( "click", function() {
-      $('.right-header').toggleClass('mobile-active');
-  });
   // End Designveloper Dev
 
   FastClick.attach(document.body);
