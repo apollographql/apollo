@@ -1,0 +1,354 @@
+@media (min-width:1580px){
+  .block-built-optics{
+      background-position: calc(100%) top;
+  }
+}
+@media (max-width:1580px){
+  .block-built-optics{
+      background-position: calc(120%) top;
+  }
+}
+@media (max-width:1369px){
+  .block-built-optics{
+      background-position: calc(150%) top;
+  }
+}
+@media (max-width:1169px){
+  .block-built-optics{
+      background-position: calc(180%) top;
+  }
+}
+@media (max-width:1100px){
+  .block-built-optics{
+      background-image: none;
+  }
+  .left-built-app{
+    display: block;
+    margin: 0 auto;
+    float: none;
+    padding-top: 40px;
+  }
+  .right-built-app img{
+    position: relative;
+    left: -20px
+  }
+  .right-built-app{
+    display: inline-block;
+    width: 100%
+  }
+}
+/*Responsive home page*/
+@media (max-width:840px) {
+
+
+  /*Menu responsive*/
+  .primary-block-menu {
+  	height: 100%;
+  	position: fixed;
+  	top: 0;
+  	right: -400px;
+  	transition: all 0.2s linear 0s;
+  	width: 0;
+  }
+
+  .primary-block-menu .on-mobile {
+  	display: inline-block;
+  }
+
+  .primary-block-menu .on-mobile .title-menu {
+  	font-size: 22px;
+  	text-align: center;
+  	margin-top: 40px;
+  	border-bottom: 1px solid #fff;
+  	padding-bottom: 10px;
+  	margin-bottom: 25px;
+  	color: #fff;
+  }
+
+  .primary-block-menu .menu-primary {
+  	width: 100%;
+  	display: inline-block;
+  	margin-right: 0px;
+  	margin-bottom: 15px;
+  	color: #000;
+  	padding-bottom: 5px;
+  	text-align: center;
+  }
+
+  .primary-block-menu.slide-in {
+  	background-color: #eee;
+    padding-top: 50px;
+  	right: 0;
+  	overflow-y: scroll;
+  	width: 280px;
+  	z-index: 100;
+  }
+
+
+  /*Responsive home page*/
+  .left-opensource{
+    width: 100%;
+    min-height: 150px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  .right-commercial{
+    width: 100%;
+  }
+  .footer-items{
+    width: calc(50% - 30px);
+    margin-bottom: 40px;
+    padding-left: 30px;
+  }
+  .footer-list{
+    display: block;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  /*End Responsive home page*/
+  /*Resposive pricing page*/
+  .left-monthly-price{
+    width: 100%;
+  }
+  .right-monthly-price{
+    width: 100%;
+  }
+  /*End resposive pricing page*/
+}
+
+@media (max-width:768px) {
+  /*Responsive pricing page*/
+  .version-web{
+    display: none
+  }
+  .version-mobile{
+    display: inline-block;
+    width: 100%
+  }
+  .pricing-built .left-built-app{
+    width: 100%
+  }
+  .list-plans .content-table span br{
+    display: none
+  }
+  .items-frequently{
+    width: calc(100% - 35px);
+    min-height: auto;
+    padding: 0px
+  }
+  .items-frequently:last-child{
+    padding: 0px
+  }
+  /*End Responsive pricing page*/
+  /*Responsive home page*/
+  header{
+    position: relative;
+    z-index: 4;
+  }
+  .home-page .general-page .title-page {
+    margin-top: 100px;
+  }
+  .general-page .title-page{
+    font-size: 38px;
+    line-height: 38px;
+  }
+  .general-page span{
+    font-size: 18px
+  }
+  .home-page .general-page span{
+    margin-bottom: 150px
+  }
+
+  .menu-mobile{
+    display: inline-block;
+    width: 40px;
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+  }
+  .primary-block-menu{
+    line-height: 30px;
+  }
+  .apollo .primary-block-menu a.menu-primary{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: #eee;
+    padding: 15px 0px;
+    color:#444;
+    font-size: 16px;
+    margin: 0px;
+  }
+  .apollo .primary-block-menu a.menu-primary:hover{
+    color:#fff;
+    background: #2ca699;
+    opacity: 1;
+  }
+  header .right-header.mobile-active{
+    display: inline-block;
+  }
+
+  /* End Responsive home page*/
+
+  /*Responsive Training-support page*/
+  .items-support{
+    width: 100%;
+    padding: 0px;
+  }
+  /*End Responsive Training-support page*/
+  /*Responsive Optics page*/
+  .logo-support-servers h3{
+    width: 100%;
+    margin-bottom: 25px;
+    margin-right: 0px;
+    margin-left: 0px;
+    text-align: center;
+  }
+  .logo-support-servers h3 br{
+    display: none
+  }
+  .analytis-block .general-page span br{
+    display: none
+  }
+  .support-servers i{
+    display: inline-block;
+    margin-top: 15px
+  }
+  .left-2col-app{
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    float: none;
+  }
+  .easiest-block .general-page .title-page{
+    font-size: 28px
+  }
+  .des-2col{
+    width: 100%
+  }
+  .left-built-app{
+    width: 100%;
+    padding-top: 30px;
+  }
+  .block-built-optics{
+    background: none;
+  }
+  .right-built-app{
+    display: inline-block;
+    width: 100%;
+  }
+  .testimonial-block .container-apollo{
+    padding:  0 20px;
+    width: calc(100% - 40px);
+  }
+  .img-testimonial{
+    max-width: 140px;
+  }
+  .apollo-testimonial span{
+    font-size: 14px;
+  }
+
+  .left-built-app h3{
+    font-size: 28px;
+    line-height:32px;
+  }
+  .block-2col-optics{
+    padding: 25px 0px;
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+  }
+  .title-2col{
+    margin-top: 10px;
+  }
+  .right-2col-app{
+    width:100%;
+    padding-top: 0px;
+    padding-left: 0px;
+  }
+  /*End Responsive Optics page*/
+}
+
+@media (max-width:500px) {
+  /*Responsive home page*/
+    .footer-list{
+      max-width: 290px
+    }
+    .footer-items{
+      width: 100%;
+      padding-left: 0px;
+    }
+    .made-apollo{
+      margin-top: 0px;
+    }
+  /*End Responsive home page*/
+}
+
+@media (max-width:480px) {
+
+  .version-mobile .btn-primary-apollo{
+    font-size: 11px
+  }
+  .version-mobile .list-plans .header-table .block-table{
+    width: 30%;
+  }
+  .version-mobile .list-plans .header-table .group-block-table .block-table{
+    width: 100%
+  }
+  .version-mobile .list-plans .header-table .block-table:last-child{
+    width: 100%;
+  }
+  .version-mobile .group-block-table{
+    width: 100%
+  }
+  .version-mobile .list-plans .content-table span{
+    font-size: 14px
+  }
+  /*Responsive home page*/
+  .ldes-content span{
+    font-size: 14px;
+  }
+  .illustration-block span{
+    font-size: 14px;
+  }
+  .ldes-content{
+    width: 100%;
+  }
+  .rlogo-content{
+    width: 100%;
+  }
+  .general-page .title-page{
+    font-size: 32px;
+    line-height: 32px;
+  }
+  .general-page span{
+    font-size: 16px;
+
+  }
+  .home-page .general-page span{
+    margin-bottom: 100px
+  }
+  /*End Responsive home page*/
+
+
+  /*Responsive training-support page*/
+  .haft-form .form-right,
+  .haft-form .form-left{
+    width: 100%
+  }
+  .items-support span{
+    font-size: 14px;
+  }
+  .items-support h3{
+    font-size: 18px;
+  }
+  .request-graphQL-help{
+    width: calc(100% - 24px);
+    padding: 0 12px;
+  }
+  .haft-form .form-left{
+    margin-bottom: 15px;
+  }
+  /*End Responsive training-support page*/
+
+}

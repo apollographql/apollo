@@ -1,0 +1,180 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?ipejl3');
+  src:  url('../fonts/icomoon.eot?ipejl3#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?ipejl3') format('truetype'),
+    url('../fonts/icomoon.woff?ipejl3') format('woff'),
+    url('../fonts/icomoon.svg?ipejl3#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-close:before {
+  content: "\e92b";
+}
+.icon-company-texbox:before {
+  content: "\e900";
+}
+.icon-email-textbox:before {
+  content: "\e901";
+}
+.icon-icon-github:before {
+  content: "\e902";
+}
+.icon-logo-airbnb:before {
+  content: "\e903";
+}
+.icon-logo-facebook:before {
+  content: "\e904";
+}
+.icon-logo-github:before {
+  content: "\e905";
+}
+.icon-logo-riotlogo:before {
+  content: "\e906";
+}
+.icon-logo-samsung:before {
+  content: "\e907";
+}
+.icon-next-testimonial:before {
+  content: "\e908";
+}
+.icon-pre-testimonial:before {
+  content: "\e909";
+}
+.icon-user-textbox:before {
+  content: "\e90a";
+}
+.icon-logo-twitter:before {
+  content: "\e90b";
+}
+.icon-logo-email:before {
+  content: "\e90c";
+}
+.icon-illustration-chat:before {
+  content: "\e90d";
+}
+.icon-logo-android-monochrome:before {
+  content: "\e90e";
+}
+.icon-logo-angular-monochrome:before {
+  content: "\e90f";
+}
+.icon-logo-apollo-space-left:before {
+  content: "\e910";
+}
+.icon-logo-apollo-white-left:before {
+  content: "\e911";
+}
+.icon-logo-apple-monochrome:before {
+  content: "\e912";
+}
+.icon-logo-coursera-monochrome:before {
+  content: "\e913";
+}
+.icon-logo-creditkarma-monochrome:before {
+  content: "\e914";
+}
+.icon-logo-express-monochrome:before {
+  content: "\e915";
+}
+.icon-logo-graphql-monochrome:before {
+  content: "\e916";
+}
+.icon-logo-hapi-monochrome:before {
+  content: "\e917";
+}
+.icon-logo-jet-monochrome:before {
+  content: "\e918";
+}
+.icon-logo-koa-monochrome:before {
+  content: "\e919";
+}
+.icon-logo-legacy-monochrome:before {
+  content: "\e91a";
+}
+.icon-logo-medium .path1:before {
+  content: "\e91b";
+  color: rgb(50, 252, 141);
+}
+.icon-logo-medium .path2:before {
+  content: "\e91c";
+  margin-left: -1.23046875em;
+  color: rgb(11, 227, 112);
+}
+.icon-logo-medium .path3:before {
+  content: "\e91d";
+  margin-left: -1.23046875em;
+  color: rgb(20, 199, 103);
+}
+.icon-logo-medium .path4:before {
+  content: "\e91e";
+  margin-left: -1.23046875em;
+  color: rgb(0, 171, 108);
+}
+.icon-logo-reactjs-monochrome:before {
+  content: "\e91f";
+}
+.icon-logo-ruby-monochrome:before {
+  content: "\e920";
+}
+.icon-logo-shopify-monochrome:before {
+  content: "\e921";
+}
+.icon-logo-slack .path1:before {
+  content: "\e922";
+  color: rgb(223, 162, 47);
+}
+.icon-logo-slack .path2:before {
+  content: "\e923";
+  margin-left: -1em;
+  color: rgb(60, 177, 135);
+}
+.icon-logo-slack .path3:before {
+  content: "\e924";
+  margin-left: -1em;
+  color: rgb(206, 30, 91);
+}
+.icon-logo-slack .path4:before {
+  content: "\e925";
+  margin-left: -1em;
+  color: rgb(57, 37, 56);
+}
+.icon-logo-slack .path5:before {
+  content: "\e926";
+  margin-left: -1em;
+  color: rgb(187, 36, 42);
+}
+.icon-logo-slack .path6:before {
+  content: "\e927";
+  margin-left: -1em;
+  color: rgb(114, 197, 205);
+}
+.icon-logo-slack .path7:before {
+  content: "\e928";
+  margin-left: -1em;
+  color: rgb(36, 140, 115);
+}
+.icon-logo-slack .path8:before {
+  content: "\e929";
+  margin-left: -1em;
+  color: rgb(98, 128, 58);
+}
+.icon-logo-swift-monochrome:before {
+  content: "\e92a";
+}
