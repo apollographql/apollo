@@ -534,7 +534,7 @@ header .right-header{
 }
 .header-table span{
   display: inline-block;
-  width: 23%;
+  width: 33%;
   color: #333333;
   min-height: 30px;
   line-height: 30px;
@@ -558,7 +558,7 @@ width: 20%
 }
 .content-table span{
   display: inline-block;
-  width: 23%;
+  width: 33%;
   color: #333333;
   font-size: 13px;
   float: left;
@@ -581,7 +581,7 @@ width: 20%
 }
 .list-plans .content-table span{
   font-size: 15px;
-  width: 25%;
+  width: 33%;
   line-height: 24px;
 }
 .list-plans .line-table{
@@ -595,7 +595,7 @@ width: 20%
 
 .list-plans .block-table{
   display: inline-block;
-  width: 25%;
+  width: 33%;
   float: left;
 }
 
@@ -669,18 +669,18 @@ margin-bottom: 15px;
   line-height: 20px;
   font-style: italic;
   margin-bottom: 25px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .group-block-table{
   display: inline-block;
   width: 50%;
 }
 .group-block-table .block-table{
-  width: 50%;
+  width: 150%;
 }
 .btn-primary-apollo{
   display: inline-block;
-    width: 100%;
+    width: 75%;
     line-height: 40px;
     margin-top: 25px;
     color: #fff;
@@ -692,6 +692,7 @@ margin-bottom: 15px;
     font-size: 13px;
     letter-spacing: 4px;
 }
+
 .text-center{
   text-align: center;
 }
@@ -801,8 +802,6 @@ border-bottom: 1px solid #eeeeee;
   border-radius: 100%;
   background-position: center;
   box-shadow: 0px 0px 0px 1px #a7a7a7;
-  /*remove the below line when ready to have more quotes */
-    display: none;
 }
 .unslider-nav{
   display: none
@@ -821,8 +820,6 @@ border-bottom: 1px solid #eeeeee;
   border-radius: 100%;
   background-position: center;
   box-shadow: 0px 0px 0px 1px #a7a7a7;
-    /*remove the below line when ready to have more quotes */
-    display: none;
 }
 .analytis-block{
   display: inline-block;
