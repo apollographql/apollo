@@ -4,7 +4,7 @@ The data stack for modern apps, brought to you by [Meteor](https://www.meteor.co
 
 This is the main repository for discussion and coordination - the code will live elsewhere. Follow this repository for updates on the project!
 
-- Check out the [homepage](http://www.apollostack.com/)
+- Check out the [homepage](http://www.apollodata.com/)
 - Read the [blog post about our goals for the project](https://medium.com/apollo-stack/apollo-8b7215bcab1c).
-- Stay up to date by reading our [posts on Medium](https://medium.com/apollo-stack)
-- [Join us on Slack!](http://www.apollostack.com/#slack)
+- Stay up to date by reading our [posts on Medium](https://dev-blog.apollodata.com)
+- [Join us on Slack!](http://www.apollodata.com/#slack)
