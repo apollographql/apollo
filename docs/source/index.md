@@ -9,7 +9,7 @@ Apollo is a team and community that maintain a set of decoupled components and s
 The tools, products, and libraries in Apollo can be loosely grouped into 3 categories:
 
 1. [Client](#client-section): This is a set of tools to help you consume GraphQL data in your UI, on any platform including [React](/docs/react/), [Vue](https://github.com/akryum/vue-apollo), [Angular](/docs/angular), [iOS](/docs/ios/), and [Android](https://github.com/apollographql/apollo-android).
-2. [Engine](#engine): This is GraphQL infrastructure you can run over your server to get performance tracing, caching, and error tracking specifically for GraphQL.
+2. [Engine](#engine-section): This is GraphQL infrastructure you can run over your server to get performance tracing, caching, and error tracking specifically for GraphQL.
 3. [Server](#server-section): These are tools you can use to add GraphQL incrementally to your backend, or start a new GraphQL backend from scratch.
 
 <h2 id="getting-started">Getting started</h2>
@@ -58,7 +58,7 @@ In addition to libraries you put in your client, there are some great tools you 
 * Apollo Codegen: You can use this tool to generate static types for your queries, for TypeScript, Flow, Java, Scala, or Swift. [apollo-codegen on GitHub](https://github.com/apollographql/apollo-codegen)
 * Apollo Client Devtools: This is a Chrome dev tools panel you can use to run GraphQL queries against your server, see what queries and mutations are active in your page, and inspect the current state of the store. [Chrome Web Store](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm), [GitHub](https://github.com/apollographql/apollo-client-devtools)
 
-<h2 id="engine">Engine</h2>
+<h2 id="engine-section">Engine</h2>
 
 Apollo Engine is turnkey infrastructure that helps you take GraphQL services into production with confidence. The successor to Apollo Optics, Engine sits between your clients and your GraphQL server, delivering essential capabilities like query caching, error tracking, and execution tracing on top of any spec-compliant GraphQL server including Apollo Server, GraphQL-Ruby, Sangria, and Absinthe.
 
