@@ -66,7 +66,7 @@ Apollo Engine is turnkey infrastructure that helps you take GraphQL services int
 * [Get started with Engine](https://engine.apollographql.com)
 * [Read the Engine docs](/docs/engine/)
 
-<h2 id="client-section">Server</h2>
+<h2 id="server-section">Server</h2>
 
 You need a GraphQL server to be able to access your data via GraphQL. While we have some server libraries and tools for JavaScript, you can also write a GraphQL server in any other language.
 
