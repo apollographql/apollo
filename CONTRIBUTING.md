@@ -4,7 +4,7 @@ Excited about Apollo and want to make it better? We’re excited too!
 
 Apollo is a community of developers just like you, striving to create the best tools and libraries around GraphQL. We welcome anyone who wants to contribute or provide constructive feedback, no matter the age or level of experience. If you want to help but don't know where to start, let us know, and we'll find something for you.
 
-Oh, and if you haven't already, sign up for the [Apollo Slack](https://www.apollographql.com/#slack).
+First and foremost, you should take a moment to review the [Apollo Code of Conduct](https://github.com/apollographql/apollo/blob/master/CODE-OF-CONDUCT.md) which all maintainers and contributors to the project agree to uphold. Next, you should sign up for the [Apollo Slack](https://www.apollographql.com/#slack). The *#contributing* channel there will be a great resource to chat with project maintainers and other contributors if you need help navigating our workflow. 
 
 Here are some ways to contribute to the project, from easiest to most difficult:
 
