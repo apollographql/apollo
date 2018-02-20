@@ -33,8 +33,7 @@ Simon Tucker wrote a great tutorial on the React Native Training blog showing yo
 
 <h2 id="client-section">Client</h2>
 
-[Apollo Client](/client/) is the most popular solution for binding GraphQL data to your UI, on every platform. [Learn more](/client) about its
-benefits and features.
+[Apollo Client](/client/) is the most popular solution for binding GraphQL data to your UI, on every platform. [Learn more](/client) about its benefits and features.
 
 <h3 id="client-libraries">GraphQL client libraries</h3>
 
