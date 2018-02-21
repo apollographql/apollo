@@ -39,14 +39,14 @@ Simon Tucker wrote a great tutorial on the React Native Training blog showing yo
 
 The main parts of the project are the GraphQL client libraries for every frontend platform:
 
-* Apollo Client JavaScript: [Docs](/docs/react/), [GitHub](https://github.com/apollographql/apollo-client)
-* React and React Native: [Docs](/docs/react/), [GitHub](https://github.com/apollographql/react-apollo)
-* Vue.js: [Docs, GitHub](https://github.com/akryum/vue-apollo)
-* Angular: [Docs](/docs/angular/), [GitHub](https://github.com/apollographql/apollo-angular)
-* Ember: [Docs, GitHub](https://github.com/bgentry/ember-apollo-client)
-* Meteor: [Docs](/docs/react/recipes/meteor/), [GitHub](https://github.com/apollographql/meteor-integration)
-* iOS for native Swift: [Docs](/docs/ios), [GitHub](https://github.com/apollographql/apollo-ios)
-* Android for Java: [Docs, GitHub](https://github.com/apollographql/apollo-android)
+* Apollo Client JavaScript [Docs](/docs/react/) & [GitHub](https://github.com/apollographql/apollo-client)
+* React and React Native [Docs](/docs/react/) & [GitHub](https://github.com/apollographql/react-apollo)
+* Vue.js [Docs & GitHub](https://github.com/akryum/vue-apollo)
+* Angular [Docs](/docs/angular/) & [GitHub](https://github.com/apollographql/apollo-angular)
+* Ember [Docs & GitHub](https://github.com/bgentry/ember-apollo-client)
+* Meteor [Docs](/docs/react/recipes/meteor/) & [GitHub](https://github.com/apollographql/meteor-integration)
+* iOS for native Swift [Docs](/docs/ios) & [GitHub](https://github.com/apollographql/apollo-ios)
+* Android for Java [Docs & GitHub](https://github.com/apollographql/apollo-android)
 
 If you don't see your platform here, send a PR to add it, or work on a library of your own!
 
@@ -60,13 +60,32 @@ In addition to libraries you put in your client, there are some great tools you 
 
 <h2 id="engine-section">Engine</h2>
 
-Apollo Engine is turnkey infrastructure you can use to take GraphQL services into production with confidence.
+Apollo Engine is a GraphQL gateway and development tool for commercial teams building high performance applications. Engine sits between your client and GraphQL server, adding high performance and introspection tooling features to your application such as:
 
-Engine sits between your clients and your GraphQL server, delivering essential capabilities like query caching, error tracking, and execution tracing on top of any spec-compliant GraphQL server including Apollo Server, GraphQL-Ruby, Sangria, and Absinthe.
+<h3 id="performance-tracing">Performance tracing</h3>
+Your application is only a fast as your slowest queries: know your p95 values, and check out the waterfall trace view of your overall query down to each resolver field query response time. 
 
-* [Learn about Engine features](/engine/)
-* [Get started with Engine](https://engine.apollographql.com)
-* [Read the Engine docs](/docs/engine/)
+![Tracing](./img/waterfall.png)
+
+<h3 id="schema-analytics">Schema analytics</h3>
+Customize analytics for your fields in your schema. 
+![Schema](./img/schema-analytics.png)
+
+<h3 id="error-tracking">Error tracking</h3>
+Investigate GraphQL server errors in their full context by field, by path, and by operation.
+
+<h3 id="response-caching">Response caching</h3>
+Decrease response time of queries using caching - for large deployments, Engine supports memcache clusters, or you can use a local in-mem cache store. 
+![Cache](./img/cache.png)
+    
+<h3 id="persisted-queries">Automatic persisted queries</h3>
+The concept is simple: by sending a query ID or hash instead of an entire GraphQL query string, bandwidth utilization can be reduced, thus speeding up loading times for end-users. 
+
+ Compatible servers include Apollo Server, GraphQL-Ruby, GraphQL-Java, Scala with Sangria, and Elixir with Absinthe.  
+
+[Learn about Engine features](/engine/)
+[Get started with Engine](https://engine.apollographql.com)
+[Read the Engine docs](/docs/engine/)
 
 <h2 id="server-section">Server</h2>
 
