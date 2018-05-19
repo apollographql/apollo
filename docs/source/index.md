@@ -19,6 +19,7 @@ Getting started with Apollo is easy! You can follow these tutorials for step by 
 <h3 id="full-stack-graphql" title="Full stack tutorial"><a href="https://dev-blog.apollodata.com/full-stack-react-graphql-tutorial-582ac8d24e3b">Full Stack React and GraphQL Tutorial</a></h3>
 
 Jonas Helfer and friends take you through [building a simple GraphQL server and React app](https://dev-blog.apollodata.com/full-stack-react-graphql-tutorial-582ac8d24e3b) with Apollo.
+> The tutorial was written for Apollo 1.0 and has not yet been updated for Apollo 2.0
 
 <h3 id="howtographql">How to GraphQL</h3>
 
