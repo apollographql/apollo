@@ -5,8 +5,16 @@ description: A guide to using the Apollo platform.
 versions:
   - '1'
 sidebar_categories:
-  null:
-    - index
+  Fundamentals:
+    - fundamentals/platform
+    - fundamentals/benefits
+    - fundamentals/tips
+  Guides:
+    - guides/schema-design
+    - guides/versioning
+    - guides/security
+    - guides/access-control
+    - guides/monitoring
 github_repo: apollographql/apollo
 content_root: docs/source
 

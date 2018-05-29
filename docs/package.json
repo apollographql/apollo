@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "hexo": {
-    "version": "3.6.0"
+    "version": "3.7.1"
   },
   "devDependencies": {
     "apollo-hexo-config": "1.0.7",
@@ -14,7 +14,7 @@
     "hexo-renderer-less": "0.2.0",
     "hexo-renderer-marked": "0.3.2",
     "hexo-server": "0.3.2",
-    "meteor-theme-hexo": "1.0.10"
+    "meteor-theme-hexo": "1.0.11-beta.0"
   },
   "scripts": {
     "start": "npm run build && chexo apollo-hexo-config -- server",
