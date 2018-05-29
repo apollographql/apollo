@@ -2,7 +2,7 @@
 title: Tips for success
 ---
 
-TK Depending on the size of an organization, there are usually existing practices surrounding the management of the data 
+TK WIP TODO finish this intro.  Depending on the size of an organization, there are usually existing practices surrounding the management of the data 
 
 ## Adopt incrementally
 
@@ -36,10 +36,12 @@ This clarity allows pushing schema changes to production with the confidence of 
 
 ## Write the server in JavaScript
 
-Facebook’s reference implementation has been written in JavaScript since its original release and fresh developments in the GraphQL ecosystem have frequently appeared first in JavaScript or languages which transpile to JavaScript, like TypeScript.
+Facebook's reference implementation has been written in JavaScript since its original release and fresh developments in the GraphQL ecosystem have frequently appeared first in JavaScript or languages which transpile to JavaScript, like TypeScript.
 
-While existing backend systems might be implemented in other languages, it’s worth remembering that a thin, JavaScript-based GraphQL implementation fits nicely in front of such systems and, due to the active maintenance of the JavaScript implementations, can provide the latest in GraphQL features for existing infrastructure.
+While existing back-end systems might already be implemented in other languages, a thin, JavaScript-based GraphQL implementation fits nicely in front of such systems and, due to the active maintenance of the JavaScript implementations, can bring the latest in GraphQL features to this existing infrastructure.
 
-While JavaScript GraphQL libraries usually see the most active development and the latest features, there are other advantages to choosing JavaScript for a GraphQL implementation, most notably the approachability it offers to front-end developers and the wide variety of deployment options.
+Building a GraphQL server in JavaScript also makes it easy to operate at "the edge", where JavaScript is the language of choice, to leverage powerful CDN solutions to deliver data to clients as efficiently as possible - including powerful caching and network optimizations.
 
-Since front-end developers are already using JavaScript to implement the interfaces which consume data from back-end APIs, building a GraphQL API in JavaScript enables those same devlelopers 
+And since front-end developers are already using JavaScript to implement the interfaces which consume data from back-end APIs, building a GraphQL API in JavaScript enables those same developers to make meaningful contributions to the APIs they're utilizing.
+
+So while JavaScript GraphQL libraries do see the most active development and the latest features, its also great to have the extra approachability and deployment options which come with the use of the most popular programming language on the Internet.
