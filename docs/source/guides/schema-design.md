@@ -15,7 +15,7 @@ While this literal database-to-schema mapping may be a fast way to get up and ru
 
 If a database has has fields or relationships that the client won’t need, don’t include them in the schema. Adding fields later is cheap, so additions to a schema should be made when the need arises. Likewise, if a connection between two types of data doesn’t currently exist in a database, that doesn’t mean it can’t be added later.
 
-For example, if you have a REST endpoint exposing a list of events and their locations, but not weather information for the day of the event, that doesn’t mean you can’t design a schema like the following:
+For example, if you have a REST endpoint exposing a list of events and their locations, but not weather information for the day of the event, the following schema accommodates this structure in a clean and concise manner:
 
 ```graphql
 type Event {
