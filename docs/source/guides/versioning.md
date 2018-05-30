@@ -9,13 +9,13 @@ Developers who have worked with REST APIs in the past have probably recognized v
 
 It’s certainly responsible to consider versioning a GraphQL API in a similar fashion, but luckily  GraphQL APIs don't need the same type of  versioning and, assuming the correct strategies and precautions are observed, are able to serve various iterations on an API from a single endpoint.
 
-## Understanding field usage
+<h2 id="field-usage">Understanding field usage</h2>
 
 Thanks to its field-based granularity, GraphQL simplifies the process of determining which fields are getting used by a particular client.  By using API management tools like [Apollo Engine](https://www.apollographql.com/engine), it becomes possible to see exactly when a field was last used.
 
 The power of such usage metrics becomes incredibly valuable when determining whether it’s possible to safely deprecate fields while updating an API.  Without this information, it’s hard to confidently deprecate a field.
 
-## Additive changes
+<h2 id="additive">Additive changes</h2>
 
 Since GraphQL clients only receive exactly what they ask for, adding new fields, arguments, queries, or mutations won't introduce any new breaking changes and these changes can be confidently made without careful consideration.
 
@@ -23,7 +23,7 @@ Since GraphQL clients only receive exactly what they ask for, adding new fields,
 
 _Field rollover_ is a term given to an API change that's an evolution of a field, such as a rename or a change in arguments. Some of these changes can be really small, so versioning for any such change could create many versions quickly, and make an API hard to manage. We'll go over these two kinds of field rollovers separately and show how to make these changes safely.
 
-<h3 id="renaming-or-removing-a-field">Renaming or removing a field</h3>
+<h3 id="renaming-or-removing">Renaming or removing a field</h3>
 
 Consider the following `user` query as an example:
 
@@ -58,7 +58,7 @@ const resolvers = {
 };
 ```
 
-**Deprecating a field**
+<h3 id="deprecating">Deprecating a field</h3>
 
 The tactic we used works well to avoid breaking changes, but we still haven’t provided a way for consumers to know that they should switch to using the new field name. Luckily, the GraphQL specification provides a built-in `@deprecated` schema directive (sometimes called decorators in other languages):
 
@@ -74,13 +74,13 @@ GraphQL-aware tools, like GraphQL Playground and GraphiQL, use this information 
 * Provide developers the helpful deprecation message which instructs them to use the new name.
 * Avoid auto-completing the field.
 
-**Retiring the deprecated field**
+<h3 id="retiring">Retiring a deprecated field</h3>
 
 Over time, usage will fall for the deprecated field and grow for the new field. Using tools like [Apollo Engine](https://www.apollographql.com/engine), it’s possible to make educated decisions about when to retire a field based on actual usage data.
 
-### Changing arguments
+<h2 id="arguments">Changing arguments</h2>
 
-**Non-breaking argument changes**
+<h3 id="non-breaking">Non-breaking changes</h3>
 
 Sometimes we want to keep a field, but change how clients use it by adjusting its variables. For example, if we had a `getUsers` query that we used to fetch user data based off of a list of user `ids`, but wanted to change the arguments to support a `groupId` to look up users of a group or filter the users requested by the `ids` argument to only return users in the group:
 
@@ -96,7 +96,7 @@ type Query {
 
 Since this is an _additive_ change, and doesn't actually change the default behavior of the `getUsers` query, this isn't a breaking change!
 
-**Breaking changes**
+<h3 id="breaking">Breaking changes</h3>
 
 An example of a breaking change on an argument would be renaming (or deleting) an argument.
 

@@ -7,7 +7,7 @@ GraphQL schemas are at their best when they are designed around the needs of cli
 
 While this literal database-to-schema mapping may be a fast way to get up and running, we strongly suggest avoiding it and instead building the schema around based on how the GraphQL API will be used by the front-end.
 
-## Style conventions
+<h2 id="style">Style conventions</h2>
 
 The GraphQL specification is flexible in the style that it dictates and doesn't impose specific naming guidelines. In order to facilitate development and continuity across GraphQL deployments, we suggest the following style conventions:
 
@@ -15,7 +15,7 @@ The GraphQL specification is flexible in the style that it dictates and doesn't 
 * **Types**: should be `PascalCase`.
 * **Enums**: should have their name in `PascalCase` and their values in `ALL_CAPS` to denote their special meaning.
 
-## Wrapping documents with gql
+<h2 id="gql">Wrapping documents with gql</h2>
 
 There are two common ways to write GraphQL schemas and queries. The first is to write queries into a `.graphql` file and import them into your other files for usage. The second is to write them wrapped them with the `gql` tag provided by the `graphql-tag` library.
 
@@ -27,8 +27,7 @@ Here’s an example of how to use the `gql` tag to wrap your schemas
 
 <!-- TODO: can insert the glitch apollo-launchpad example here? --> 
 
-
-## Using interfaces
+<h2 id="interfaces">Using interfaces</h2>
 
 Interfaces are a powerful way to build and use GraphQL schemas through the use of _abstract types_. Abstract types can't be used directly in schema, but can be used as building blocks for creating explicit types.
 
@@ -98,7 +97,7 @@ schoolBooks {
 
 To see an interface in practice, check out this [example]()
 
-## Designing mutations [WIP]
+<h2 id="mutation-design">Designing mutations</h2>
 
 Mutations are one of the core types in GraphQL. Just like you can make a query to fetch information, you can make a mutation to update or change information. Unlike REST, GraphQL mutations actually are executed in two parts: the mutation itself, and a subsequent query, which can return any kind of data that you normally could query for. A mutation definition for updating the age of a `User` could look like this:
 
@@ -144,7 +143,7 @@ The first thing to note is that it’s most common to return the thing you’re 
 
 But what if we wanted to update more than just a single or couple attributes on a user? Passing each thing we need as a single argument would get tedious. For this, we can use Input types.
 
-## Input types
+<h3 id="input">Input types</h3>
 
 Input types are a special type in GraphQL reserved for using as arguments to queries and (more commonly) mutations. You can think of them as being similar to object types for your arguments, on top of the other Scalars. Input types can
 
@@ -153,7 +152,7 @@ Input types are a special type in GraphQL reserved for using as arguments to que
 
 2) we recommend always returning the item you mutate in order to automatically update the Apollo Client cache (show what this would look like on the front end by requesting an id and the property you mutated)
 
-## Mutation responses
+<h3 id="responses">Mutation responses</h3>
 
 When making a mutation, many things could go wrong. A common way for handling errors when making a mutation is to simply `throw` an error. While that's fine sometimes, other times it may be useful to get a partial response from a mutation. For example, if you're trying to update a user's `name` and `age` and you made the following mutation:
 

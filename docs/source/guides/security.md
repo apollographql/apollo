@@ -62,7 +62,7 @@ Since GraphQL involves the traversal of a graph in which circular relationships 
 
 There are two common mitigation techniques and they can be enabled together:
 
-**Operation safe-listing**
+<h3 id="safe-listing">Operation safe-listing</h3>
 
 By hashing the potential operations a client is expected to send (e.g. based on field names) and storing these "permitted" hashes on the server (or a shared cache), it becomes possible to check incoming operations against the permitted hashes and skip execution if the hash is not allowed.
 
@@ -70,12 +70,12 @@ Since many consumers of non-public APIs have their operations statically defined
 
 Future versions of Apollo Server and Apollo Engine will make it easier to maintain a list of allowed operations, though complexity limits (discussed in the next section) are a very reasonable solution which can provide similar protection.
 
-**Complexity limits**
+<h3 id="complexity">Complexity limits</h3>
 
 These can be used to limit the use of queries which, for example, request a list of books including the authors of each book, plus the books of those authors, and _their_ authors, and so on. By limiting operations to an application-defined depth of "_n_", these can be prevented.
 
 We suggest implementing complexity limits using community-provided packages like [graphql-depth-limit](https://github.com/stems/graphql-depth-limit) and [graphql-validation-complexity](https://github.com/4Catalyzer/graphql-validation-complexity).
 
-## Additional Reading
+<h2 id="resources">Additional resources</h2>
 
 > For additional information on securing a GraphQL server deployment, check out [Securing your GraphQL API from malicious queries](https://dev-blog.apollodata.com/securing-your-graphql-api-from-malicious-queries-16130a324a6b) by Spectrum co-founder, Max Stoiber.
