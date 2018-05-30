@@ -1,6 +1,6 @@
 ---
-title: "Monitoring"
-description: "Keeping an eye on your server"
+title: Monitoring
+description: Gain visibility into your GraphQL server with Apollo Engine
 ---
 
 GraphQL-based APIs provide selective access to data which enables developers to avoid potentially expensive data operations that might occur with legacy databases, remote REST endpoints or otherwise slow operations.

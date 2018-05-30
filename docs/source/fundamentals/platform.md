@@ -1,5 +1,6 @@
 ---
 title: The Apollo platform
+description: How Apollo helps you run GraphQL in production with confidence
 ---
 
 The Apollo GraphQL data platform simplifies the data-layer within organizations, helps teams work more effortlessly with data from a variety of sources, and allows products to evolve faster.

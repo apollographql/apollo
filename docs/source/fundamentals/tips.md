@@ -1,5 +1,6 @@
 ---
 title: Tips for success
+description: Your starting point for learning GraphQL and Apollo
 ---
 
 TK WIP TODO finish this intro.  Depending on the size of an organization, there are usually existing practices surrounding the management of the data 

@@ -1,5 +1,6 @@
 ---
 title: Schema design
+description: Our recommendations for architecting your dream GraphQL API
 ---
 
 GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields but it’s important to consider how this could be disadvantageous.

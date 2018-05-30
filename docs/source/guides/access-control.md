@@ -1,11 +1,9 @@
 ---
-title: "Access Control"
-description: "Controlling access to the data in your API"
+title: Access control
+description: How to authorize users and control permissions in your GraphQL API
 ---
 
 At some point (probably pretty early on) when building a GraphQL endpoint, you’ll probably have to face the question of how to control who can see and interact with the data in your API.
-
-**In this article, we'll be focusing primarily on authorization**
 
 **Authentication** is determining whether a user is logged in or not, and subsequently figuring out _which_ user someone is. **Authorization** is then deciding what the user has permission to do or see.
 

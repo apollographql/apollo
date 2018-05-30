@@ -1,6 +1,6 @@
 ---
-title: "Security"
-description: "Securing our app and serving our users"
+title: Security
+description: Building a secure, safe GraphQL server
 ---
 
 Apollo Server is a safer way to build applications thanks to GraphQL's strong typing and the conversion of raw operations into a trusted syntax tree. By validating each part of an operation, GraphQL is mostly exempt from injection-attacks which might be of concern on other platforms.
