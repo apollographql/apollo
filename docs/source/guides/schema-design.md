@@ -1,26 +1,52 @@
 ---
 title: Schema design
-description: Our recommendations for architecting your dream GraphQL API
+description: How to structure your GraphQL types, fields, and arguments
 ---
 
-Proper schema design is important during GraphQL adoption.  While GraphQL makes it easier to evolve an API, large applications will find it more difficult to allocate time for refactoring.  Therefore, schema design decisions should be made carefully to avoid accumulating technical debt.
+One of the main aspects of GraphQL is that it allows you to describe the space of data available in your system with a strongly typed schema. While GraphQL makes it possible to evolve your API over time without breaking your clients, it's always easier if you think about some schema design decisions up front to reduce the amount of refactoring you need to do later.
 
-This article details some practices around schema design which should help avoid expensive refactoring in the future.
+This article details some practices around schema design which will help you design a great GraphQL API to stand the test of time.
 
-<h2 id="structure">Structure</h2>
+<h2 id="design-for-client">Designing for client needs</h2>
 
-GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields but it’s important to consider how this could be disadvantageous.
+GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields. While this literal database-to-schema mapping may be a fast way to get up and running, we strongly suggest avoiding it and instead building the schema around based on how the GraphQL API will be used by the front-end.
 
-While this literal database-to-schema mapping may be a fast way to get up and running, we strongly suggest avoiding it and instead building the schema around based on how the GraphQL API will be used by the front-end.
+If a database has has fields or relationships that the client doesn't yet need, don’t include them in the schema up front. Adding fields later is much easier than removing them, so add fields to your API as your clients need them rather than exposing all of the possible data up front. This is especially useful because GraphQL allows you to create associations between your data that don't exist in the underlying data, enabling you to move complex data manipulation logic out of your clients.
 
-If a database has has fields or relationships that the client won’t need, don’t include them in the schema. Adding fields later is cheap, so additions to a schema should be made when the need arises. Likewise, if a connection between two types of data doesn’t currently exist in a database, that doesn’t mean it can’t be added later.
-
-For example, if you have a REST endpoint exposing a list of events and their locations, but not weather information for the day of the event, the following schema accommodates this structure in a clean and concise manner:
+For example, let's say you want to create a view that lists some events, their locations, and the weather at that location. In that case, you might want to do a query like this:
 
 ```graphql
+query EventList {
+  upcomingEvents {
+    name
+    date
+    location {
+      name
+      weather {
+        temperature
+        description
+      }
+    }
+  }
+}
+```
+
+The desire to display this data could inform the design of a schema like the following:
+
+```graphql
+type Query {
+  upcomingEvents: [Event]
+  # Other fields, etc
+}
+
 type Event {
   name: String
   date: String
+  location: Location
+}
+
+type Location {
+  name: String
   weather: WeatherInfo
 }
 
@@ -30,15 +56,17 @@ type WeatherInfo {
 }
 ```
 
-In scenarios like this, you would just need to fetch the weather information from another endpoint (or a 3rd party endpoint) in your resolvers.
+This doesn't necessarily need to match the data returned from a single REST endpoint or database. For example, if you have a REST endpoint exposing a list of events and their locations, but not weather information, you would just need to fetch the weather information from a second endpoint (or even a 3rd party API) in your resolvers. This way, you can design a schema that will allow your frontend to be as simple as possible, without limiting yourself to the exact shape of data that's in your underlying data sources.
 
 <h2 id="style">Style conventions</h2>
 
-The GraphQL specification is flexible in the style that it dictates and doesn't impose specific naming guidelines. In order to facilitate development and continuity across GraphQL deployments, we suggest the following style conventions:
+The GraphQL specification is flexible and doesn't impose specific naming guidelines. However, in order to facilitate development and continuity across GraphQL deployments, it's useful to have a general set of conventions. We suggest the following:
 
-* **Fields**: are recommended to be written in `camelCase`, since the majority of consumers will be client applications written in JavaScript.
-* **Types**: should be `PascalCase`.
-* **Enums**: should have their name in `PascalCase` and their values in `ALL_CAPS` to denote their special meaning.
+* **Fields** should be named in `camelCase`, since the majority of consumers will be client applications written in JavaScript, Java, Kotlin, or Swift, all of which recommend `camelCase` for variable names.
+* **Types**: should be `PascalCase`, to match how classes are defined in the languages above.
+* **Enums**: should have their type name in `PascalCase`, and their value names in `ALL_CAPS`, since they are similar to constants.
+
+If you use the conventions above, you won't need to have any extra logic in your clients to convert names to match the conventions of these languages.
 
 <h2 id="interfaces">Utilizing interfaces</h2>
 
