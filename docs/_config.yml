@@ -5,6 +5,8 @@ description: A guide to using the Apollo platform.
 versions:
   - '1'
 sidebar_categories:
+  null:
+    - index
   Fundamentals:
     - fundamentals/platform
     - fundamentals/benefits
