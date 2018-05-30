@@ -3,7 +3,9 @@ title: GraphQL benefits
 description: Why adopting GraphQL and Apollo will help you ship features faster
 ---
 
-// insert intro here
+Managing data for modern applications is difficult. Developers have to aggregate data from multiple sources, distribute it upon multiple platforms, and plumb it into an app's UI. On top of that, front-end developers have to decide how to manage state on the client, all while executing complicated features such as caching and optimistic UI.
+
+Adopting GraphQL in your organization will ease these pain points considerably. Read on to learn how GraphQL's declarative approach to data fetching will simplify data transformation and speed up your API. You'll also learn how the Apollo platform enables faster development cycles thanks to its advanced ecosystem of tooling and excellent developer experience.
 
 <h2 id="declarative">Declarative data fetching</h2>
 
@@ -98,10 +100,34 @@ With GraphQL, each query represents a single round trip from the client to serve
 
 <h2 id="dev-experience">Developer experience</h2>
 
-Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Engine. Our #1 goal is to simplify data management across the stack.
+Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Engine. Let's learn how!
 
 <h3 id="data">Explore your API</h3>
 
+GraphQL's strongly typed query language allows developers to take advantage of incredible tooling for exploring GraphQL APIs. [GraphQL Playground](https://github.com/prismagraphql/graphql-playground) by Prisma is an excellent IDE featuring automatically generated docs for your schema and query execution with autocomplete. At a glance, you can see all the data available in your GraphQL API without diving into the backend code or knowing what source it came from.
+
+![GraphQL Playground](../assets/graphql-playground.png)
+
+Apollo Server 2.0 sets up GraphQL Playground out of the box, so you can start exploring your schema and making queries immediately. You also have access to GraphiQL within Apollo DevTools which is convenient for testing queries as you're working on front-end code with Apollo Client.
+
 <h3 id="frontend">Simplify front-end code</h3>
 
+If you've worked with REST and a state management library like Redux, you're probably used to writing action creators, reducers, normalizing your data, and integrating middleware to make a single network request. With Apollo Client, you no longer have to worry about any of these concerns! Apollo Client sets up everything you need for a production-ready app so you can focus on writing queries instead of thousands of lines of state management code.
+
+```js
+import ApolloClient from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "https://dog-graphql-api.glitch.me/graphql"
+});
+```
+
+Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://dev-blog.apollodata.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
+
 <h3 id="tooling">Advanced, modern tooling</h3>
+
+Developing your GraphQL API with the Apollo platform unlocks advanced, modern tooling that helps teams uncover bugs quickly, gain visibility into their API, and develop advanced features such as caching with confidence.
+
+[Apollo Engine](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Engine displays per resolver tracing metrics that can help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog and set up Slack alerts if these numbers pass a certain threshold.
+
+![Apollo Engine](../assets/engine.png)
