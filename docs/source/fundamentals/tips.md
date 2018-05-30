@@ -5,7 +5,7 @@ description: Your starting point for learning GraphQL and Apollo
 
 TK WIP TODO finish this intro.  Depending on the size of an organization, there are usually existing practices surrounding the management of the data 
 
-## Adopt incrementally
+<h2 id="incremental-adoption">Incremental adoption</h2>
 
 While it makes an excellent longer-term goal, GraphQL doesn’t need to stand above the entire data tree in an organization in order to provide value and expending large amounts of engineering effort to switch an entire stack should generally be avoided.
 
@@ -13,7 +13,7 @@ Unlike some technologies, which are difficult to embrace without getting buy-in 
 
 Thanks to GraphQL’s ability to fetch data from any data source, it makes sense to keep existing APIs as they are and use GraphQL to “wrap” the data.  This can be appreciated by organizations with existing collections of REST (or similar) APIs which power their user experiences since they can lean heavily on their existing investments.  This allows small teams to immediately realize many benefits of GraphQL without waiting for deeper adoption and allows existing versions of the application, which have already been deployed and rely on the existing API, to keep functioning uninterrupted.
 
-## Schema scope and ownership
+<h2 id="schema">Schema scope and ownership</h2>
 
 APIs change as the products which use them evolve and their ideal structure is usually defined by the front-end applications which consume them.  While it’s certainly possible, and sometimes desirable, to have a single GraphQL schema which blankets an entire organization’s operational concerns, trying to manage a large schema presents challenges which are avoided by separating the schema into more manageable pieces that align with individual products.
 
@@ -23,7 +23,7 @@ Having product teams own the GraphQL schema for their products allows the schema
 
 Organizations looking to offer a single API endpoint can assemble the individual product schemas, managed by individual product teams into a monolithic API by “stitching” the various schemas together.
 
-## Monitor GraphQL performance
+<h2 id="performance">Monitor GraphQL performance</h2>
 
 An API implemented using GraphQL allows developers to query the exact information they desire from an API and nothing more.  With proper visibility into how the API performs, developers can understand the implications of adding or removing fields, especially those which might be slow (notoriously or otherwise!).
 
@@ -35,7 +35,7 @@ In addition to empowering front-end developers to make quick, educated decisions
 
 This clarity allows pushing schema changes to production with the confidence of knowing that the API is performing as well as it was before, if not better!
 
-## Write the server in JavaScript
+<h2 id="javascript">Write the server in JavaScript</h2>
 
 Facebook's reference implementation has been written in JavaScript since its original release and fresh developments in the GraphQL ecosystem have frequently appeared first in JavaScript or languages which transpile to JavaScript, like TypeScript.
 
