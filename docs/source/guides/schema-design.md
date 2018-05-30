@@ -7,22 +7,6 @@ Proper schema design is important during GraphQL adoption.  While GraphQL makes 
 
 This article details some practices around schema design which should help avoid expensive refactoring in the future.
 
-<h2 id="style">Style conventions</h2>
-
-The GraphQL specification is flexible in the style that it dictates and doesn't impose specific naming guidelines. In order to facilitate development and continuity across GraphQL deployments, we suggest the following style conventions:
-
-* **Fields**: are recommended to be written in `camelCase`, since the majority of consumers will be client applications written in JavaScript.
-* **Types**: should be `PascalCase`.
-* **Enums**: should have their name in `PascalCase` and their values in `ALL_CAPS` to denote their special meaning.
-
-<h2 id="gql">Wrapping documents with gql</h2>
-
-There are two common ways to write GraphQL schemas and queries. The first is to write queries into a `.graphql` file and import them into your other files for usage. The second is to write them wrapped them with the `gql` tag provided by the [graphql-tag library](https://github.com/apollographql/graphql-tag#graphql-tag).
-
-We recommend doing the latter for a couple reasons. Most notably, it can save a build step. Using `.graphql` files requires a loader to parse the file and make it useful. This may not seem like a concern on the client, but it may be especially useful on the server, where there’s often not a build step.
-
-Additionally, using the `gql` tag unlocks full syntax highlighting in most editors and auto-formatting support with [prettier](https://prettier.io/).
-
 <h2 id="structure">Structure</h2>
 
 GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields but it’s important to consider how this could be disadvantageous.
@@ -47,6 +31,14 @@ type WeatherInfo {
 ```
 
 In scenarios like this, you would just need to fetch the weather information from another endpoint (or a 3rd party endpoint) in your resolvers.
+
+<h2 id="style">Style conventions</h2>
+
+The GraphQL specification is flexible in the style that it dictates and doesn't impose specific naming guidelines. In order to facilitate development and continuity across GraphQL deployments, we suggest the following style conventions:
+
+* **Fields**: are recommended to be written in `camelCase`, since the majority of consumers will be client applications written in JavaScript.
+* **Types**: should be `PascalCase`.
+* **Enums**: should have their name in `PascalCase` and their values in `ALL_CAPS` to denote their special meaning.
 
 <h2 id="interfaces">Utilizing interfaces</h2>
 
@@ -260,3 +252,11 @@ Let’s break this down, field by field:
 * `post` is added by the implementing type `AddPostMutationResponse` to return back the newly created post for the client to use!
 
 Following this pattern for mutations provides detailed information about the data that has changed and feedback on whether the operation was successful or not.  Armed with this information, developers can easily react to failures in the client and fetch the information they need to update their local cache.
+
+<h2 id="gql">Wrapping documents with `gql`</h2>
+
+There are two common ways to write GraphQL schemas and queries. The first is to write queries into a `.graphql` file and import them into your other files for usage. The second is to write them wrapped them with the `gql` tag provided by the [graphql-tag library](https://github.com/apollographql/graphql-tag#graphql-tag).
+
+We recommend doing the latter for a couple reasons. Most notably, it can save a build step. Using `.graphql` files requires a loader to parse the file and make it useful. This may not seem like a concern on the client, but it may be especially useful on the server, where there’s often not a build step.
+
+Additionally, using the `gql` tag unlocks full syntax highlighting in most editors and auto-formatting support with [prettier](https://prettier.io/).
