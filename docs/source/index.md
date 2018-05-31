@@ -58,7 +58,7 @@ description: Start here to learn how to use the Apollo platform.
   </div>
 </div>
 
-<h3 align="center"> Documentation </h3>
+<h4 align="center"> Documentation </h4>
 
 <hr />
 
