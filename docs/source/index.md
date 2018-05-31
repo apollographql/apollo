@@ -1,5 +1,5 @@
 ---
-title: Getting started
+title: Welcome
 description: Start here to learn how to use the Apollo platform.
 ---
 
