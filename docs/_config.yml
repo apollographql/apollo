@@ -1,12 +1,30 @@
-title: Apollo Docs
+title: Developers
 propertytitle: Add GraphQL to your stack and start building apps faster.
-subtitle: Apollo Docs
+subtitle:
 description: A guide to using the Apollo platform.
 versions:
   - '1'
 sidebar_categories:
   null:
     - index
+  Fundamentals:
+    - fundamentals/platform
+    - fundamentals/benefits
+    - fundamentals/tips
+  Guides:
+    - guides/schema-design
+    - guides/versioning
+    - guides/security
+    - guides/access-control
+    - guides/monitoring
+    - guides/state-mgmt
+  Platform:
+    - title: Apollo Client
+      href: https://www.apollographql.com/docs/react/
+    - title: Apollo Server
+      href: https://www.apollographql.com/docs/apollo-server/v2/
+    - title: Apollo Engine
+      href: https://www.apollographql.com/docs/engine/
 github_repo: apollographql/apollo
 content_root: docs/source
 
