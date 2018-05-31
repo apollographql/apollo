@@ -138,7 +138,11 @@ query GetBooks {
 
 <h2 id="mutations">Designing mutations</h2>
 
-Mutations are one of the core types in GraphQL. Just like you can make a query to fetch information, you can make a mutation to update or change information. Unlike REST, GraphQL mutations actually are executed in two parts: the mutation itself, and a subsequent query, which can return any kind of data that you normally could query for. A mutation definition for updating the age of a `User` could look like this:
+The `Mutation` type is a core type in GraphQL which specializes in _modifying_ data, which contrasts the `Query` type used for _fetching_ data.
+
+Unlike REST, where the behavior is more ad-hoc, the `Mutation` type is designed with the expectation that there will be a response object.  This ensures that the client receives the most current data without a subsequent round-trip re-query.
+
+A mutation for updating the age of a `User` might look like this:
 
 ```graphql
 type Mutation {
@@ -152,7 +156,7 @@ type User {
 }
 ```
 
-With that definition, you could then make the following mutation:
+With this definition, the following mutation becomes possible:
 
 ```graphql
 mutation updateMyUser {
@@ -164,7 +168,7 @@ mutation updateMyUser {
 }
 ```
 
-With a response looking something like:
+Once executed by the server, the response returned to the client might be:
 
 ```json
 {
@@ -172,7 +176,7 @@ With a response looking something like:
     "updateUserAge": {
       "id": "1",
       "age": "25",
-      "name": "jane doe"
+      "name": "Jane Doe"
     }
   }
 }
