@@ -138,7 +138,11 @@ query GetBooks {
 
 <h2 id="mutations">Designing mutations</h2>
 
-Mutations are one of the core types in GraphQL. Just like you can make a query to fetch information, you can make a mutation to update or change information. Unlike REST, GraphQL mutations actually are executed in two parts: the mutation itself, and a subsequent query, which can return any kind of data that you normally could query for. A mutation definition for updating the age of a `User` could look like this:
+The `Mutation` type is a core type in GraphQL which specializes in _modifying_ data, which contrasts the `Query` type used for _fetching_ data.
+
+Unlike REST, where the behavior can be more ad-hoc, the `Mutation` type is designed with the expectation that there will be a response object.  This ensures that the client receives the most current data without a subsequent round-trip re-query.
+
+A mutation for updating the age of a `User` might look like this:
 
 ```graphql
 type Mutation {
@@ -152,7 +156,7 @@ type User {
 }
 ```
 
-With that definition, you could then make the following mutation:
+With this definition, the following mutation becomes possible:
 
 ```graphql
 mutation updateMyUser {
@@ -164,7 +168,7 @@ mutation updateMyUser {
 }
 ```
 
-With a response looking something like:
+Once executed by the server, the response returned to the client might be:
 
 ```json
 {
@@ -172,50 +176,27 @@ With a response looking something like:
     "updateUserAge": {
       "id": "1",
       "age": "25",
-      "name": "jane doe"
+      "name": "Jane Doe"
     }
   }
 }
 ```
 
-The first thing to note is that it’s most common to return the thing you’re updating from a mutation. In our example, we were updating a `User` record, so we returned that updated user. There’s nothing _enforcing_ this practice, but it’s highly recommended, because it’s often needed to have an updated user to let the clients update any local cache with a new instance of that `User`. For this same reason, it’s useful design mutations to update only one entity. If you wanted to update two unrelated entities, it’s recommended to in separate mutations. For more details on how to handle errors and warnings in mutations, see the [mutation responses](#mutation-responses) section below.
+While it's not mandatory to return the object which has been updated, the inclusion of the updated information allows the client to confidently update its local state without performing additional requests.
 
-But what if we wanted to update more than just a single or couple attributes on a user? Passing each thing we need as a single argument would get tedious. Especially if multiple mutations used similar fields. For this, we can use input types, which are explained in the next section.
+As with queries, it's best to design mutations with the client in mind and in response to a user's action.  In simple cases, this might only result in changes to a single document, however in many cases there will be updates to multiple documents from different resources, for example, a `likePost` mutation might update the total likes for a user as well as their post.
 
-<h3 id="mutation-input-types">Input types</h3>
-
-Input types are a special type in GraphQL which are defined as arguments to queries and, more commonly, mutations.  They can be thought of as object types for arguments, in addition to the other scalar types.  Input types are especially useful when multiple mutations require similar information; for example, when creating a user and updating a user require the same fields, like `age` and `name`.
-
-Input types are used like any other type and defining them is similar to a typical object type definitions, but with the `input` keyword rather than `type`.
-
-Here is an example of two mutations that operate on a `User`, _without_ using input types:
-
-```
-type Mutation {
-  createUser(name: String, age: Int, address: String, phone: String): User
-  updateUser(id: ID!, name: String, age: Int, address: String, phone: String): User
-}
-```
-
-To avoid the repetition of argument fields, this can be refactored to use an input type, as follows:
-
-```
-type Mutation {
-  createUser(user: UserInput): User
-  updateUser(id: ID!, user: UserInput): User
-}
-
-input UserInput {
-  name: String
-  age: Int
-  address: String
-  phone: String
-}
-```
+In order to provide a consistent shape of response data, we recommend adopting a pattern which returns a standardized response format which supports returning any number of documents from each resource which was modified.  We'll outline a recommended patterns for this in the next section.
 
 <h3 id="mutation-responses">Responses</h3>
 
-Mutations have a higher chance of causing errors than queries since they are modifying data.  A common way to handle errors during a mutation is to simply `throw` an error.  While that's fine, throwing an error in the resolver will return an error to the caller and prevent a partial response, which could be useful in the event of a partial update.  Consider the following mutation example, which tries to update a user's `name` and `age`:
+GraphQL mutations can return any information the developer wishes, but designing mutation responses in a consistent and robust structure makes them more approachable by humans and less complicated to traverse in client code.  There are two guiding principles which we have combined into our suggested mutation response structure.
+
+First, while mutations might only modify a single resource type, they often need to touch several at a time.  It makes sense for this to happen in a single round-trip to the server and this is one of the strengths of GraphQL!  When different resources are modified, the client code can benefit from having updated fields returned from each type and the response format should support that.
+
+Secondly, mutations have a higher chance of causing errors than queries since they are modifying data.  If only a portion of a mutation update succeeds, whether that is a partial update to a single document's fields or a failed update to an entire document, it's important to convey that information to the client to avoid stale local state on the client.
+
+A common way to handle errors during a mutation is to simply `throw` an error.  While that's fine, throwing an error in a resolver will return an error for the entire operation to the caller and prevent a more meaningful response.  Consider the following mutation example, which tries to update a user's `name` and `age`:
 
 ```graphql
 mutation updateUser {
@@ -228,7 +209,7 @@ mutation updateUser {
 
 With validation in place, this mutation might cause an error since the `age` is a negative value.  While it’s possible that the entire operation should be stopped, there’s an opportunity to partially update the user’s record with the new `name` and return the updated record with the `age` left untouched.
 
-Luckily, the powerful structure of GraphQL mutations accommodates this use case and can return transactional information about the update alongside the records which have been changed which enables client-side updates to occur automatically.
+Fortunately, the powerful structure of GraphQL mutations accommodates this use case and can return transactional information about the update alongside the records which have been changed which enables client-side updates to occur automatically.
 
 In order to provide consistency across a schema, we suggest introducing a `MutationResponse` interface which can be implemented on every mutation response in a schema and enables transactional information to be returned in addition to the normal mutation response object.
 
@@ -277,10 +258,90 @@ Let’s break this down, field by field:
 * `code` is a string representing a transactional value explaining details about the status of the data change. Think of this like an HTTP status code.
 * `success` is a boolean indicating whether the update was successful or not. This allows a coarse check by the client to know if there were failures.
 * `message` is a string that is meant to be a human-readable description of the status of the transaction. It is intended to be used in the UI of the product.
-* `post` is added by the implementing type `AddPostMutationResponse` to return back the newly created post for the client to use!
+* `user` is added by the implementing type `UpdateUserMutationResponse` to return back the newly created user for the client to use!
 
-Following this pattern for mutations provides detailed information about the data that has changed and feedback on whether the operation was successful or not.  Armed with this information, developers can easily react to failures in the client and fetch the information they need to update their local cache.
+For mutations which have touched multiple types, this same structure can be used to return updated objects from each one.  For example, a `likePost` type, which could affect a user's "reputation" and also update the post itself, might implement `MutationResponse` in the following manner:
 
+```graphql
+type LikePostMutationResponse implements MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  post: Post
+  user: User
+}
+```
+
+In this response type, we've provided the expectation that both the `user` and the `post` would be returned and an actual response to a `likePost` mutation could be:
+
+```json
+{
+  "data": {
+    "likePost": {
+      "code": "200",
+      "success": true,
+      "message": "Thanks!",
+      "post": {
+        "likes": 5040
+      },
+      "user": {
+        "reputation": 11
+      }
+    }
+  }
+}
+```
+
+Following this pattern for mutations provides detailed information about the data that has changed and feedback on whether the operation was successful or not.  Armed with this information, developers can easily react to failures within the client
+
+<h3 id="mutation-input-types">Input types</h3>
+
+Input types are a special type in GraphQL which allows an object to be passed as an argument to both queries and mutations and is helpful when simple scalar types aren't sufficient.
+
+This allows arguments to be structured in an more manageable way, similar to how switching to an `options` argument might be appreciated when `function` arguments become too iterative.
+
+For example, consider this mutation which creates a post along with its accompanying media URLs (e.g. images):
+
+```graphql
+type Mutation {
+  createPost(title: String, body: String, mediaUrls: [String]): Post
+}
+```
+
+This could be easier to digest, and the arguments would be easier to re-use within the mutation, by using an `input` type with the relevant fields.
+
+An input type is defined like a normal object type but using the `input` keyword.  To introduce an `input` type for this example, we'd do:
+
+```graphql
+type Mutation {
+  createPost(post: PostAndMediaInput): Post
+}
+
+input PostAndMediaInput {
+  title: String
+  body: String
+  mediaUrls: [String]
+}
+```
+
+Not only does this facilitate passing the `PostAndMediaInput` around within the schema, it also provides a basis for annotating fields with descriptions which are automatically exposed by GraphQL-enabled tools:
+
+```graphql
+input PostAndMediaInput {
+  "A main title for the post"
+  title: String
+  "The textual body of the post."
+  body: String
+  "A list of URLs to render in the post."
+  mediaUrls: [String]
+}
+```
+
+Input types can also be used when different operations require the exact same information, though we urge caution on over-using this technique since changes to `input` types are breaking changes for all operations which utilize them.
+
+Additionally, while it is possible to reuse an `input` type between a query and mutation which target the same resource, it's often best to avoid this since in many cases certain null fields might be tolerated for one but not the other.
+
+<!--
 <h2 id="gql">Wrapping documents with `gql`</h2>
 
 There are two common ways to write GraphQL schemas and queries. The first is to write queries into a `.graphql` file and import them into your other files for usage. The second is to write them wrapped them with the `gql` tag provided by the [graphql-tag library](https://github.com/apollographql/graphql-tag#graphql-tag).
@@ -288,3 +349,4 @@ There are two common ways to write GraphQL schemas and queries. The first is to 
 We recommend doing the latter for a couple reasons. Most notably, it can save a build step. Using `.graphql` files requires a loader to parse the file and make it useful. This may not seem like a concern on the client, but it may be especially useful on the server, where there’s often not a build step.
 
 Additionally, using the `gql` tag unlocks full syntax highlighting in most editors and auto-formatting support with [prettier](https://prettier.io/).
+-->
