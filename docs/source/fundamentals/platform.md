@@ -1,6 +1,6 @@
 ---
 title: The Apollo platform
-description: How Apollo helps you run GraphQL in production with confidence
+description: How Apollo helps you go from zero to production with GraphQL
 ---
 
 The Apollo GraphQL data platform simplifies the data-layer within organizations, helps teams work more effortlessly with data from a variety of sources, and allows products to evolve faster.
@@ -11,7 +11,7 @@ We’ll start by discussing the basics of GraphQL and Apollo and move into conce
 
 ## What is GraphQL?
 
-Fundamentally, GraphQL is a specification published by Facebook which defines concepts that enable a more structured data experience for products and teams alike.  It enables data from multiple sources to be unified into a single, strongly-typed API which can evolve over time and is easy for both humans and computers to explore.
+Fundamentally, GraphQL is a specification which defines concepts that enable a more structured data experience for products and teams alike.  It enables data from multiple sources to be unified into a single, strongly-typed API which can evolve over time and is easy for both humans and computers to explore.
 
 GraphQL is also a movement by the open-source developer community to gain control over an increasingly complicated data horizon which needs better organization, more flexibility, easier tooling and scalable operations.
 
