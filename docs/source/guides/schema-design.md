@@ -296,35 +296,48 @@ Following this pattern for mutations provides detailed information about the dat
 
 <h3 id="mutation-input-types">Input types</h3>
 
-Input types are a special type in GraphQL which are defined as arguments to queries and, more commonly, mutations.  They can be thought of as object types for arguments, in addition to the other scalar types.  Input types are especially useful when multiple mutations require similar information; for example, when creating a user and updating a user require the same fields, like `age` and `name`.
+Input types are a special type in GraphQL which allows an object to be passed as an argument to both queries and mutations and is helpful when simple scalar types aren't sufficient.
 
-Input types are used like any other type and defining them is similar to a typical object type definitions, but with the `input` keyword rather than `type`.
+This allows arguments to be structured in an more manageable way, similar to how switching to an `options` argument might be appreciated when `function` arguments become too iterative.
 
-Here is an example of two mutations that operate on a `User`, _without_ using input types:
+For example, consider this mutation which creates a post along with its accompanying media URLs (e.g. images):
 
-```
+```graphql
 type Mutation {
-  createUser(name: String, age: Int, address: String, phone: String): User
-  updateUser(id: ID!, name: String, age: Int, address: String, phone: String): User
+  createPost(title: String, body: String, mediaUrls: [String]): Post
 }
 ```
 
-To avoid the repetition of argument fields, this can be refactored to use an input type, as follows:
+This could be easier to digest, and the arguments would be easier to re-use within the mutation, by using an `input` type with the relevant fields.
 
-```
+An input type is defined like a normal object type but using the `input` keyword.  To introduce an `input` type for this example, we'd do:
+
+```graphql
 type Mutation {
-  createUser(user: UserInput): User
-  updateUser(id: ID!, user: UserInput): User
+  createPost(post: PostAndMediaInput): Post
 }
 
-input UserInput {
-  name: String
-  age: Int
-  address: String
-  phone: String
+input PostAndMediaInput {
+  title: String
+  body: String
+  mediaUrls: [String]
 }
 ```
 
+Not only does this facilitate passing the `PostAndMediaInput` around within the schema, it also provides a basis for annotating fields with descriptions which are automatically exposed by GraphQL-enabled tools:
+
+```graphql
+input PostAndMediaInput {
+  "A main title for the post"
+  title: String
+  "The textual body of the post."
+  body: String
+  "A list of URLs to render in the post."
+  mediaUrls: [String]
+}
+```
+
+Input types can also be used when different operations require the exact same information, though we urge caution on over-using this technique since changes to `input` types are breaking changes for all operations which utilize them.
 
 <h2 id="gql">Wrapping documents with `gql`</h2>
 
