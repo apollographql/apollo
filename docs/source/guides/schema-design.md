@@ -184,15 +184,15 @@ Once executed by the server, the response returned to the client might be:
 
 While it's not mandatory to return the object which has been updated, the inclusion of the updated information allows the client to confidently update its local state without performing additional requests.
 
-As with queries, it's best to design mutations with the client in mind and in response to a user's action.  In simple cases, this might only result in changes to a single document, however in many cases there will be updates to multiple documents in different collections, for example, a `likePost` mutation might update the total likes for a user as well as their post.
+As with queries, it's best to design mutations with the client in mind and in response to a user's action.  In simple cases, this might only result in changes to a single document, however in many cases there will be updates to multiple documents from different resources, for example, a `likePost` mutation might update the total likes for a user as well as their post.
 
-In order to provide a consistent shape of response data, we recommend adopting a pattern which returns a standardized response format which supports returning any number of documents from each collection which was modified.  We'll outline a recommended patterns for this in the next section.
+In order to provide a consistent shape of response data, we recommend adopting a pattern which returns a standardized response format which supports returning any number of documents from each resource which was modified.  We'll outline a recommended patterns for this in the next section.
 
 <h3 id="mutation-responses">Responses</h3>
 
 GraphQL mutations can return any information the developer wishes, but designing mutation responses in a consistent and robust structure makes them more approachable by humans and less complicated to traverse in client code.  There are two guiding principles which we have combined into our suggested mutation response structure.
 
-First, while mutations might only modify a single collection, they often need to touch multiple collections.  It makes sense for this to happen in a single round-trip to the server and this is one of the strengths of GraphQL!  When multiple collections are modified, the client code can benefit from having updated fields returned from each collection and the response format should support that.
+First, while mutations might only modify a single resource type, they often need to touch several at a time.  It makes sense for this to happen in a single round-trip to the server and this is one of the strengths of GraphQL!  When different resources are modified, the client code can benefit from having updated fields returned from each type and the response format should support that.
 
 Secondly, mutations have a higher chance of causing errors than queries since they are modifying data.  If only a portion of a mutation update succeeds, whether that is a partial update to a single document's fields or a failed update to an entire document, it's important to convey that information to the client to avoid stale local state on the client.
 
@@ -260,7 +260,7 @@ Let’s break this down, field by field:
 * `message` is a string that is meant to be a human-readable description of the status of the transaction. It is intended to be used in the UI of the product.
 * `user` is added by the implementing type `UpdateUserMutationResponse` to return back the newly created user for the client to use!
 
-For mutations which have touched multiple collections, this same structure can be used to return updated objects from each collection.  For example, a `likePost` type, which could affect a user's "reputation" and also update the post itself, might implement `MutationResponse` in the following manner:
+For mutations which have touched multiple types, this same structure can be used to return updated objects from each one.  For example, a `likePost` type, which could affect a user's "reputation" and also update the post itself, might implement `MutationResponse` in the following manner:
 
 ```graphql
 type LikePostMutationResponse implements MutationResponse {
