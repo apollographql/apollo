@@ -277,7 +277,7 @@ Let’s break this down, field by field:
 * `code` is a string representing a transactional value explaining details about the status of the data change. Think of this like an HTTP status code.
 * `success` is a boolean indicating whether the update was successful or not. This allows a coarse check by the client to know if there were failures.
 * `message` is a string that is meant to be a human-readable description of the status of the transaction. It is intended to be used in the UI of the product.
-* `post` is added by the implementing type `AddPostMutationResponse` to return back the newly created post for the client to use!
+* `user` is added by the implementing type `UpdateUserMutationResponse` to return back the newly created user for the client to use!
 
 Following this pattern for mutations provides detailed information about the data that has changed and feedback on whether the operation was successful or not.  Armed with this information, developers can easily react to failures in the client and fetch the information they need to update their local cache.
 
