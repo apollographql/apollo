@@ -339,6 +339,8 @@ input PostAndMediaInput {
 
 Input types can also be used when different operations require the exact same information, though we urge caution on over-using this technique since changes to `input` types are breaking changes for all operations which utilize them.
 
+Additionally, while it is possible to reuse an `input` type between a query and mutation which target the same resource, it's often best to avoid this since in many cases certain null fields might be tolerated for one but not the other.
+
 <!--
 <h2 id="gql">Wrapping documents with `gql`</h2>
 
