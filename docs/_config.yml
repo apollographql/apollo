@@ -19,9 +19,12 @@ sidebar_categories:
     - guides/monitoring
     - guides/state-mgmt
   Platform:
-    - platform/client
-    - platform/server
-    - platform/engine
+    - title: Apollo Client
+      href: https://www.apollographql.com/docs/react/
+    - title: Apollo Server
+      href: https://www.apollographql.com/docs/apollo-server/v2/
+    - title: Apollo Engine
+      href: https://www.apollographql.com/docs/engine/
 github_repo: apollographql/apollo
 content_root: docs/source
 
