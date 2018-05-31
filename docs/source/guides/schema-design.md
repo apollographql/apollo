@@ -339,6 +339,7 @@ input PostAndMediaInput {
 
 Input types can also be used when different operations require the exact same information, though we urge caution on over-using this technique since changes to `input` types are breaking changes for all operations which utilize them.
 
+<!--
 <h2 id="gql">Wrapping documents with `gql`</h2>
 
 There are two common ways to write GraphQL schemas and queries. The first is to write queries into a `.graphql` file and import them into your other files for usage. The second is to write them wrapped them with the `gql` tag provided by the [graphql-tag library](https://github.com/apollographql/graphql-tag#graphql-tag).
@@ -346,3 +347,4 @@ There are two common ways to write GraphQL schemas and queries. The first is to 
 We recommend doing the latter for a couple reasons. Most notably, it can save a build step. Using `.graphql` files requires a loader to parse the file and make it useful. This may not seem like a concern on the client, but it may be especially useful on the server, where there’s often not a build step.
 
 Additionally, using the `gql` tag unlocks full syntax highlighting in most editors and auto-formatting support with [prettier](https://prettier.io/).
+-->
