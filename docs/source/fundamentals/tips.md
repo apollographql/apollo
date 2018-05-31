@@ -3,7 +3,9 @@ title: Tips for success
 description: Your starting point for learning GraphQL and Apollo
 ---
 
-TK WIP TODO finish this intro.  Depending on the size of an organization, there are usually existing practices surrounding the management of the data 
+Getting started with Apollo and GraphQL is quite easy. There are hundreds of tutorials available, put together by members of the amazing Apollo and GraphQL communities. While getting started is quite easy, there are some very important factors that should be considered upfront, to help deliver a successful Apollo GraphQL implementation. The Apollo team has been working with and on production GraphQL based projects for quite some time now, and has run into just about every gotcha and pitfall you can imagine happening. Over the past couple of years we've honed our GraphQL skills based on hard won experience, and a continuous desire to keep pushing this wonderful technology forward.
+
+This section outlines essential tips we consider to be a necessity for any successful Apollo GraphQL project. These tips have been battle tested in production by ourselves, as well as the Apollo community and our enterprise partners.
 
 <h2 id="incremental-adoption">Incremental adoption</h2>
 
