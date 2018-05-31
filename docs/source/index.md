@@ -14,7 +14,7 @@ description: Start here to learn how to use the Apollo platform.
         <h4 class="headers"> Fundamentals </h4>
       </div>
       <div align="center">
-        <p>How Apollo helps you go from zero to production with GraphQL.</p>
+        <p>Pre-adoption topics for ensuring a smooth ride into production</p>
       </div>
       <div align="center">
         <a href="./fundamentals/platform.html"> Start preparing &Rang; </a>
@@ -31,7 +31,7 @@ description: Start here to learn how to use the Apollo platform.
       <h4 class="headers" align="center"> Guides </h4>
     </div>
     <div align="center">
-      <p> These guides will help you understand the things you need to know. </p>
+      <p>Implementation guides covering all the best-practices from schema to style</p>
     </div>
     <div align="center">
       <a href="./guides/schema-design.html"> Follow the guides &Rang; </a>
@@ -48,7 +48,7 @@ description: Start here to learn how to use the Apollo platform.
       <h4 class="headers" align="center"> Tutorials </h4>
     </div>
     <div align="center">
-      <p> Want to get started quickly with GraphQL and Apollo? Start here. </p>
+      <p>Get started quickly with GraphQL and Apollo with step-by-step instructions</p>
     </div>
     <div align="center">
       <a href="/docs/react/essentials/get-started.html"> Client &Rang; </a>
