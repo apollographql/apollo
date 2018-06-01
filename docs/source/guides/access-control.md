@@ -101,7 +101,7 @@ This example is a field in our schema named `users` that returns a list of users
 
 One choice to make when building out our resolvers is what an unauthorized field should return. In some use cases, returning `null` here is perfectly valid. Alternatives to this would be to return an empty array, `[]` or to throw an error, telling the client that they’re not allowed to access that field. For the sake of simplicity, we just returned `[]` in this example.
 
-Now let’s expand that example a little further, and only allow users with an `admin` role to look at our user list. After all, we probably don’t just anyone to have access to all our users.
+Now let’s expand that example a little further, and only allow users with an `admin` role to look at our user list. After all, we probably don’t want just anyone to have access to all our users.
 
 ```js
 users: (root, args, context) => {
