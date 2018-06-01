@@ -1,5 +1,5 @@
 ---
-title: Organizing your code
+title: Organization
 description: Scaling your Apollo Server from a single file to your entire team
 ---
 
