@@ -17,7 +17,10 @@ sidebar_categories:
     - guides/security
     - guides/access-control
     - guides/monitoring
-    - guides/state-mgmt
+    - guides/performance
+    - guides/organization
+    - guides/caching
+    - guides/testing
   Documentation:
     - title: Apollo Client
       href: https://www.apollographql.com/docs/react/
