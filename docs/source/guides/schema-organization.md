@@ -15,7 +15,6 @@ When you're starting out, you probably have a single file that contains your ent
 ```
 // schema.js
 
-// TODO make sure this import is correct
 import { makeExecutableSchema} from 'graphql-tools';
 
 const typeDefs = gql`
@@ -74,7 +73,6 @@ And here's `schema.js`:
 ```
 // schema.js
 
-// TODO make sure this import is correct
 import { makeExecutableSchema} from 'graphql-tools';
 import { typeDef as Author } from 'graphql-tools';
 import { typeDef as Book } from './book.js';
