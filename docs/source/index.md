@@ -77,7 +77,7 @@ description: Start here to learn how to use the Apollo platform.
 
   <div class="doc">
     <div align="center">
-      <a href="/docs/apollo-server" class="btn default hollow"> Start with Server </a>
+      <a href="/docs/apollo-server/v2/getting-started.html" class="btn default hollow"> Start with Server </a>
     </div> 
   </div>
 </div>
