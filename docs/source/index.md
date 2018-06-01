@@ -6,7 +6,7 @@ description: Start here to learn how to use the Apollo platform.
 <div class="docstart" align="center">
   <div class="fundamentals">
       <div align="center">
-        <a href="./getting-started.html">
+        <a href="./fundamentals/platform.html">
           <img src="./images/guides.svg" width=100  height=100>
         </a>
       </div>
