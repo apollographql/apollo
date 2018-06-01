@@ -302,7 +302,7 @@ import {
 
 const Query = gql`
   type Query {
-		_empty
+    _empty
   }
 `;
 
@@ -339,12 +339,12 @@ Let's say that we're to implement the resolver for the `authors(id: Int!): Autho
 // inside author.js
 
 const resolvers = {
-	Query: {
-		author: (obj, args, context) => {
-			// something goes on here that we have to fill in
-			return author; 
-		},
-	},
+  Query: {
+    author: (obj, args, context) => {
+      // something goes on here that we have to fill in
+      return author; 
+    },
+  },
 };
 ```
 
@@ -368,8 +368,8 @@ import { schema } from './schema.js';
 const db = getDB();
 
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
-	schema,
-	context: { db },
+  schema,
+  context: { db },
 }));
 ```
 
@@ -383,8 +383,8 @@ import { schema } from './schema.js';
 const db = getDB();
 
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
-	schema,
-	context: { db },
+  schema,
+  context: { db },
 }));
 ```
 
@@ -392,11 +392,11 @@ Now, this `db` object will be available to us within the `context` object in the
 
 ```
 const resolvers = {
-	Query: {
-		author: (obj, args, context) => {
-			return context.db.execute('SELECT * FROM authors WHERE id=?', args.id);
-		},
-	},
+  Query: {
+    author: (obj, args, context) => {
+      return context.db.execute('SELECT * FROM authors WHERE id=?', args.id);
+    },
+  },
 };
 ```
 
@@ -417,11 +417,11 @@ Ideally, our code for the resolver should look something like this:
 import { AuthorModel } from './models/author';
 
 const resolvers = {
-	Query: {
-		author: (obj, args, context) => {
-			return AuthorModel.find(args.id, context);
-		},
-	},
+  Query: {
+    author: (obj, args, context) => {
+      return AuthorModel.find(args.id, context);
+    },
+  },
 };
 ```
 
@@ -429,10 +429,10 @@ Our `AuthorModel` object can be written as:
 
 ```
 export const AuthorModel = {
-	find: (id, context) {
-		const dbResult = context.db.execute('SELECT * FROM authors WHERE id=?', id);	
-		return new Author(dbResult);	
-	}
+  find: (id, context) {
+    const dbResult = context.db.execute('SELECT * FROM authors WHERE id=?', id);  
+    return new Author(dbResult);  
+  }
 };
 ```
 
@@ -440,16 +440,16 @@ where `Author` is a simple data class that contains properties of authors we car
 
 ```
 const resolvers = {
-	Query: {
-		author: (obj, args, context) => {
-			return AuthorModel.find(args.id, context);
-		},
-	},
-	Author: {
-		name: (obj, args, context) => {
-			return obj.name;
-		},
-	},
+  Query: {
+    author: (obj, args, context) => {
+      return AuthorModel.find(args.id, context);
+    },
+  },
+  Author: {
+    name: (obj, args, context) => {
+      return obj.name;
+    },
+  },
 };
 ```
 
