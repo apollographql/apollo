@@ -116,11 +116,11 @@ it('renders without error', () => {
 });
 ```
 
-This example shows how to define the mocked response for a query. The `mocks` array takes objects with specific `request`s and their associated `result`s. In this example, when the provider receives a `GET_DOG_QUERY` witht the specified variables, it returns the object under the `result` key.
+This example shows how to define the mocked response for a query. The `mocks` array takes objects with specific `request`s and their associated `result`s. In this example, when the provider receives a `GET_DOG_QUERY` with the specified variables, it returns the object under the `result` key.
 
 ### addTypename
 
-You may notice the prop being passed to the MockedProvider called `addTypename`. The reason this is here is because of how Apollo Client normally works. When a request is made with Apollo Client normally, it adds a `__typename` field to every object type requested. This is to make sure that Apollo Client's cache knows how to normalize and store the response. When we're making our mocks, though, we're importing the raw queries _without typenames_ from the component files.
+You may notice the prop being passed to the `MockedProvider` called `addTypename`. The reason this is here is because of how Apollo Client normally works. When a request is made with Apollo Client normally, it adds a `__typename` field to every object type requested. This is to make sure that Apollo Client's cache knows how to normalize and store the response. When we're making our mocks, though, we're importing the raw queries _without typenames_ from the component files.
 
 If we don't disable the adding of typenames to queries, our imported query won't match the query actually being run by the component during our tests.
 
@@ -150,6 +150,8 @@ This example shows how to (very basically) test loading state of a component. He
 Loading state, while important, isn't the only thing to test. To test the final state of the component after receiving data, we can just wait for it to update and test the final state.
 
 ```js
+const wait = require('waait');
+
 it('should render currency conversions', async () => {
   const dogMock = {
     request: {
@@ -174,7 +176,7 @@ it('should render currency conversions', async () => {
 });
 ```
 
-Here, you can see the `await wait(0)` line. This artificially adds a delay, and allows time for that promise returned from `MockedProvider` to resolve. After that promise resolves, we can check the component to make sure it displays the correct information (in this case, "Buck is a poodle").
+Here, you can see the `await wait(0)` line. This is a util function from a npm package called `waait`.This artificially adds a delay, and allows time for that promise returned from `MockedProvider` to resolve. After that promise resolves, we can check the component to make sure it displays the correct information (in this case, "Buck is a poodle").
 
 ## Testing error states
 
