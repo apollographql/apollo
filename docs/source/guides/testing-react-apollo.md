@@ -297,7 +297,7 @@ After we find the button, we can manually call the `onClick` prop to that button
 
 > Note: Other test utilities like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library) have built-in tools for finding elements and simulating events, but the concept is the same: find the button, and simulate a click on it.
 
-For example, to test for a successful mutation, you'd just wait for the promise to resolve from `MockedProvider` and check for any confirmation message in your UI, just like the `Query` component:
+To test for a successful mutation after simulating the click, you'd just wait for the promise to resolve from `MockedProvider` and check for any confirmation message in your UI, just like the `Query` component:
 
 ```js
 it('should delete and give visual feedback', async () => {
@@ -329,7 +329,7 @@ it('should delete and give visual feedback', async () => {
 });
 ```
 
-For the sake of simplicity, the error case for mutations hasn't been shown here, but testing mutation errors is exactly the same as testing query errors: just add an `error` to the mock, fire the mutation, and check the UI for error messages.
+For the sake of simplicity, the error case for mutations hasn't been shown here, but testing `Mutation` errors is exactly the same as testing `Query` errors: just add an `error` to the mock, fire the mutation, and check the UI for error messages.
 
 Testing UI components isn't a simple issue, but hopefully with these tools, you can feel more confident when testing components dependent on data.
 
