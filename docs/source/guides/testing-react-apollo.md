@@ -3,15 +3,15 @@ title: Testing React Components
 description: Have peace of mind when using react-apollo in production
 ---
 
-Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, as well as prevents accidental regressions in the future. Components utilizing React Apollo are no exception.
+Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, as well as prevents accidental regressions in the future. Components utilizing react-apollo are no exception.
 
-Although React Apollo has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the React Apollo library itself, so you can trust in their stability and long-term support.
+Although react-apollo has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the react-apollo library itself, so you can trust in their stability and long-term support.
 
 ## An introduction
 
-React Apollo relies on [context](https://reactjs.org/docs/context.html) in order to pass the Apollo Client instance through the React component tree. In addition, React Apollo makes network requests in order to fetch data. This behavior affects how you write tests for components that use React Apollo.
+react-apollo relies on [context](https://reactjs.org/docs/context.html) in order to pass the Apollo Client instance through the React component tree. In addition, react-apollo makes network requests in order to fetch data. This behavior affects how you write tests for components that use react-apollo.
 
-This guide will explain step-by-step how you can test your React Apollo code. The following examples will be using the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of something like [Enzyme](https://github.com/airbnb/enzyme).
+This guide will explain step-by-step how you can test your react-apollo code. The following examples will be using the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of something like [Enzyme](https://github.com/airbnb/enzyme) or [react-testing-library](https://github.com/kentcdodds/react-testing-library).
 
 Consider the component below, which makes a basic query, and displays its results:
 
@@ -79,7 +79,7 @@ it('renders without error', () => {
 
 To test the component in true isolation, we can mock all calls to the GraphQL endpoint. This makes the UI consistent every time tests are run, since they don't depend on any remote data.
 
-React Apollo provides the `MockedProvider` component in the `react-apollo/test-utils` library to do just that! `MockedProvider` allows us to specify the exact results that should be returned for a certain query using the `mocks` prop.
+react-apollo provides the `MockedProvider` component in the `react-apollo/test-utils` library to do just that! `MockedProvider` allows us to specify the exact results that should be returned for a certain query using the `mocks` prop.
 
 Here's an example of a test for the above `Dog` component using `MockedProvider`:
 
