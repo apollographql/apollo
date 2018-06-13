@@ -1,5 +1,5 @@
 ---
-title: Testing React with Apollo
+title: Testing React Components
 description: Have peace of mind when using react-apollo in production
 ---
 
