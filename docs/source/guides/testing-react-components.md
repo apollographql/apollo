@@ -176,7 +176,7 @@ it('should render dog', async () => {
 });
 ```
 
-Here, you can see the `await wait(0)` line. This is a utility function from the [`waait`](https://npm.im/waait) delays until the next "tick" of the event loop, and allows time for that `Promise` returned from `MockedProvider` to be fulfilled. After that `Promise` resolves (or rejects1), the component can be checked to ensure it displays the correct information — in this case, "Buck is a poodle".
+Here, you can see the `await wait(0)` line. This is a utility function from the [`waait`](https://npm.im/waait) npm package. It delays until the next "tick" of the event loop, and allows time for that `Promise` returned from `MockedProvider` to be fulfilled. After that `Promise` resolves (or rejects), the component can be checked to ensure it displays the correct information — in this case, "Buck is a poodle".
 
 For more complex UI with heavy calculations, or delays added into its render logic, the `wait(0)` will not be long enough. In these cases, you could either increase the wait time or use a package like [`wait-for-expect`](https://npm.im/wait-for-expect) to delay until the render has happened. The risk of using a package like this everywhere by default is that _every_ test could take up to five seconds to execute (or longer if the default timeout has been increased).
 
@@ -211,11 +211,11 @@ it('should show error UI', async () => {
 });
 ```
 
-Here, whenever the `MockProvider` receives a `GET_DOG_QUERY` with matching `variables`, it will return the error assigned to the `error` property in the mock. This forces the component into the error state, allowing verification that it's being handled gracefully.
+Here, whenever the `MockedProvider` receives a `GET_DOG_QUERY` with matching `variables`, it will return the error assigned to the `error` property in the mock. This forces the component into the error state, allowing verification that it's being handled gracefully.
 
 ## Testing mutation components
 
-`Mutation` components are tested very similarly to `Query` components. The only key difference is how the operation is fired.   On a `Query` component, the query is fired when the component _mounts_, whereas with `Mutation` components, the mutation is fired manually, usually after some user interaction like pressing a button.
+`Mutation` components are tested very similarly to `Query` components. The only key difference is how the operation is fired. On a `Query` component, the query is fired when the component _mounts_, whereas with `Mutation` components, the mutation is fired manually, usually after some user interaction like pressing a button.
 
 Consider this component that calls a mutation:
 
