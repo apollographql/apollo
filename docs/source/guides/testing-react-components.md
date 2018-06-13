@@ -5,11 +5,11 @@ description: Have peace of mind when using react-apollo in production
 
 Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, and prevents accidental regressions in the future. Components utilizing `react-apollo`, the React implementation of Apollo Client, are no exception.
 
-Although `react-apollo` has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the `react-apollo` library itself TODO
+Although `react-apollo` has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the `react-apollo` library itself, so they will be supported long-term.
 
 ## An introduction
 
-The `react-apollo` libary relies on [context](https://reactjs.org/docs/context.html) in order to pass the `ApolloClient` instance through the React component tree. In addition, `react-apollo` makes network requests in order to fetch data. This behavior affects tests should be written for components that use `react-apollo`.
+The `react-apollo` libary relies on [context](https://reactjs.org/docs/context.html) in order to pass the `ApolloClient` instance through the React component tree. In addition, `react-apollo` makes network requests in order to fetch data. This behavior affects how tests should be written for components that use `react-apollo`.
 
 This guide will explain step-by-step how to test `react-apollo` code. The following examples use the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of React-specific tools like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library).
 
