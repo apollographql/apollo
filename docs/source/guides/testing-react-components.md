@@ -3,15 +3,15 @@ title: Testing React Components
 description: Have peace of mind when using react-apollo in production
 ---
 
-Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, as well as prevents accidental regressions in the future. Components utilizing react-apollo are no exception.
+Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, and prevents accidental regressions in the future. Components utilizing `react-apollo`, the React implementation of Apollo Client, are no exception.
 
-Although react-apollo has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the react-apollo library itself, so you can trust in their stability and long-term support.
+Although `react-apollo` has a lot going on under the hood, the library provides multiple tools for testing that simplify those abstractions, and allows complete focus on the component logic. These testing utilities have long been used to test the `react-apollo` library itself, so they will be supported long-term.
 
 ## An introduction
 
-react-apollo relies on [context](https://reactjs.org/docs/context.html) in order to pass the Apollo Client instance through the React component tree. In addition, react-apollo makes network requests in order to fetch data. This behavior affects how you write tests for components that use react-apollo.
+The `react-apollo` libary relies on [context](https://reactjs.org/docs/context.html) in order to pass the `ApolloClient` instance through the React component tree. In addition, `react-apollo` makes network requests in order to fetch data. This behavior affects how tests should be written for components that use `react-apollo`.
 
-This guide will explain step-by-step how you can test your react-apollo code. The following examples will be using the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of something like [Enzyme](https://github.com/airbnb/enzyme) or [react-testing-library](https://github.com/kentcdodds/react-testing-library).
+This guide will explain step-by-step how to test `react-apollo` code. The following examples use the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of React-specific tools like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library).
 
 Consider the component below, which makes a basic query, and displays its results:
 
@@ -56,13 +56,13 @@ it('should render without error', () => {
 });
 ```
 
-If we ran this test, we would get an error because Apollo Client isn't available on the context for the `Query` component to consume.
+This test would produce an error because Apollo Client isn't available on the context for the `Query` component to consume.
 
-In order to fix this we could wrap the component in an `ApolloProvider` and pass an instance of Apollo Client to the `client` prop. However, this will cause our tests to run against an actual backend which makes the tests very unpredictable for the following reasons:
+In order to fix this we could wrap the component in an `ApolloProvider` and pass an instance of Apollo Client to the `client` prop. However, this will cause the tests to run against an actual backend which makes the tests very unpredictable for the following reasons:
 
-- The server could be down
-- There may be no network connection
-- The results are not guaranteed to be the same for every query
+- The server could be down.
+- There may be no network connection.
+- The results are not guaranteed to be the same for every query.
 
 ```js
 // Not predictable
@@ -75,13 +75,13 @@ it('renders without error', () => {
 });
 ```
 
-## MockedProvider
+## `MockedProvider`
 
-To test the component in true isolation, we can mock all calls to the GraphQL endpoint. This makes the UI consistent every time tests are run, since they don't depend on any remote data.
+The `react-apollo/test-utils` module exports a `MockedProvider` component which simplifies the testing of React components by mocking calls to the GraphQL endpoint.  This allows the tests to be run in isolation and provides consistent results on every run by removing the dependence on remote data.
 
-react-apollo provides the `MockedProvider` component in the `react-apollo/test-utils` library to do just that! `MockedProvider` allows us to specify the exact results that should be returned for a certain query using the `mocks` prop.
+By using this `MockedProvider` component, it's possible to specify the exact results that should be returned for a certain query using the `mocks` prop.  
 
-Here's an example of a test for the above `Dog` component using `MockedProvider`:
+Here's an example of a test for the above `Dog` component using `MockedProvider`, which shows how to define the mocked response for `GET_DOG_QUERY`:
 
 ```js
 // dog.test.js
@@ -116,19 +116,19 @@ it('renders without error', () => {
 });
 ```
 
-This example shows how to define the mocked response for a query. The `mocks` array takes objects with specific `request`s and their associated `result`s. In this example, when the provider receives a `GET_DOG_QUERY` with the specified variables, it returns the object under the `result` key.
+The `mocks` array takes objects with specific `request`s and their associated `result`s.  When the provider receives a `GET_DOG_QUERY` with matching `variables`, it returns the corresponding object from the `result` key.
 
-### addTypename
+### `addTypename`
 
 You may notice the prop being passed to the `MockedProvider` called `addTypename`. The reason this is here is because of how Apollo Client normally works. When a request is made with Apollo Client normally, it adds a `__typename` field to every object type requested. This is to make sure that Apollo Client's cache knows how to normalize and store the response. When we're making our mocks, though, we're importing the raw queries _without typenames_ from the component files.
 
-If we don't disable the adding of typenames to queries, our imported query won't match the query actually being run by the component during our tests.
+If we don't disable the adding of typenames to queries, the imported query won't match the query actually being run by the component during our tests.
 
-> In short, If you don't have `__typename`s in your queries, pass `addTypename={false}` to your `MockedResolver`s.
+> In short, if queries are lacking `__typename`, it's important to include the `addTypename={false}` attribute to the `MockedResolver`s.
 
 ## Testing loading states
 
-In this example, the `Dog` component will render, but it will render in a loading state, not the final response state. This is because `MockedProvider` doesn't just return the data. It returns a promise that will resolve to that data. This allows testing of loading states as well as the final state.
+In this example, the `Dog` component will render, but it will render in a loading state, not the final response state. This is because `MockedProvider` doesn't just return the data but instead returns a `Promise` that will resolve to that data.  By using a `Promise` it enables testing of the loading state in addition to the final state:
 
 ```js
 it('should render loading state initially', () => {
@@ -143,7 +143,7 @@ it('should render loading state initially', () => {
 });
 ```
 
-This example shows how to (very basically) test loading state of a component. Here, all we're checking is that the children of the component contain the text `Loading...`. In real apps, this test would probably be more complicated, but the testing logic would be the same.
+This shows a basic example test that tests the loading state of a component by checking that the children of the component contain the text `Loading...`. In an actual application, this test would probably be more complicated, but the testing logic would be the same.
 
 ## Testing final state
 
@@ -176,17 +176,17 @@ it('should render dog', async () => {
 });
 ```
 
-Here, you can see the `await wait(0)` line. This is a util function from a npm package called `waait`.This artificially adds a delay until the next tick, and allows time for that promise returned from `MockedProvider` to resolve. After that promise resolves, we can check the component to make sure it displays the correct information (in this case, "Buck is a poodle").
+Here, you can see the `await wait(0)` line. This is a utility function from the [`waait`](https://npm.im/waait) npm package. It delays until the next "tick" of the event loop, and allows time for that `Promise` returned from `MockedProvider` to be fulfilled. After that `Promise` resolves (or rejects), the component can be checked to ensure it displays the correct information — in this case, "Buck is a poodle".
 
-In some cases with complex UI, heavy calculations, or delays added into the render logic of a component, the `wait(0)` will not be long enough. In these cases, you could either increase the wait time or use a package like [wait-for-expect](https://github.com/TheBrainFamily/wait-for-expect) to wait until the render has happened. The risk of using a package like this everywhere by default is that _every_ test could take up to 5 seconds (or longer if you have increased the default timeout) to execute.
+For more complex UI with heavy calculations, or delays added into its render logic, the `wait(0)` will not be long enough. In these cases, you could either increase the wait time or use a package like [`wait-for-expect`](https://npm.im/wait-for-expect) to delay until the render has happened. The risk of using a package like this everywhere by default is that _every_ test could take up to five seconds to execute (or longer if the default timeout has been increased).
 
 ## Testing error states
 
-Error states are one of the most important states to test, since they can make or break the experience a user has when interacting with the app.
+Since they can make or break the experience a user has when interacting with the app, error states are one of the most important states to test, but are often less tested in development.
 
-Error states are also tested less in development. Since most developers would follow the "happy path" and not encounter these states as often, it's almost _more_ important to test these states to prevent accidental regressions.
+Since most developers would follow the "happy path" and not encounter these states as often, it's almost _more_ important to test these states to prevent accidental regressions.
 
-To simulate a GraphQL error, all you have to do is pass an `error` to your mock instead of (or in addition to) the `result`.
+To simulate a GraphQL error, an `error` property can be included on the mock, in place of or in addition to the `result`.
 
 ```js
 it('should show error UI', async () => {
@@ -211,11 +211,11 @@ it('should show error UI', async () => {
 });
 ```
 
-Here, whenever your `MockProvider` receives a `GET_DOG_QUERY` with matching variables, it will return a GraphQL error. This forces the component into the error state, allowing us to verify that it's handling the error gracefully.
+Here, whenever the `MockedProvider` receives a `GET_DOG_QUERY` with matching `variables`, it will return the error assigned to the `error` property in the mock. This forces the component into the error state, allowing verification that it's being handled gracefully.
 
 ## Testing mutation components
 
-`Mutation` components are tested very similarly to `Query` components. The only key difference is how the operation is fired. With `Query` components, the query is fired when the component mounts. With `Mutation` components, the mutation is fired manually, usually after some user interaction like pressing a button.
+`Mutation` components are tested very similarly to `Query` components. The only key difference is how the operation is fired. On a `Query` component, the query is fired when the component _mounts_, whereas with `Mutation` components, the mutation is fired manually, usually after some user interaction like pressing a button.
 
 Consider this component that calls a mutation:
 
@@ -291,13 +291,13 @@ it('should render loading state initially', () => {
 });
 ```
 
-This example looks very similar to the `Query` component. The difference comes after the render. Since this component relies on a button to be clicked to fire a mutation, we first use the renderer's API to find that button.
+This example looks very similar to the `Query` component, but the difference comes after the rendering is completed. Since this component relies on a button to be clicked to fire a mutation, the renderer's API is used to find the button.
 
-After we find the button, we can manually call the `onClick` prop to that button, simulating a user clicking the button. This click fires off the mutation, and then the rest is tested identically to the `Query` component.
+After a reference to the button has been obtained, a "click" on the button can be simulated by calling its `onClick` handler. This will fire off the mutation, and then the rest will be tested identically to the `Query` component.
 
-> Note: Other test utilities like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library) have built-in tools for finding elements and simulating events, but the concept is the same: find the button, and simulate a click on it.
+> Note: Other test utilities like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library) have built-in tools for finding elements and simulating events, but the concept is the same: find the button and simulate a click on it.
 
-To test for a successful mutation after simulating the click, you'd just wait for the promise to resolve from `MockedProvider` and check for any confirmation message in your UI, just like the `Query` component:
+To test for a successful mutation after simulating the click, the fulfilled `Promise` from `MockedProvider` can be checked for the appropriate confirmation message, just like the `Query` component:
 
 ```js
 it('should delete and give visual feedback', async () => {
@@ -331,7 +331,7 @@ it('should delete and give visual feedback', async () => {
 
 For the sake of simplicity, the error case for mutations hasn't been shown here, but testing `Mutation` errors is exactly the same as testing `Query` errors: just add an `error` to the mock, fire the mutation, and check the UI for error messages.
 
-Testing UI components isn't a simple issue, but hopefully with these tools, you can feel more confident when testing components dependent on data.
+Testing UI components isn't a simple issue, but hopefully these tools will create confidence when testing components that are dependent on data.
 
 For a working example showing how to test components, check out this project on CodeSandbox:
 
