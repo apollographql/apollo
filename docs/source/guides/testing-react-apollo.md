@@ -176,7 +176,9 @@ it('should render currency conversions', async () => {
 });
 ```
 
-Here, you can see the `await wait(0)` line. This is a util function from a npm package called `waait`.This artificially adds a delay, and allows time for that promise returned from `MockedProvider` to resolve. After that promise resolves, we can check the component to make sure it displays the correct information (in this case, "Buck is a poodle").
+Here, you can see the `await wait(0)` line. This is a util function from a npm package called `waait`.This artificially adds a delay until the next tick, and allows time for that promise returned from `MockedProvider` to resolve. After that promise resolves, we can check the component to make sure it displays the correct information (in this case, "Buck is a poodle").
+
+In some cases with complex UI, heavy calculations, or delays added into the render logic of a component, the `wait(0)` will not be long enough. In these cases, you could either increase the wait time or use a package like [wait-for-expect](https://github.com/TheBrainFamily/wait-for-expect) to wait until the render has happened. The risk of using a package like this everywhere by default is that _every_ test could take up to 5 seconds (or longer if you have increased the default timeout) to execute.
 
 ## Testing error states
 
@@ -293,6 +295,8 @@ This example looks very similar to the `Query` component. The difference comes a
 
 After we find the button, we can manually call the `onClick` prop to that button, simulating a user clicking the button. This click fires off the mutation, and then the rest is tested identically to the `Query` component.
 
+> Note: Other test utilities like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library) have built-in tools for finding elements and simulating events, but the concept is the same: find the button, and simulate a click on it.
+
 For example, to test for a successful mutation, you'd just wait for the promise to resolve from `MockedProvider` and check for any confirmation message in your UI, just like the `Query` component:
 
 ```js
@@ -325,9 +329,11 @@ it('should delete and give visual feedback', async () => {
 });
 ```
 
+For the sake of simplicity, the error case for mutations hasn't been shown here, but testing mutation errors is exactly the same as testing query errors: just add an `error` to the mock, fire the mutation, and check the UI for error messages.
+
 Testing UI components isn't a simple issue, but hopefully with these tools, you can feel more confident when testing components dependent on data.
 
-For a working example showing how to test components, check out this example on CodeSandbox:
+For a working example showing how to test components, check out this project on CodeSandbox:
 
 [![Edit React-Apollo Testing](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/40k7j708n4)
 
