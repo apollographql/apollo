@@ -152,7 +152,7 @@ Loading state, while important, isn't the only thing to test. To test the final 
 ```js
 const wait = require('waait');
 
-it('should render currency conversions', async () => {
+it('should render dog', async () => {
   const dogMock = {
     request: {
       query: GET_DOG_QUERY,
