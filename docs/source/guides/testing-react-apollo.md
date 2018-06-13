@@ -1,6 +1,6 @@
 ---
-title: Testing React Apollo
-description: Have peace of mind when using React Apollo in production
+title: Testing React with Apollo
+description: Have peace of mind when using react-apollo in production
 ---
 
 Running tests against code meant for production has long been a best practice. It provides additional security for the code that's already written, as well as prevents accidental regressions in the future. Components utilizing React Apollo are no exception.
