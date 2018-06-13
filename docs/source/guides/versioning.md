@@ -101,7 +101,7 @@ Since this is an _additive_ change, and doesn't actually change the default beha
 An example of a breaking change on an argument would be renaming (or deleting) an argument.
 
 ```graphql
-type query = {
+type Query {
   # What we have.
   getUsers(ids: [ID!], groupId: ID!): [User]!
 
