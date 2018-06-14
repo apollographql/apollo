@@ -124,7 +124,7 @@ You may notice the prop being passed to the `MockedProvider` called `addTypename
 
 If we don't disable the adding of typenames to queries, the imported query won't match the query actually being run by the component during our tests.
 
-> In short, if queries are lacking `__typename`, it's important to include the `addTypename={false}` attribute to the `MockedResolver`s.
+> In short, if queries are lacking `__typename`, it's important to pass the `addTypename={false}` prop to the `MockedProvider`s.
 
 ## Testing loading states
 
