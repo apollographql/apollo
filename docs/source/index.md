@@ -53,7 +53,7 @@ description: Start here to learn how to use the Apollo platform.
     <div align="center">
       <a href="/docs/react/essentials/get-started.html"> Client &Rang; </a>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a href="/docs/apollo-server/v2/getting-started.html"> Server &Rang; </a>
+      <a href="/docs/apollo-server/v2/getting-started.html"> Server 2.0 &Rang; </a>
     </div>
   </div>
 </div>
@@ -77,7 +77,7 @@ description: Start here to learn how to use the Apollo platform.
 
   <div class="doc">
     <div align="center">
-      <a href="/docs/apollo-server/v2/getting-started.html" class="btn default hollow"> Start with Server </a>
+      <a href="/docs/apollo-server/v2/getting-started.html" class="btn default hollow"> Start with Server 2.0 </a>
     </div> 
   </div>
 </div>
