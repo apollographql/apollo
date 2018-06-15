@@ -1,10 +1,37 @@
 @color-primary: #22A699;
 
 .docstart {
-  width: 100%; 
-  height: 222px;
+  width: 100%;
+  height: 345px;
   //border-right: 0px solid #22A699;
   //border:0px solid #22A699;
+}
+
+.docstart .pop-banner {
+  background-color: fade(@color-primary, 5%);
+  border: 2px solid @color-primary;
+  padding: 0.5rem;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 2rem;
+  .pb-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .pb-early-access {
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: @color-primary;
+  }
+  .pb-head {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  .pb-link, .pb-link a {
+    color: @color-primary;
+    text-decoration: underline;
+  }
 }
 
 .fundamentals, .quickstart, .guides {
@@ -29,8 +56,12 @@
   padding-bottom: 10px;
 }
 
+#documentation-heading {
+  font-size: 20px;
+}
 
-.documentation {
+
+.documentation-buttons {
   width: 100%;
   height: 100px;
 
@@ -121,6 +152,21 @@
 //   ##Screen = B/w 320px to 479px
 // */
 @media (min-width: 320px) and (max-width: 480px) {
+  .docstart .pop-banner {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    .pb-head {
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+    }
+    .pb-link {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
   .btn.default.hollow {
     color: #e535ab;
     border: 2px solid #e535ab;

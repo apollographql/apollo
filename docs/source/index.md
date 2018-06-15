@@ -4,6 +4,15 @@ description: Start here to learn how to use the Apollo platform.
 ---
 
 <div class="docstart" align="center">
+
+  <div class="pop-banner">
+    <div class="pb-content pb-early-access">Early Access</div>
+    <div class="pb-content pb-head">Interested in running GraphQL on the edge?</div>
+    <div class="pb-content pb-link">
+      <a href="/edge">Sign up to try Apollo Server on CloudFlare.</a>
+    </div>
+  </div>
+
   <div class="fundamentals">
       <div align="center">
         <a href="./fundamentals/platform.html">
@@ -58,11 +67,11 @@ description: Start here to learn how to use the Apollo platform.
   </div>
 </div>
 
-<h4 align="center"> Documentation </h4>
+<div align="center" id="documentation-heading"> Documentation </div>
 
 <hr />
 
-<div class="documentation">
+<div class="documentation-buttons">
   <div class="doc">
     <div align="center">
       <a href="/docs/engine" class="btn default hollow"> Start with Engine </a>
