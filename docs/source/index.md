@@ -9,7 +9,7 @@ description: Start here to learn how to use the Apollo platform.
     <div class="pb-content pb-early-access">Early Access</div>
     <div class="pb-content pb-head">Interested in running GraphQL on the edge?</div>
     <div class="pb-content pb-link">
-      <a href="/edge">Sign up to try Apollo Server on CloudFlare.</a>
+      <a href="/edge">Sign up to try Apollo Server on Cloudflare.</a>
     </div>
   </div>
 
