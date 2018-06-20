@@ -196,6 +196,35 @@ getAll: () => {
 }
 ```
 
+<h2 id="directives-auth">Authorization via Custom Directives</h2>
+
+Another way to go about authorization is via GraphQL Schema Directives. A directive is an identifier preceded by a `@` character, optionally followed by a list of named arguments, which can appear after almost any form of syntax in the GraphQL query or schema languages.
+
+Check out this example of an authorization directive:
+
+```js
+const typeDefs = `
+  directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+
+  enum Role {
+    ADMIN
+    REVIEWER
+    USER
+  }
+
+  type User @auth(requires: USER) {
+    name: String
+    banned: Boolean @auth(requires: ADMIN)
+    canPost: Boolean @auth(requires: REVIEWER)
+  }
+`
+```
+
+The `@auth` directive can be called directly on the type, or on the fields if you want to limit access to specific fields as shown in the example above. The logic behind authorization is hidden away in the directive implementation. 
+
+One way of implementing the `@auth` directive is via the [SchemaDirectiveVisitor](https://www.apollographql.com/docs/graphql-tools/schema-directives.html) class from [graphql-tools](https://github.com/apollographql/graphql-tools). Ben Newman covered creating a sample `@deprecated` and `@rest` directive in this [excellent article](https://dev-blog.apollodata.com/reusable-graphql-schema-directives-131fb3a177d1). You can draw inspiration from these examples.
+
+
 <h2 id="rest-auth">Authorization outside of GraphQL</h2>
 
 If you’re using a REST API that has built-in authorization, like with an HTTP header, you have one more option. Rather than doing any authentication or authorization work in the GraphQL layer (in resolvers/models), it’s possible to simply pass through the headers or cookies to your REST endpoint and let it do the work.
