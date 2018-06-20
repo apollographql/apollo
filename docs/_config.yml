@@ -19,6 +19,7 @@ sidebar_categories:
     - guides/monitoring
     - guides/state-mgmt
     - guides/testing-react-components
+    - guides/testing-a-graphql-server
   Documentation:
     - title: Apollo Client
       href: https://www.apollographql.com/docs/react/
