@@ -3,7 +3,7 @@ title: Versioning
 description: Everything you need to know about evolving your GraphQL schema
 ---
 
-Versioning is a technique to prevent necessary changes from affecting the existing consumers of an API.  These so-called “breaking changes” might be as trivial as renaming a field or as substantial as refactoring the whole data model.
+Versioning is a technique to prevent necessary changes from becoming "breaking changes" which affect the existing consumers of an API.  These iterations might be as trivial as renaming a field, or as substantial as refactoring the whole data model.
 
 Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`).
 
