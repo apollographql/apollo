@@ -7,7 +7,7 @@ Versioning is a technique to prevent necessary changes from becoming "breaking c
 
 Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`).
 
-It’s certainly responsible to consider versioning a GraphQL API in a similar fashion, but luckily  GraphQL APIs don't need the same type of  versioning and, assuming the correct strategies and precautions are observed, are able to serve various iterations on an API from a single endpoint.
+It’s certainly responsible to consider versioning a GraphQL API in a similar fashion, but GraphQL APIs don't need the same type of versioning and, assuming the correct strategies and precautions are observed, are able to serve various iterations on an API from a single endpoint.
 
 <h2 id="field-usage">Understanding field usage</h2>
 
