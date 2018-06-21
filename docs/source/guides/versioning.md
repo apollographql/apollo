@@ -1,19 +1,19 @@
 ---
 title: Versioning
-description: Everything you need to know about evolving your GraphQL schema
+description: What to know when evolving a GraphQL schema
 ---
 
 Versioning is a technique to prevent necessary changes from becoming "breaking changes" which affect the existing consumers of an API.  These iterations might be as trivial as renaming a field, or as substantial as refactoring the whole data model.
 
 Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`).  With this technique, an application can easily end up with many different API endpoints over time, and the question of _when_ an API can be deprecated can become problematic.
 
-It might be tempting to version a GraphQL API in the same way, but with the right preparations GraphQL APIs don't require the same versioning technique.  By following the strategies and precautions outlined in this guide and using Apollo tooling that adds clarity to every change, many iterations of an API can be served from a single endpoint.
+It might be tempting to version a GraphQL API the same way, but it's unnecessary with the right techniques.  By following the strategies and precautions outlined in this guide and using Apollo tooling that adds clarity to every change, many iterations of an API can be served from a single endpoint.
 
 <h2 id="field-usage">Understanding field usage</h2>
 
-Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need.  This field-based granularity is valueable and avoids "over-fetching" but by also makes it more difficult to understand what data is currently being used.
+Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need.  This field-based granularity is valuable and avoids "over-fetching" but also makes it more difficult to understand what data is currently being used.
 
-To improve the understanding of field usage within an API, Apollo Server extends GraphQL with rich tracing data that demonstrates _how_ a GraphQL field is used and _when_ it's safe to change or elminate a field.
+To improve the understanding of field usage within an API, Apollo Server extends GraphQL with rich tracing data that demonstrates _how_ a GraphQL field is used and _when_ it's safe to change or eliminate a field.
 
 > For details on how tracing data can be used to avoid shipping breaking changes to clients, check out the [schema history](https://www.apollographql.com/docs/engine/schema-history.html) tooling in [Apollo Engine](https://www.apollographql.com/engine) which utilizes actual usage data to provide warnings and notices about changes that might break existing clients.
 
@@ -29,7 +29,7 @@ We'll go over these two kinds of field rollovers separately and show how to make
 
 <h3 id="renaming-or-removing">Renaming or removing a field</h3>
 
-When there's not uncertainlty about whether a field is used or not, renaming or removing a field is as straightforward as it sounds: it can be  renamed or removed.  Unfortunately, without usage metrics, additional considerations should be made.
+When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed.  Unfortunately, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made.
 
 Take the following `user` query as an example:
 
@@ -47,9 +47,9 @@ type Query {
 }
 ```
 
-Even if that was the only change, this would be a breaking change for some clients, since those  expecting a `user` query would receive error.
+Even if that was the only change, this would be a breaking change for some clients, since those expecting a `user` query would receive error.
 
-To make this change safely, instead of renaming the existing field we can simply add a new `getUser` field and leave the existing  `user` field untouched. To prevent code duplication, the  resolver logic can be shared between the two fields:
+To make this change safely, instead of renaming the existing field we can simply add a new `getUser` field and leave the existing `user` field untouched. To prevent code duplication, the resolver logic can be shared between the two fields:
 
 ```js
 const getUserResolver = (root, args, context) => {
@@ -77,7 +77,7 @@ type Query {
 
 GraphQL-aware client tooling, like GraphQL Playground and GraphiQL, use this information to assist developers in making the right choices.  These tools will:
 
-* Provide developers the helpful deprecation message which instructs them to use the new name.
+* Provide developers with the helpful deprecation message referring them to the new name.
 * Avoid auto-completing the field.
 
 <h3 id="retiring">Retiring a deprecated field</h3>
