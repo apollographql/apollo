@@ -9,7 +9,7 @@ Although `react-apollo` has a lot going on under the hood, the library provides 
 
 ## An introduction
 
-The `react-apollo` libary relies on [context](https://reactjs.org/docs/context.html) in order to pass the `ApolloClient` instance through the React component tree. In addition, `react-apollo` makes network requests in order to fetch data. This behavior affects how tests should be written for components that use `react-apollo`.
+The `react-apollo` library relies on [context](https://reactjs.org/docs/context.html) in order to pass the `ApolloClient` instance through the React component tree. In addition, `react-apollo` makes network requests in order to fetch data. This behavior affects how tests should be written for components that use `react-apollo`.
 
 This guide will explain step-by-step how to test `react-apollo` code. The following examples use the [Jest](https://facebook.github.io/jest/docs/en/tutorial-react.html) testing framework, but most concepts should be reusable with other libraries. These examples aim to use as simple of a toolset as possible, so React's [test renderer](https://reactjs.org/docs/test-renderer.html) will be used in place of React-specific tools like [Enzyme](https://github.com/airbnb/enzyme) and [react-testing-library](https://github.com/kentcdodds/react-testing-library).
 
