@@ -1,6 +1,6 @@
 ---
 title: Performance
-description: How to enhance performance in production
+description: How to improve network performance in production
 ---
 
 A common challenge that developers experience as they build products is how quickly their apps grow in complexity. For GraphQL services, your request sizes and query strings fatten over time, which in turn leads to extra weight transferred over the network.
