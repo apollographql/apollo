@@ -14,13 +14,13 @@ sidebar_categories:
   Guides:
    
     - guides/security
-    - guides/state-mgmt
     - guides/versioning
     - guides/monitoring
     - guides/performance
     - guides/file-uploads
     - guides/schema-design
     - guides/access-control
+    - guides/state-management
     - guides/testing-react-components
 
   Documentation:
