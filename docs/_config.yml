@@ -19,6 +19,8 @@ sidebar_categories:
     - guides/monitoring
     - guides/state-mgmt
     - guides/testing-react-components
+    - guides/file-uploads
+    - guides/performance
   Documentation:
     - title: Apollo Client
       href: https://www.apollographql.com/docs/react/
