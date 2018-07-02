@@ -36,7 +36,7 @@ const resolvers = {
   },
   Mutation: {
     async singleUpload(parent, { upload }) {
-      const { stream, filename, mimetype, encoding } = await upload
+      const { stream, filename, mimetype, encoding } = await upload;
 
       // 1. Validate file metadata.
 
@@ -46,7 +46,7 @@ const resolvers = {
       // 3. Record the file upload in your DB.
       // const id = await recordFile( … )
 
-      return { id, filename, mimetype, encoding }
+      return { id, filename, mimetype, encoding };
     }
   },
 };
@@ -92,48 +92,62 @@ npm i apollo-upload-client
 _File uploads example from the client for a single file:_
 
 ```js
-import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
-export default graphql(gql`
-  mutation($file: Upload!) {
+export const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!) {
     uploadFile(file: $file) {
       id
     }
   }
-`)(({ mutate }) => (
-  <input
-    type="file"
-    required
-    onChange={({ target: { validity, files: [file] } }) =>
-      validity.valid && mutate({ variables: { file } })
-    }
-  />
-))
+`;
+
+const uploadFile = () => {
+  return (   
+    <Mutation mutation={UPLOAD_FILE}>
+      {uploadFile => (
+        <input
+        type="file"
+        required
+        onChange={({ target: { validity, files: [file] } }) =>
+          validity.valid && uploadFile({ variables: { file } });
+        }
+      )}
+    </Mutation>
+  );
+};
 ```
 
 _File uploads example from the client for multiple files:_
 
 ```js
-import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
-export default graphql(gql`
-  mutation($files: [Upload!]!) {
-    uploadFiles(files: $files) {
+export const UPLOAD_MULTIPLE_FILES = gql`
+  mutation uploadMultipleFiles($files: [Upload!]!) {
+    uploadMultipleFiles(files: $files) {
       id
     }
   }
-`)(({ mutate }) => (
-  <input
-    type="file"
-    multiple
-    required
-    onChange={({ target: { validity, files } }) =>
-      validity.valid && mutate({ variables: { files } })
-    }
-  />
-))
+`;
+
+const uploadMultipleFiles = () => {
+  return (   
+    <Mutation mutation={UPLOAD_MULTIPLE_FILES}>
+      {uploadFile => (
+        <input
+        type="file"
+        multiple
+        required
+        onChange={({ target: { validity, files } }) =>
+          validity.valid && uploadMultipleFiles({ variables: { files } });
+        }
+      )}
+    </Mutation>
+  );
+};
 ```
 
 **Jayden Seric**, author of [apollo-upload-client](https://github.com/jaydenseric/apollo-upload-client) has [an example app on GitHub](https://github.com/jaydenseric/apollo-upload-examples/tree/master/app). It's a web app using [Next.js](https://github.com/zeit/next.js/), [react-apollo](https://github.com/apollographql/react-apollo), and [apollo-upload-client](https://github.com/jaydenseric/apollo-upload-client).
