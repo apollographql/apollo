@@ -12,13 +12,17 @@ sidebar_categories:
     - fundamentals/benefits
     - fundamentals/tips
   Guides:
-    - guides/schema-design
-    - guides/versioning
+   
     - guides/security
-    - guides/access-control
+    - guides/versioning
     - guides/monitoring
-    - guides/state-mgmt
+    - guides/performance
+    - guides/file-uploads
+    - guides/schema-design
+    - guides/access-control
+    - guides/state-management
     - guides/testing-react-components
+
   Documentation:
     - title: Apollo Client
       href: https://www.apollographql.com/docs/react/
