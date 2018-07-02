@@ -3,7 +3,7 @@ title: File uploads
 description: Implementing file uploads in GraphQL apps
 ---
 
-File uploads are a requirement for many applications. Apollo Server supports the [GraphQL multipart request spec](https://github.com/jaydenseric/graphql-multipart-request-spec) for uploading files as mutation arguments using [apollo-upload-server](https://github.com/jaydenseric/apollo-upload-server).
+File uploads are a requirement for many applications. Apollo Server supports the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec) for uploading files as mutation arguments using [apollo-upload-server](https://github.com/jaydenseric/apollo-upload-server).
 
 ## File upload with default options
 
@@ -74,7 +74,7 @@ The `Upload` type automatically added to the schema by Apollo Server resolves an
 
 ### File upload options
 
-There are several file upload options that you can pass into the Apollo Server constructor. They are:
+The `ApolloServer` constructor supports the following configuration properties. They are:
 
 - `maxFieldSize`: represents allowed non-file multipart form field size in bytes.
 - `maxFileSize`: represents the allowed file size in bytes.
@@ -83,10 +83,10 @@ There are several file upload options that you can pass into the Apollo Server c
 
 ## Client setup 
 
-File uploads might not happen from the terminal every time. In most cases, there's always a client with an intuitive UI that users can interact with to upload files. From the client side, you need to install the `apollo-upload-client` package. It enhances Apollo Client for intuitive file uploads via GraphQL mutations.
+From the client side, you need to install the `apollo-upload-client` package. It enables file uploads via GraphQL mutations.
 
 ```sh
-npm i apollo-upload-client
+npm install apollo-upload-client
 ```
 
 _File uploads example from the client for a single file:_
