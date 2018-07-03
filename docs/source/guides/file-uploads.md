@@ -40,7 +40,7 @@ const resolvers = {
 
       // 1. Validate file metadata.
 
-      // 2. Stream file contents into cloud storage:
+      // 2. Stream file contents into local filesystem or cloud storage:
       // https://nodejs.org/api/stream.html
 
       // 3. Record the file upload in your DB.
@@ -113,6 +113,7 @@ const uploadFile = () => {
         onChange={({ target: { validity, files: [file] } }) =>
           validity.valid && uploadFile({ variables: { file } });
         }
+      />
       )}
     </Mutation>
   );
@@ -144,10 +145,38 @@ const uploadMultipleFiles = () => {
         onChange={({ target: { validity, files } }) =>
           validity.valid && uploadMultipleFiles({ variables: { files } });
         }
+       />
       )}
     </Mutation>
   );
 };
 ```
+
+_Blob example from the client:_
+
+```js
+import gql from 'graphql-tag'
+
+// Apollo Client instance
+import client from './apollo'
+
+const file = new Blob(['Foo.'], { type: 'text/plain' })
+
+// Optional, defaults to `blob`
+file.name = 'bar.txt'
+
+client.mutate({
+  mutation: gql`
+    mutation($file: Upload!) {
+      uploadFile(file: $file) {
+        id
+      }
+    }
+  `,
+  variables: { file }
+})
+```
+
+Use [FileList](https://developer.mozilla.org/en/docs/Web/API/FileList), [File](https://developer.mozilla.org/en/docs/Web/API/File), [Blob](https://developer.mozilla.org/en/docs/Web/API/Blob) instances anywhere within query or mutation input variables to send a GraphQL multipart request.
 
 **Jayden Seric**, author of [apollo-upload-client](https://github.com/jaydenseric/apollo-upload-client) has [an example app on GitHub](https://github.com/jaydenseric/apollo-upload-examples/tree/master/app). It's a web app using [Next.js](https://github.com/zeit/next.js/), [react-apollo](https://github.com/apollographql/react-apollo), and [apollo-upload-client](https://github.com/jaydenseric/apollo-upload-client).
