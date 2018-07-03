@@ -40,7 +40,7 @@ const resolvers = {
 
       // 1. Validate file metadata.
 
-      // 2. Stream file contents into cloud storage:
+      // 2. Stream file contents into local filesystem or cloud storage:
       // https://nodejs.org/api/stream.html
 
       // 3. Record the file upload in your DB.
