@@ -32,7 +32,7 @@ const client = new ApolloClient({
 });
 ```
 
-> Note: using `apollo-link-persisted-query` requires migrating from [apollo-boost](https://www.apollographql.com/docs/react/advanced/boost-migration.html):
+> Note: Users of `apollo-boost` must [migrate to `apollo-client`](https://www.apollographql.com/docs/react/advanced/boost-migration.html) in order to use the `apollo-link-persisted-queries` package.
 
 Inside Apollo Server, the query registry is stored in a user-configurable cache. By default, Apollo Server uses a in-memory cache. This can be configured inside of the `ApolloServer` constructor:
 
