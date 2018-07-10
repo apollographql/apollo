@@ -7,7 +7,7 @@ File uploads are a requirement for many applications. Apollo Server supports the
 
 ## File upload with default options
 
-Apollo Server automatically adds the `Upload` scalar to the schema, so any existing declaration of `scalar Upload` in the schema should be removed.
+Apollo Server automatically adds the `Upload` scalar to the schema when you are not setting the schema manually.
 
 ```js
 const { ApolloServer, gql } = require('apollo-server');
@@ -35,8 +35,8 @@ const resolvers = {
     }
   },
   Mutation: {
-    async singleUpload(parent, { upload }) {
-      const { stream, filename, mimetype, encoding } = await upload;
+    async singleUpload(parent, { file }) {
+      const { stream, filename, mimetype, encoding } = await file;
 
       // 1. Validate file metadata.
 
@@ -46,7 +46,7 @@ const resolvers = {
       // 3. Record the file upload in your DB.
       // const id = await recordFile( … )
 
-      return { id, filename, mimetype, encoding };
+      return { stream, filename, mimetype, encoding };
     }
   },
 };
@@ -54,6 +54,65 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+## File upload with schema param
+
+In a situation where a schema is set manually using `makeExecutableSchema` and passed to the `ApolloServer` constructor using the schema params, add the `Upload` scalar to the type definitions and `Upload` to the resolver as shown in the example below:
+
+```js
+const { ApolloServer, makeExecutableSchema, gql, GraphQLUpload } = require('apollo-server');
+
+const typeDefs = gql`
+  scalar Upload
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
+  type Query {
+    uploads: [File]
+  }
+
+  type Mutation {
+    singleUpload(file: Upload!): File!
+  }
+`;
+
+const resolvers = {
+  Upload: GraphQLUpload,
+  Query: {
+    files: () => {
+      // Return the record of files uploaded from your DB or API or filesystem.
+    }
+  },
+  Mutation: {
+    async singleUpload(parent, { file }) {
+      const { stream, filename, mimetype, encoding } = await file;
+
+      // 1. Validate file metadata.
+
+      // 2. Stream file contents into local filesystem or cloud storage:
+      // https://nodejs.org/api/stream.html
+
+      // 3. Record the file upload in your DB.
+      // const id = await recordFile( … )
+
+      return { stream, filename, mimetype, encoding };
+    }
+  },
+};
+
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+const server = new ApolloServer({
+  schema,
 });
 
 server.listen().then(({ url }) => {
@@ -81,7 +140,7 @@ The `ApolloServer` constructor supports the following configuration properties. 
 - `maxFiles`: represents the allowed number of files. It can accept as many files as possible.
 
 
-## Client setup 
+## Client setup
 
 From the client side, you need to install the `apollo-upload-client` package. It enables file uploads via GraphQL mutations.
 
@@ -98,13 +157,13 @@ import { Mutation } from 'react-apollo';
 export const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {
     uploadFile(file: $file) {
-      id
+      filename
     }
   }
 `;
 
 const uploadFile = () => {
-  return (   
+  return (
     <Mutation mutation={UPLOAD_FILE}>
       {uploadFile => (
         <input
@@ -129,13 +188,13 @@ import { Mutation } from 'react-apollo';
 export const UPLOAD_MULTIPLE_FILES = gql`
   mutation uploadMultipleFiles($files: [Upload!]!) {
     uploadMultipleFiles(files: $files) {
-      id
+      filename
     }
   }
 `;
 
 const uploadMultipleFiles = () => {
-  return (   
+  return (
     <Mutation mutation={UPLOAD_MULTIPLE_FILES}>
       {uploadFile => (
         <input
@@ -169,7 +228,7 @@ client.mutate({
   mutation: gql`
     mutation($file: Upload!) {
       uploadFile(file: $file) {
-        id
+        filename
       }
     }
   `,
