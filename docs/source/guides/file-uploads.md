@@ -35,8 +35,8 @@ const resolvers = {
     }
   },
   Mutation: {
-    async singleUpload(parent, { upload }) {
-      const { stream, filename, mimetype, encoding } = await upload;
+    async singleUpload(parent, { file }) {
+      const { stream, filename, mimetype, encoding } = await file;
 
       // 1. Validate file metadata.
 
@@ -46,7 +46,7 @@ const resolvers = {
       // 3. Record the file upload in your DB.
       // const id = await recordFile( … )
 
-      return { id, filename, mimetype, encoding };
+      return { stream, filename, mimetype, encoding };
     }
   },
 };
@@ -81,7 +81,7 @@ The `ApolloServer` constructor supports the following configuration properties. 
 - `maxFiles`: represents the allowed number of files. It can accept as many files as possible.
 
 
-## Client setup 
+## Client setup
 
 From the client side, you need to install the `apollo-upload-client` package. It enables file uploads via GraphQL mutations.
 
@@ -98,13 +98,13 @@ import { Mutation } from 'react-apollo';
 export const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {
     uploadFile(file: $file) {
-      id
+      filename
     }
   }
 `;
 
 const uploadFile = () => {
-  return (   
+  return (
     <Mutation mutation={UPLOAD_FILE}>
       {uploadFile => (
         <input
@@ -129,13 +129,13 @@ import { Mutation } from 'react-apollo';
 export const UPLOAD_MULTIPLE_FILES = gql`
   mutation uploadMultipleFiles($files: [Upload!]!) {
     uploadMultipleFiles(files: $files) {
-      id
+      filename
     }
   }
 `;
 
 const uploadMultipleFiles = () => {
-  return (   
+  return (
     <Mutation mutation={UPLOAD_MULTIPLE_FILES}>
       {uploadFile => (
         <input
@@ -169,7 +169,7 @@ client.mutate({
   mutation: gql`
     mutation($file: Upload!) {
       uploadFile(file: $file) {
-        id
+        filename
       }
     }
   `,
