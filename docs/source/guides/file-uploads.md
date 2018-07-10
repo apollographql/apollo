@@ -7,7 +7,7 @@ File uploads are a requirement for many applications. Apollo Server supports the
 
 ## File upload with default options
 
-Apollo Server automatically adds the `Upload` scalar to the schema, if the schema parameter is not set explicitly in the `ApolloServer` constructor.
+Apollo Server automatically adds the `Upload` scalar to the schema when you are not setting the schema manually.
 
 ```js
 const { ApolloServer, gql } = require('apollo-server');
