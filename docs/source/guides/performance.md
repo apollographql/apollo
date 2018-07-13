@@ -117,7 +117,7 @@ type Author @cacheControl(maxAge: 60) {
 }
 ```
 
-See [the cache control documentation](https://github.com/apollographql/apollo-cache-control-js#add-cache-hints-to-your-schema) for more details, including how to specify hints dynamically inside resolvers, how to set a default `maxAge` for all fields, and how to specify that a field should be cached for specific users only (in which case CDNs should ignore it). For example, to set a default max age other than 0 modify the Apollo Server constructor to include `cacheControl`:
+See [the cache control documentation](https://github.com/apollographql/apollo-cache-control-js#add-cache-hints-to-your-schema) for more details, including how to specify hints dynamically inside resolvers, how to set a default `maxAge` for all fields, and how to specify that a field should be cached for specific users only (in which case CDNs should ignore it). For example, to set a default max age other than `0` modify the Apollo Server constructor to include `cacheControl`:
 
 ```js
 const server = new ApolloServer({
