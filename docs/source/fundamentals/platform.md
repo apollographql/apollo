@@ -11,11 +11,11 @@ We’ll start by discussing the basics of GraphQL and Apollo and move into conce
 
 ## What is GraphQL?
 
-Fundamentally, GraphQL is a specification which defines concepts that enable a more structured data experience for products and teams alike.  It enables data from multiple sources to be unified into a single, strongly-typed API which can evolve over time and is easy for both humans and computers to explore.
+Fundamentally, GraphQL is a specification which defines concepts that enable a more structured data experience for products and teams alike. It enables data from multiple sources to be unified into a single, strongly-typed API which can evolve over time and is easy for both humans and computers to explore.
 
 GraphQL is also a movement by the open-source developer community to gain control over an increasingly complicated data horizon which needs better organization, more flexibility, easier tooling and scalable operations.
 
-More than anything, GraphQL is an entire ecosystem.  Apollo has embraced the brilliance of GraphQL and intends to propel the community forward by presenting it in the most approachable way possible.
+More than anything, GraphQL is an entire ecosystem. Apollo has embraced the brilliance of GraphQL and intends to propel the community forward by presenting it in the most approachable way possible.
 
 ## What is Apollo?
 

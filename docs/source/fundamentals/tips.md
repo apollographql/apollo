@@ -21,17 +21,17 @@ APIs change as the products that use them evolve, and their ideal structure is u
 
 Luckily, the GraphQL Schema Definition Language (SDL) focuses on the shape of the data and not the actual implementation. This allows product teams to be the ideal custodians of their own GraphQL schemas.
 
-Having product teams own the GraphQL schema for their products allows the schema to act as an API contract within the team, and enhances intra-team communication by providing clearly defined expectations.  These teams can utilize schema-driven development to divide back-end and front-end work, mocking various parts of the API until full functionality is achieved, while remaining confident that they will arrive back at a unified solution.
+Having product teams own the GraphQL schema for their products allows the schema to act as an API contract within the team, and enhances intra-team communication by providing clearly defined expectations. These teams can utilize schema-driven development to divide back-end and front-end work, mocking various parts of the API until full functionality is achieved, while remaining confident that they will arrive back at a unified solution.
 
-Organizations looking to offer a single API endpoint can assemble the individual product schemas, managed by individual product teams, into a monolithic API. This can be achieved by stitching the various schemas together.
+Organizations looking to offer a single API endpoint can assemble the individual product schemas, managed by individual product teams, into a monolithic API. This can be achieved by "stitching" the various schemas together.
 
 <h2 id="performance">Monitor GraphQL performance</h2>
 
 An API implemented using GraphQL allows developers to query for the exact information they desire, and nothing more.  With proper visibility into how the API performs, developers can understand the implications adding or removing fields can have on the overall performance of their queries.
 
-Apollo Engine is a GraphQL schema management and monitoring tool which provides insight into how a GraphQL API is behaving, and can proactively notify teams of degraded performance.
+Apollo Engine is a GraphQL schema management and monitoring tool which provides insight into how a GraphQL API behaves, and can proactively notify teams of degraded performance.
 
-When using Apollo Server with Apollo Engine, queries and mutations are enhanced with field-level tracing data.  This helps power views in Apollo Engine that show how removing a field from a query might speed up a particular component,  or conversely, how adding a seemingly innocent field might actually do more harm than good!
+When using Apollo Server with Apollo Engine, queries and mutations are enhanced with field-level tracing data. This helps power views in Apollo Engine that show how removing a field from a query might speed up a particular component,  or conversely, how adding a seemingly innocent field might actually do more harm than good!
 
 <img src="../images/tips-apollo-engine-trace.png" />
 
@@ -45,8 +45,8 @@ Facebook's reference implementation has been written in JavaScript since its ori
 
 While existing back-end systems might already be implemented in other languages, a thin JavaScript-based GraphQL implementation can fit nicely in front of these systems. Due to the on-going active maintenance of JavaScript based GraphQL implementations, adopting an approach like this can help bring the latest GraphQL features to your existing infrastructure. [Apollo Server](/docs/apollo-server/v2/) is a great fit here as it makes handling advanced aspects of the GraphQL ecosystem, such as cache control and tracing, very straightforward to implement. Apollo Server is also continually kept up-to-date with the latest GraphQL features.
 
-Building a GraphQL server in JavaScript also makes it easy to operate at "the edge", where JavaScript is the language of choice, to leverage powerful CDN solutions to deliver data to clients as efficiently as possible - including powerful caching and network optimizations.
+Building a GraphQL server in JavaScript also makes it easy to operate at "the edge", where JavaScript is the language of choice, to leverage powerful CDN solutions to deliver data to clients as efficiently as possible––including powerful caching and network optimizations.
 
-Since many front-end developers are already using JavaScript to implement the interfaces that consume data from back-end APIs, building a GraphQL API in JavaScript enables those same developers to make meaningful contributions to the APIs they're utilizing.
+Since many front-end developers are as of now utilizing JavaScript to implement the interfaces that consume data from back-end APIs, building a GraphQL API in JavaScript empowers those same developers to make meaningful contributions to the APIs they're utilizing.
 
 While JavaScript GraphQL libraries do see the most active development and latest features, another strong advantage is the extra approachability and deployment options that come from using one of the most popular programming languages on the Internet.
