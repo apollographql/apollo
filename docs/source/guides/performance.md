@@ -90,20 +90,13 @@ A great application for APQ is running Apollo Server behind a CDN. Many CDNs onl
 The mechanism is based on a lightweight protocol extension between Apollo Client and Apollo Server. It works as follows:
 
 - When the client makes a query, it will optimistically send a short (64-byte) cryptographic hash instead of the full query text.
-- *Optimized Path:* If a request containing a persisted query hash is detected, Apollo Server will look it up to find a corresponding query in its registry. Upon finding a match, Apollo Server will expand the request with the full text of the query and execute it.
-- *New Query Path:* In the unlikely event that the query is not already in the Apollo Server registry (this only happens the very first time that Apollo Server sees a query), it will ask the client to resend the request using the full text of the query. At that point Apollo Server will store the query / hash mapping in the registry for all subsequent requests to benefit from.
+- **Optimized Path:** If a request containing a persisted query hash is detected, Apollo Server will look it up to find a corresponding query in its registry. Upon finding a match, Apollo Server will expand the request with the full text of the query and execute it.
 
-<div align="center">
-<h3 id="Optimized-Path">**Optimized Path**</h3>
-</div>
+  <img src="../images/persistedQueries.optPath.png" width="80%" style="margin: 5%" alt="Optimized Path">
 
-![Optimized path](../images/persistedQueries.optPath.png)
+- **New Query Path:** In the unlikely event that the query is not already in the Apollo Server registry (this only happens the very first time that Apollo Server sees a query), it will ask the client to resend the request using the full text of the query. At that point Apollo Server will store the query / hash mapping in the registry for all subsequent requests to benefit from.
 
-<div align="center">
-<h3 id="New-Query-Path">**New Query Path**</h3>
-</div>
-
-![New query path](../images/persistedQueries.newPath.png)
+  <img src="../images/persistedQueries.newPath.png" width="80%" style="margin: 5%;" alt="New Query Path">
 
 <h2 id="cdn">CDN Integration</h2>
 
