@@ -7,8 +7,7 @@ A common challenge that developers experience as they build products is how quic
 
 This guide details some practices around enhancing network performance which will help bring data closer to your clients.
 
-
-## Automatic Persisted Queries
+<h2 id="automatic-persisted-queried">Automatic Persisted Queries</h2>
 
 The size of individual GraphQL query strings can be a major pain point. Apollo Server allows implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#get).
 
@@ -106,7 +105,7 @@ The mechanism is based on a lightweight protocol extension between Apollo Client
 
 ![New query path](../images/persistedQueries.newPath.png)
 
-## CDN Integration
+<h2 id="cdn">CDN Integration</h2>
 
 Content-delivery networks such as [fly.io](https://fly.io), [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) allow content caching close to clients, delivering data with low latency from a nearby server. Apollo Server makes it straightforward to use CDNs with GraphQL queries to cache full responses while still executing more dynamic queries.
 
