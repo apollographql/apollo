@@ -102,7 +102,7 @@ The mechanism is based on a lightweight protocol extension between Apollo Client
 
 Content Delivery Networks (CDNs) such as [fly.io](https://fly.io), [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) allow content caching close to clients, delivering data with low latency from a nearby server. Apollo Server makes it straightforward to use CDNs with GraphQL queries to cache full responses while still executing more dynamic queries.
 
-To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](./apq.html) to ensure that GraphQL requests are in a format that a CDN can understand.
+To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](#automatic-persisted-queried) to ensure that GraphQL requests are in a format that a CDN can understand.
 
 <h3 id="cache-hints" title="1. Add cache hints">Step 1: Add cache hints to the GraphQL schema</h3>
 
