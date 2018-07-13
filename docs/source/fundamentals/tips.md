@@ -3,9 +3,9 @@ title: Tips for success
 description: Your starting point for learning GraphQL and Apollo
 ---
 
-While you can get started with Apollo and GraphQL in less than ten minutes, how do you go from hello world to production? There are some very important decisions surrounding schema design, authorization, and state management that you'll have to make early on in your journey to deliver a successful Apollo GraphQL implementation.  The Apollo team has been working with and on production GraphQL based projects for quite some time now, and has run into just about every gotcha and pitfall you can imagine happening. Over the past couple of years we've honed our GraphQL skills based on hard won experience, and a continuous desire to keep pushing this wonderful technology forward.
+While you can get started with Apollo and GraphQL in less than ten minutes, how do you go from hello world to production? There are some very important decisions surrounding schema design, authorization, and state management that you'll have to make early on in your journey to deliver a successful Apollo GraphQL implementation. The Apollo team has been working with and on production GraphQL based projects for quite some time now, and has run into just about every gotcha and pitfall you can imagine happening. Over the past couple of years we've honed our GraphQL skills based on hard won experience, and a continuous desire to keep pushing this wonderful technology forward.
 
-This section outlines essential tips we consider to be a necessity for any successful Apollo GraphQL project.  These tips have been battle tested in production by ourselves, as well as the Apollo community and our enterprise partners.
+This section outlines essential tips we consider to be a necessity for any successful Apollo GraphQL project. These tips have been battle tested in production by ourselves, as well as the Apollo community and our enterprise partners.
 
 <h2 id="incremental-adoption">Incremental adoption</h2>
 
@@ -23,7 +23,7 @@ Luckily, the GraphQL Schema Definition Language (SDL) focuses on the shape of th
 
 Having product teams own the GraphQL schema for their products allows the schema to act as an API contract within the team, and enhances intra-team communication by providing clearly defined expectations.  These teams can utilize schema-driven development to divide back-end and front-end work, mocking various parts of the API until full functionality is achieved, while remaining confident that they will arrive back at a unified solution.
 
-Organizations looking to offer a single API endpoint can assemble the individual product schemas, managed by individual product teams, into a monolithic API. This can be achieved by “stitching” the various schemas together.
+Organizations looking to offer a single API endpoint can assemble the individual product schemas, managed by individual product teams, into a monolithic API. This can be achieved by stitching the various schemas together.
 
 <h2 id="performance">Monitor GraphQL performance</h2>
 

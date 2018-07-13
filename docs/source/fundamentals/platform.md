@@ -33,7 +33,7 @@ While the GraphQL specification was first made public by Facebook in 2015, Graph
 
 At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques and now use it to power critical infrastructure.  Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
 
-In addition to our own experience, we have received extensive feedback, contributions and support from enterprise customers who are actively using Apollo GraphQL in production.  A few of our most public and notable case-studies are:
+In addition to our own experience, we have received extensive feedback, contributions and support from enterprise customers who are actively using Apollo GraphQL in production. A few of our most public and notable case-studies are:
 
 - [**The New York Times**](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c): Learn how The New York Times switched from Relay to Apollo & implemented features in their app such as SSR and persisted queries.
 - [**Airbnb**](https://medium.com/airbnb-engineering/reconciling-graphql-and-thrift-at-airbnb-a97e8d290712): Airbnb is betting big on the Apollo platform to power the data layer for their microservices.
