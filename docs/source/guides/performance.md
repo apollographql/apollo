@@ -83,7 +83,7 @@ curl -g 'http://localhost:4000/?extensions={"persistedQuery":{"version":1,"sha25
 
 <h3 id="get">Using GET requests with APQ to enable CDNs</h3>
 
-A great application for APQ is running Apollo Server behind a CDN. Many CDNs only cache GET requests, but many GraphQL queries are too long to fit comfortably in a cacheable GET request.  When the APQ link is created with `createPersistedQueryLink({useGETForHashedQueries: true})`, Apollo Client automatically sends the short hashed queries as GET requests allowing a CDN to serve those request. For full-length queries and for all mutations, Apollo Client will continue to use POST requests. For more about this pattern, read about how [Apollo Server provides cache information to CDNs]().
+A great application for APQ is running Apollo Server behind a CDN. Many CDNs only cache GET requests, but many GraphQL queries are too long to fit comfortably in a cacheable GET request.  When the APQ link is created with `createPersistedQueryLink({useGETForHashedQueries: true})`, Apollo Client automatically sends the short hashed queries as GET requests allowing a CDN to serve those request. For full-length queries and for all mutations, Apollo Client will continue to use POST requests.
 
 <h3 id="how-it-works">How it works</h3>
 
