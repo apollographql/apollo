@@ -5,7 +5,7 @@ description: How Apollo helps you go from zero to production with GraphQL
 
 The Apollo GraphQL data platform simplifies the data-layer within organizations, helps teams work more effortlessly with data from a variety of sources, and allows products to evolve faster.
 
-The more technical benefits of GraphQL adoption are well-documented in other areas of this documentation, however this “Fundamentals” section will focus on explaining pre-adoption recommendations which have been guided by Apollo’s many years of first-hand experiences working with everything from single-person apps to enterprise deployments.
+The more technical benefits of GraphQL adoption are well-documented in other areas of this documentation, however this **Fundamentals** section will focus on explaining pre-adoption recommendations which have been guided by Apollo’s many years of first-hand experiences working with everything from single-person apps to enterprise deployments.
 
 We’ll start by discussing the basics of GraphQL and Apollo and move into concepts, mindsets and tips which will help ensure a successful GraphQL story for those that follow it.
 
