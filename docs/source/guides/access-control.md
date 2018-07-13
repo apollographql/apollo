@@ -39,7 +39,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-So what’s happening here, exactly? This block of code is setting up a new GraphQL server, using the beta of Apollo Server 2.0. This new version of Apollo Server simplifies the API for creating new servers, and has some more intelligent defaults. You can read more about it [here](https://dev-blog.apollodata.com/apollo-server-2-0-30c9bbb4ab5e)!
+So what’s happening here, exactly? This block of code is setting up a new GraphQL server, using the beta of Apollo Server 2.0. This new version of Apollo Server simplifies the API for creating new servers, and has some more intelligent defaults. You can read more about it [here](https://blog.apollographql.com/apollo-server-2-0-30c9bbb4ab5e)!
 
 In this constructor, we pass type definitions and resolvers to the constructor as well as a function to build our `context` object. The `context` object is one that gets passed to every single resolver at every level, so we can access it anywhere in our schema code. It’s where we can store things like data fetchers, database connections, and (conveniently) information about the user making the request.
 
@@ -222,7 +222,7 @@ const typeDefs = `
 
 The `@auth` directive can be called directly on the type, or on the fields if you want to limit access to specific fields as shown in the example above. The logic behind authorization is hidden away in the directive implementation. 
 
-One way of implementing the `@auth` directive is via the [SchemaDirectiveVisitor](https://www.apollographql.com/docs/graphql-tools/schema-directives.html) class from [graphql-tools](https://github.com/apollographql/graphql-tools). Ben Newman covered creating a sample `@deprecated` and `@rest` directive in this [excellent article](https://dev-blog.apollodata.com/reusable-graphql-schema-directives-131fb3a177d1). You can draw inspiration from these examples.
+One way of implementing the `@auth` directive is via the [SchemaDirectiveVisitor](https://www.apollographql.com/docs/graphql-tools/schema-directives.html) class from [graphql-tools](https://github.com/apollographql/graphql-tools). Ben Newman covered creating a sample `@deprecated` and `@rest` directive in this [excellent article](https://blog.apollographql.com/reusable-graphql-schema-directives-131fb3a177d1). You can draw inspiration from these examples.
 
 
 <h2 id="rest-auth">Authorization outside of GraphQL</h2>
