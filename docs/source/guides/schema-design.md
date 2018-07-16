@@ -11,7 +11,7 @@ This article details some practices around schema design which will help you des
 
 GraphQL schemas are at their best when they are designed around the needs of client applications.  When a team is building their first GraphQL schema, they might be tempted to create literal mappings on top of existing database collections or tables using CRUD-like root fields. While this literal database-to-schema mapping may be a fast way to get up and running, we strongly suggest avoiding it and instead building the schema around based on how the GraphQL API will be used by the front-end.
 
-If a database has has fields or relationships that the client doesn't yet need, don’t include them in the schema up front. Adding fields later is much easier than removing them, so add fields to your API as your clients need them rather than exposing all of the possible data up front. This is especially useful because GraphQL allows you to create associations between your data that don't exist in the underlying data, enabling you to move complex data manipulation logic out of your clients.
+If a database has fields or relationships that the client doesn't yet need, don’t include them in the schema up front. Adding fields later is much easier than removing them, so add fields to your API as your clients need them rather than exposing all of the possible data up front. This is especially useful because GraphQL allows you to create associations between your data that don't exist in the underlying data, enabling you to move complex data manipulation logic out of your clients.
 
 For example, let's say you want to create a view that lists some events, their locations, and the weather at that location. In that case, you might want to do a query like this:
 
