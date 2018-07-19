@@ -7,7 +7,7 @@ A common challenge that developers experience as they build products is how quic
 
 This guide details some practices around enhancing network performance which will help bring data closer to your clients.
 
-<h2 id="automatic-persisted-queried">Automatic Persisted Queries</h2>
+<h2 id="automatic-persisted-queries">Automatic Persisted Queries</h2>
 
 The size of individual GraphQL query strings can be a major pain point. Apollo Server allows implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#get).
 
