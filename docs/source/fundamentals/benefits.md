@@ -41,7 +41,7 @@ const client = new ApolloClient({
 });
 ```
 
-Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://dev-blog.apollodata.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
+Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://blog.apollographql.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
 
 <h3 id="modern-tooling">Modern tooling</h3>
 
