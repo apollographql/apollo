@@ -39,7 +39,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-So what’s happening here, exactly? This block of code is setting up a new GraphQL server, using the beta of Apollo Server 2.0. This new version of Apollo Server simplifies the API for creating new servers, and has some more intelligent defaults. You can read more about it [here](https://blog.apollographql.com/apollo-server-2-0-30c9bbb4ab5e)!
+So what’s happening here, exactly? This block of code is setting up a new GraphQL server, using Apollo Server 2.0. This new version of Apollo Server simplifies the API for creating new servers, and has some more intelligent defaults. You can read more about it [here](https://blog.apollographql.com/apollo-server-2-0-30c9bbb4ab5e)!
 
 In this constructor, we pass type definitions and resolvers to the constructor as well as a function to build our `context` object. The `context` object is one that gets passed to every single resolver at every level, so we can access it anywhere in our schema code. It’s where we can store things like data fetchers, database connections, and (conveniently) information about the user making the request.
 
