@@ -20,9 +20,9 @@ Everyone has questions about how to properly set up a GraphQL schema, but not al
 
 GraphQL can make a difference in nearly every area of development: from improving developer experience with quality tooling to improving client performance by reducing bundle sizes. Read more about the benefits of GraphQL [here](../fundamentals/benefits.html).
 
-#### Where can I learn the basics of GraphQL?
+#### Where can I learn GraphQL?
 
-[TODO]()
+There are a number of resources available to learn GraphQL. If you're looking to get started learning the basics, check out [GraphQL.org](https://graphql.org). To get started with `apollo-server`, a production-ready graphql server, check out the [getting started](https://www.apollographql.com/docs/apollo-server/getting-started.html) guide. For `react-apollo`, the React integration for apollo-client, read [this guide](https://www.apollographql.com/docs/react/essentials/get-started.html). For more advanced topics, the guides on this site and the [Apollo blog](https://blog.apollographql.com) are great places to learn and keep up with the latest developments.
 
 #### How can I host my schema online?
 
