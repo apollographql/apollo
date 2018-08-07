@@ -62,7 +62,7 @@ To do this kind of authorization, we can just modify the context function.
 ```js
 context: ({ req }) => {
  // get the user token from the headers
- const token = req.headers.authentication || '';
+ const token = req.headers.authorization || '';
 
  // try to retrieve a user with the token
  const user = getUser(token);
