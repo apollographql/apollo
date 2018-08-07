@@ -7,7 +7,7 @@ A common challenge that developers experience as they build products is how quic
 
 This guide details some practices around enhancing network performance which will help bring data closer to your clients.
 
-<h2 id="automatic-persisted-queried">Automatic Persisted Queries</h2>
+<h2 id="automatic-persisted-queries">Automatic Persisted Queries</h2>
 
 The size of individual GraphQL query strings can be a major pain point. Apollo Server allows implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#get).
 
@@ -37,7 +37,7 @@ Inside Apollo Server, the query registry is stored in a user-configurable cache.
 
 ```js
 const { MemcachedCache } = require('apollo-server-memcached');
-const { ApolloServe } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 
 const server = new ApolloServer({
   typeDefs,
@@ -83,7 +83,7 @@ curl -g 'http://localhost:4000/?extensions={"persistedQuery":{"version":1,"sha25
 
 <h3 id="get">Using GET requests with APQ to enable CDNs</h3>
 
-A great application for APQ is running Apollo Server behind a CDN. Many CDNs only cache GET requests, but many GraphQL queries are too long to fit comfortably in a cacheable GET request.  When the APQ link is created with `createPersistedQueryLink({useGETForHashedQueries: true})`, Apollo Client automatically sends the short hashed queries as GET requests allowing a CDN to serve those request. For full-length queries and for all mutations, Apollo Client will continue to use POST requests. For more about this pattern, read about how [Apollo Server provides cache information to CDNs]().
+A great application for APQ is running Apollo Server behind a CDN. Many CDNs only cache GET requests, but many GraphQL queries are too long to fit comfortably in a cacheable GET request.  When the APQ link is created with `createPersistedQueryLink({useGETForHashedQueries: true})`, Apollo Client automatically sends the short hashed queries as GET requests allowing a CDN to serve those request. For full-length queries and for all mutations, Apollo Client will continue to use POST requests.
 
 <h3 id="how-it-works">How it works</h3>
 
@@ -102,7 +102,7 @@ The mechanism is based on a lightweight protocol extension between Apollo Client
 
 Content Delivery Networks (CDNs) such as [fly.io](https://fly.io), [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) allow content caching close to clients, delivering data with low latency from a nearby server. Apollo Server makes it straightforward to use CDNs with GraphQL queries to cache full responses while still executing more dynamic queries.
 
-To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](./apq.html) to ensure that GraphQL requests are in a format that a CDN can understand.
+To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](#automatic-persisted-queried) to ensure that GraphQL requests are in a format that a CDN can understand.
 
 <h3 id="cache-hints" title="1. Add cache hints">Step 1: Add cache hints to the GraphQL schema</h3>
 
