@@ -5,13 +5,6 @@ description: Common questions asked at each stage of GraphQL adoption
 
 Everyone has questions about how to properly set up a GraphQL schema, but not all questions are alike. In different stages of development, different things matter. This guide will questions that people commonly have have at every step along the journey to GraphQL in production.
 
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-
 ## Learning GraphQL
 
 > People in this phase are just beginning to learn GraphQL. They are trying to get a sample project up and running.
@@ -39,13 +32,6 @@ There are many tools available to connect any kind of client to a schema. The mo
 
 For Apollo Client projects, there are also many view-layer integrations, to make querying GraphQL schemas easier in [React](https://www.apollographql.com/docs/react/essentials/get-started.html), [Vue](https://github.com/Akryum/vue-apollo), and [Angular](https://www.apollographql.com/docs/angular/).
 
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-
 ## Building a proof of concept
 
 > People in this phase understand how GraphQL works, and what benefits it offers. They are trying to create a proof of concept for their projects or their company to test GraphQL's viability in production
@@ -69,13 +55,6 @@ As with any service, it's important to track errors and their causes. There are 
 GraphQL is resilient to some of these errors. Since the schema is strongly typed, the designer has the ability to restrict what type of data users can enter and what type the resolvers can return. This type system catches many errors, and requires no manual checks.
 
 For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Engine](https://www.apollographql.com/engine) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
-
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
 
 ## Moving a feature to GraphQL
 
@@ -107,13 +86,6 @@ Many apps and sites are powered almost completely by an API such as a GraphQL sc
 
 Engine also has a [DataDog integration](https://www.apollographql.com/docs/engine/integrations/datadog.html#Monitoring-with-Datadog) that makes integration with existing tools easier.
 
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-
 ## Moving a product to GraphQL
 
 > People in this phase have a good understanding of how to write, deploy, and monitor GraphQL in production. They are looking to scale GraphQL features to their entire product line.
@@ -131,13 +103,6 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](./versioning.html) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](https://www.npmjs.com/package/apollo) with Apollo Engine provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
-
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
 
 ## Standardizing GraphQL
 
