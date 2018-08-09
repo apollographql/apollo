@@ -44,6 +44,10 @@ For Apollo Client projects, there are also many view-layer integrations, to make
 
 > You understand how GraphQL works, and what benefits it offers. You are trying to create a proof of concept for your projects or company to test GraphQL's viability in production.
 
+#### Should I use Node.js for schema development?
+
+There are GraphQL server tools available for most popular languages, but it is recommended to use [apollo-server](https://www.apollographql.com/server), which is built on top of Node.js. Using a node.js server is beneficial, because of its ability to be run nearly anywhere (including the edge), and the wide knowledge of Node.js across development teams. Read more about why Node.js is recommended [here](../fundamentals/tips.html#javascript).
+
 #### How do I wrap existing APIs?
 
 One of the best things about GraphQL is that it works excellently with existing APIs. It's possible to connect any number of existing services to your schema.
@@ -67,6 +71,14 @@ For errors not prevented by the type system, it's helpful to know what exact que
 ## Moving a feature to GraphQL
 
 > You have decided to use GraphQL in production. You don't want to immediately refactor the APIs or apps. You want to move a single feature over to GraphQL to learn how to use it and monitor it in production.
+
+#### How should the transition to GraphQL happen?
+
+As with any large change, the adoption of GraphQL should be incremental. GraphQL allows teams to leave existing services as they are and build convenient gateways on top of them. Read more about incremental adoption of GraphQL in the [tips for success](../fundamentals/tips.html#incremental-adoption).
+
+#### Who owns the schema design?
+
+GraphQL schemas work best when their design is heavily influenced by the needs of the product developers. It's tempting to design a schema to resemble the underlying sources or databases, but this can be hurtful to the usefulness of GraphQL. Read more about schema ownership in the [tips for success](../fundamentals/tips.html#schema).
 
 #### How do I set up authentication/authorization for my GraphQL schema?
 
@@ -104,6 +116,8 @@ Engine also has some integrations to make monitoring easier. The [Slack Integrat
 
 Keeping all schema code together makes sense for smaller projects, but once a project reaches a certain size, or has many people working on it, managing conflicts in the same file and code navigation can get difficult. Splitting types and resolvers up into smaller files can make this process much easier. Read [this blog post](https://blog.apollographql.com/modularizing-your-graphql-schema-code-d7f71d5ed5f2) to learn more.
 
+<!-- TODO: @jakedawkins Add server testing -->
+
 #### How can I test my client?
 
 `react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](./testing-react-components.html) guide to learn more.
@@ -113,19 +127,3 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](./versioning.html) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](https://www.npmjs.com/package/apollo) with Apollo Engine provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
-
-## Standardizing GraphQL
-
-> You are very experienced with using GraphQL and have made the decision to try to move to GraphQL as a company-wide standard. You are interested in setting up processes and guidelines to make sure other teams with less experience will be successful.
-
-#### How should the transition to GraphQL happen?
-
-As with any large change, the adoption of GraphQL should be incremental. GraphQL allows teams to leave existing services as they are and build convenient gateways on top of them. Read more about incremental adoption of GraphQL in the [tips for success](../fundamentals/tips.html#incremental-adoption).
-
-#### Who owns the schema design?
-
-GraphQL schemas work best when their design is heavily influenced by the needs of the product developers. It's tempting to design a schema to resemble the underlying sources or databases, but this can be hurtful to the usefulness of GraphQL. Read more about schema ownership in the [tips for success](../fundamentals/tips.html#schema).
-
-#### Should we enforce Node.js for schema development?
-
-There are GraphQL server tools available for most popular languages, but it is recommended to use [apollo-server](https://www.apollographql.com/server), which is built on top of Node.js. Using a node.js server is beneficial, because of its ability to be run nearly anywhere (including the edge), and the wide knowledge of Node.js across development teams. Read more about why Node.js is recommended [here](../fundamentals/tips.html#javascript).
