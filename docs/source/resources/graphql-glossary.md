@@ -151,7 +151,7 @@ type User {
 <p>A name for a single query, mutation, or subscription. Identifying a query or mutation by name is very useful for logging and debugging when something goes wrong in a GraphQL server.</p>
 
 <h2 id="partial-query-caching">Partial query caching</h2>
-<p>A technique for caching GraphQL query inputs. This type of caching can be done in Apollo Server 2.0 with an option to configure whatever cache store is convenient for your app.</p>
+<p>A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as Data Source caching.</p>
 
 <h2 id="query">Query</h2>
 <p>An operation that makes a GET request to a GraphQL service requesting for some data. It's better known as a read-only fetch operation.</p>
@@ -237,4 +237,4 @@ subscription onCommentAdded($repoFullName: String!){
 
 
 <h2 id="whole-response-caching">Whole response caching</h2>
-<p>A technique used to cache an entire GraphQL result of a query operation. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide on how to implement this type of caching](../guides/performance.html).</p>
+<p>A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide on how to implement this type of caching](../guides/performance.html).</p>
