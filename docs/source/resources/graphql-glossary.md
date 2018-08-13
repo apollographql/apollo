@@ -242,7 +242,7 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 
 
 <h2 id="schema-first-development">Schema first development</h2>
-<p>A development approach for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.</p>
+<p>A [development approach](https://www.apollographql.com/docs/fundamentals/tips.html#schema) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.</p>
 
 
 <h2 id="schema-registry">Schema registry</h2>
