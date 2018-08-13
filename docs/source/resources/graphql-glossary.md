@@ -47,7 +47,20 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 <p>A class that encapsulates fetching data from a particular service, with built-in support for caching, deduplication, and error handling.</p>
 
 <h2 id="deferred-query">Deferred query</h2>
-<p>A declaration prefixed with an @ character that encapsulates programming logic for query execution on the client or server. There are built-in such as @skip, @include and custom directives. It can be used for features such as authentication, incremental data loading, etc.</p>
+<p>A query that has certain fields tagged with the [`@defer` directive](https://www.apollographql.com/docs/react/features/defer-support.html), so that fields that take a long time to resolve do not need to slow down the entire query.</p>
+
+```js
+query NewsFeed {
+  newsFeed {
+    stories {
+      text
+      comments @defer {
+        text
+      }
+    }
+  }
+}
+```
 
 <h2 id="directive">Directive</h2>
 <p>A declaration prefixed with an @ character that encapsulates programming logic for query execution on the client or server. There are built-in such as @skip, @include and custom directives. It can be used for features such as authentication, incremental data loading, etc.</p>
