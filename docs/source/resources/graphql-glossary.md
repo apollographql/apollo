@@ -84,6 +84,16 @@ type User {
 <h2 id="field">Field</h2>
 <p>A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.</p>
 
+```js
+type Author {
+  id: Int!
+  firstName: String
+  lastName: String
+}
+```
+
+`id`, `firstName`, and `lastName` are fields in the example above.
+
 
 <h2 id="fragment">Fragment</h2>
 <p>A selection set that can be reused in multiple query operations. A [GraphQL fragment](https://www.apollographql.com/docs/react/advanced/fragments.html) is a shared piece of query logic.</p>
@@ -163,13 +173,15 @@ const response = {
 ```
 
 <h2 id="object-type">Object Type</h2>
-<p>A form of Object with a type specifier that has fields that can fetch data from an API service, e.g User is an Object type.</p>
+<p>A type in a GraphQL schema which has fields.</p>
 
 ```js
 type User {
    name: String!,
 }
 ```
+
+`User` is an Object type in the example above.
 
 <h2 id="operation">Operation</h2>
 <p>A single query, mutation, or subscription that can be interpreted by a GraphQL execution engine.</p>
@@ -234,7 +246,7 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 
 
 <h2 id="schema">Schema</h2>
-<p>A model of the data that can be fetched from or written to a GraphQL server.</p>
+<p>A GraphQL [schema](https://www.apollographql.com/docs/apollo-server/essentials/schema.html) is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.</p>
 
 
 <h2 id="schema-definition-language">Schema Definition Language (SDL)</h2>
@@ -300,4 +312,4 @@ subscription onCommentAdded($repoFullName: String!){
 
 
 <h2 id="whole-response-caching">Whole response caching</h2>
-<p>A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide on how to implement this type of caching](../guides/performance.html).</p>
+<p>A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide](../guides/performance.html).</p>
