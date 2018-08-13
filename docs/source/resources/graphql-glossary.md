@@ -240,6 +240,24 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 <h2 id="schema-definition-language">Schema Definition Language (SDL)</h2>
 <p>The syntax for writing GraphQL Schemas. It is otherwise known as Interface Definition Language. It is the lingua franca shared by all for building GraphQL APIs regardless of the programming language chosen.</p>
 
+```js
+type Author {
+  id: Int!
+  firstName: String
+  lastName: String
+  posts: [Post]
+}
+type Post {
+  id: Int!
+  title: String
+  author: Author
+  votes: Int
+}
+type Query {
+  posts: [Post]
+  author(id: Int!): Author
+}
+```
 
 <h2 id="schema-first-development">Schema first development</h2>
 <p>A [development approach](https://www.apollographql.com/docs/fundamentals/tips.html#schema) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.</p>
