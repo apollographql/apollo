@@ -274,7 +274,7 @@ subscription onCommentAdded($repoFullName: String!){
 ```
 
 <h2 id="scalar-type">Scalar Type</h2>
-<p>A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a custom scalar type such as **Date** can be specified in a GraphQL service implementation.</p>
+<p>A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a [custom scalar](https://www.apollographql.com/docs/graphql-tools/scalars.html#custom-scalars) type such as **Date** can be specified in a GraphQL service implementation.</p>
 
 
 <h2 id="type-system">Type System</h2>
