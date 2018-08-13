@@ -43,6 +43,8 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 }
 ```
 
+`admin` and `managers` are aliases in the example query above.
+
 <h2 id="data-source">Data Source</h2>
 <p>A class that encapsulates fetching data from a particular service, with built-in support for caching, deduplication, and error handling.</p>
 
@@ -63,7 +65,14 @@ query NewsFeed {
 ```
 
 <h2 id="directive">Directive</h2>
-<p>A declaration prefixed with an @ character that encapsulates programming logic for query execution on the client or server. There are built-in such as @skip, @include and custom directives. It can be used for features such as authentication, incremental data loading, etc.</p>
+<p>A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in such as `@skip`, `@include` and custom directives. It can be used for features such as authentication, incremental data loading, etc.</p>
+
+```js
+type User @auth {
+  name: String!
+  banned: Boolean @auth!
+}
+```
 
 <h2 id="docstring">Docstring</h2>
 <p>It is used for providing descriptions of types, fields and arguments. It adds metadata to a GraphQL document. Docstrings show up in the documentation panel inside GraphQL playground and GraphiQL.</p>
@@ -105,7 +114,7 @@ type Author {
 }
 ```
 
-`id`, `firstName`, and `lastName` are fields in the example above.
+`id`, `firstName`, and `lastName` are fields in the Author type above.
 
 
 <h2 id="fragment">Fragment</h2>
@@ -221,13 +230,13 @@ query getHuman {
 `AddTodo` and `getHuman` are names for the mutation and query operation respectively.
 
 <h2 id="partial-query-caching">Partial query caching</h2>
-<p>A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as Data Source caching.</p>
+<p>A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources.html) caching.</p>
 
 <h2 id="query">Query</h2>
 <p>A read-only fetch operation to request data from a GraphQL service.</p>
 
 <h2 id="query-colocation">Query colocation</h2>
-<p>A practice of placing a GraphQL query in the same location as the app component's view logic.</p>
+<p>A practice of placing a GraphQL query in the same location as the app component's view logic. Query co-location makes it easier to facilitate a smooth UI and chore of data retrieval. Jumping directly to the query and keeping the component in sync with its data dependencies is a bliss.</p>
 
 ```js
 const GET_DOG_PHOTO = gql`
@@ -255,7 +264,23 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 <p>A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](../guides/performance.html#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.</p>
 
 <h2 id="resolver">Resolver</h2>
-<p>A function that connects schema fields and types to various backends. It can retrieve or write data from either an SQL, a No-SQL, graph database, a micro-service or a REST API.</p>
+<p>A function that connects schema fields and types to various backends. Resolvers provide the instructions for turning a GraphQL operation into data. It can retrieve or write data from either an SQL, a No-SQL, graph database, a micro-service or a REST API. Resolvers can also return strings, ints, null, etc.</p>
+
+```js
+...
+const resolvers = {
+  Query: {
+    author(root, args, context, info) {
+      return find(authors, { id: args.id });
+    },
+  },
+  Author: {
+    books(author) {
+      return filter(books, { author: author.name });
+    },
+  },
+};
+```
 
 
 <h2 id="schema">Schema</h2>
@@ -289,7 +314,7 @@ type Query {
 
 
 <h2 id="schema-registry">Schema registry</h2>
-<p>A central database that enables schema registration, tracking of detailed schema changes e.g. types added, fields added, fields deprecated and looking up previous versions of schema.</p>
+<p>A central source of truth for your schema in Apollo Engine. It enables schema registration, schema validation, tracking of detailed schema changes e.g. types added, fields added, fields deprecated and looking up previous versions of schema.</p>
 
 
 <h2 id="schema-versioning">Schema versioning</h2>
