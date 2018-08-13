@@ -254,7 +254,7 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 
 
 <h2 id="schema-stitching">Schema stitching</h2>
-<p>The process of merging [different schemas into one GraphQL schema](./docs/graphql-tools/schema-stitching.html). These schemas can be local, remote or from third party services.</p>
+<p>The process of merging [different schemas into one GraphQL schema](./docs/graphql-tools/schema-stitching.html). These schemas can be local, remote or from third party services. In a microservice-style deployment model, where your data exists across multiple APIs, Schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.</p>
 
 
 <h2 id="subscription">Subscription</h2>
