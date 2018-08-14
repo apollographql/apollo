@@ -77,7 +77,7 @@ type User @auth {
 ```
 
 <h2 id="docstring">Docstring</h2>
-<p>It is used for providing descriptions of types, fields and arguments. It adds metadata to a GraphQL document. Docstrings show up in the documentation panel inside GraphQL playground and GraphiQL.</p>
+<p>It is used for providing descriptions of types, fields and arguments. Docstrings show up in the documentation panel inside GraphQL playground and GraphiQL.</p>
 
 ```js
 """
