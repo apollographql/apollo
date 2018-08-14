@@ -25,6 +25,8 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 }
 ```
 
+`id` is an argument to human in the query above.
+
 <h2 id="alias">Alias</h2>
 <p>An alternative name given to the result of a field to avoid conflicts during data fetching.</p>
 
