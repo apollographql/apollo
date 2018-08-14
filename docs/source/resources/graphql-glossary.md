@@ -181,29 +181,20 @@ mutation AddTodo($type: String!) {
 ```
 
 <h2 id="normalization">Normalization</h2>
-<p>A technique for transforming default GraphQL responses into a specific desired format.</p>
+<p>A technique for transforming the response of a query operation before saving it to the store by [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching.html#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.</p>
 
 ```js
-// Example of a default GraphQL response
-const response = {
-  data: {
-    getUser: {
-      __typename: 'User',
-      uid: '5a6efb94b0e8c36f99fba013',
-      email: 'john.doe@yahoo.com',
-    },
-  },
-}
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 
-// After Normalization
-{
- users: {
-    '5a6efb94b0e8c36f99fba013': {
-      uid: '5a6efb94b0e8c36f99fba013',
-      email: 'john.doe@yahoo.com'
-   }
- }
-}
+const cache = new InMemoryCache({
+  dataIdFromObject: object => {
+    switch (object.__typename) {
+      case 'foo': return object.key; // use `key` as the primary key
+      case 'bar': return `bar:${object.blah}`; // use `bar` prefix and `blah` as the primary key
+      default: return defaultDataIdFromObject(object); // fall back to default handling
+    }
+  }
+});
 ```
 
 <h2 id="object-type">Object Type</h2>
