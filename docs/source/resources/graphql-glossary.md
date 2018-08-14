@@ -48,7 +48,7 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 `admin` and `managers` are aliases in the example query above.
 
 <h2 id="data-source">Data Source</h2>
-<p>A class that encapsulates fetching data from a particular service, with built-in support for caching, deduplication, and error handling.</p>
+<p>A new pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources.html) provide the best experience for fetching and caching data from REST endpoints.</p>
 
 <h2 id="deferred-query">Deferred query</h2>
 <p>A query that has certain fields tagged with the [`@defer` directive](https://www.apollographql.com/docs/react/features/defer-support.html), so that fields that take a long time to resolve do not need to slow down the entire query.</p>
