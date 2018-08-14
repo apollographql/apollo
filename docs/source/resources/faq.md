@@ -7,7 +7,7 @@ Everyone has questions about how to properly set up a GraphQL schema, but not al
 
 ## Learning GraphQL
 
-> You are just beginning to learn GraphQL. You're learning about syntax so you can run a query in a playground, you're learning what a schema is and how to connect it to your services with resolvers, etc.
+> You are just beginning to learn GraphQL. You're learning about syntax, running queries, schemas, and how to connect your existing services to your GraphQL layer.
 
 #### What is GraphQL?
 
@@ -21,9 +21,11 @@ GraphQL can make a difference in nearly every area of development: from improvin
 
 There are a number of resources available to learn GraphQL. If you're looking to get started learning the basics, check out [GraphQL.org](https://graphql.org).
 
-The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`) and a client that manages local and remote data in your apps (`apollo-client`). To get started with `apollo-server`, check out the [getting started](https://www.apollographql.com/docs/apollo-server/getting-started.html) guide. For `react-apollo`, the React integration for `apollo-client`, read [this guide](https://www.apollographql.com/docs/react/essentials/get-started.html).
+The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool, Apollo Engine, and a client that manages local and remote data in your apps (`apollo-client`).
 
-The guides on this site and the [Apollo blog](https://blog.apollographql.com) are great places to learn and keep up with the latest developments.
+To get started, read the getting started guides for [`apollo-server`](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Engine](https://www.apollographql.com/docs/engine), and [`react-apollo`](https://www.apollographql.com/docs/react/essentials/get-started.html) (the react integration for apollo-client).
+
+The guides on this site and the [Apollo blog](https://blog.apollographql.com) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
 
 #### How can I host my schema online?
 
