@@ -267,7 +267,7 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
 <p>A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](../guides/performance.html#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.</p>
 
 <h2 id="resolver">Resolver</h2>
-<p>A function that connects schema fields and types to various backends. Resolvers provide the instructions for turning a GraphQL operation into data. It can retrieve or write data from either an SQL, a No-SQL, graph database, a micro-service or a REST API. Resolvers can also return strings, ints, null, etc.</p>
+<p>A function that connects schema fields and types to various backends. Resolvers provide the instructions for turning a GraphQL operation into data. It can retrieve or write data from either an SQL, a No-SQL, graph database, a micro-service or a REST API. Resolvers can also return strings, ints, null, and other primitives.</p>
 
 ```js
 ...
@@ -329,7 +329,7 @@ type Query {
 
 
 <h2 id="subscription">Subscription</h2>
-<p>A real-time GraphQL operation. A Subscription is defined in a schema like queries and mutations.</p>
+<p>A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions.html) is defined in a schema like queries and mutations.</p>
 
 ```js
 type Subscription {
