@@ -158,6 +158,16 @@ const typeDefs = gql`
 <h2 id="introspection">Introspection</h2>
 <p>A technique to provide detailed information about a GraphQL API's schema. Types and fields used in introspection are prefixed with "__" two underscores.</p>
 
+```js
+{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+```
+
 <h2 id="mutation">Mutation</h2>
 <p>An operation for creating, modifying and destroying data.</p>
 
