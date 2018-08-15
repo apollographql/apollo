@@ -11,8 +11,11 @@ sidebar_categories:
     - fundamentals/platform
     - fundamentals/benefits
     - fundamentals/tips
+
+  Resources:
+    - resources/graphql-glossary
+
   Guides:
-   
     - guides/security
     - guides/versioning
     - guides/monitoring
