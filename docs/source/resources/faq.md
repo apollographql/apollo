@@ -60,7 +60,7 @@ Other DataSources are under development, but even without the `DataSource` API, 
 
 #### How do I design the schema?
 
-Schemas should be designed with the needs of the client in mind. Rather than modeling queries and types after the underlying services, they should be designed to make querying as easy as possible. GraphQL's resolver structure makes it possible to allow this flexibility without many performance consequences. For more, read the [schema design guide](./schema-design.html).
+Schemas should be designed with the needs of the client in mind. Rather than modeling queries and types after the underlying services, they should be designed to make querying as easy as possible. GraphQL's resolver structure makes it possible to allow this flexibility without many performance consequences. For more, read the [schema design guide](../guides/schema-design.html).
 
 #### How do I discover and reproduce errors?
 
@@ -84,11 +84,11 @@ GraphQL schemas work best when their design is heavily influenced by the needs o
 
 #### How do I set up authentication/authorization for my GraphQL schema?
 
-Authentication and authorization are important topics to discuss with any API. GraphQL provides a very granular approch to handling these topics. But don't worry! If an API being consumed by GraphQL already has authorization built-in, it may be possible to ignore it completely! Read more in the [access control guide](./access-control.html).
+Authentication and authorization are important topics to discuss with any API. GraphQL provides a very granular approch to handling these topics. But don't worry! If an API being consumed by GraphQL already has authorization built-in, it may be possible to ignore it completely! Read more in the [access control guide](../guides/access-control.html).
 
 #### How can I secure my schema from malicious or expensive queries?
 
-Public APIs of any kind need some kind of safeguards against malicious queries. Since GraphQL allows for recursive queries, it wouldn't be hard to create a query that is overly complicated and acts as a DoS attack, even by accident. There are multiple ways to prevent something like this from happening, from complexity limiting to query depth limiting. Read the [guide on security](./security.html) to learn more.
+Public APIs of any kind need some kind of safeguards against malicious queries. Since GraphQL allows for recursive queries, it wouldn't be hard to create a query that is overly complicated and acts as a DoS attack, even by accident. There are multiple ways to prevent something like this from happening, from complexity limiting to query depth limiting. Read the [guide on security](../guides/security.html) to learn more.
 
 #### What kinds of cache should I setup?
 
@@ -122,10 +122,10 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I test my client?
 
-`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](./testing-react-components.html) guide to learn more.
+`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](../guides/testing-react-components.html) guide to learn more.
 
 #### How can I safely make changes to the schema?
 
-Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](./versioning.html) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
+Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](../guides/versioning.html) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](https://www.npmjs.com/package/apollo) with Apollo Engine provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
