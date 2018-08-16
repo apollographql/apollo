@@ -250,7 +250,7 @@ const GET_DOG_PHOTO = gql`
   }
 }`;
 
-export const queryComponent = `const DogPhoto = ({ breed }) => (
+export const queryComponent = ({ breed }) => (
   <Query query={GET_DOG_PHOTO} variables={{ breed }}>
     {({ loading, error, data }) => {
       if (loading) return null;
@@ -260,7 +260,7 @@ export const queryComponent = `const DogPhoto = ({ breed }) => (
       );
     }}
   </Query>
-);`;
+);
 ```
 
 <h2 id="query-whitelisting">Query whitelisting</h2>
