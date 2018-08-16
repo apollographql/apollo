@@ -1,6 +1,6 @@
 title: Developers
 propertytitle: Add GraphQL to your stack and start building apps faster.
-subtitle:
+? subtitle
 description: A guide to using the Apollo platform.
 versions:
   - '1'
@@ -13,8 +13,8 @@ sidebar_categories:
     - fundamentals/tips
 
   Resources:
-    - resources/graphql-glossary
     - resources/faq
+    - resources/graphql-glossary
 
   Guides:
     - guides/security

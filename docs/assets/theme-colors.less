@@ -1,8 +1,8 @@
-@color-primary: #22A699;
+@color-primary: #22a699;
 
 .docstart {
   width: 100%;
-  height: 390px;
+  height: 550px;
   //border-right: 0px solid #22A699;
   //border:0px solid #22A699;
 }
@@ -20,7 +20,7 @@
   }
   .pb-early-access {
     font-weight: 700;
-    letter-spacing: .25em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: @color-primary;
   }
@@ -28,20 +28,40 @@
     font-weight: bold;
     font-size: 1.1rem;
   }
-  .pb-link, .pb-link a {
+  .pb-link,
+  .pb-link a {
     color: @color-primary;
     text-decoration: underline;
   }
 }
 
-.fundamentals, .quickstart, .guides {
+.fundamentals,
+.quickstart {
   //border:0px solid #22A699;
-  width: 33.3%;
+  width: 40%;
   float: left;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-right: 0px;
+
+  p {
+    font-size: 0.8rem;
+    line-height: 1.5rem;
+    color: #81849b;
+  }
+}
+
+.guides,
+.resources {
+  //border:0px solid #22A699;
+  width: 40%;
+  float: right;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-right: 0px;
 
   p {
@@ -60,7 +80,6 @@
   font-size: 20px;
 }
 
-
 .documentation-buttons {
   width: 100%;
   height: 100px;
@@ -73,15 +92,14 @@
     padding-left: 10px;
     padding-right: 10px;
   }
-
 }
 
 .btn.default.hollow {
   color: #e535ab;
   border: 2px solid #e535ab;
   border-radius: 3em;
-  text-indent: .1em;
-  letter-spacing: .1em;
+  text-indent: 0.1em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 14px;
   line-height: 20px;
@@ -91,7 +109,6 @@
 }
 
 @media (min-width: 768px) and (max-width: 990px) {
-
   .btn.default.hollow {
     color: #e535ab;
     border: 2px solid #e535ab;
@@ -103,21 +120,19 @@
     padding: 6px 12px;
     background-color: #fff;
   }
-
 }
-
 
 // @media (min-width: 880px) and (max-width: 928px) {
 //   .docstart {
-//     width: 100%; 
+//     width: 100%;
 //     height: 274px;
 //     border-right: 1px solid #22A699;
-//     //border:0px solid #22A699; 
+//     //border:0px solid #22A699;
 //   }
 
 //   .fundamentals, .quickstart, .guides {
-//     border:1px solid #22A699; 
-//     width: 33.3%; 
+//     border:1px solid #22A699;
+//     width: 33.3%;
 //     float: left;
 //     //padding-top: 10px;
 //     //padding-bottom: 10px;
@@ -128,7 +143,7 @@
 
 // }
 
-// /* 
+// /*
 //   ##Device = Low Resolution Tablets, Mobiles (Landscape)
 //   ##Screen = B/w 481px to 767px
 // */
@@ -147,7 +162,7 @@
   }
 }
 
-// /* 
+// /*
 //   ##Device = Most of the Smartphones Mobiles (Portrait)
 //   ##Screen = B/w 320px to 479px
 // */
