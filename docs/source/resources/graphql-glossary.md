@@ -67,7 +67,7 @@ query NewsFeed {
 ```
 
 <h2 id="directive">Directive</h2>
-<p>A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in such as `@skip`, `@include` and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives.html). It can be used for features such as authentication, incremental data loading, etc.</p>
+<p>A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`, and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives.html). Directives can be used for features such as authentication, incremental data loading, etc.</p>
 
 ```js
 type User @auth {
