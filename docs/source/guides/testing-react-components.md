@@ -186,7 +186,7 @@ Since they can make or break the experience a user has when interacting with the
 
 Since most developers would follow the "happy path" and not encounter these states as often, it's almost _more_ important to test these states to prevent accidental regressions.
 
-To simulate a GraphQL error, an `error` property can be included on the mock, in place of or in addition to the `result`.
+To simulate a network error, an `error` property can be included on the mock, in place of or in addition to the `result`.
 
 ```js
 it('should show error UI', async () => {
@@ -212,6 +212,17 @@ it('should show error UI', async () => {
 ```
 
 Here, whenever the `MockedProvider` receives a `GET_DOG_QUERY` with matching `variables`, it will return the error assigned to the `error` property in the mock. This forces the component into the error state, allowing verification that it's being handled gracefully.
+
+To simulate GraphQL errors, simply define `errors` along with any data in your result.
+
+```js
+const dogMock = {
+  // ...
+  result: {
+    errors: [{ message: "Error!" }],
+  },
+};
+```
 
 ## Testing mutation components
 

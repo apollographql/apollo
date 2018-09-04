@@ -41,7 +41,7 @@ const client = new ApolloClient({
 });
 ```
 
-Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://dev-blog.apollodata.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
+Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://blog.apollographql.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
 
 <h3 id="modern-tooling">Modern tooling</h3>
 
@@ -101,7 +101,7 @@ const Feed = () => (
 
 Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you. There’s no middleware to set up or boilerplate to write before making your first request, nor do you need to worry about transforming and caching the response. All you have to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪
 
-You’ll find that when you switch to Apollo Client, you’ll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. To learn more about how Apollo Client enables advanced features like optimistic UI, refetching, and pagination with less code, check out our guide on [state management](../guides/state-mgmt.html).
+You’ll find that when you switch to Apollo Client, you’ll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. To learn more about how Apollo Client enables advanced features like optimistic UI, refetching, and pagination with less code, check out our guide on [state management](../guides/state-management.html).
 
 <h2 id="performance">Improved performance</h2>
 

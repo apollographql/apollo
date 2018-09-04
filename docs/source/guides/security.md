@@ -78,4 +78,4 @@ We suggest implementing complexity limits using community-provided packages like
 
 <h2 id="resources">Additional resources</h2>
 
-> For additional information on securing a GraphQL server deployment, check out [Securing your GraphQL API from malicious queries](https://dev-blog.apollodata.com/securing-your-graphql-api-from-malicious-queries-16130a324a6b) by Spectrum co-founder, Max Stoiber.
+> For additional information on securing a GraphQL server deployment, check out [Securing your GraphQL API from malicious queries](https://blog.apollographql.com/securing-your-graphql-api-from-malicious-queries-16130a324a6b) by Spectrum co-founder, Max Stoiber.
