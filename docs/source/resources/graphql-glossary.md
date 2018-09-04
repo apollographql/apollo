@@ -321,7 +321,7 @@ type Query {
 
 
 <h2 id="schema-versioning">Schema versioning</h2>
-<p>Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in the [versioning guide](https://github.com/apollographql/apollo/guides/versioning.html).</p>
+<p>Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in the [versioning guide](https://www.apollographql.com/docs/guides/versioning.html).</p>
 
 
 <h2 id="schema-stitching">Schema stitching</h2>

@@ -148,6 +148,21 @@ From the client side, you need to install the `apollo-upload-client` package. It
 npm install apollo-upload-client
 ```
 
+You will then need to initialize your [Apollo Client](https://apollographql.com/docs/link#apollo-client) instance with a terminating [Apollo Link](https://apollographql.com/docs/link), created by calling [`createUploadlink`](https://github.com/jaydenseric/apollo-upload-client#function-createuploadlink). For example:
+
+```js
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createUploadLink } from 'apollo-upload-client';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: createUploadLink(),
+});
+```
+
+> Note: [Apollo Boost](https://www.apollographql.com/docs/react/essentials/get-started.html#apollo-boost) does not support Apollo Link overrides, so if you're using Apollo Boost and want to use `apollo-upload-client`, you will need to switch to the full version of Apollo Client. See the [Apollo Boost migration](https://www.apollographql.com/docs/react/advanced/boost-migration.html) docs for help migrating from Apollo Boost to Apollo Client.
+
 _File uploads example from the client for a single file:_
 
 ```js
