@@ -6,7 +6,7 @@ const sidebar = {
       items: [
         {
           title: 'Welcome',
-          href: 'index',
+          href: '/index',
           relative: true,
         },
       ],
@@ -14,9 +14,9 @@ const sidebar = {
     {
       title: 'Fundamentals',
       items: [
-        { title: 'Platform', href: 'fundamentals/platform', relative: true },
-        { title: 'Benefits', href: 'fundamentals/benefits', relative: true },
-        { title: 'Tips', href: 'fundamentals/tips', relative: true },
+        { title: 'Platform', href: '/fundamentals/platform', relative: true },
+        { title: 'Benefits', href: '/fundamentals/benefits', relative: true },
+        { title: 'Tips', href: '/fundamentals/tips', relative: true },
       ],
     },
     {
@@ -24,12 +24,12 @@ const sidebar = {
       items: [
         {
           title: 'GraphQL Glossary',
-          href: 'resources/graphql-glossary',
+          href: '/resources/graphql-glossary',
           relative: true,
         },
         {
           title: 'Frequently Asked Questions',
-          href: 'resources/faq',
+          href: '/resources/faq',
           relative: true,
         },
       ],
@@ -37,29 +37,29 @@ const sidebar = {
     {
       title: 'Guides',
       items: [
-        { title: 'Security', href: 'guides/security', relative: true },
-        { title: 'Versioning', href: 'guides/versioning', relative: true },
-        { title: 'Monitoring', href: 'guides/monitoring', relative: true },
-        { title: 'Performance', href: 'guides/performance', relative: true },
-        { title: 'File Uploads', href: 'guides/file-uploads', relative: true },
+        { title: 'Security', href: '/guides/security', relative: true },
+        { title: 'Versioning', href: '/guides/versioning', relative: true },
+        { title: 'Monitoring', href: '/guides/monitoring', relative: true },
+        { title: 'Performance', href: '/guides/performance', relative: true },
+        { title: 'File Uploads', href: '/guides/file-uploads', relative: true },
         {
           title: 'Schema Design',
-          href: 'guides/schema-design',
+          href: '/guides/schema-design',
           relative: true,
         },
         {
           title: 'Access Control',
-          href: 'guides/access-control',
+          href: '/guides/access-control',
           relative: true,
         },
         {
           title: 'State Management',
-          href: 'guides/state-management',
+          href: '/guides/state-management',
           relative: true,
         },
         {
           title: 'Testing React Components',
-          href: 'guides/testing-react-components',
+          href: '/guides/testing-react-components',
           relative: true,
         },
       ],

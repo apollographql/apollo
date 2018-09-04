@@ -1,91 +1,9 @@
 import React from 'react'
 import styled, { css } from 'react-emotion'
-import { StaticQuery, graphql } from 'gatsby'
+import { graphql } from 'gatsby'
 
+import { buildSidebarStructure, getPreviousAndNextPost } from '../utils'
 import { Layout, Sidebar, PostHeader, PostFooter } from '../components'
-import visit from 'unist-util-visit'
-
-const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'row',
-})
-
-const Content = styled('div')({
-  padding: '32px',
-})
-
-const PageRender = ({ data, children }) => {
-  const sidebarItems = buildSidebarStructure({
-    config: data.site.siteMetadata.sidebar,
-    mdNodes: data.allMarkdownRemark.edges,
-  })
-  const post = data.markdownRemark
-
-  return (
-    <Layout>
-      <Container>
-        <Sidebar items={sidebarItems} />
-        <div className={css({ flexDirection: 'column' })}>
-          {/* TODO: proper titles/urls */}
-          <PostHeader
-            title="Welcome"
-            subtitle={'Start here to learn how to use the Apollo platform.'}
-          />
-
-          <Content dangerouslySetInnerHTML={{ __html: post.html }} />
-
-          {/* TODO: proper titles/urls */}
-          <PostFooter
-            editUrl=""
-            nextTitle={'The Apollo Platform'}
-            prevTitle={'The Apollo Platform'}
-            nextUrl={'https://google.com'}
-            prevUrl={'https://google.com'}
-          />
-        </div>
-      </Container>
-    </Layout>
-  )
-}
-
-const buildSidebarStructure = ({ config, mdNodes }) => {
-  return config.sections.map(section => {
-    // for each _item_, find the corresponding md node
-    // if the md node has subheadings, add to the section
-    const itemsWithHeadingAnchors = section.items.map(item => {
-      // either relative (guides/versioning) or absolute (https://...)
-      const pathToItem = item.href
-
-      const matchingMdNode = mdNodes.find(({ node }) =>
-        node.fileAbsolutePath.includes(pathToItem)
-      )
-
-      if (!matchingMdNode) return item
-
-      let headings = []
-      visit(
-        matchingMdNode.node.htmlAst,
-        'element',
-        pushHeadingInfoFromNode(headings)
-      )
-
-      return { ...item, headings }
-    })
-
-    return { ...section, items: itemsWithHeadingAnchors }
-  })
-}
-
-const pushHeadingInfoFromNode = headings => node => {
-  if (node.tagName === 'h1' || node.tagName === 'h2' || node.tagName === 'h3') {
-    const textNode = node.children.find(c => c.type === 'text')
-    headings.push({
-      level: node.tagName,
-      anchor: node.properties.id,
-      text: textNode ? textNode.value : null,
-    })
-  }
-}
 
 export const query = graphql`
   query($slug: String!) {
@@ -93,6 +11,10 @@ export const query = graphql`
       html
       frontmatter {
         title
+        description
+      }
+      fields {
+        slug
       }
     }
     site {
@@ -129,16 +51,71 @@ export const query = graphql`
     allMarkdownRemark {
       edges {
         node {
+          frontmatter {
+            title
+          }
           fileAbsolutePath
           headings {
             value
             depth
           }
           htmlAst
+          fields {
+            slug
+          }
         }
       }
     }
   }
 `
 
-export default PageRender
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+})
+
+const Content = styled('div')({
+  padding: '32px',
+})
+
+export default ({ data, children }) => {
+  const sidebarItems = buildSidebarStructure({
+    config: data.site.siteMetadata.sidebar,
+    mdNodes: data.allMarkdownRemark.edges,
+  })
+  const post = data.markdownRemark
+  const { previous, next } = getPreviousAndNextPost({
+    slug: data.markdownRemark.fields.slug,
+    nodes: data.allMarkdownRemark.edges,
+  })
+
+  return (
+    <Layout>
+      <Container>
+        <Sidebar
+          items={sidebarItems}
+          activePageSlug={post.fields.slug}
+          activeHeadingAnchor={'what-is-apollo'}
+        />
+        <div className={css({ flexDirection: 'column' })}>
+          {/* todo: proper edit/discussion links */}
+          <PostHeader
+            title={data.markdownRemark.frontmatter.title}
+            subtitle={data.markdownRemark.frontmatter.description}
+          />
+
+          <Content dangerouslySetInnerHTML={{ __html: post.html }} />
+
+          {/* TODO: proper edit url */}
+          <PostFooter
+            editUrl=""
+            nextTitle={next.title}
+            prevTitle={previous.title}
+            nextUrl={next.relativeUrl}
+            prevUrl={previous.relativeUrl}
+          />
+        </div>
+      </Container>
+    </Layout>
+  )
+}

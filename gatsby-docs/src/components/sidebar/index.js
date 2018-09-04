@@ -6,32 +6,57 @@ const Container = styled('div')({
   backgroundColor: '#cccccc',
 })
 
-const SubSection = styled('a')({
+const Heading = styled('a')(props => ({
   marginLeft: '15px',
   display: 'block',
-})
+  backgroundColor: props.active ? '#ff0' : 'transparent',
+}))
 
-const Section = ({ title, items }) => (
+const PageLink = styled('a')({})
+const SectionTitle = styled('h3')({})
+
+const SubSection = ({ items, activePageSlug, activeHeadingAnchor }) =>
+  items &&
+  items.map(item => (
+    <Heading
+      key={`${item.title}#${item.anchor}`}
+      active={item.anchor === activeHeadingAnchor}
+      href={`#${item.anchor}`}
+    >
+      {item.text}
+    </Heading>
+  ))
+
+const Section = ({ title, items, activePageSlug, activeHeadingAnchor }) => (
   <div>
-    <h3>{title}</h3>
+    <SectionTitle>{title}</SectionTitle>
     {items.map(item => (
-      <div>
-        <a href={`/${item.href}`}>{item.title}</a>
-        {item.headings &&
-          item.headings.map(heading => (
-            <SubSection href={`#${heading.anchor}`}>{heading.text}</SubSection>
-          ))}
+      <div key={item.href}>
+        <PageLink href={`${item.href}`}>{item.title}</PageLink>
+        {/* note: need trailing slash in check, because the page slug has one */}
+        {activePageSlug === `${item.href}/` && (
+          <SubSection
+            items={item.headings}
+            activeHeadingAnchor={activeHeadingAnchor}
+            activePageSlug={activePageSlug}
+          />
+        )}
       </div>
     ))}
   </div>
 )
 
-const Sidebar = ({ items }) => {
-  console.log(items)
+const Sidebar = ({ items, activePageSlug, activeHeadingAnchor }) => {
   return (
     <Container>
       {items.map(section => (
-        <Section title={section.title} items={section.items} />
+        <Section
+          key={section.title}
+          title={section.title}
+          items={section.items}
+          activePageSlug={activePageSlug}
+          activeHeadingAnchor={activeHeadingAnchor}
+        />
       ))}
     </Container>
   )
