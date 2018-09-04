@@ -84,7 +84,7 @@ GraphQL schemas work best when their design is heavily influenced by the needs o
 
 #### How do I set up authentication/authorization for my GraphQL schema?
 
-Authentication and authorization are important topics to discuss with any API. GraphQL provides a very granular approch to handling these topics. But don't worry! If an API being consumed by GraphQL already has authorization built-in, it may be possible to ignore it completely! Read more in the [access control guide](../guides/access-control.html).
+Authentication and authorization are important topics to discuss with any API. GraphQL provides a very granular approach to handling these topics. But don't worry! If an API being consumed by GraphQL already has authorization built-in, it may be possible to ignore it completely! Read more in the [access control guide](../guides/access-control.html).
 
 #### How can I secure my schema from malicious or expensive queries?
 

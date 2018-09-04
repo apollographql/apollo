@@ -67,7 +67,7 @@ query NewsFeed {
 ```
 
 <h2 id="directive">Directive</h2>
-<p>A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in such as `@skip`, `@include` and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives.html). It can be used for features such as authentication, incremental data loading, etc.</p>
+<p>A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`, and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives.html). Directives can be used for features such as authentication, incremental data loading, etc.</p>
 
 ```js
 type User @auth {
@@ -321,7 +321,7 @@ type Query {
 
 
 <h2 id="schema-versioning">Schema versioning</h2>
-<p>Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in the [versioning guide](https://github.com/apollographql/apollo/guides/versioning.html).</p>
+<p>Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in the [versioning guide](https://www.apollographql.com/docs/guides/versioning.html).</p>
 
 
 <h2 id="schema-stitching">Schema stitching</h2>
