@@ -51,7 +51,7 @@ const server = new ApolloServer({
 });
 ```
 
-In the code above, we imported the `ApolloServer` class and `gql` tag from the `apollo-server` package.. They serve the following purpose:
+In the code above, we imported the `ApolloServer` class and `gql` tag from the `apollo-server` package.
 
 * **ApolloServer**: The `ApolloServer` class instantiates and starts a new GraphQL server.
 * **gql**: The `gql` tag is a JavaScript template literal tag that enables syntax highlighting for our schema.
