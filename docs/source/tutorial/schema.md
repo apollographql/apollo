@@ -60,7 +60,7 @@ In the code above, we imported the `ApolloServer` class and `gql` tag from the `
 
 Every GraphQL server runs a schema at its core. A schema defines types and their relationships. The specifications of the types of queries that can be run against a GraphQL server are defined in a schema. Let's design the schema for our app.
 
-GraphQL schemas are at their best when they are designed around the needs of client applications. In fact, this is called **Schema First Development**, an approach for building applications with GraphQL that involves the frontend and backend teams agreeing on a schema first, which serves as a contract between the UI and the backend before any API development commences.
+GraphQL schemas are at their best when they are designed around the needs of client applications. In fact, this concept is called **Schema First Development**, an approach for building applications with GraphQL that involves the frontend and backend teams agreeing on a schema first, which serves as a contract between the UI and the backend before any API development commences.
 
 In our app, we need to provide the following features:
 
