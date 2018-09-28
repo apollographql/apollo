@@ -1,5 +1,5 @@
 ---
-title: "7. Manage local state"
+title: "8. Manage local state"
 description: Start here for the Apollo fullstack tutorial
 ---
 

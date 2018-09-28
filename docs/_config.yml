@@ -10,6 +10,7 @@ sidebar_categories:
     - tutorial/introduction
     - tutorial/schema
     - tutorial/data-source
+    - tutorial/resolvers
     - tutorial/production
     - tutorial/client
     - tutorial/queries

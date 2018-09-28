@@ -1,5 +1,5 @@
 ---
-title: "5. Fetch data with queries"
+title: "6. Fetch data with queries"
 description: Start here for the Apollo fullstack tutorial
 ---
 
