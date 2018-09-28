@@ -1,5 +1,5 @@
 ---
-title: "6. Update data with mutations"
+title: "7. Update data with mutations"
 description: Start here for the Apollo fullstack tutorial
 ---
 
