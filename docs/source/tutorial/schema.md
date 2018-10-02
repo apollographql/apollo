@@ -124,3 +124,107 @@ module.exports = typeDefs;
 ```
 
 <h2 id="apollo-server-run">Run your server</h2>
+
+Now that we have scoped out our app's schema, let's run the server. Before running the server, make sure you have the following installed:
+
+* **Node.js and npm**: At least [Node.js v8.0 and npm v5](https://nodejs.org/en/download).
+* **nodemon**: Ensure that you have [nodemon](https://www.npmjs.com/package/nodemon) installed globally.
+
+After that, create a directory and run `npm init --y` to create a `package.json` file. Within this directory, go ahead and create an `index.js` file. Now, add the code below to the file.
+
+_index.js_
+
+```js
+const { ApolloServer, gql } = require('apollo-server');
+
+const typeDefs = gql`
+  type Query {
+    launches(pageSize: Int, cursor: String): [Launch]!
+    launch(id: ID!): Launch
+    user(id: ID!): User
+  }
+
+  type Mutation {
+    bookTrips(userId: ID!, tripId: [ID!]): Boolean!
+    cancelTrip(userId: ID!, tripId: ID!): Boolean!
+    login(email: String): String
+  }
+
+  type Launch {
+    id: ID!
+    cursor: String
+    year: String!
+    date: String!
+    mission: Mission!
+    rocket: Rocket!
+    launchSuccess: Boolean
+  }
+
+  type Rocket {
+    id: ID!
+    name: String!
+    type: String!
+  }
+
+  type User {
+    id: ID!
+    email: String!
+    avatar: String
+    trips: [Launch]
+  }
+
+  type Mission {
+    name: String!
+    missionPatch: String
+  }
+`;
+
+const server = new ApolloServer({ typeDefs });
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+
+```
+
+**Line 182 - 186** indicates the portion of the code that runs the GraphQL server. The `typeDefs` is passed to the `ApolloServer` constructor, then `ApolloServer`'s `listen()` method is invoked to run the server.
+
+On your terminal, run:
+
+```bash
+nodemon index.js
+```
+
+Apollo Server will now be available on port 4000. By default, it supports [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground.html). The Playground is an interactive, in-browser GraphQL IDE for testing your queries. Apollo Server automatically serves the GraphQL Playground GUI to web browsers in development. When `NODE_ENV` is set to production, GraphQL Playground is disabled as a production best-practice.
+
+**Note:** By default, Apollo Server runs on port 4000. See the [API reference](https://www.apollographql.com/docs/apollo-server/v2/api/apollo-server.html) for additional listen options, including how to configure the port.
+
+<div style="text-align:center">
+![Apollo Server running on port 4000](../images/noresolversjustquery.png)
+<br></br>
+</div>
+
+Run a simple query like the one above. It will return null because the queries are not connected to any resolvers just yet.
+
+The GraphQL Playground provides the ability to introspect your schemas. Check out the right hand side of the playground and click on the `schema` button.
+
+<div style="text-align:center">
+![Schema button](../images/schematab.png)
+<br></br>
+</div>
+
+The schema types are shown like you have below:
+
+<div style="text-align:center">
+![Introspection](../images/introspection.png)
+<br></br>
+</div>
+
+You can quickly have access to the documentation of a GraphQL API via the `schema` button.
+
+<div style="text-align:center">
+![More details on a Schema Type](../images/moredetailsonatype.png)
+<br></br>
+</div>
+
+That's all for running Apollo Server for now. Let's move on to the next part of our tutorial.
