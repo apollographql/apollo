@@ -82,7 +82,7 @@ const typeDefs = gql`
   type Query {
     launches(pageSize: Int, cursor: String): [Launch]!
     launch(id: ID!): Launch
-    user(id: ID!): User
+    me(id: ID!): User
   }
 
   type Mutation {
@@ -141,7 +141,7 @@ const typeDefs = gql`
   type Query {
     launches(pageSize: Int, cursor: String): [Launch]!
     launch(id: ID!): Launch
-    user(id: ID!): User
+    me(id: ID!): User
   }
 
   type Mutation {
