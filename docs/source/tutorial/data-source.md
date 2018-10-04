@@ -13,7 +13,7 @@ To get started connecting to a REST API, install the `apollo-datasource` and `ap
 npm install apollo-datasource-rest
 ```
 
-The `apollo-datasource-rest` exposes the `RESTDataSource` class that is responsible for fetching data from a given REST API. To define a data source for the REST endpoint, extend the `RESTDataSource` class and implement the data fetching methods that your resolvers require. Let's look at a simple example to understand how data sources work.
+The `apollo-datasource-rest` package exposes the `RESTDataSource` class that is responsible for fetching data from a given REST API. To define a data source for the REST endpoint, extend the `RESTDataSource` class and implement the data fetching methods that your resolvers require. Let's look at a simple example to understand how data sources work.
 
 ```js
 import { RESTDataSource } from 'apollo-datasource-rest';
