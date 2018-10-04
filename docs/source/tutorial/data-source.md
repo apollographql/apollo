@@ -382,4 +382,25 @@ So, if the `userIds` variable is empty, then the `getUsersByLaunch` method retur
 
 If no users were found, the `getUsersByLaunch` method returns an empty array, else an array of users with their respective `id`, `email` and `avatar` is returned!
 
-In the next section of this tutorial, we'll write our resolvers!
+<h2 id="database">Connect Data Sources to Server</h2>
+
+Now that we have defined our data sources, they need to be passed as options to the `ApolloServer` constructor so that our resolvers can access them.
+
+Open `index.js` file, require the `launch` and `user` data source files, and modify the `ApolloServer` constructor to have the `dataSources` key as shown below:
+
+```js
+...
+...
+const LaunchAPI = require('./datasources/launch');
+const UserAPI = require('./datasources/user');
+
+const server = new ApolloServer({
+  typeDefs,
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI(),
+  })
+});
+```
+
+Apollo Server will put the data sources on the context for every request, so you can access them from your resolvers. In the next section of this tutorial, we'll write the resolvers for our app and you'll learn more about `context` and how to access the data sources on them.
