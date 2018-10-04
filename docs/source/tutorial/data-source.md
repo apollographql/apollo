@@ -381,3 +381,5 @@ In the `getUsersByLaunch` method, a `launchId` is accepted via the method argume
 So, if the `userIds` variable is empty, then the `getUsersByLaunch` method returns an empty array. However, if the `userIds` variable is not empty, then users with those ids are fetched from the users table.
 
 If no users were found, the `getUsersByLaunch` method returns an empty array, else an array of users with their respective `id`, `email` and `avatar` is returned!
+
+In the next section of this tutorial, we'll write our resolvers!
