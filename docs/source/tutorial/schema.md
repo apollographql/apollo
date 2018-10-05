@@ -47,7 +47,7 @@ In our app, we need to provide the following features:
 
 We'll use these features to derive the form of queries and mutations our schema needs.
 
-* First feature: An example of a query for fetching all upcoming rocket launches would look like:
+* **First feature:** An example of a query for fetching all upcoming rocket launches would look like:
 
 ```js
 {
@@ -59,7 +59,7 @@ We'll use these features to derive the form of queries and mutations our schema 
 }
 ```
 
-* Second feature: An example of a query for a specific launch would look like:
+* **Second feature:** An example of a query for a specific launch would look like:
 
 ```js
 {
@@ -72,7 +72,7 @@ We'll use these features to derive the form of queries and mutations our schema 
 
 An id is passed to the launch query and the details of the 2nd launch is returned. It could be the first or third or any number specified in the query.
 
-From the third feature, we start to deal with users. A query for a signed in user come to mind here and that would look like:
+From the **third feature**, we start to deal with users. A query for a signed in user come to mind here and that would look like:
 
 ```js
 {
@@ -83,7 +83,7 @@ From the third feature, we start to deal with users. A query for a signed in use
 }
 ```
 
-Still focusing on the third feature, a user needing to log in seems more than just a query. In most cases, data changes occur such as a new user profile been created because the user doesn't exist. In this case, we're dealing with a `mutation`, which is a special type of query that modifies data.
+Still focusing on the **third feature**, a user needing to log in seems more than just a query. In most cases, data changes occur such as a new user profile been created because the user doesn't exist. In this case, we're dealing with a `mutation`, which is a special type of query that modifies data.
 
 ```js
 mutation {
@@ -93,7 +93,7 @@ mutation {
 }
 ```
 
-The fourth feature signifies creation of new data. An example of a mutation would look like:
+The **fourth feature** signifies creation of new data. An example of a mutation for booking a trip would look like:
 
 ```js
 mutation bookTrip {
@@ -103,7 +103,7 @@ mutation bookTrip {
 }
 ```
 
-The fifth feature signifies destruction of data. An example of a mutation for this case would look like:
+The **fifth feature** signifies destruction of data. An example of a mutation for cancelling a trip would look like:
 
 ```js
 mutation cancelTrip {
