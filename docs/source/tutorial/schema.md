@@ -16,9 +16,11 @@ npm install apollo-server graphql --save
 * [apollo-server](https://npm.im/apollo-server): This is the Apollo Server library.
 * [graphql](https://npm.im/graphql): This package is the JavaScript reference implementation for GraphQL. It's needed for Apollo Server to function as intended.
 
-Create an `index.js` file. Now, import `ApolloServer` and `gql` from the `apollo-server` library.
+Create an `src` directory and add an `index.js` file.
 
-_index.js_
+Now, import `ApolloServer` and `gql` from the `apollo-server` library.
+
+_src/index.js_
 
 ```js
 const { ApolloServer, gql } = require('apollo-server');
@@ -121,7 +123,7 @@ type Query {
 }
 ```
 
-`Launch` is a GraphQL Object Type that has some fields. Once your query requires more than one data attribute to be returned, group them into an object type.
+`Launch` is a _GraphQL Object Type_ that has some fields. Once your query requires more than one data attribute to be returned, group them into an object type like the type below:
 
 ```js
 type Launch {
@@ -136,7 +138,7 @@ type Launch {
 }
 ```
 
-In the `Launch` type, we have fields with scalar types and object types. GraphQL has built-in scalar types, `Int`, `String`, `Boolean`, `ID` which represents the leaves of an operation while object types are user-defined GraphQL types with some fields. The object types here are `Mission`, `Rocket`, and `User`. We need to define the fields for these object types.
+In the `Launch` type, we have fields with scalar types and object types. GraphQL has built-in scalar types, `Int`, `String`, `Boolean`, `ID` which represents the leaves of an operation while object types are user-defined GraphQL types. The object types here are `Mission`, `Rocket`, and `User`. We need to define the fields for these object types.
 
 **Note:** The `cursor` field in the `Launch` type is there for pagination purposes. We'll cover that later in the tutorial.
 
@@ -147,7 +149,7 @@ type Mission  {
 }
 ```
 
-This represents a mission. A `name` and `missionPatch` are details needed for a mission.
+This represents a mission that requires a `name` and `missionPatch` details.
 
 ```js
 type Rocket {
@@ -167,11 +169,11 @@ type User {
 }
 ```
 
-The `id` and `email` are fields for recognizing a user. The `trips` field is needed for easy access to the number of trips a user has booked.
+The `id` and `email` are fields for identifying a user. The `trips` field is necessary for providing easy access to the number of trips a user has booked.
 
-Let's now deal with the `Mutation` type. The `Mutation` type defines the entry points into Apollo server for modifying server data.
+Let's now deal with the `Mutation` type.
 
-For the `Mutation` type, based on our sample mutation queries, we can safely conclude that it should look like:
+The `Mutation` type defines the entry points into Apollo server for modifying server data. For the `Mutation` type, based on our sample mutation queries, we can safely conclude that it should look like:
 
 ```js
 type Mutation {
@@ -181,7 +183,7 @@ type Mutation {
 }
 ```
 
-All the fields in the `Mutation` type returns a scalar type.
+All the fields in the `Mutation` type returns a scalar type. The `bookTrip` field for booking a trip, `cancelTrip` field for cancelling a trip and the `login` field for authenticating a user.
 
 Now, put everything together in a `src/schema.js` file.
 
@@ -239,17 +241,17 @@ const typeDefs = gql`
 module.exports = typeDefs;
 ```
 
-In the code above, the `launches` field of the `Query` type takes in 2 arguments. Don't worry about them for now, they need to be there for the purpose of pagination.
+In the code above, the `launches` field of the `Query` type takes in 2 arguments. Don't worry about those arguments for now, they are for pagination.
 
 <h2 id="apollo-server-run">Run your server</h2>
 
 Now that we have scoped out our app's schema, let's run the server. Copy the code below and paste in the `index.js` file.
 
-_index.js_
+_src/index.js_
 
 ```js
 ...
-const typeDefs = require('./src/schema');
+const typeDefs = require('./schema');
 
 const server = new ApolloServer({ typeDefs });
 
@@ -265,6 +267,16 @@ On your terminal, run:
 
 ```bash
 npm start
+```
+
+The `start` script in the `package.json` file should look like:
+
+```js
+...
+"scripts": {
+  "start": "nodemon src/index.js"
+},
+...
 ```
 
 Apollo Server will now be available on port 4000. By default, it supports [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground.html). The Playground is an interactive, in-browser GraphQL IDE for testing your queries. Apollo Server automatically serves the GraphQL Playground GUI to web browsers in development. When `NODE_ENV` is set to production, GraphQL Playground is disabled as a production best-practice.
