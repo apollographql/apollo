@@ -41,13 +41,15 @@ class MvrpAPI extends RESTDataSource {
 module.exports = MvrpAPI;
 ```
 
-The `https://mvrp.herokuapp.com/api/` endpoint is a simple REST API that returns data for cars. Furthermore, the `MvrpAPI` class implementation in the code above contains a `getAllCars` and `getACar` functions that wrap convenience methods provided by the `RESTDataSource` class for performing HTTP requests. In this example, the built-in `get` method used is responsible for `GET` requests.
+The `https://mvrp.herokuapp.com/api/` endpoint is a simple REST API that returns data for cars. Furthermore, the `MvrpAPI` class implementation in the code above contains a `getAllCars` and `getACar` functions that wrap convenience methods provided by the `RESTDataSource` class for performing HTTP requests.
+
+In this example, the built-in `get` method used is responsible for `GET` requests. The `RESTDataSource` class provides other methods like `post`, `delete`, and `patch` for `POST`, `DELETE`, and `PATCH` requests respectively.
 
 Now that you have an understanding of how data sources work, let's hook it up for our tutorial app.
 
 Create a new `datasources` folder inside the `src` directory. This folder will contain our data source files. Now, create `launch.js` within the `datasources` directory.
 
-The REST API endpoint we'll use for our app is `https://api.spacexdata.com/v2/`. Add the endpoint as a base URL as shown in the code below:
+The REST API endpoint we'll use for our app is `https://api.spacexdata.com/v2/`. Add the endpoint as the base URL as shown in the code below:
 
 _src/datasources/launch.js_
 
@@ -64,23 +66,25 @@ class LaunchAPI extends RESTDataSource {
 module.exports = LaunchAPI;
 ```
 
-The next step is to add methods to the `LaunchAPI` class that corresponds to the type of queries our UI will fetch from the server. According to our app specifications, we'll need to get all launches, and get a specific launch. So, let's take care of getting all launches.
+In the code above, we required the `RESTDataSource` class and extended it with our custom `LaunchAPI` class. We then set up the base URL in the class constructor to the endpoint that fetches the data needed for our application.
+
+The next step is to add methods to the `LaunchAPI` class that corresponds to the type of queries our UI will fetch from the server. According to our app specifications, we'll need to get all the launches, and get a specific launch. So, let's take care of the former immediately.
+
+_src/datasources/launch.js_
 
 ```js
 ...
 async getAllLaunches() {
   const res = await this.get('launches');
 
-  return res.map(launch => {
+  return res && res.length ? res.map(launch => {
     return {
       id: launch.flight_number || 0,
-      cursor: `${launch.flight_number || 0}-${launch.mission_name}`,
       mission: {
         name: launch.mission_name,
-        patch: null, // what to do here?
+        patch: launch.links.mission_patch_small
       },
       year: launch.launch_year,
-      date: launch.launch_date_unix,
       rocket: {
         id: launch.rocket.rocket_id,
         name: launch.rocket.rocket_name,
@@ -88,26 +92,26 @@ async getAllLaunches() {
       },
       launchSuccess: launch.launch_success,
     };
-  });
+  }) : [];
 }
 ```
 
-In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned data in the `res` variable. The `getAllLaunches` method then returns an object that corresponds with the schema fields of the `Launch` schema type.
+In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned data in the `res` variable. If the `res` variable is not empty, then the `getAllLaunches` method returns an object that corresponds with the schema fields of the `Launch` schema type, else, an empty array is returned.
 
-Let's refactor the `getAllLaunches` method to be a lot cleaner and concise.
+Let's refactor the `getAllLaunches` method to be a lot cleaner and concise. Copy the `launchReducer` method below and add to the file. Now, refactor the `getAllLaunches` method to use the `launchReducer` method as shown below:
+
+_src/datasources/launch.js_
 
 ```js
 ...
 launchReducer(launch) {
   return {
     id: launch.flight_number || 0,
-    cursor: `${launch.flight_number || 0}-${launch.mission_name}`,
     mission: {
       name: launch.mission_name,
-      patch: null, // what to do here?
+      patch: launch.links.mission_patch_small
     },
     year: launch.launch_year,
-    date: launch.launch_date_unix,
     rocket: {
       id: launch.rocket.rocket_id,
       name: launch.rocket.rocket_name,
@@ -124,9 +128,9 @@ async getAllLaunches() {
 }
 ```
 
-With the above changes, we can easily make changes to the `launchReducer` method while the `getAllLaunches` method stays lean and concise.
+With the above changes, we can easily make changes to the `launchReducer` method while the `getAllLaunches` method stays lean and concise. The `launchReducer` method also makes testing the `LaunchAPI` data source class easier. The later part of this tutorial covers testing!
 
-Now, let's take care of getting a specific launch. Add the following methods, `getLaunchById`, and `getLaunchesByIds` to the `LaunchAPI` class.
+Next, let's take care of getting a specific launch. Add the following methods, `getLaunchById`, and `getLaunchesByIds` to the `LaunchAPI` class.
 
 ```js
 ...
@@ -149,7 +153,7 @@ The `getLaunchById` method takes in a flight number and returns the data for a p
 
 A data store is needed for saving and fetching user information. It's also important for user trips. Let's make use of [SQLite](https://www.sqlite.org) for our app's database. SQLite is a self-contained, light-weight, zero-configuration and embedded SQL database engine.
 
-Before connecting to SQLite, go ahead and install `sequelize`:
+Before connecting to SQLite, go ahead and install the `sequelize` package from npm:
 
 ```bash
 npm install sequelize --save
@@ -157,13 +161,72 @@ npm install sequelize --save
 
 **Sequelize** is an ORM for Node.js that supports several relational database management systems such as MySQL, MariaDB, PostgreSQL, SQLite and MSSQL. In this tutorial, we'll make use of it for the SQLite database.
 
-Now, create a `store.sqlite` file in the root directory. Once you have done that, change the directory from root to `src/datasources`:
+Now, create a `store.sqlite` file in the root directory. Once you have done that, change from the root directory to the `src/datasources` directory:
 
 ```bash
 cd src/datasources
 ```
 
-Create a `user.js` file inside the `src/datasources` directory. We'll connect to the sqlite database and set up the methods for interacting with the SQL data source within the `src/datasources/user.js` file. Time to set up!
+Next, create a `user.js` file inside the `src/datasources` directory. We'll connect to the SQLite database and set up the methods for interacting with the SQL data source within the `src/datasources/user.js` file. Time to set that up!
+
+Copy the code below and add it to the `src/datasources/user.js` file.
+
+_src/datasources/user.js_
+
+```js
+const { DataSource } = require('apollo-datasource');
+const isEmail = require('isemail');
+
+class UserAPI extends DataSource {
+  constructor({ store }) {
+    super();
+    this.store = store;
+  }
+
+  initialize(config) {
+    this.context = config.context;
+  }
+}
+```
+
+In the code above, we passed an instance of `store`, which is the function for interacting with the SQLite database into the constructor.
+
+The `initialize` method is a `DataSource` class method that allows for setting up config within the `UserAPI` class. In this scenario, we assign `context` manually to the class variable, `this.context`, because custom data sources don't automatically get the request context from the `ApolloServer` constructor.
+
+Let's add more methods to the `UserAPI` class.
+
+### Create a User
+
+Head over to your terminal and install the `isemail` package:
+
+```bash
+npm install isemail --save
+```
+
+The `isemail` package is an npm module that validates emails. Now, write the code to find or create a user within the `UserAPI` class below:
+
+_src/datasources/user.js_
+
+```js
+...
+
+async findOrCreateUser() {
+  const email = this.context && this.context.user ? this.context.user.email : null;
+
+  if (!email || !isEmail.validate(email)) return null;
+
+  const users = await this.store.users.findOrCreate({ where: { email } });
+  return users && users[0] ? users[0] : null;
+}
+```
+
+
+
+The `findOrCreateUser` method takes in a user's email and checks whether the email argument is a valid email address. If it's not valid, null is returned, else it runs a check within the `users` table in the SQLite database. If the email exists in the database, then the user already exists, else a new user is created, stored in the database.
+
+
+
+
 
 _src/datasources/user.js_
 
@@ -246,54 +309,6 @@ Now that we are done with the table creation, let's set up methods in the `UserA
 * Get all the users that have reserved a particular launch.
 
 
-### Create a User
-
-Head over to your terminal and install the `isemail` package:
-
-```bash
-npm install isemail --save
-```
-
-The `isemail` package is an npm module that validates emails. Now, write the code to find or create a user below:
-
-_src/datasources/user.js_
-
-```js
-const { DataSource } = require('apollo-datasource');
-const SQL = require('sequelize');
-const isEmail = require('isemail');
-
-class UserAPI extends DataSource {
-  constructor() {
-    super();
-    this.store = createStore();
-  }
-
-  userReducer(user) {
-    return {
-      id: user.id,
-      email: user.email,
-      avatar: user.avatar,
-    };
-  }
-
-  async findOrCreateUser({ email }) {
-    if (!isEmail.validate(email)) return null;
-    const users = await this.store.users.findOrCreate({ where: { email } });
-    return users && users[0] ? this.userReducer(users[0]) : null;
-  }
-}
-
-....
-// the createStore function is here
-....
-
-module.exports = UserAPI;
-```
-
-The `userReducer` method makes the `UserAPI` class easier to test because it abstracts the user object been returned from the `findOrCreateUser` method into a different method.
-
-The `findOrCreateUser` method takes in a user's email and checks whether the email argument is a valid email address. If it's not valid, null is returned, else it runs a check within the `users` table in the SQLite database. If the email exists in the database, then the user already exists, else a new user is created, stored in the database.
 
 ### Book and Cancel a Trip
 
