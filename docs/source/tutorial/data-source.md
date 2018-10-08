@@ -148,7 +148,6 @@ async getLaunchesByIds({ launchIds }) {
 
 The `getLaunchById` method takes in a flight number and returns the data for a particular launch, while `getLaunchesByIds` returns several launches based on their respective `launchIds`. `Promise.all()` takes an array of promises and returns a single promise that resolves when all the promises in the array have been resolved with their fulfilled values.
 
-
 <h2 id="database">Connect a database</h2>
 
 A data store is needed for saving and fetching user information. It's also important for user trips. Let's make use of [SQLite](https://www.sqlite.org) for our app's database. SQLite is a self-contained, light-weight, zero-configuration and embedded SQL database engine.
@@ -195,7 +194,7 @@ The `initialize` method is a `DataSource` class method that allows for setting u
 
 Let's add more methods to the `UserAPI` class.
 
-### Create a User
+<h4 id="create-user">Create a User</h4>
 
 Head over to your terminal and install the `isemail` package:
 
@@ -220,54 +219,97 @@ async findOrCreateUser() {
 }
 ```
 
+The `findOrCreateUser` method checks the context object whether a user's email is present or not. It then checks whether the email is a valid email address. If it's not valid, null is returned, else it runs a check within the `users` table in the SQLite database. If the email exists in the database, then the user already exists, else a new user is created, and stored in the database.
 
+It's worthy to note that the user object in `this.context` is extracted from the token gotten from the request headers during authentication. The value is then passed to the `context`. This is why we can access the user via `this.context.user` and `this.context.user.email`.
 
-The `findOrCreateUser` method takes in a user's email and checks whether the email argument is a valid email address. If it's not valid, null is returned, else it runs a check within the `users` table in the SQLite database. If the email exists in the database, then the user already exists, else a new user is created, stored in the database.
+<h4 id="book-and-cancel-trip">Book and Cancel a Trip</h4>
 
-
-
-
+Add a `bookTrip` and `cancelTrip` method to the `UserAPI` data source class.
 
 _src/datasources/user.js_
 
 ```js
-const { DataSource } = require('apollo-datasource');
-const SQL = require('sequelize');
-
+...
 class UserAPI extends DataSource {
   constructor() {
-    super();
-    this.store = createStore();
+    ...
+  }
+
+  ...
+
+  async bookTrip({ launchId }) {
+    const userId = this.context.user.id;
+    return !!this.store.trips.findOrCreate({ where: { userId, launchId } });
+  }
+
+  async cancelTrip({ launchId }) {
+    const userId = this.context.user.id;
+    return !!this.store.trips.destroy({ where: { userId, launchId } });
   }
 }
+...
+```
 
-const createStore = () => {
+A user selects a particular launch and books a trip. The `userId` and `launchId` values are needed to book the trip successfully. Therefore, the `bookTrip` method accepts a `launchId` via its arguments, obtains the `userId` via the `context` object and invokes the `findOrCreate` method on the `trips` table to book the trip.
+
+The `cancelTrip` method requires a `userId` and `launchId` to delete a trip from the `trips` table successfully. Therefore, the `cancelTrip` method performs almost the same operation as the `bookTrip` method except that it invokes the `destroy` method on the `trips` table and deletes the trip.
+
+<h4 id="get-launches">Get All Launches By User</h4>
+
+We need to get all the launches reserved by a user. This calls for a method, `getLaunchIdsByUser`. Copy the code below and add it to the file.
+
+_src/datasources/user.js_
+
+```js
+...
+class UserAPI extends DataSource {
+  constructor() {
+    ...
+  }
+
+  ...
+
+  async getLaunchIdsByUser() {
+    const userId = this.context.user.id;
+    const found = await this.store.trips.findAll({
+      where: { userId },
+    });
+    return found && found.length
+      ? found.map(l => l.dataValues.launchId).filter(l => !!l)
+      : [];
+  }
+}
+...
+```
+
+Let's analyze the code above.
+
+In the `getLaunchIdsByUser` method, a `userId` is accepted via the `context` object. All the trips booked by a user with a particular `userId` are fetched and stored in the `found` variable. If there are trips found, then an array of launch ids are returned else an empty array is returned.
+
+
+In the various methods that we created and copied to the `UserAPI` class, you must have noticed `this.store.users` and `this.store.trips`. These are two tables from our SQLite data store.
+
+<h4 id="create-the-store">Create the Store</h4>
+
+Create an `utils.js` file inside the `src` directory. Now, copy the code below and add to it.
+
+_src/utils.js_
+
+```js
+const SQL = require('sequelize');
+
+module.exports.createStore = () => {
   const Op = SQL.Op;
   const operatorsAliases = {
     $in: Op.in,
   };
 
-  const db = new SQL('rocket', null, null, {
+  const db = new SQL('database', 'username', 'password', {
     dialect: 'sqlite',
     storage: './store.sqlite',
     operatorsAliases,
   });
-};
-
-module.exports = UserAPI;
-```
-
-In the code above, the `createStore` function sets up a new SQL instance that connects to the SQLite database with the name of the database specified which is `rocket`. Username and password are null, the location and operator aliases are also required.
-
-The `createStore` function is also invoked in the constructor and stored in a class variable called `store`.
-
-Let's extend the `createStore` function to create a `users` and `trips` table.
-
-```js
-...
-...
-const createStore = () => {
-  ...
 
   const users = db.define('user', {
     id: {
@@ -293,129 +335,63 @@ const createStore = () => {
     userId: SQL.INTEGER,
   });
 
-  return { users, trips};
-
+  return { users, trips };
 };
 ```
 
-The `users` and `trips` tables have now been defined with their respective fields. And an object containing `users` and `trips`is returned within the `createStore` function to enable us access the ORM methods later on in the body of our data source.
+In the code above, the `createStore` function sets up a new SQL instance that connects to the SQLite database. A `database`, `username`, and `password` values are passed as arguments. And an object specifying the `dialect`, location of the SQLite database and operator aliases is also passed as an argument to the SQL instance.
 
-Now that we are done with the table creation, let's set up methods in the `UserAPI` class to:
+The `users` and `trips` tables have now been defined with their respective fields. And an object containing `users` and `trips`is returned within the `createStore` function to enable us access the ORM methods later on, in the body of our data source.
 
-* Create a user.
-* Book a trip.
-* Cancel a trip.
-* Get launches reserved by a user.
-* Get all the users that have reserved a particular launch.
-
-
-
-### Book and Cancel a Trip
-
-Add a `bookTrip` and `cancelTrip` method to the `UserAPI` data source class.
-
-_src/datasources/user.js_
-
-```js
-...
-class UserAPI extends DataSource {
-  constructor() {
-    ...
-  }
-
-  ...
-
-  async bookTrip({ userId, launchId }) {
-    return this.store.trips.findOrCreate({ where: { userId, launchId } });
-  }
-
-  async cancelTrip({ userId, launchId }) {
-    return this.store.trips.destroy({ where: { userId, launchId } });
-  }
-}
-...
-```
-
-A user selects a particular launch and books a trip. The `userId` and `launchId` values are needed to book the trip successfully. Therefore, the `bookTrip` method invokes the `findOrCreate` method on the `trips` table to book the trip.
-
-The `cancelTrip` method requires a `userId` and `launchId` to delete a trip from the `trips` table successfully.
-
-
-### Get Launches and Users
-
-We need to get all the launches reserved by a user and also obtain all the users that signed up for a particular launch. This calls for two methods, `getLaunchIdsByUser`, and `getUsersByLaunch`.
-
-_src/datasources/user.js_
-
-```js
-...
-class UserAPI extends DataSource {
-  constructor() {
-    ...
-  }
-
-  ...
-
-  async getLaunchIdsByUser({ userId }) {
-    const found = await this.store.trips.findAll({
-      where: { userId: userId },
-    });
-
-    return found && found.length
-      ? found.map(l => l.dataValues.launchId).filter(l => !!l)
-      : [];
-  }
-
-  async getUsersByLaunch({ launchId }) {
-    const found = await this.store.trips.findAll({
-      where: { launchId: launchId },
-    });
-
-    const userIds = found && found.length ? found.map(l => l.dataValues.userId) : [];
-
-    if (!userIds || !userIds.length) return [];
-
-    const foundUsers = await this.store.users.findAll({
-      where: { id: { $in: userIds } },
-    });
-
-    if (!foundUsers || !foundUsers.length) return [];
-
-    return foundUsers.map(u => this.userReducer(u));
-  }
-}
-...
-```
-
-Let's analyze the code above.
-
-In the `getLaunchIdsByUser` method, a `userId` is accepted via the method argument. All the trips booked by a user with a particular `userId` are fetched and stored in the `found` variable. If there are trips found, then an array of launch ids are returned else an empty array is returned.
-
-In the `getUsersByLaunch` method, a `launchId` is accepted via the method argument. All the trips booked for a particular launch with a specific `launchId` are fetched and stored in the `found` variable. Next, an array of user ids for trips in the `found` variable are obtained and stored in the `userIds` variable. If there are no user ids, then the `userIds` variable becomes an empty array.
-
-So, if the `userIds` variable is empty, then the `getUsersByLaunch` method returns an empty array. However, if the `userIds` variable is not empty, then users with those ids are fetched from the users table.
-
-If no users were found, the `getUsersByLaunch` method returns an empty array, else an array of users with their respective `id`, `email` and `avatar` is returned!
-
-<h2 id="database">Connect Data Sources to Server</h2>
+<h2 id="database">Connect Data Sources and Store to Server</h2>
 
 Now that we have defined our data sources, they need to be passed as options to the `ApolloServer` constructor so that our resolvers can access them.
 
-Open `index.js` file, require the `launch` and `user` data source files, and modify the `ApolloServer` constructor to have the `dataSources` key as shown below:
+Copy the code below and add it to the `src/index.js` file.
+
+_src/index.js_
 
 ```js
 ...
 ...
+const typeDefs = require('./schema');
+const { createStore } = require('./utils');
 const LaunchAPI = require('./datasources/launch');
 const UserAPI = require('./datasources/user');
+const store = createStore();
 
+// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   dataSources: () => ({
     launchAPI: new LaunchAPI(),
-    userAPI: new UserAPI(),
-  })
+    userAPI: new UserAPI({ store }),
+  }),
+  context: async ({ req }) => {
+
+    const email = 'johndoe@apollo.com';
+
+    // if the email isn't formatted validly, return null for user
+    if (!isEmail.validate(email)) return { user: null };
+
+    // find a user by their email
+    const users = await store.users.findOrCreate({ where: { email } });
+
+    const user = users && users[0] ? users[0] : null;
+
+    return { user: { ...user.dataValues } };
+  },
 });
 ```
 
-Apollo Server will put the data sources on the context for every request, so you can access them from your resolvers. In the next section of this tutorial, we'll write the resolvers for our app and you'll learn more about `context` and how to access the data sources on them.
+In the code above, we required the `launch` and `user` data source files, created an instance of both classes and passed them as objects to the `dataSources` key in `ApolloServer`'s' constructor.
+
+We also required the `utils.js` file, assigned the `createStore()` method to a `store` variable and passed it the `UserAPI` constructor. The `createStore()` method is responsible for making sure the `users` and `trips` tables exist, and ensures they can be connected to! Apollo Server will then put the data sources on the `context` for every request, so you can access them from your resolvers.
+
+Now, what about the `context` function defined explicitly in the `ApolloServer` constructor?
+
+As shown in the code above, If the email presented is not valid, a null user is returned as the `context` object's value.
+
+If the email is valid, we simply look up the email in the `users` store. If the user exists, we return the user's details as the `context` object's value, else we return null. The user's details is what we access as `this.context.user` via the `initialize` method in the `UserAPI` data source class.
+
+In the next section of this tutorial, we'll write the resolvers for our app and you'll learn more about `context` and how to access the data sources on them.
