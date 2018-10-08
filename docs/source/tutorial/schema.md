@@ -128,13 +128,11 @@ type Query {
 ```js
 type Launch {
   id: ID!
-  cursor: String
   year: String!
   date: String!
   mission: Mission!
   rocket: Rocket!
   launchSuccess: Boolean
-  passengers: [User]!
 }
 ```
 
@@ -194,16 +192,7 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
-    launches(
-      """
-      the number of results to show. Must be >= 1
-      """
-      pageSize: Int
-      """
-      cursor - if you add a cursor id here, it will only return results _after_ this cursor
-      """
-      after: String
-    ): [Launch]!
+    launches: [Launch]!
     launch(id: ID!): Launch
     me: User
   }
@@ -214,13 +203,11 @@ const typeDefs = gql`
   }
   type Launch {
     id: ID!
-    cursor: String
     year: String!
     date: String!
     mission: Mission!
     rocket: Rocket!
     launchSuccess: Boolean
-    passengers: [User]!
   }
   type Rocket {
     id: ID!
@@ -240,8 +227,6 @@ const typeDefs = gql`
 
 module.exports = typeDefs;
 ```
-
-In the code above, the `launches` field of the `Query` type takes in 2 arguments. Don't worry about those arguments for now, they are for pagination.
 
 <h2 id="apollo-server-run">Run your server</h2>
 
