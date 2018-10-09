@@ -3,7 +3,7 @@ title: "3. Write your graph's resolvers"
 description: Start here for the Apollo fullstack tutorial
 ---
 
-It's time to finally leverage all the data sources logic in our graph's resolvers. Resolvers provide the instructions for turning a GraphQL operation into data. They are functions that fetch or modify data from underlying data sources for fields in a schema type. There are a few things to note about resolver functions.
+It's time to finally leverage all the data sources logic in our graph's resolvers. Resolvers provide the instructions for turning a graph operation into data. They are functions that fetch or modify data from underlying data sources for fields in a schema type. There are a few things to note about resolver functions.
 
 1. A resolver function must bear the same name as the field it operates on.
 2. A resolver function must return the type of data that was specified in the schema field.
@@ -122,6 +122,8 @@ The `trips` resolver function works like the steps outlined below:
 3. If there's an array of launch ids, fetch all the launches via their ids.
 
 <h2 id="write-query">Write a query in the playground</h2>
+
+
 
 <h2 id="authentication">Authenticate users</h2>
 
