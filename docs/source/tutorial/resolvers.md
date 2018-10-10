@@ -79,7 +79,7 @@ Mutation: {
 
 As shown in the code above, there are three resolver functions, `bookTrip`, `cancelTrip`, and `login`.
 
-The `bookTrip` function takes in a `launchId`,and makes a request to book a trip for that particular launch.
+The `bookTrip` function takes in a `launchId`, and makes a request to book a trip for that particular launch.
 
 The `cancelTrip` function takes in a `launchId`, and makes a request via the `cancelTrip` method of the user data source to cancel a trip.
 
@@ -123,8 +123,84 @@ The `trips` resolver function works like the steps outlined below:
 
 <h2 id="write-query">Write a query in the playground</h2>
 
+Apollo Server sets up GraphQL Playground so that you can start running queries and exploring schemas quickly. Go ahead and open the graph service URL in a browser, `http://localhost:4000/`.
 
+Start by copying the query below and pasting it in the left side of the playground. After pasting, hit the Play button at the center to get a response.
+
+```js
+query {
+  launches {
+    id
+    year
+    mission {
+      name
+    }
+  }
+}
+```
+
+A response like this should be returned at the right side of the playground.
+
+![All Launches](../images/launches.png)
 
 <h2 id="authentication">Authenticate users</h2>
+
+Authentication is a common part of every application. There are several ways to handle authentication and authorization.
+
+In this tutorial, we use a login token in an HTTP authorization header.
+
+Update the `context` section of the `ApolloServer` constructor in `src/index.js` to have the code shown below:
+
+_src/index.js_
+
+```js
+...
+// Set up Apollo Server
+const server = new ApolloServer({
+  ...
+  context: async ({ req }) => {
+    // simple auth check on every request
+    const auth = (req.headers && req.headers.authorization) || '';
+
+    const email = new Buffer(auth, 'base64').toString('ascii');
+
+    // if the email isn't formatted validly, return null for user
+    if (!isEmail.validate(email)) return { user: null };
+     // find a user by their email
+    const users = await store.users.findOrCreate({ where: { email } });
+
+    const user = users && users[0] ? users[0] : null;
+
+    return { user: { ...user.dataValues } };
+  },
+});
+```
+
+In the `ApolloServer` constructor, we have a `context` function that takes in a request object. The context is usually generated again with every new request, so we can track the content of request headers on every request. The context function returns what we know as the `context` object. The `context` object is one that gets passed to every single resolver at every level, so we can access it anywhere in our schema code. We can store things like database connections, and user information in the `context` object.
+
+In the code above, the context function extracts the value of the `authorization` header and stores it in an `auth` variable. It then verifies the value, which is a short token. The expected value is a valid email address. If the expected email address is valid, a request is made to check the database whether a user with that email address exists in the `users` table. If the user does not exist, a new user is created and a context object containing the logged-in user is returned to the resolvers.
+
+If the user exists, a context object containing the logged-in user is returned to the resolver functions.
+
+How do we create the token passed to the `authorization` headers? Check out the Query `login` resolver function again.
+
+_src/resolvers.js_
+
+```js
+...
+Mutation: {
+  ...
+  login: async (root, { email }, { dataSources }) => {
+    const user = await dataSources.userAPI.findOrCreateUser({ email });
+    if (user) return new Buffer(email).toString('base64');
+    return false;
+},
+...
+```
+
+The `login` function receives an email address and checks the user table in the database if there's a user with that email address. If a user exists, the `login` function returns an an array containing the user object, else a new user is created.
+
+Once a user object is present, the email is then converted to a base64 encoded string using the [Buffer](https://nodejs.org/api/buffer.html) class. The result is a short string token, that can now be sent to the server via an `authorization` header.
+
 
 <h2 id="testing">Test your graph</h2>
