@@ -202,5 +202,4 @@ The `login` function receives an email address and checks the user table in the 
 
 Once a user object is present, the email is then converted to a base64 encoded string using the [Buffer](https://nodejs.org/api/buffer.html) class. The result is a short string token, that can now be sent to the server via an `authorization` header.
 
-
 <h2 id="testing">Test your graph</h2>
