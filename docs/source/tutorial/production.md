@@ -100,3 +100,5 @@ Once this is done, you can now have access to all the features that Apollo Engin
 * **Performance Analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution.
 * **Query tracing:**  The _Trace view_ in the Engine UI allows you to look at a detailed breakdown of the execution of one query, with timing for every resolver.
 * **Performance alerts:** You can configure notifications to be sent to various channels like Slack, and PagerDuty. Apollo Engine can be set to send alerts when a request rate, duration or error rate exceeds a certain threshold. You can effectively monitor everything going on in your graph's service.
+
+The [Engine](https://www.apollographql.com/docs/engine/) guide provides detailed instructions on how Apollo Engine works and the setup for any type for performance or usage analytics.
