@@ -262,7 +262,7 @@ Query: {
 ...
 ```
 
-Let's test the cursor-based pagination we just implemented. Go ahead and run your GraphQL server, write a `launches` query in GraphQL Playground and pass a `pageSize` value of 3.
+Let's test the cursor-based pagination we just implemented. Go ahead and run your GraphQL server, write a `launches` query in GraphQL Playground with a `pageSize` value of 3 passed as an argument and hit the Play button.
 
 The response should look like the paginated data shown below:
 
