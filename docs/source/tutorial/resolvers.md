@@ -143,11 +143,136 @@ A response like this should be returned at the right side of the playground.
 
 ![All Launches](../images/launches.png)
 
+<h2 id="pagination">Pagination</h2>
+
+The `launches` query returned a large data set of launches. This data set contains too much data to be fetched all at once.
+
+Pagination is a solution to the challenge of fetching all the data at once. It's a technique that ensures that the server only sends data in small chunks per time. There are two major ways of fetching paginated data: offset-based (otherwise known as numbered pages), and cursor-based pagination.
+
+Cursor-based pagination is the more efficient way of fetching paginated data because it eliminates the possibility of skipping items and displaying the same item more than once. In cursor-based pagination, a constant pointer is used to keep track of where in the data set the next items should be fetched from. This pointer is called a **cursor**.
+
+We'll use a cursor-based pagination for our graph API. This approach requires two parameters:
+
+* The number of items to fetch at once.
+* The cursor.
+
+Open up the `src/schema.js` file and update the `Query` type. Go ahead and add a new type called `LaunchConnection` to the schema as shown below:
+
+_src/schema.js_
+
+```js
+type Query {
+  launches(
+    """
+    The number of results to show. Must be >= 1. Default = 20
+    """
+    pageSize: Int
+    """
+    If you add a cursor here, it will only return results _after_ this cursor
+    """
+    after: String
+  ): LaunchConnection!
+  launch(id: ID!): Launch
+  me: User
+}
+
+"""
+Simple wrapper around our list of launches that contains a cursor to the
+last item in the list. Pass this cursor to the launches query to fetch results
+after these.
+"""
+type LaunchConnection {
+  cursor: String!
+  hasMore: Boolean!
+  launches: [Launch]!
+}
+...
+```
+
+The `launches` field takes in two parameters, `pageSize` and `after`. `pageSize` refers to the number of items to show at once while `after` refers to the cursor that keeps track of where the next set of data should be fetched from. We created a `LaunchConnection` type that returns a result that shows the list of launches with a `cursor` field and a `hasMore` field to indicate if there's more data to be fetched.
+
+Copy the pagination helper code below and paste it in the `src/utils.js` file.
+
+_src/utils.js_
+
+```js
+module.exports.paginateResults = ({
+  after: cursor,
+  pageSize = 20,
+  results,
+  // can pass in a function to calculate an item's cursor
+  getCursor = () => null,
+}) => {
+  if (pageSize < 1) return [];
+  if (!cursor) return results.slice(0, pageSize);
+
+  const cursorIndex = results.findIndex(item => {
+    // if an item has a `cursor` on it, use that, otherwise try to generate one
+    let itemCursor = item.cursor ? item.cursor : getCursor(item);
+     // if there's still not a cursor, return false by default
+    return itemCursor ? cursor === itemCursor : false;
+  });
+
+  return cursorIndex >= 0
+    ? cursorIndex === results.length - 1 // don't let us overflow
+      ? []
+      : results.slice(
+          cursorIndex + 1,
+          Math.min(results.length, cursorIndex + 1 + pageSize),
+        )
+    : results.slice(0, pageSize);
+   results.slice(cursorIndex >= 0 ? cursorIndex + 1 : 0, cursorIndex >= 0);
+};
+```
+
+The code above is a helper function for paginating data from the server.Now, let's update the necessary resolver functions to accomodate pagination.
+
+First, copy the code below and add it to the top of the `src/resolvers.js` file.
+
+```js
+const { paginateResults } = require('./utils');
+```
+
+We required the `paginateResults` function from the `src/utils.js` file. Now, update the `launches` resolver function in the `src/resolvers.js` file with the code below:
+
+_src/resolvers.js_
+
+```js
+...
+Query: {
+  launches: async (root, { pageSize = 20, after }, { dataSources }) => {
+    const allLaunches = await dataSources.launchAPI.getAllLaunches();
+    const launches = paginateResults({
+      after,
+      pageSize,
+      results: allLaunches,
+    });
+
+    return {
+      launches,
+      cursor: launches.length ? launches[launches.length - 1].cursor : null,
+      // if the cursor of the end of the paginated results is the same as the
+      // last item in _all_ results, then there are no more results after this
+      hasMore: launches.length
+        ? launches[launches.length - 1].cursor !==
+          allLaunches[allLaunches.length - 1].cursor
+        : false,
+    };
+  },
+...
+```
+
+Let's test the cursor-based pagination we just implemented. Go ahead and run your GraphQL server, write a `launches` query in GraphQL Playground and pass a `pageSize` value of 3.
+
+The response should look like the paginated data shown below:
+
+![Paginated launches data](../images/paginatedlaunches.png)
+
 <h2 id="authentication">Authenticate users</h2>
 
-Authentication is a common part of every application. There are several ways to handle authentication and authorization.
+Authentication is a common part of every application. There are several ways to [handle authentication and authorization in your graph API](https://www.apollographql.com/docs/guides/access-control.html).
 
-In this tutorial, we use a login token in an HTTP authorization header.
+In this tutorial, we use a login token in an HTTP authorization header and put user info on the `context`.
 
 Update the `context` section of the `ApolloServer` constructor in `src/index.js` to have the code shown below:
 
