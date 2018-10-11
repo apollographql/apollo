@@ -93,7 +93,9 @@ Set the `ENGINE_API_KEY` environment variable via the command line:
 $ ENGINE_API_KEY=YOUR_API_KEY npm start
 ```
 
-Once this is done, you can now have access to all the features that Apollo Engine provides:
+Once this is done, run a query in GraphQL Playground, and log in to your Engine account to monitor the graph's performance.
+
+Apollo Engine provides all of the following features highlighted below:
 
 * **Schema Explorer:** With Engine's powerful schema registry, you can quickly explore all the types and fields in your schema with usage statistics on each field. This metric makes you understand the cost of a field. How expensive is a field? Is a certain field in so much demand?
 * **Schema history:** Apollo Engine’s schema history allows developers to confidently iterate a graph's schema by validating the new schema against field-level usage data from the previous schema. This empowers developers to avoid breaking changes by providing insights into which clients will be broken by a new schema.
