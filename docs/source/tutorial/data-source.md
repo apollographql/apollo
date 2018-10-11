@@ -80,9 +80,10 @@ async getAllLaunches() {
   return res && res.length ? res.map(launch => {
     return {
       id: launch.flight_number || 0,
+      cursor: `${launch.launch_date_unix}`,
       mission: {
         name: launch.mission_name,
-        patch: launch.links.mission_patch_small
+        missionPatch: launch.links.mission_patch_small
       },
       year: launch.launch_year,
       rocket: {
@@ -107,9 +108,10 @@ _src/datasources/launch.js_
 launchReducer(launch) {
   return {
     id: launch.flight_number || 0,
+    cursor: `${launch.launch_date_unix}`,
     mission: {
       name: launch.mission_name,
-      patch: launch.links.mission_patch_small
+      missionPatch: launch.links.mission_patch_small
     },
     year: launch.launch_year,
     rocket: {
