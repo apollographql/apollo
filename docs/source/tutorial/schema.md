@@ -129,7 +129,6 @@ type Query {
 type Launch {
   id: ID!
   year: String!
-  date: String!
   mission: Mission!
   rocket: Rocket!
   launchSuccess: Boolean
@@ -137,8 +136,6 @@ type Launch {
 ```
 
 In the `Launch` type, we have fields with scalar types and object types. GraphQL has built-in scalar types, `Int`, `String`, `Boolean`, `ID` which represents the leaves of an operation while object types are user-defined GraphQL types. The object types here are `Mission`, `Rocket`, and `User`. We need to define the fields for these object types.
-
-**Note:** The `cursor` field in the `Launch` type is there for pagination purposes. We'll cover that later in the tutorial.
 
 ```js
 type Mission  {
@@ -204,7 +201,6 @@ const typeDefs = gql`
   type Launch {
     id: ID!
     year: String!
-    date: String!
     mission: Mission!
     rocket: Rocket!
     launchSuccess: Boolean
