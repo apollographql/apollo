@@ -49,7 +49,7 @@ Now that you have an understanding of how data sources work, let's hook it up fo
 
 Create a new `datasources` folder inside the `src` directory. This folder will contain our data source files. Now, create `launch.js` within the `datasources` directory.
 
-The REST API endpoint we'll use for our app is `https://api.spacexdata.com/v2/`. Add the endpoint as the base URL as shown in the code below:
+The REST API endpoint we'll use for our app is `https://api.spacexdata.com/v2/`. Go ahead and add the endpoint as the base URL as shown in the code below:
 
 _src/datasources/launch.js_
 
@@ -132,7 +132,7 @@ async getAllLaunches() {
 
 With the above changes, we can easily make changes to the `launchReducer` method while the `getAllLaunches` method stays lean and concise. The `launchReducer` method also makes testing the `LaunchAPI` data source class easier. The later part of this tutorial covers testing!
 
-Next, let's take care of getting a specific launch. Add the following methods, `getLaunchById`, and `getLaunchesByIds` to the `LaunchAPI` class.
+Next, let's take care of getting a specific launch. Add the method, `getLaunchById`, and `getLaunchesByIds` to the `LaunchAPI` class.
 
 ```js
 ...
@@ -259,7 +259,7 @@ The `cancelTrip` method requires a `userId` and `launchId` to delete a trip from
 
 <h4 id="get-launches">Get All Launches By User</h4>
 
-We need to get all the launches reserved by a user. This calls for a method, `getLaunchIdsByUser`. Copy the code below and add it to the file.
+We need to get all the launches reserved by a user. This calls for a method, `getLaunchIdsByUser`. Copy the method below and add it to the file.
 
 _src/datasources/user.js_
 
@@ -289,8 +289,26 @@ Let's analyze the code above.
 
 In the `getLaunchIdsByUser` method, a `userId` is accepted via the `context` object. All the trips booked by a user with a particular `userId` are fetched and stored in the `found` variable. If there are trips found, then an array of launch ids are returned else an empty array is returned.
 
+<h4 id="get-launches">Get Booked Status on a Launch</h4>
 
-In the various methods that we created and copied to the `UserAPI` class, you must have noticed `this.store.users` and `this.store.trips`. These are two tables from our SQLite data store.
+We need to add a method that can return the booked status of a launch for a particular user. Copy the method, `isBookedOnLaunch` below and add it to the `UserAPI` class.
+
+_src/datasources/user.js_
+
+```js
+...
+async isBookedOnLaunch({ launchId }) {
+  const userId = this.context.user.id;
+  const found = await this.store.trips.findAll({
+    where: { userId, launchId },
+  });
+  return found && found.length > 0;
+}
+```
+
+In the `isBookedOnLaunch` method, we invoke the `findAll` method of the `trips` table to find out if the particular launch passed to the method via `launchId` has been booked by the logged-in user.
+
+In the various methods that we created and copied to the `UserAPI` class, you must have noticed `this.store.users` and `this.store.trips`. These are two tables from our potential SQLite data store. Let's create the store!
 
 <h4 id="create-the-store">Create the Store</h4>
 
