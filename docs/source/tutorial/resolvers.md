@@ -34,9 +34,9 @@ _src/resolvers.js_
 ```js
 module.exports = {
   Query: {
-    launches: async (root, __, { dataSources }) =>
+    launches: async (_, __, { dataSources }) =>
       dataSources.launchAPI.getAllLaunches(),
-    launch: (root, { id }, { dataSources }) =>
+    launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
     me: async (_, __, { dataSources }) =>
       dataSources.userAPI.findOrCreateUser(),
@@ -65,11 +65,11 @@ _src/resolvers.js_
 ```js
 ...
 Mutation: {
-  bookTrip: async (root, { launchId }, { dataSources }) =>
+  bookTrip: async (_, { launchId }, { dataSources }) =>
     dataSources.userAPI.bookTrip({ launchId }),
-  cancelTrip: async (root, { launchId }, { dataSources }) =>
+  cancelTrip: async (_, { launchId }, { dataSources }) =>
     dataSources.userAPI.cancelTrip({ launchId }),
-  login: async (root, { email }, { dataSources }) => {
+  login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
     if (user) return new Buffer(email).toString('base64');
     return false;
@@ -240,7 +240,7 @@ _src/resolvers.js_
 ```js
 ...
 Query: {
-  launches: async (root, { pageSize = 20, after }, { dataSources }) => {
+  launches: async (_, { pageSize = 20, after }, { dataSources }) => {
     const allLaunches = await dataSources.launchAPI.getAllLaunches();
     const launches = paginateResults({
       after,
@@ -315,7 +315,7 @@ _src/resolvers.js_
 ...
 Mutation: {
   ...
-  login: async (root, { email }, { dataSources }) => {
+  login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
     if (user) return new Buffer(email).toString('base64');
     return false;
