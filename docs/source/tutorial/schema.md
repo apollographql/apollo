@@ -83,7 +83,7 @@ From the **third feature**, we start to deal with users. A query for a signed in
 }
 ```
 
-Still focusing on the **third feature**, a user needing to log in seems more than just a query. In most cases, data changes occur such as a new user profile been created because the user doesn't exist. In this case, we're dealing with a `mutation`, which is a special type of query that modifies data.
+Still focusing on the **third feature**, a user needs to log in. In most cases, data changes occur such as a new user profile been created because the user doesn't exist. In this case, we're dealing with a `mutation`, which is a special type of query that modifies data. An email address is passed as an argument to the query, if a user with the email address exists, log the user in, else create a new user with the email address and log the user in!
 
 ```js
 mutation {
@@ -113,7 +113,7 @@ mutation cancelTrip {
 }
 ```
 
-Let's make some schema types now based on these queries and mutations, starting with the `Query` and `Mutation` types which are the entry points into a schema.
+Let's make some schema types based on these queries and mutations, starting with the `Query` and `Mutation` types which are the entry points into a schema.
 
 ```js
 type Query {
@@ -132,10 +132,11 @@ type Launch {
   mission: Mission!
   rocket: Rocket!
   launchSuccess: Boolean
+  isBooked: Boolean
 }
 ```
 
-In the `Launch` type, we have fields with scalar types and object types. GraphQL has built-in scalar types, `Int`, `String`, `Boolean`, `ID` which represents the leaves of an operation while object types are user-defined GraphQL types. The object types here are `Mission`, `Rocket`, and `User`. We need to define the fields for these object types.
+The `isBooked` field here makes it easier to query for the booked status of a launch. In the `Launch` type, we have fields with scalar types and object types. GraphQL has built-in scalar types, `Int`, `String`, `Boolean`, `ID` which represents the leaves of an operation while object types are user-defined GraphQL types. The object types here are `Mission`, `Rocket`, and `User`. We need to define the fields for these object types.
 
 ```js
 type Mission  {
@@ -204,6 +205,7 @@ const typeDefs = gql`
     mission: Mission!
     rocket: Rocket!
     launchSuccess: Boolean
+    isBooked: Boolean!
   }
   type Rocket {
     id: ID!
