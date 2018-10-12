@@ -65,36 +65,78 @@ _src/resolvers.js_
 ```js
 ...
 Mutation: {
-  bookTrip: async (_, { launchId }, { dataSources }) =>
-    dataSources.userAPI.bookTrip({ launchId }),
-  cancelTrip: async (_, { launchId }, { dataSources }) =>
-    dataSources.userAPI.cancelTrip({ launchId }),
+  bookTrip: async (_, { launchId }, { dataSources }) => {
+    const result = await dataSources.userAPI.bookTrip({ launchId });
+    if (!result)
+      return {
+        success: false,
+        message: 'failed to book trip',
+      };
+
+    const launch = await dataSources.launchAPI.getLaunchById({ launchId });
+    return {
+      success: true,
+      message: 'trip booked',
+      launch,
+    };
+  },
+  cancelTrip: async (_, { launchId }, { dataSources }) => {
+    const result = dataSources.userAPI.cancelTrip({ launchId });
+
+    if (!result)
+      return {
+        success: false,
+        message: 'failed to cancel trip',
+      };
+
+    const launch = await dataSources.launchAPI.getLaunchById({ launchId });
+    return {
+      success: true,
+      message: 'trip cancelled',
+      launch,
+    };
+  },
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
     if (user) return new Buffer(email).toString('base64');
     return false;
   },
-}
+},
 ```
 
 As shown in the code above, there are three resolver functions, `bookTrip`, `cancelTrip`, and `login`.
 
-The `bookTrip` function takes in a `launchId`, and makes a request to book a trip for that particular launch.
+The `bookTrip` function takes in a `launchId`, and makes a request to book a trip for that particular launch. If a trip is booked successfully, then the function retrieves the booked launch and returns an object containing a success status and message back to the client.
 
-The `cancelTrip` function takes in a `launchId`, and makes a request via the `cancelTrip` method of the user data source to cancel a trip.
+The `cancelTrip` function takes in a `launchId`, and makes a request via the `cancelTrip` method of the user data source to cancel a trip. If a trip is canceled successfully, then the function retrieves the launch that has been canceled and returns an object indicating a success status back to the client.
+
+For both functions, if the request fails, then an object containing a failed success status and message is returned to the client.
 
 The `login` function takes in an email, checks the user table in the database via the `findOrCreateUser` method to verify if the user exists or not. If the user exists or a new user is created, return a `base64` encoding of the user's email.
 
 The `base64` encoding of the user's detail is for obscuring the data. The result is a form of unique string token which we use for authentication.
 
-Now, let's get to the `User` resolver functions.
-
-Copy the code below and paste it just after the `Mutation` resolver functions.
+Now, we need to add a resolver function to take care of the booked status on a launch. Copy the code below and paste it just after the `Mutation` resolver functions.
 
 _src/resolvers.js_
 
 ```js
 ...
+Launch: {
+  isBooked: async (launch, _, { dataSources }) =>
+    dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
+}
+```
+
+The `isBooked` function makes a request to the `isBookedOnLaunch` method of the `UserAPI` datasource class with the id of a launch. This request confirms whether the launch has been booked by the logged-in user.
+
+Now, let's implement the `User` resolver functions.
+
+Copy the code below and paste it just after the `Launch` resolver function.
+
+_src/resolvers.js_
+
+```js
 ...
 User: {
   trips: async (_, __, { dataSources }) => {
