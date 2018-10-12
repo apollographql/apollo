@@ -404,9 +404,18 @@ const server = new ApolloServer({
 });
 ```
 
-In the code above, we required the `launch` and `user` data source files, created an instance of both classes and passed them as objects to the `dataSources` key in `ApolloServer`'s' constructor.
+In the code above, we required the `launch` and `user` data source files, created an instance of both classes and passed them as objects to the `dataSources` function in `ApolloServer`'s constructor.
 
-We also required the `utils.js` file, assigned the `createStore()` method to a `store` variable and passed it the `UserAPI` constructor. The `createStore()` method is responsible for making sure the `users` and `trips` tables exist, and ensures they can be connected to! Apollo Server will then put the data sources on the `context` for every request, so you can access them from your resolvers.
+We also required the `utils.js` file, assigned the `createStore()` method to a `store` variable and passed it to the `UserAPI` constructor. The `createStore()` method is responsible for making sure the `users` and `trips` tables exist.
+
+```js
+ dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store }),
+  }),
+```
+
+The block of code above ensures that when Apollo Server boots up, the server puts the data sources on the `context` for every request, so you can access them from your resolvers.
 
 Now, what about the `context` function defined explicitly in the `ApolloServer` constructor?
 
