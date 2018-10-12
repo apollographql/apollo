@@ -72,7 +72,7 @@ We'll use these features to derive the form of queries and mutations our schema 
 
 An id is passed to the launch query and the details of the 2nd launch is returned. It could be the first or third or any number specified in the query.
 
-From the **third feature**, we start to deal with users. A query for a signed in user come to mind here and that would look like:
+From the **third feature**, we start to deal with users. A query for a signed in user comes to mind here and that would look like:
 
 ```js
 {
