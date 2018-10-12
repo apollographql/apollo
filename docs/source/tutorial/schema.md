@@ -98,7 +98,7 @@ The **fourth feature** signifies creation of new data. An example of a mutation 
 ```js
 mutation bookTrip {
   bookTrip(launchId: 3) {
-    id
+
   }
 }
 ```
@@ -108,7 +108,7 @@ The **fifth feature** signifies destruction of data. An example of a mutation fo
 ```js
 mutation cancelTrip {
   cancelTrip(launchId: 3) {
-    id
+
   }
 }
 ```
@@ -167,21 +167,42 @@ type User {
 
 The `id` and `email` are fields for identifying a user. The `trips` field is necessary for providing easy access to the number of trips a user has booked.
 
-Let's now deal with the `Mutation` type.
+Let's now deal with the `Mutation` type. The `Mutation` type defines the entry points into Apollo server for modifying server data. Just before we add fields to the `Mutation` type, let's take another look at the `bookTrip` and `cancelTrip` mutations.
 
-The `Mutation` type defines the entry points into Apollo server for modifying server data. For the `Mutation` type, based on our sample mutation queries, we can safely conclude that it should look like:
+For both `bookTrip` and `cancelTrip` mutations mentioned earlier, we can return a boolean value to indicate success or failure. However, we can take a step further to ensure that a proper response is returned back to the client for both mutations. A response containing a success status and a corresponding message.
+
+We can define an interface called `MutationResponse` for the response as shown below:
+
+```js
+interface MutationResponse {
+  success: Boolean!
+  message: String
+}
+```
+
+An `interface` type provides the ability to describe fields that are shared across different types. It is best used to show that all types implementing an interface always contain the interface’s fields. In our app, only one object type will implement the `MutationResponse` interface because of the limited scope.
+
+We call the object type, `TripUpdateResponse`. It implements the interface like so:
+
+```js
+type TripUpdateResponse implements MutationResponse {
+  success: Boolean!
+  message: String
+  launch: Launch
+}
+```
+
+For the `Mutation` type, based on our sample mutation queries and interface, we can safely conclude that it should look like:
 
 ```js
 type Mutation {
-  bookTrip(launchId: ID!): Boolean!
-  cancelTrip(launchId: ID!): Boolean!
+  bookTrip(launchId: ID!): TripUpdateResponse!
+  cancelTrip(launchId: ID!): TripUpdateResponse!
   login(email: String): String
 }
 ```
 
-All the fields in the `Mutation` type returns a scalar type. The `bookTrip` field for booking a trip, `cancelTrip` field for cancelling a trip and the `login` field for authenticating a user.
-
-Now, put everything together in a `src/schema.js` file.
+Now, define all the types in a `src/schema.js` file.
 
 _src/schema.js_
 
@@ -194,11 +215,24 @@ const typeDefs = gql`
     launch(id: ID!): Launch
     me: User
   }
+
   type Mutation {
-    bookTrip(launchId: ID!): Boolean!
-    cancelTrip(launchId: ID!): Boolean!
+    bookTrip(launchId: ID!): TripUpdateResponse!
+    cancelTrip(launchId: ID!): TripUpdateResponse!
     login(email: String): String
   }
+
+  interface MutationResponse {
+    success: Boolean!
+    message: String
+  }
+
+  type TripUpdateResponse implements MutationResponse {
+    success: Boolean!
+    message: String
+    launch: Launch
+  }
+
   type Launch {
     id: ID!
     year: String!
@@ -207,16 +241,19 @@ const typeDefs = gql`
     launchSuccess: Boolean
     isBooked: Boolean!
   }
+
   type Rocket {
     id: ID!
     name: String!
     type: String!
   }
+
   type User {
     id: ID!
     email: String!
     trips: [Launch]!
   }
+
   type Mission {
     name: String!
     missionPatch: String
