@@ -14,38 +14,8 @@ npm install apollo-datasource apollo-datasource-rest --save
 ```
 
 * **apollo-datasource**: This is the generic data source package. It's good for connecting to non-REST data sources.
-* **apollo-datasource-rest**: This package exposes the `RESTDataSource` class that is responsible for fetching data from a given REST API. To define a data source for the REST endpoint, extend the `RESTDataSource` class and implement the data fetching methods that your resolvers require. Let's look at a simple example to understand how data sources work.
+* **apollo-datasource-rest**: This package exposes the `RESTDataSource` class that is responsible for fetching data from a given REST API. To define a data source for the REST endpoint, extend the `RESTDataSource` class and implement the data fetching methods that your resolvers require.
 
-```js
-const { RESTDataSource } = require('apollo-datasource-rest');
-
-class MvrpAPI extends RESTDataSource {
-  constructor() {
-    super();
-    this.baseURL = 'https://mvrp.herokuapp.com/api/';
-  }
-
-  async getAllCars() {
-    return this.get('cars');
-  }
-
-  async getACar(plateNumber) {
-    const result = await this.get('car', {
-      plateNumber
-    });
-
-    return result[0];
-  }
-};
-
-module.exports = MvrpAPI;
-```
-
-The `https://mvrp.herokuapp.com/api/` endpoint is a simple REST API that returns data for cars. Furthermore, the `MvrpAPI` class implementation in the code above contains a `getAllCars` and `getACar` functions that wrap convenience methods provided by the `RESTDataSource` class for performing HTTP requests.
-
-In this example, the built-in `get` method used is responsible for `GET` requests. The `RESTDataSource` class provides other methods like `post`, `delete`, and `patch` for `POST`, `DELETE`, and `PATCH` requests respectively.
-
-Now that you have an understanding of how data sources work, let's hook it up for our tutorial app.
 
 Create a new `datasources` folder inside the `src` directory. This folder will contain our data source files. Now, create `launch.js` within the `datasources` directory.
 
