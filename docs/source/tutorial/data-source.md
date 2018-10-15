@@ -68,7 +68,8 @@ launchReducer(launch) {
     cursor: `${launch.launch_date_unix}`,
     mission: {
       name: launch.mission_name,
-      missionPatch: launch.links.mission_patch_small
+      missionPatchSmall: launch.links.mission_patch_small,
+      missionPatchLarge: launch.links.mission_patch
     },
     year: launch.launch_year,
     rocket: {
