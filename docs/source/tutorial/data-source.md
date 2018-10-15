@@ -50,29 +50,13 @@ _src/datasources/launch.js_
 async getAllLaunches() {
   const res = await this.get('launches');
 
-  return res && res.length ? res.map(launch => {
-    return {
-      id: launch.flight_number || 0,
-      cursor: `${launch.launch_date_unix}`,
-      mission: {
-        name: launch.mission_name,
-        missionPatch: launch.links.mission_patch_small
-      },
-      year: launch.launch_year,
-      rocket: {
-        id: launch.rocket.rocket_id,
-        name: launch.rocket.rocket_name,
-        type: launch.rocket.rocket_type,
-      },
-      launchSuccess: launch.launch_success,
-    };
-  }) : [];
+  return res && res.length ? res.map(l => this.launchReducer(l)) : [];
 }
 ```
 
-In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned data in the `res` variable. If the `res` variable is not empty, then the `getAllLaunches` method returns an object that corresponds with the schema fields of the `Launch` schema type, else, an empty array is returned.
+In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned data in the `res` variable. If the `res` variable is not empty, then the `getAllLaunches` method maps through the launches and returns an object that corresponds with the schema fields of the `Launch` schema type via the `launchReducer` method. If there are no launches, an empty array is returned.
 
-Let's refactor the `getAllLaunches` method to be a lot cleaner and concise. Copy the `launchReducer` method below and add to the file. Now, refactor the `getAllLaunches` method to use the `launchReducer` method as shown below:
+What object is returned via the `launchReducer` method? Copy the `launchReducer` method below and add to the file.
 
 _src/datasources/launch.js_
 
@@ -94,12 +78,6 @@ launchReducer(launch) {
     },
     launchSuccess: launch.launch_success,
   };
-}
-
-async getAllLaunches() {
-  const res = await this.get('launches');
-
-  return res && res.length ? res.map(l => this.launchReducer(l)) : [];
 }
 ```
 
