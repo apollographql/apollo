@@ -211,7 +211,7 @@ query {
 }
 ```
 
-A response like the one shown below should be returned at the right side of the playground
+A response like the one shown below should be returned at the right side of the playground.
 
 ![A Launch](../images/alaunch.png)
 
