@@ -14,17 +14,17 @@ You need the following before deployment:
 
 Now looks for a `start` script in the `package.json` file to start the app. Once the script is present, Now will be able to start the app.
 
-Go ahead and run the `now` command from the root directory of the app.
+Go ahead and run the `now` command from the root directory of the app to deploy our app to Now.
 
 ```bash
 $ now
 ```
 
-The `now` command immediately deploys your graph API to the cloud and returns the hosted URL. The returned URL comes in this format: `<NOW_APP_NAME>.now.sh`.
+The `now` command immediately deploys our graph API to the cloud and returns the hosted URL. The returned URL comes in this format: `<NOW_APP_NAME>.now.sh`.
 
-You can now query your graph service at `<NOW_APP_NAME>.now.sh/graphql`.
+You can now query the graph service at `<NOW_APP_NAME>.now.sh/graphql`.
 
-Now also supports direct deployment from a GitHub repository. If your graph API is publicly available on GitHub, you can deploy it via the `now` command like so:
+**Note:** Now also supports direct deployment from a GitHub repository. If your graph API is publicly available on GitHub, you can deploy it via the `now` command like so:
 
 ```bash
 now <github-username>/<repository-name>
@@ -36,7 +36,7 @@ Safely evolving your schema overtime requires a lot of developer efforts in ensu
 
 [Apollo Engine](https://engine.apollographql.com), provides deep insights into your graph layer that enables you to understand, optimize, and control your graph service in production with confidence.
 
-Once you publish your schema to Apollo Engine, it becomes the basis for comparison for validating future schemas and avoiding breaking changes. Therefore, a schema should be re-published to Apollo Engine each time a new schema is deployed.
+Once we publish our schema to Apollo Engine, it becomes the basis for comparison for validating future schemas and avoiding breaking changes. Therefore, a schema should be re-published to Apollo Engine each time a new schema is deployed.
 
 Go ahead and install the `apollo` CLI via npm:
 
@@ -44,17 +44,19 @@ Go ahead and install the `apollo` CLI via npm:
 npm install --global apollo
 ```
 
-To publish a schema, start your GraphQL server and run the command below:
+To publish our schema to Apollo Engine, we need an API key.
+
+An API key can be obtained from a graph service’s _Settings_ menu within the [Apollo Engine dashboard](https://engine.apollographql.com).
+
+Now start your GraphQL server and run the command below:
 
 ```bash
 apollo schema:publish --key="<API_KEY>" --endpoint="https://<now_app_name>.now.sh/graphql"
 ```
 
-**Note:** An API key can be obtained from a graph service’s _Settings_ menu within the [Apollo Engine dashboard](https://engine.apollographql.com).
-
 The `--endpoint` flag should be set to the URL of a running GraphQL server.
 
-Every time your schema is updated, run the `apollo schema:publish` command so that Apollo Engine can provide a history of schema changes. This allows everyone on your team to know when new types and fields are added or removed. Apollo Engine also provides a reference to the commits that introduced changes to the schema.
+Every time the schema is updated, run the `apollo schema:publish` command so that Apollo Engine can provide a history of schema changes. This allows everyone on your team to know when new types and fields are added or removed. Apollo Engine also provides a reference to the commits that introduced changes to the schema.
 
 To check the difference between the current schema and a newly published schema version, you can run the command below:
 
@@ -72,9 +74,7 @@ Apollo Engine identifies three categories of changes and report them to the deve
 
 You need a bird's-eye view of your graph's API. Understanding how your schema fields, and queries operates within your graph service opens you to a whole new world of effective optimization and scaling!
 
-In order to get access to your graph's performance metrics, hook up Apollo Server with Engine.
-
-First, get an API key from [Engine](https://engine.apollographql.com). Now, connect to Engine by passing the API key to the Apollo Server constructor:
+In order to get access to your graph's performance metrics, hook up Apollo Server with Engine. Connect to Engine by passing the API key to the Apollo Server constructor:
 
 _src/index.js_
 
@@ -100,7 +100,6 @@ Apollo Engine provides all of the following features highlighted below:
 * **Schema Explorer:** With Engine's powerful schema registry, you can quickly explore all the types and fields in your schema with usage statistics on each field. This metric makes you understand the cost of a field. How expensive is a field? Is a certain field in so much demand?
 * **Schema history:** Apollo Engine’s schema history allows developers to confidently iterate a graph's schema by validating the new schema against field-level usage data from the previous schema. This empowers developers to avoid breaking changes by providing insights into which clients will be broken by a new schema.
 * **Performance Analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution.
-* **Query tracing:**  The _Trace view_ in the Engine UI allows you to look at a detailed breakdown of the execution of one query, with timing for every resolver.
 * **Performance alerts:** You can configure notifications to be sent to various channels like Slack, and PagerDuty. Apollo Engine can be set to send alerts when a request rate, duration or error rate exceeds a certain threshold. You can effectively monitor everything going on in your graph's service.
 
 The [Engine](https://www.apollographql.com/docs/engine/) guide provides detailed instructions on how Apollo Engine works and the setup for any type for performance or usage analytics.
