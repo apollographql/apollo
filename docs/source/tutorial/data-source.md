@@ -5,6 +5,10 @@ description: Start here for the Apollo fullstack tutorial
 
 Apollo data sources provide the best experience for fetching and caching data from REST endpoints, web services, and databases. It's a new pattern for loading data from various sources, with built-in support for deduplication, caching, and error handling.
 
+When layering GraphQL over your REST endpoints, Apollo data sources enable **partial query caching**-––a policy that provides autom atic caching of HTTP requests based on the caching headers returned from the backend and also allows you override the backend cache policy, by providing the option of setting an explicit `ttl` value in your data source.
+
+In addition, Apollo data sources grants your app a well-structured way of organizing and encapsulating data fetching logic. Rather than bloating your resolver functions with logic, you can wrap access to a particular backend data source inside data source classes.
+
 <h2 id="rest-api">Connect a REST API</h2>
 
 To get started, install the `apollo-datasource` and `apollo-datasource-rest` packages:
@@ -15,7 +19,6 @@ npm install apollo-datasource apollo-datasource-rest --save
 
 * **apollo-datasource**: This is the generic data source package. It's good for connecting to non-REST data sources.
 * **apollo-datasource-rest**: This package exposes the `RESTDataSource` class that is responsible for fetching data from a given REST API. To define a data source for the REST endpoint, extend the `RESTDataSource` class and implement the data fetching methods that your resolvers require.
-
 
 Create a new `datasources` folder inside the `src` directory. This folder will contain our data source files. Now, create `launch.js` within the `datasources` directory.
 
@@ -122,7 +125,7 @@ The `getLaunchById` method takes in a flight number and returns the data for a p
 
 <h2 id="database">Connect a database</h2>
 
-A data store is needed for saving and fetching user information. It's also important for user trips. Let's make use of [SQLite](https://www.sqlite.org) for our app's database. SQLite is a self-contained, light-weight, zero-configuration and embedded SQL database engine.
+A data store is needed for saving and fetching user information. It's also important for user trips. We'll make use of [SQLite](https://www.sqlite.org) for our app's database. SQLite is a self-contained, light-weight, zero-configuration and embedded SQL database engine.
 
 Before connecting to SQLite, go ahead and install the `sequelize` package from npm:
 
@@ -130,7 +133,7 @@ Before connecting to SQLite, go ahead and install the `sequelize` package from n
 npm install sequelize --save
 ```
 
-**Sequelize** is an ORM for Node.js that supports several relational database management systems such as MySQL, MariaDB, PostgreSQL, SQLite and MSSQL. In this tutorial, we'll make use of it for the SQLite database.
+**Sequelize** is an ORM for Node.js that supports several relational database management systems such as MySQL, MariaDB, PostgreSQL, SQLite and MSSQL.
 
 Now, create a `store.sqlite` file in the root directory. Once you have done that, change from the root directory to the `src/datasources` directory:
 
@@ -282,54 +285,9 @@ In the various methods that we created and copied to the `UserAPI` class, you mu
 
 <h4 id="create-the-store">Create the Store</h4>
 
-Create an `utils.js` file inside the `src` directory. Now, copy the code below and add to it.
+Fork the [GitHub repo--Create A Store](insert-repo-link-here) for the store.
 
-_src/utils.js_
-
-```js
-const SQL = require('sequelize');
-
-module.exports.createStore = () => {
-  const Op = SQL.Op;
-  const operatorsAliases = {
-    $in: Op.in,
-  };
-
-  const db = new SQL('database', 'username', 'password', {
-    dialect: 'sqlite',
-    storage: './store.sqlite',
-    operatorsAliases,
-  });
-
-  const users = db.define('user', {
-    id: {
-      type: SQL.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    createdAt: SQL.DATE,
-    updatedAt: SQL.DATE,
-    email: SQL.STRING,
-    token: SQL.STRING,
-  });
-
-  const trips = db.define('trip', {
-    id: {
-      type: SQL.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    createdAt: SQL.DATE,
-    updatedAt: SQL.DATE,
-    launchId: SQL.INTEGER,
-    userId: SQL.INTEGER,
-  });
-
-  return { users, trips };
-};
-```
-
-In the code above, the `createStore` function sets up a new SQL instance that connects to the SQLite database. A `database`, `username`, and `password` values are passed as arguments. And an object specifying the `dialect`, location of the SQLite database and operator aliases is also passed as an argument to the SQL instance.
+In `src/utils.js` file, the `createStore` function sets up a new SQL instance that connects to the SQLite database. A `database`, `username`, and `password` values are passed as arguments. And an object specifying the `dialect`, location of the SQLite database and operator aliases is also passed as an argument to the SQL instance.
 
 The `users` and `trips` tables have now been defined with their respective fields. And an object containing `users` and `trips`is returned within the `createStore` function to enable us access the ORM methods later on, in the body of our data source.
 
