@@ -96,25 +96,16 @@ Mutation: {
       launch,
     };
   },
-  login: async (_, { email }, { dataSources }) => {
-    const user = await dataSources.userAPI.findOrCreateUser({ email });
-    if (user) return new Buffer(email).toString('base64');
-    return false;
-  },
 },
 ```
 
-As shown in the code above, there are three resolver functions, `bookTrip`, `cancelTrip`, and `login`.
+As shown in the code above, there are two resolver functions, `bookTrip`, and `cancelTrip`.
 
 The `bookTrip` function takes in a `launchId`, and makes a request to book a trip for that particular launch. If a trip is booked successfully, then the function retrieves the booked launch and returns an object containing a success status and message back to the client.
 
 The `cancelTrip` function takes in a `launchId`, and makes a request via the `cancelTrip` method of the user data source to cancel a trip. If a trip is canceled successfully, then the function retrieves the launch that has been canceled and returns an object indicating a success status back to the client.
 
 For both functions, if the request fails, then an object containing a failed success status and message is returned to the client.
-
-The `login` function takes in an email, checks the user table in the database via the `findOrCreateUser` method to verify if the user exists or not. If the user exists or a new user is created, return a `base64` encoding of the user's email.
-
-The `base64` encoding of the user's detail is for obscuring the data. The result is a form of unique string token which we use for authentication.
 
 Now, we need to add a resolver function to take care of the booked status on a launch. Copy the code below and paste it just after the `Mutation` resolver functions.
 
@@ -147,7 +138,7 @@ Mission: {
 },
 ```
 
-The `missionPatch` function checks wether a certain patch size, either `SMALL` OR `LARGE` was passed as an argument. Based on the argument value, the appropriate mission patch is then returned as part of the Launch to the client.
+The `missionPatch` function checks wether a certain patch size, either `SMALL` OR `LARGE` was passed as an argument. Based on the argument's value, the appropriate mission patch is then returned as part of the launch to the client.
 
 Now, let's implement the `User` resolver functions.
 
@@ -204,6 +195,27 @@ A response like this should be returned at the right side of the playground.
 
 ![All Launches](../images/launches.png)
 
+Let's write a launch query that accepts an argument. Copy the query below and paste it in the playground. Hit the Play button to get a response.
+
+```js
+query {
+  launch(id: 60) {
+    id
+    year
+    rocket {
+      id
+      name
+      type
+    }
+  }
+}
+```
+
+A response like the one shown below should be returned at the right side of the playground
+
+![A Launch](../images/alaunch.png)
+
+
 <h2 id="pagination">Pagination</h2>
 
 The `launches` query returned a large data set of launches. This data set contains too much data to be fetched all at once.
@@ -252,41 +264,9 @@ type LaunchConnection {
 
 The `launches` field takes in two parameters, `pageSize` and `after`. `pageSize` refers to the number of items to show at once while `after` refers to the cursor that keeps track of where the next set of data should be fetched from. We created a `LaunchConnection` type that returns a result that shows the list of launches with a `cursor` field and a `hasMore` field to indicate if there's more data to be fetched.
 
-Copy the pagination helper code below and paste it in the `src/utils.js` file.
+Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function.
 
-_src/utils.js_
-
-```js
-module.exports.paginateResults = ({
-  after: cursor,
-  pageSize = 20,
-  results,
-  // can pass in a function to calculate an item's cursor
-  getCursor = () => null,
-}) => {
-  if (pageSize < 1) return [];
-  if (!cursor) return results.slice(0, pageSize);
-
-  const cursorIndex = results.findIndex(item => {
-    // if an item has a `cursor` on it, use that, otherwise try to generate one
-    let itemCursor = item.cursor ? item.cursor : getCursor(item);
-     // if there's still not a cursor, return false by default
-    return itemCursor ? cursor === itemCursor : false;
-  });
-
-  return cursorIndex >= 0
-    ? cursorIndex === results.length - 1 // don't let us overflow
-      ? []
-      : results.slice(
-          cursorIndex + 1,
-          Math.min(results.length, cursorIndex + 1 + pageSize),
-        )
-    : results.slice(0, pageSize);
-   results.slice(cursorIndex >= 0 ? cursorIndex + 1 : 0, cursorIndex >= 0);
-};
-```
-
-The code above is a helper function for paginating data from the server.Now, let's update the necessary resolver functions to accomodate pagination.
+The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accomodate pagination.
 
 First, copy the code below and add it to the top of the `src/resolvers.js` file.
 
@@ -294,7 +274,7 @@ First, copy the code below and add it to the top of the `src/resolvers.js` file.
 const { paginateResults } = require('./utils');
 ```
 
-We required the `paginateResults` function from the `src/utils.js` file. Now, update the `launches` resolver function in the `src/resolvers.js` file with the code below:
+Now that we have required the `paginateResults` function from the `src/utils.js` file. Let's update the `launches` resolver function in the `src/resolvers.js` file with the code below:
 
 _src/resolvers.js_
 
@@ -368,7 +348,7 @@ In the code above, the context function extracts the value of the `authorization
 
 If the user exists, a context object containing the logged-in user is returned to the resolver functions.
 
-How do we create the token passed to the `authorization` headers? Check out the Query `login` resolver function again.
+How do we create the token passed to the `authorization` headers? Add a `login` resolver function to the `Mutation` type in the `resolvers.js` file.
 
 _src/resolvers.js_
 
