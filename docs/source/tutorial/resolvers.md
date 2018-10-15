@@ -130,9 +130,28 @@ Launch: {
 
 The `isBooked` function makes a request to the `isBookedOnLaunch` method of the `UserAPI` datasource class with the id of a launch. This request confirms whether the launch has been booked by the logged-in user.
 
-Now, let's implement the `User` resolver functions.
+Now, let's implement the `Mission` resolver function.
 
 Copy the code below and paste it just after the `Launch` resolver function.
+
+_src/resolvers.js_
+
+```js
+...
+Mission: {
+  missionPatch: (mission, { size }) => {
+    return size === 'SMALL'
+      ? mission.missionPatchSmall
+      : mission.missionPatchLarge;
+  }
+},
+```
+
+The `missionPatch` function checks wether a certain patch size, either `SMALL` OR `LARGE` was passed as an argument. Based on the argument value, the appropriate mission patch is then returned as part of the Launch to the client.
+
+Now, let's implement the `User` resolver functions.
+
+Copy the code below and paste it just after the `Mission` resolver function.
 
 _src/resolvers.js_
 
