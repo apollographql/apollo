@@ -13,7 +13,9 @@ First, let's install two packages:
 npm install react-apollo graphql graphql-tag --save
 ```
 
-**react-apollo** is a view layer React integration for Apollo Client. **Apollo Client** is a JavaScript production-ready client that helps you quickly build a UI that fetches your graph's data and manages state efficiently. It supports esssential features like caching, pagination, and code splitting.
+**react-apollo** is a view layer React integration for Apollo Client.
+
+**Apollo Client** is a JavaScript production-ready client that helps you quickly build a UI that fetches your graph's data and manages state efficiently. It supports esssential features like caching, pagination, and code splitting.
 
 <h2 id="apollo-client-setup">Create an Apollo Client</h2>
 
@@ -77,7 +79,7 @@ client
 
 ```
 
-**Note:** The `apollo-cache-inmemory` and `apollo-link-http` packages are vital to developing with Apollo Client so make sure they are installed. Run `npm install apollo-cache-inmemory apollo-link-http --save`.
+**Note:** The `apollo-cache-inmemory` and `apollo-link-http` packages are vital to developing with Apollo Client so make sure they are installed. Run `npm install apollo-cache-inmemory apollo-link-http --save`. The `apollo-link-http` package handles network requests for fetching remote data, while the `apollo-cache-inmemory` package handes caching.
 
 The result should be an object with a `data` property. The launch returned is attached to the `data` property. You can check out the [codesandbox demo of the code above.](https://codesandbox.io/s/8xmn5j6n88)
 
