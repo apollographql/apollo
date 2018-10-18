@@ -81,7 +81,9 @@ client
 
 **Note:** The `apollo-cache-inmemory` and `apollo-link-http` packages are vital to developing with Apollo Client so make sure they are installed. Run `npm install apollo-cache-inmemory apollo-link-http --save`. The `apollo-link-http` package handles network requests for fetching remote data, while the `apollo-cache-inmemory` package handes caching.
 
-The result should be an object with a `data` property. The launch returned is attached to the `data` property. You can check out the [codesandbox demo of the code above.](https://codesandbox.io/s/8xmn5j6n88)
+The `gql` tag is a JavaScript template literal tag that enables syntax highlighting for our schema, and also parses the query into an abstract sytax tree. The tree is sent to the client via the `client.query()` call.
+
+The result of the query should be an object with a `data` property. The launch returned is attached to the `data` property. You can check out the [codesandbox demo of the code above.](https://codesandbox.io/s/8xmn5j6n88)
 
 Apollo Client is designed to enable fetching of graph data by any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to UI.
 
