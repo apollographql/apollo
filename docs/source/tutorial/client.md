@@ -1,6 +1,6 @@
 ---
 title: "5. Connect your API to a client"
-description: Connect your graph API to a client
+description: Connect your graph API to a React frontend
 ---
 
 The next step after building your graph API is to present and manage the data on a client. In this section, you'll learn how to build a UI that consumes our graph API's data with Apollo.
