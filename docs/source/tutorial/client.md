@@ -71,7 +71,13 @@ Let's connect our client to React.
 
 <h2 id="react-apollo">Connect your client to React</h2>
 
-React is the choice of framework for our UI frontend in this tutorial.
+React is the choice of framework for our UI frontend in this tutorial. Install React using `create-react-app` via `npx`:
+
+```bash
+npx create-react-app frontend
+```
+
+Now, let's connect Apollo Client to our React app.
 
 To connect Apollo Client to React, you will need to invoke the `ApolloProvider` component exported from the `react-apollo` package. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
