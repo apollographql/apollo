@@ -32,7 +32,7 @@ const client = new ApolloClient({
   uri: "http://localhost:4000/graphql"
 });
 ```
-**Note:** The `src` directory mentioned here is not the server directory. It's a new directory that houses all the client code.
+**Note:** The `src` directory mentioned here is not the server directory. It's a new directory that contains the client code.
 
 To connect our graph API to a client, we need to import the `ApolloClient` class from `apollo-client` and pass our API URL to the client via the `uri` property of the client config object.
 
@@ -42,36 +42,54 @@ Now, let's fetch data with Apollo Client.
 
 Our client is ready to start fetching data. Let's send a query with vanilla JavaScript.
 
-With a `client.query()` function call, we can query our graph's API. Copy the code below and add it to `src/index.js`.
+With a `client.query()` call, we can query our graph's API. Copy the code below and add it to `src/index.js`.
 
 _src/index.js_
 
 ```js
-import gql from 'graphql-tag';
 ...
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
+import gql from "graphql-tag";
+
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({
+    uri: "https://fullstack-tutorial-server-xsftsvrjdj.now.sh/graphql"
+  })
+});
+
 client
   .query({
     query: gql`
       {
-        launch(launchID: 56) {
+        launch(id: 56) {
           year
+          mission {
+            name
+          }
         }
       }
     `
   })
   .then(result => console.log(result));
-...
+
 ```
 
-The result should be an object with a `data` property. The launch returned is attached to the `data` property.
+**Note:** The `apollo-cache-inmemory` and `apollo-link-http` packages are vital to developing with Apollo Client so make sure they are installed. Run `npm install apollo-cache-inmemory apollo-link-http --save`.
 
-Apollo Client is designed to enable fetching of graph data by anyone in the JavaScript ecosystem. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to UI.
+The result should be an object with a `data` property. The launch returned is attached to the `data` property. You can check out the [codesandbox demo of the code above.](https://codesandbox.io/s/8xmn5j6n88)
 
-Let's connect our client to React.
+Apollo Client is designed to enable fetching of graph data by any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to UI.
+
+Now, let's connect our client to React.
 
 <h2 id="react-apollo">Connect your client to React</h2>
 
-React is the choice of framework for our UI frontend in this tutorial. Install React using `create-react-app` via `npx`:
+React is the choice of framework for our UI frontend in this tutorial.
+
+Install React using `create-react-app` via `npx`:
 
 ```bash
 npx create-react-app frontend
@@ -81,7 +99,7 @@ Now, let's connect Apollo Client to our React app.
 
 To connect Apollo Client to React, you will need to invoke the `ApolloProvider` component exported from the `react-apollo` package. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
-Open `src/index.js` and the update the code:
+Open `src/index.js` and the update the code to be:
 
 _src/index.js_
 
