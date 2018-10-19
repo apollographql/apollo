@@ -3,7 +3,7 @@ title: Frequently Asked Questions
 description: Common questions asked at each stage of GraphQL adoption
 ---
 
-Everyone has questions about how to properly set up a GraphQL schema, but not all questions are alike. In different stages of development, different things matter. This guide will questions that people commonly have have at every step along the journey to GraphQL in production.
+Everyone has questions about how to properly set up a GraphQL schema, but not all questions are alike. In different stages of development, different things matter. This guide will questions that people commonly have at every step along the journey to GraphQL in production.
 
 ## Learning GraphQL
 
@@ -66,7 +66,7 @@ Schemas should be designed with the needs of the client in mind. Rather than mod
 
 As with any service, it's important to track errors and their causes. There are many kinds of errors that can occur with a GraphQL Schema. Some of these include service errors, where the schema can't access underlying services, and user errors, where a user enters invalid information in a query or mutation.
 
-GraphQL is resilient to some of these errors. Since the schema is strongly typed, the designer has the ability to restrict what type of data users can enter and what type the resolvers can return. This type system catches many errors, and requires no manual checks.
+GraphQL is resilient to some of these errors. Since the schema is strongly typed, the designer has the ability to restrict what type of data users can enter and what type the resolvers can return. This type system catches many errors and requires no manual checks.
 
 For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Engine](https://www.apollographql.com/engine) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
 
@@ -96,9 +96,9 @@ GraphQL can be cached in multiple places.
 
 On the client, caches can prevent multiple queries from being called when not necessary. Client caches for GraphQL differ from REST clients in one important way: cache can handle queries that have never been made. This is possible because of how a GraphQL response is normalized and stored. For example, if a client requests a list of movies, each movie is cached separately on the client. Later, if the client requests a single movie in a different query and the needed information is in the cache, the request doesn't have to be made. This normalized cache is a part of `apollo-client` by default.
 
-Cache can also be setup at the schema level. Whole-query caching, partial-query caching, and cache backed by a CDN can all be used to lower response times, and make a GraphQL schema as performant as possible.
+Cache can also be setup at the schema level. Whole-query caching, partial-query caching, and cache backed by a CDN can all be used to lower response times and make a GraphQL schema as performant as possible.
 
-Whole-query and CDN caches are most useful when an API receives many of the same queries. This commonly happens with public data, like content on pages of a site. Regardless of whether the API is used for public data or not, these caches almost always provide large performance benefits, and are highly recommended. You can read more about how to set up whole-query and CDN caching with `apollo-server` 2.0 [here](https://www.apollographql.com/docs/guides/performance.html).
+Whole-query and CDN caches are most useful when an API receives many of the same queries. This commonly happens with public data, like content on pages of a site. Regardless of whether the API is used for public data or not, these caches almost always provide large performance benefits and are highly recommended. You can read more about how to set up whole-query and CDN caching with `apollo-server` 2.0 [here](https://www.apollographql.com/docs/guides/performance.html).
 
 Partial query caching can be achieved by caching the responses from underlying services with something like Redis or Memcache. With this strategy, even if two queries look completely different from one another, if there is any duplication of data fetched, those results can be shared, preventing unnecessary traffic. The [`RESTDataSource`](https://www.apollographql.com/docs/apollo-server/features/data-sources.html) does this automatically if the appropriate `cache-control` headers are present in REST responses.
 
@@ -108,7 +108,7 @@ Many apps and sites are powered almost completely by an API such as a GraphQL sc
 
 [Apollo Engine](https://www.apollographql.com/engine) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
 
-Engine also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/engine/integrations/slack.html#setup) delivers daily reports to give teams a quick overview of the health of their schema. The [DataDog integration](https://www.apollographql.com/docs/engine/integrations/datadog.html#Monitoring-with-Datadog) works with existing DataDog accounts, to help teams track schema performance. When things go wrong, Engine has [configurable alerts](https://www.apollographql.com/docs/engine/features/alerts.html) to notify teams of issues through PagerDuty or Slack.
+Apollo Engine also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/engine/integrations/slack.html#setup) delivers daily reports to give teams a quick overview of the health of their schema. The [DataDog integration](https://www.apollographql.com/docs/engine/integrations/datadog.html#Monitoring-with-Datadog) works with existing DataDog accounts, to help teams track schema performance. When things go wrong, Engine has [configurable alerts](https://www.apollographql.com/docs/engine/features/alerts.html) to notify teams of issues through PagerDuty or Slack.
 
 ## Moving a product to GraphQL
 
