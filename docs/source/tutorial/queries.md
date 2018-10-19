@@ -25,6 +25,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'react-emotion';
 
+import LaunchTile from './launch-tile';
+
 const LIST_LAUNCHES = gql`
   query launchList($after: String) {
     isLoggedIn @client
@@ -98,9 +100,11 @@ To fetch data using the `Query` component, a query string needs to be passed to 
 
 The `Query` component uses a render prop pattern, so we passed a function as a child to the component that contains what React will render to the screen. The `Query` component provides us with a `loading`, `error`, and `data` property that keeps the user informed about the status of the query operation on the screen. If it's in a loading state, the user sees **Loading...** on the screen. If there's an error, the user sees **ERROR** on the screen.
 
-If the data was returned successfully, then the launches are retrieved from the `data` property and displayed on the screen via the `LaunchTile` component.
+If the data was returned successfully, then the launches are retrieved from the `data` property and displayed on the screen via the `LaunchTile` component. For now, you can copy the contents of `src/components/launch-tile.js` from the [Launch Tile component on GitHub](https://github.com/apollographql/fullstack-tutorial/blob/client/client/src/components/launch-tile.js).
 
 Now, there are a lot of launches. If all the launches are fetched at once and displayed, the result will be a long undesirable list. Therefore, let's build a pagination feature that accomodates the loading of a few items at once and display a `Load More` button for loading more items on the screen.
+
+The `@client` directive added to the `isLoggedIn` field fetches local data from the Apollo Cache instead of making a network request like the rest of the fields in the `launchlist` query. You'll know more about this in the [Managing local State](./local-state.html) section.
 
 <h2 id="pagination">Build a paginated list</h2>
 
@@ -111,52 +115,60 @@ In the code below, we use a `fetchMore` query to continuously load new launches,
 Copy the code below and add to the `LaunchList` class.
 
 ```js
-<Query query={LIST_LAUNCHES}>
-  {({ data, loading, error, fetchMore }) => {
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>ERROR</p>;
+...
+export default class LaunchList extends React.Component {
+  updateQuery = (prev, { fetchMoreResult }) => {
+      if (!fetchMoreResult) return prev;
+      return {
+        ...fetchMoreResult,
+        launches: {
+          ...fetchMoreResult.launches,
+          launches: [
+            ...prev.launches.launches,
+            ...fetchMoreResult.launches.launches,
+          ],
+        },
+      };
+  },
 
+  render() {
     return (
-      <Container>
-        {data.launches && data.launches.launches
-          ? data.launches.launches.map(l => (
-              <LaunchTile
-                key={l.id}
-                launch={l}
-                isLoggedIn={data.isLoggedIn}
-              />
-            ))
-          : null}
-        {data.launches && data.launches.hasMore ? (
-          <LoadMoreButton
-            onClick={() =>
-              fetchMore({
-                variables: {
-                  after: data.launches.cursor,
-                },
-                updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-                  if (!fetchMoreResult) return prev;
-                  return {
-                    ...fetchMoreResult,
-                    launches: {
-                      ...fetchMoreResult.launches,
-                      launches: [
-                        ...prev.launches.launches,
-                        ...fetchMoreResult.launches.launches,
-                      ],
-                    },
-                  };
-                },
-              })
-            }
-          >
-            Load More
-          </LoadMoreButton>
-        ) : null}
-      </Container>
+      <Query query={LIST_LAUNCHES}>
+        {({ data, loading, error, fetchMore }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>ERROR</p>;
+
+          return (
+            <Container>
+              {data.launches && data.launches.launches
+                ? data.launches.launches.map(l => (
+                    <LaunchTile
+                      key={l.id}
+                      launch={l}
+                      isLoggedIn={data.isLoggedIn}
+                    />
+                  ))
+                : null}
+              {data.launches && data.launches.hasMore ? (
+                <LoadMoreButton
+                  onClick={() =>
+                    fetchMore({
+                      variables: {
+                        after: data.launches.cursor,
+                      },
+                      updateQuery: this.updateQuery(prev, { fetchMoreResult })
+                    })
+                  }
+                >
+                  Load More
+                </LoadMoreButton>
+              ) : null}
+            </Container>
+          );
+        }}
+      </Query>
     );
-  }}
-</Query>
+}
 ```
 
 The easiest way to go about pagination with Apollo is with the `fetchMore` function which is provided as a property by the `Query` component. By default, 20 launches are returned at once. Why 20? The paginate helper function in the  `src/utils.js` file accepts a page size of 20 if no argument was passed to specify the number of launches to return.
