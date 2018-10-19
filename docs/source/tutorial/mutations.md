@@ -1,7 +1,8 @@
 ---
 title: "7. Update data with mutations"
-description: Start here for the Apollo fullstack tutorial
+description: Modify data with mutations
 ---
+
 
 <h2 id="query-component">What is a Mutation component?</h2>
 
