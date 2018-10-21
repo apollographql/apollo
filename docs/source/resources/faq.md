@@ -3,7 +3,7 @@ title: Frequently Asked Questions
 description: Common questions asked at each stage of GraphQL adoption
 ---
 
-Everyone has questions about how to properly set up a GraphQL schema, but not all questions are alike. In different stages of development, different things matter. This guide will questions that people commonly have at every step along the journey to GraphQL in production.
+Everyone has questions about how to properly set up a GraphQL schema, but not all questions are alike. In different stages of development, different things matter. This guide answers questions that people commonly have at every step along the journey to GraphQL in production.
 
 ## Learning GraphQL
 
@@ -90,13 +90,13 @@ Authentication and authorization are important topics to discuss with any API. G
 
 Public APIs of any kind need some kind of safeguards against malicious queries. Since GraphQL allows for recursive queries, it wouldn't be hard to create a query that is overly complicated and acts as a DoS attack, even by accident. There are multiple ways to prevent something like this from happening, from complexity limiting to query depth limiting. Read the [guide on security](../guides/security.html) to learn more.
 
-#### What kinds of cache should I setup?
+#### What kinds of cache should I set up?
 
 GraphQL can be cached in multiple places.
 
 On the client, caches can prevent multiple queries from being called when not necessary. Client caches for GraphQL differ from REST clients in one important way: cache can handle queries that have never been made. This is possible because of how a GraphQL response is normalized and stored. For example, if a client requests a list of movies, each movie is cached separately on the client. Later, if the client requests a single movie in a different query and the needed information is in the cache, the request doesn't have to be made. This normalized cache is a part of `apollo-client` by default.
 
-Cache can also be setup at the schema level. Whole-query caching, partial-query caching, and cache backed by a CDN can all be used to lower response times and make a GraphQL schema as performant as possible.
+Cache can also be set up at the schema level. Whole-query caching, partial-query caching, and cache backed by a CDN can all be used to lower response times and make a GraphQL schema as performant as possible.
 
 Whole-query and CDN caches are most useful when an API receives many of the same queries. This commonly happens with public data, like content on pages of a site. Regardless of whether the API is used for public data or not, these caches almost always provide large performance benefits and are highly recommended. You can read more about how to set up whole-query and CDN caching with `apollo-server` 2.0 [here](https://www.apollographql.com/docs/guides/performance.html).
 
