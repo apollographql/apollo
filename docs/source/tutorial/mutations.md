@@ -241,7 +241,7 @@ export default () => (
 
 The first query, `CART_ITEMS_QUERY` fetches all the launch ids from Apollo cache and passes them to `LAUNCH_QUERY` to fetch the details of each of the launches. Within the `<PageContainer>`, the `CART_ITEMS_QUERY` is first invoked. Once the items are returned, the second query `LAUNCH_QUERY` is invoked to fetch the details for each of the cart items.
 
-To bulk book all the trips, the `BOOK_TRIPS_MUTATION` mutation is invoked by passing it to the `mutation` prop of the `Mutation` component and triggered by the **Reserve** button. It takes in the launch ids as variables and on completion of the mutation, it updates our Apollo cache.
+To bulk book all the trips, the `BOOK_TRIPS_MUTATION` mutation is invoked by passing it to the `mutation` prop of the `Mutation` component and triggered by the **Reserve** button. The `bookTrips` mutation takes in the launch ids as variables and on completion of the mutation, it updates our Apollo cache.
 
 You can invoke an action after a mutation has completed via the `onCompleted` prop. In our code above, the `onCompleted` function checks if the mutation was successful. If it was successful, the `cartItems` data in our Apollo cache is updated to an empty array via the `client.writeData` method.
 
