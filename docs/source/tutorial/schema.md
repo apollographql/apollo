@@ -7,15 +7,15 @@ The first step on our journey toward building our graph API is constructing its 
 
 <h2 id="setup">Set up Apollo Server</h2>
 
-Before we write our schema, we need to set up our graph API's server. Apollo Server is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
+Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
 
-First, let's install two packages:
+From the root, let's install our projects dependencies:
 
 ```bash
-npm install apollo-server graphql --save
+cd server && npm install
 ```
 
-Now, let's navigate to `src/index.js` so we can create our server. Copy the code below into the file.
+The two packages you need to get started with Apollo Server are `apollo-server` and `graphql`, which we've already installed for you. Now, let's navigate to `src/index.js` so we can create our server. Copy the code below into the file.
 
 _src/index.js_
 
