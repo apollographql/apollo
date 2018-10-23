@@ -57,6 +57,8 @@ git clone https://github.com/apollographql/fullstack-tutorial/
 
 There are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
 
+<h3 id="vscode">Configure Apollo VSCode</h3>
+
 <h3 id="help">Where can I get help?</h3>
 
 We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Slack](https://www.apollographql.com/slack) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
