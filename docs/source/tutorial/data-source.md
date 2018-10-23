@@ -146,7 +146,7 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js
+```js line=3,4,10-13
 const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');
