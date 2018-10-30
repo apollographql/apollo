@@ -185,7 +185,7 @@ const uploadFile = () => {
         type="file"
         required
         onChange={({ target: { validity, files: [file] } }) =>
-          validity.valid && uploadFile({ variables: { file } });
+          validity.valid && uploadFile({ variables: { file } })
         }
       />
       )}
@@ -217,7 +217,7 @@ const uploadMultipleFiles = () => {
         multiple
         required
         onChange={({ target: { validity, files } }) =>
-          validity.valid && uploadMultipleFiles({ variables: { files } });
+          validity.valid && uploadMultipleFiles({ variables: { files } })
         }
        />
       )}
