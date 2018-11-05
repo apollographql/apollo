@@ -3,41 +3,42 @@ title: "6. Fetch data with queries"
 description: Learn how to fetch data with the Query component
 ---
 
-You have learned how to fetch data with Apollo Client. In this section, you'll deal with fetching more complex queries and binding the data to your UI using the `Query` component from `react-apollo`.
+Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `Query` component from `react-apollo` to fetch more complex queries and execute features like pagination.
 
-<h2 id="query-component">What is a Query component?</h2>
+<h2 id="fetch-data">The Query component</h2>
 
-Fetching data in a simple, predictable and optimistic way is one of the core features of Apollo Client. `react-apollo`, a view layer integration for Apollo Client, exports a `Query` React component that allows you pass a GraphQL query string wrapped with the `gql` tag to a `query` prop.
+The `Query` component is one of the most important building blocks of an Apollo app. It's a React component that fetches a GraphQL query and exposes the result so you can render your UI based on the data it returns.
 
-The `Query` component uses the render prop pattern to fetch and load data from queries into our React UI. The render prop pattern provides the ability to add a function as a child to our `Query` component that will notify React about what you want to render. The `Query` component exposes the `error`, `loading` and `data` state properties that you can use to determine the type of UI to render depending on the state of the query.
+The `Query` component uses the **render prop** pattern to fetch and load data from queries into our UI. The render prop pattern provides the ability to add a function as a child to our `Query` component that will notify React about what you want to render. It exposes the `error`, `loading` and `data` on a result object that is passed into the render prop function. Let's see an example:
 
-<h2 id="fetch-data">Fetch data with Query</h2>
+<h2 id="launches">Fetching a list</h2>
 
-Let's create a query and fetch data with the `Query` component.
+To create a `Query` component, import `Query` from `react-apollo`, pass your query wrapped with `gql` to `this.props.query`, and provide a render prop function to `this.props.children` that uses the `loading`, `data`, and `error` properties on the result object to render UI in your app.
 
-Navigate to `src/components` directory and create a `launch-list.js` file. Copy the code below and add to it.
+First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.js` to get started and copy the code below into the file.
 
-_src/components/launch-list.js_
+_src/pages/launches.js_
 
 ```js
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import styled from 'react-emotion';
 
-import LaunchTile from './launch-tile';
+import LaunchTile from '../components/launch-tile';
+import Header from '../components/header';
+import Button from '../components/button';
+import Loading from '../components/loading';
 
-const LIST_LAUNCHES = gql`
+const GET_LAUNCHES = gql`
   query launchList($after: String) {
-    isLoggedIn @client
     launches(after: $after) {
       cursor
       hasMore
       launches {
-        isBooked
         id
-        year
+        isBooked
         rocket {
+          id
           name
         }
         mission {
@@ -48,135 +49,238 @@ const LIST_LAUNCHES = gql`
     }
   }
 `;
-
-
-export default class LaunchList extends React.Component {
-  render() {
-    return (
-      <Query query={LIST_LAUNCHES}>
-        {({ data, loading, error }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>ERROR</p>;
-
-          return (
-            <Container>
-              {data.launches && data.launches.launches
-                ? data.launches.launches.map(l => (
-                    <LaunchTile
-                      key={l.id}
-                      launch={l}
-                      isLoggedIn={data.isLoggedIn}
-                    />
-                  ))
-                : null}
-            </Container>
-          );
-        }}
-      </Query>
-    );
-  }
-}
-
-const Container = styled('div')({
-  marginBottom: '16px',
-  width: '100%',
-});
-
-const LoadMoreButton = styled('button')({
-  backgroundColor: '#00194b',
-  border: 'none',
-  color: 'white',
-  padding: '15px 32px',
-  textAlign: 'center',
-  textDecoration: 'none',
-  display: 'inline-block',
-  fontSize: '16px',
-});
 ```
 
-**Note:** We used `react-emotion` for styling. Make sure the `react-emotion` package is installed.
+Here, we're defining a query to fetch a list of launches by calling the `launches` query from our schema. The `launches` query returns an object type with a list of launches, in addition to the `cursor` of the paginated list and whether or not the list `hasMore` launches. We need to wrap the query with the `gql` function in order to parse it into an AST.
 
-To fetch data using the `Query` component, a query string needs to be passed to the `query` prop. The `LIST_LAUNCHES` query was passed to the `query` prop of the `Query` component to fetch a list of all the launches.
+Now, let's pass that query to Apollo's `Query` component to render the list:
 
-The `Query` component uses a render prop pattern, so we passed a function as a child to the component that contains what React will render to the screen. The `Query` component provides us with a `loading`, `error`, and `data` property that keeps the user informed about the status of the query operation on the screen. If it's in a loading state, the user sees **Loading...** on the screen. If there's an error, the user sees **ERROR** on the screen.
-
-If the data was returned successfully, then the launches are retrieved from the `data` property and displayed on the screen via the `LaunchTile` component. For now, you can copy the contents of `src/components/launch-tile.js` from the [Launch Tile component on GitHub](https://github.com/apollographql/fullstack-tutorial/blob/client/client/src/components/launch-tile.js).
-
-Now, there are a lot of launches. If all the launches are fetched at once and displayed, the result will be a long undesirable list. Therefore, let's build a pagination feature that accomodates the loading of a few items at once and display a `Load More` button for loading more items on the screen.
-
-The `@client` directive added to the `isLoggedIn` field fetches local data from the Apollo Cache instead of making a network request like the rest of the fields in the `launchlist` query. You'll know more about this in the [Managing local State](./local-state.html) section.
-
-<h2 id="pagination">Build a paginated list</h2>
-
-There are different approaches to building a paginated list. You'll build a pagination feature using the `cursor-based` approach. The cursor keeps track of where in the data set the next items should be fetched from.
-
-In the code below, we use a `fetchMore` query to continuously load new launches, which will be prepended to the list. The cursor to be used in the fetchMore query is provided in the initial server response, and is updated whenever more data is fetched.
-
-Copy the code below and add to the `LaunchList` class.
+_src/pages/launches.js_
 
 ```js
-...
-export default class LaunchList extends React.Component {
-  updateQuery = (prev, { fetchMoreResult }) => {
-      if (!fetchMoreResult) return prev;
-      return {
-        ...fetchMoreResult,
-        launches: {
-          ...fetchMoreResult.launches,
-          launches: [
-            ...prev.launches.launches,
-            ...fetchMoreResult.launches.launches,
-          ],
-        },
-      };
-  },
+export default function Launches() {
+  return (
+    <Query query={GET_LAUNCHES}>
+      {({ data, loading, error }) => {
+        if (loading) return <Loading />;
+        if (error) return <p>ERROR</p>;
 
-  render() {
-    return (
-      <Query query={LIST_LAUNCHES}>
-        {({ data, loading, error, fetchMore }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>ERROR</p>;
+        return (
+          <Fragment>
+            <Header />
+            {data.launches &&
+              data.launches.launches &&
+              data.launches.launches.map(launch => (
+                <LaunchTile
+                  key={launch.id}
+                  launch={launch}
+                />
+              ))}
+          </Fragment>
+        );
+      }}
+    </Query>
+  );
+};
+```
 
-          return (
-            <Container>
-              {data.launches && data.launches.launches
-                ? data.launches.launches.map(l => (
-                    <LaunchTile
-                      key={l.id}
-                      launch={l}
-                      isLoggedIn={data.isLoggedIn}
-                    />
-                  ))
-                : null}
-              {data.launches && data.launches.hasMore ? (
-                <LoadMoreButton
-                  onClick={() =>
-                    fetchMore({
-                      variables: {
-                        after: data.launches.cursor,
-                      },
-                      updateQuery: this.updateQuery(prev, { fetchMoreResult })
-                    })
-                  }
-                >
-                  Load More
-                </LoadMoreButton>
-              ) : null}
-            </Container>
-          );
-        }}
-      </Query>
-    );
+To render the list, we pass the `GET_LAUNCHES` query from the previous step into our `Query` component. We then define a render prop function as the child of `Query` that's called with the state of our query (`loading`, `error`, and `data`). Depending on the state, we either render a loading indicator, an error message, or a list of launches.
+
+We're not done yet! Right now, this query is only fetching the first 20 launches from the list. To fetch the full list of launches, we need to build a pagination feature that displays a `Load More` button for loading more items on the screen. Let's learn how!
+
+<h3 id="pagination">Build a paginated list</h3>
+
+Apollo Client has built-in helpers to make adding pagination to our app much easier than it would be if we were writing the logic ourselves.
+
+To build a paginated list with Apollo, we first need to destructure the `fetchMore` function from the `Query` render prop function.
+
+_src/pages/launches.js_
+
+```js lines=4
+export default function Launches() {
+  return (
+    <Query query={GET_LAUNCHES}>
+      {({ data, loading, error, fetchMore }) => {
+        // same as above
+      }}
+    </Query>
+  );
+};
+```
+
+Now that we have `fetchMore`, let's connect it to a Load More button to fetch more items when it's clicked. To do this, we will need to specify an `updateQuery` function on the return object from `fetchMore` that tells the Apollo cache how to update our query with the new items we're fetching.
+
+Copy the code below and add it above the closing `</Fragment>` tag in the render prop function we added in the previous step.
+
+_src/pages/launches.js_
+
+```js lines=5,9
+{data.launches &&
+  data.launches.hasMore && (
+    <Button
+      onClick={() =>
+        fetchMore({
+          variables: {
+            after: data.launches.cursor,
+          },
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+            if (!fetchMoreResult) return prev;
+            return {
+              ...fetchMoreResult,
+              launches: {
+                ...fetchMoreResult.launches,
+                launches: [
+                  ...prev.launches.launches,
+                  ...fetchMoreResult.launches.launches,
+                ],
+              },
+            };
+          },
+        })
+      }
+    >
+      Load More
+    </Button>
+  )
 }
 ```
 
-The easiest way to go about pagination with Apollo is with the `fetchMore` function which is provided as a property by the `Query` component. By default, 20 launches are returned at once. Why 20? The paginate helper function in the  `src/utils.js` file accepts a page size of 20 if no argument was passed to specify the number of launches to return.
+First, we check to see if we have more launches available in our query. If we do, we render a button with a click handler that calls the `fetchMore` function from Apollo. The `fetchMore` function receives new variables for the list of launches query, which is represented by our cursor.
 
-The next step is to check if the `hasMore` property on the launches returned is true. If true, then present a `<LoadMoreButton>` for the user to click.
+We also define the `updateQuery` function to tell Apollo how to update the list of launches in the cache. To do this, we take the previous query result and combine it with the new query result from `fetchMore`.
 
-The `<LoadMoreButton>`'s `onClick` function invokes the `fetchMore` function. By default, `fetchMore` calls the original query but with a new set of input, which is the `data.launches.cursor` value passed to the `after` key as a new variable.
+In the next step, we'll learn how to wire up the launch detail page to display a single launch when an item in the list is clicked.
 
-Once the new data is returned from the server, the `updateQuery` function is used to merge it with the existing data, which will cause a re-render of your UI component with an expanded list.
+<h2 id="launch">Fetching a single launch</h2>
 
-<h2 id="testing">Test Query components</h2>
+Let's navigate to `src/pages/launch.js` to build out our detail page. First, we should import some components and define our GraphQL query to get the launch details.
+
+_src/pages/launch.js_
+
+```js
+import React, { Fragment } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import Loading from '../components/loading';
+import Header from '../components/header';
+import ActionButton from '../containers/action-button';
+import LaunchDetail from '../components/launch-detail';
+
+export const GET_LAUNCH_DETAILS = gql`
+  query LaunchDetails($launchId: ID!) {
+    launch(id: $launchId) {
+      id
+      site
+      isBooked
+      rocket {
+        id
+        name
+        type
+      }
+      mission {
+        name
+        missionPatch
+      }
+    }
+  }
+`;
+```
+
+Now that we have a query, let's render a `Query` component to execute it. This time, we'll also need to pass in the `launchId` as a variable to the query, which we'll do by adding a `variables` prop to `Query`. The `launchId` comes through as a prop from the router.
+
+_src/pages/launch.js_
+
+```js
+export default function Launch({ launchId }) {
+  return (
+    <Query query={GET_LAUNCH_DETAILS} variables={{ launchId }}>
+      {({ data, loading, error }) => {
+        if (loading) return <Loading />;
+        if (error) return <p>ERROR: {error.message}</p>;
+
+        return (
+          <Fragment>
+            <Header image={data.launch.mission.missionPatch}>
+              {data.launch.mission.name}
+            </Header>
+            <LaunchDetail {...data.launch} />
+            <ActionButton {...data.launch} />
+          </Fragment>
+        );
+      }}
+    </Query>
+  );
+}
+```
+
+Just like before, we use the status of the query to render either a `loading` or `error` state, or data when the query completes.
+
+<h3 id="fragments">Using fragments to share code</h3>
+
+You may have noticed that the queries for fetching a list of launches and fetching a launch detail share a lot of the same fields. When we have two GraphQL operations that contain the same fields, we can use a **fragment** to share fields between the two.
+
+To learn how to build a fragment, navigate to `src/pages/launches.js` and copy the code below into the file:
+
+_`src/pages/launches.js`_
+
+```js
+export const LAUNCH_TILE_DATA = gql`
+  fragment LaunchTile on Launch {
+    id
+    isBooked
+    rocket {
+      id
+      name
+    }
+    mission {
+      name
+      missionPatch
+    }
+  }
+`;
+```
+
+We define a GraphQL fragment by giving it a name (`LaunchTile`) and defining it on a type on our schema (`Launch`). The name we give our fragment can be anything, but the type must correspond to a type in our schema.
+
+To use our fragment in our query, we import it into the GraphQL document and use the spread operator to spread the fields into our query:
+
+_`src/pages/launches.js`_
+
+```js lines=6,10
+const GET_LAUNCHES = gql`
+  query launchList($after: String) {
+    launches(after: $after) {
+      cursor
+      hasMore
+      launches {
+        ...LaunchTile
+      }
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+```
+
+Let's use our fragment in our launch detail query too. Be sure to import the fragment from the `launches` page before you use it:
+
+```js lines=1,10,13
+import { LAUNCH_TILE_DATA } from './launches';
+
+export const GET_LAUNCH_DETAILS = gql`
+  query LaunchDetails($launchId: ID!) {
+    launch(id: $launchId) {
+      site
+      rocket {
+        type
+      }
+      ...LaunchTile
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+```
+
+Great, now we've successfully refactored our queries to use fragments. Fragments are a helpful tool that you'll use a lot as you're building GraphQL queries and mutations.
+
+Speaking of mutations, let's progress to the next section so we can learn how to update data with mutations!
