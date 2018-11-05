@@ -108,7 +108,7 @@ import { ApolloProvider } from 'react-apollo';
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <Pages />
   </ApolloProvider>, document.getElementById('root'));
 ```
 
