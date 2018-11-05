@@ -1,12 +1,102 @@
 ---
 title: "7. Update data with mutations"
-description: Start here for the Apollo fullstack tutorial
+description: Learn how to update data with the Mutation component
 ---
+
+With Apollo Client, updating data from a graph API is as simple as calling a function. Additionally, the Apollo Client cache is smart enough to automatically update in most cases. In this section, we'll learn how to use the `Mutation` component from `react-apollo` to login a user.
 
 <h2 id="query-component">What is a Mutation component?</h2>
 
+The `Mutation` component is another important building block in an Apollo app. It's a React component that provides a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
+
+Updating data with a `Mutation` component from `react-apollo` is very similar to fetching data with a `Query` component. The main difference is that the first argument to the `Mutation` render prop function is a **mutate function** that actually triggers the mutation when it is called. The second argument to the `Mutation` render prop function is a result object that contains loading and error state, as well as the return value from the mutation. Let's see an example:
+
 <h2 id="fetch-data">Update data with Mutation</h2>
 
-<h2 id="pagination">Update the Apollo cache</h2>
+The first step is defining our GraphQL mutation. To start, navigate to `src/pages/login.js` and copy the code below so we can start building out the login screen:
 
-<h2 id="testing">Test Mutation components</h2>
+_src/pages/login.js_
+
+```js
+import React from 'react';
+import { Mutation, ApolloConsumer } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import LoginForm from '../components/login-form';
+
+const LOGIN_USER = gql`
+  mutation login($email: String!) {
+    login(email: $email)
+  }
+`;
+```
+
+Just like before, we're using the `gql` function to wrap our GraphQL mutation so it can be parsed into an AST. We're also importing some components that we'll use in the next steps. Now, let's bind this mutation to our component by passing it to the `mutation` prop:
+
+_src/pages/login.js_
+
+```js
+export default function Login() {
+  return (
+    <Mutation mutation={LOGIN_USER}>
+      {(login, { data }) => <LoginForm login={login} />}
+    </Mutation>
+  );
+}
+```
+
+Our `Mutation` component takes a render prop function as a child that exposes a mutate function (`login`) and the data object returned from the mutation. Finally, we pass our login function to the `LoginForm` component.
+
+To create a better experience for our users, we want to persist the login between sessions. In order to do that, we need to save our login token to `localStorage`. Let's learn how we can use the `onCompleted` handler on `Mutation` to persist our login:
+
+<h3 id="apolloconsumer">Expose Apollo Client with ApolloConsumer</h3>
+
+One of the main functions of `react-apollo` is that it puts your `ApolloClient` instance on React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `react-apollo` helper components. The `ApolloConsumer` component can help us access the client.
+
+`ApolloConsumer` takes a render prop function as a child that is called with the client instance. Let's wrap our `Mutation` component with `ApolloConsumer` to expose the client. Next, we want to pass an `onCompleted` callback to `Mutation` that will be called once the mutation is complete with its return value. This callback is where we will save the login token to `localStorage`.
+
+In our `onCompleted` handler, we also call `client.writeData` to write local data to the Apollo cache indicating that the user is logged in. This is an example of a **direct write** that we'll explore further in the next section on local state management.
+
+_src/pages/login.js_
+
+```js lines=3,4,7-10,16
+export default function Login() {
+  return (
+    <ApolloConsumer>
+      {client => (
+        <Mutation
+          mutation={LOGIN_USER}
+          onCompleted={({ login }) => {
+            localStorage.setItem('token', login);
+            client.writeData({ data: { isLoggedIn: true } });
+          }}
+        >
+          {(login, { data }) => <LoginForm login={login} />}
+        </Mutation>
+      )}
+    </ApolloConsumer>
+  );
+}
+```
+
+<h3 id="authenticate">Attach authorization headers to the request</h3>
+
+We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.js` where we create our `ApolloClient` and add the code below to the constructor:
+
+_src/index.js_
+
+```js lines=5,6
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+    headers: {
+      authorization: localStorage.getItem('token'),
+    },
+  })
+});
+```
+
+Specifying the `headers` option on `HttpLink` allows us to read the token from `localStorage` and attach it to the request's headers each time a GraphQL operation is made.
+
+Now that we know the basics, it's time to dive deeper into mutations. In the next section, we'll practice creating more complex `Mutation` components to manage local state in our app. We'll also learn how to query local data and write a local schema.
