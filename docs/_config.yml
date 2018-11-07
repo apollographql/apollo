@@ -41,8 +41,6 @@ sidebar_categories:
       href: https://www.apollographql.com/docs/react/
     - title: Apollo Server
       href: https://www.apollographql.com/docs/apollo-server/v2/
-    - title: Apollo Engine
-      href: https://www.apollographql.com/docs/engine/
 github_repo: apollographql/apollo
 content_root: docs/source
 
