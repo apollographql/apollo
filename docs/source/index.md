@@ -9,12 +9,12 @@ The Apollo GraphQL platform is an implementation of GraphQL that helps you manag
 
 <div class="documentation-buttons">
   <div class="doc">
-    <div align="center">
+    <div class="wrapper1" align="center">
       <a href="/docs/tutorial/introduction.html" class="btn default closed">Try it out!</a>
     </div>
   </div>
   <div class="doc">
-    <div align="center">
+    <div class="wrapper2" align="center">
       <a href="/docs/intro/platform.html" class="btn default hollow">Learn more</a>
     </div>
   </div>
