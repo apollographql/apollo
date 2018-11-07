@@ -12,12 +12,12 @@ While Apollo Client works with any view layer, it's most commonly used with Reac
 For this half of the tutorial, we will be working in the `client/` folder of the project. You should have the project already from the server portioned, but if you don't, make sure to clone [the tutorial](https://github.com/apollographql/fullstack-tutorial/). From the root of the project, run:
 
 ```bash
-cd client && npm install
+cd start/client && npm install
 ```
 
 Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
 
-- `apollo-client@next`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
+- `apollo-client@alpha`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
 - `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
 - `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
 
@@ -36,6 +36,12 @@ Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VS
 Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
 
 ```js
+module.exports = {
+  client: {
+    name: 'Space Explorer [web]',
+    service: 'space-explorer',
+  },
+};
 ```
 
 Great, we're all set up! Let's dive into building our first client.

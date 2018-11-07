@@ -60,11 +60,10 @@ _src/schema.js_
 ```graphql
 type Launch {
   id: ID!
-  year: String
-  mission: Mission!
+  site: String
+  mission: Mission
   rocket: Rocket
-  launchSuccess: Boolean
-  isBooked: Boolean
+  isBooked: Boolean!
 }
 ```
 
@@ -77,18 +76,17 @@ launchReducer(launch) {
   return {
     id: launch.flight_number || 0,
     cursor: `${launch.launch_date_unix}`,
+    site: launch.launch_site && launch.launch_site.site_name,
     mission: {
       name: launch.mission_name,
       missionPatchSmall: launch.links.mission_patch_small,
-      missionPatchLarge: launch.links.mission_patch
+      missionPatchLarge: launch.links.mission_patch,
     },
-    year: launch.launch_year,
     rocket: {
       id: launch.rocket.rocket_id,
       name: launch.rocket.rocket_name,
       type: launch.rocket.rocket_type,
     },
-    launchSuccess: launch.launch_success,
   };
 }
 ```

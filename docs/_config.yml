@@ -16,7 +16,7 @@ sidebar_categories:
     - tutorial/queries
     - tutorial/mutations
     - tutorial/local-state
-    - tutorial/whats-next
+    # - tutorial/whats-next
 
   Resources:
     - resources/graphql-glossary
