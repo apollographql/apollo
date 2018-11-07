@@ -1,5 +1,5 @@
 ---
-title: GraphQL benefits
+title: Why GraphQL?
 description: Why adopting GraphQL and Apollo will help you ship features faster
 ---
 
@@ -141,3 +141,19 @@ GET /api/dogs/activities
 ```
 
 With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](https://www.apollographql.com/docs/engine/query-batching.html) to batch multiple queries into a single request. 
+
+<h3 id="production">Ready for production</h3>
+
+While the GraphQL specification was first made public by Facebook in 2015, GraphQL has been a key component of their mobile application deployment since 2012.
+
+At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques and now use it to power critical infrastructure.  Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
+
+In addition to our own experience, we have received extensive feedback, contributions and support from enterprise customers who are actively using Apollo GraphQL in production. A few of our most public and notable case-studies are:
+
+
+- [**The New York Times**](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c): Learn how The New York Times switched from Relay to Apollo & implemented features in their app such as SSR and persisted queries.
+- [**Airbnb**](https://medium.com/airbnb-engineering/reconciling-graphql-and-thrift-at-airbnb-a97e8d290712): Airbnb is betting big on the Apollo platform to power the data layer for their microservices.
+- [**Express**](https://dev-blog.apollodata.com/changing-the-architecture-of-express-com-23c950d43323): Easy-to-use pagination with Apollo helped improve the Express eCommerce team's key product pages.
+- [**Major League Soccer**](https://dev-blog.apollodata.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a): MLS' switch from Redux to Apollo for state management enabled them to delete nearly all of their Redux code.
+- [**Expo**](https://dev-blog.apollodata.com/using-graphql-apollo-at-expo-4c1f21f0f115): Developing their React Native app with Apollo allowed the Expo engineers to focus on improving their product instead of writing data fetching logic.
+- [**KLM**](https://youtu.be/T2njjXHdKqw): Learn how the KLM team scaled their Angular app with GraphQL and Apollo.

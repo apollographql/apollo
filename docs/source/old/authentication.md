@@ -1,5 +1,5 @@
 ---
-title: Access control
+title: Authentication
 description: How to authorize users and control permissions in your GraphQL API
 ---
 
