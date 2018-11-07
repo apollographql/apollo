@@ -330,15 +330,19 @@ export default function Profile() {
         return (
           <Fragment>
             <Header>My Trips</Header>
-            {data.me.trips.length ? data.me.trips.map(launch => (
-              <LaunchTile key={launch.id} launch={launch} />
-            )) : <p>You haven't booked any trips</p>}
+            {data.me.trips.length ? (
+              data.me.trips.map(launch => (
+                <LaunchTile key={launch.id} launch={launch} />
+              ))
+            ) : (
+              <p>You haven't booked any trips</p>
+            )}
           </Fragment>
         );
       }}
     </Query>
   );
-};
+}
 ```
 
 If you try to render this query, you'll notice that it returns null. This is because we need to implement our login feature first. We're going to tackle login in the next section.

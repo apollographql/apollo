@@ -12,7 +12,7 @@ Before we write our schema, we need to set up our graph API's server. **Apollo S
 From the root, let's install our projects dependencies:
 
 ```bash
-cd server && npm install
+cd start/server && npm install
 ```
 
 The two packages you need to get started with Apollo Server are `apollo-server` and `graphql`, which we've already installed for you. Now, let's navigate to `src/index.js` so we can create our server. Copy the code below into the file.
@@ -86,11 +86,10 @@ _src/schema.js_
 ```graphql
 type Launch {
   id: ID!
-  year: String
-  mission: Mission!
+  site: String
+  mission: Mission
   rocket: Rocket
-  launchSuccess: Boolean
-  isBooked: Boolean
+  isBooked: Boolean!
 }
 ```
 
@@ -101,21 +100,21 @@ The `Mission` and `Rocket` types represent other object types. Let's define the 
 _src/schema.js_
 
 ```graphql
-type Mission  {
-  name: String!
-  missionPatch(size: PatchSize): String
-}
-
 type Rocket {
   id: ID!
-  name: String!
-  type: String!
+  name: String
+  type: String
 }
 
 type User {
   id: ID!
   email: String!
   trips: [Launch]!
+}
+
+type Mission {
+  name: String
+  missionPatch(size: PatchSize): String
 }
 
 enum PatchSize {
@@ -136,9 +135,13 @@ _src/schema.js_
 
 ```graphql
 type Mutation {
-  bookTrip(launchId: ID!): TripUpdateResponse!
+  # if false, signup failed -- check errors
+  bookTrips(launchIds: [ID]!): TripUpdateResponse!
+
+  # if false, cancellation failed -- check errors
   cancelTrip(launchId: ID!): TripUpdateResponse!
-  login(email: String): String
+
+  login(email: String): String # login token
 }
 ```
 
@@ -150,7 +153,7 @@ _src/schema.js_
 type TripUpdateResponse {
   success: Boolean!
   message: String
-  launch: Launch
+  launches: [Launch]
 }
 ```
 

@@ -173,6 +173,9 @@ const { paginateResults } = require('./utils');
   Query: {
     launches: async (_, { pageSize = 20, after }, { dataSources }) => {
       const allLaunches = await dataSources.launchAPI.getAllLaunches();
+      // we want these in reverse chronological order
+      allLaunches.reverse();
+
       const launches = paginateResults({
         after,
         pageSize,
@@ -223,11 +226,12 @@ _src/resolvers.js_
 
 ```js
 Mission: {
-  missionPatch: (mission, { size }) => {
+  // make sure the default size is 'large' in case user doesn't specify
+  missionPatch: (mission, { size } = { size: 'LARGE' }) => {
     return size === 'SMALL'
       ? mission.missionPatchSmall
       : mission.missionPatchLarge;
-  }
+  },
 },
 ```
 
@@ -274,19 +278,17 @@ Let's open up `src/index.js` and update the `context` function on `ApolloServer`
 
 _src/index.js_
 
-```js line=4,11,15
+```js line=4,8,10
 const server = new ApolloServer({
   context: async ({ req }) => {
     // simple auth check on every request
     const auth = (req.headers && req.headers.authorization) || '';
-
     const email = new Buffer(auth, 'base64').toString('ascii');
 
     // if the email isn't formatted validly, return null for user
     if (!isEmail.validate(email)) return { user: null };
-     // find a user by their email
+    // find a user by their email
     const users = await store.users.findOrCreate({ where: { email } });
-
     const user = users && users[0] ? users[0] : null;
 
     return { user: { ...user.dataValues } };
@@ -394,5 +396,3 @@ Next, paste our authorization header into the HTTP Headers box at the bottom:
 ```
 
 Then, run the mutation. You should see a success message, along with the ids of the mutations we just booked. Testing mutations manually in the playground is a good way to explore our API, but in a real-world application, we should run automated tests so we can safely refactor our code. In the next section, you'll learn all about testing your graph.
-
-<h2 id="testing">Test your graph</h2>

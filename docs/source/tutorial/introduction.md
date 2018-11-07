@@ -24,7 +24,10 @@ Why do you need a graph? Today, one of the most difficult parts of building an a
 In this tutorial, we'll build an interactive app for reserving your spot on an upcoming Space-X launch. You can think of it as an Airbnb for space travel! All of the data is real, thanks to the [SpaceX-API](https://github.com/r-spacex/SpaceX-API).
 
 Here's what the finished app will look like:
-<!-- TODO: Add screenshot -->
+
+<div style="text-align:center">
+![Space explorer](../images/space-explorer.png)
+</div>
 
 The app has five screens: a login screen, a list of launches, a launch detail, a profile page, and a cart. The graph API powering our space app connects to a REST API and a SQLite database. Don't worry if you're unfamiliar with those technologies, you don't need to know how to build a REST API or SQLite database from scratch in order to complete the tutorial.
 
@@ -55,9 +58,11 @@ Next, in your terminal, clone this repository:
 git clone https://github.com/apollographql/fullstack-tutorial/
 ```
 
-There are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
+There are two folders: one for the starting point (`start/`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
 
-<h3 id="vscode">Configure Apollo VSCode</h3>
+<!-- 
+TODO: Add in this section after Apollo VSCode works for server development
+<h3 id="vscode">Configure Apollo VSCode</h3> -->
 
 <h3 id="help">Where can I get help?</h3>
 

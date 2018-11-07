@@ -59,7 +59,7 @@ In our `onCompleted` handler, we also call `client.writeData` to write local dat
 
 _src/pages/login.js_
 
-```js lines=3,4,7-10,16
+```js lines=3,4,7-10,22
 export default function Login() {
   return (
     <ApolloConsumer>
@@ -71,7 +71,14 @@ export default function Login() {
             client.writeData({ data: { isLoggedIn: true } });
           }}
         >
-          {(login, { data }) => <LoginForm login={login} />}
+          {(login, { loading, error }) => {
+            // this loading state will probably never show, but it's helpful to
+            // have for testing
+            if (loading) return <Loading />;
+            if (error) return <p>An error occurred</p>;
+
+            return <LoginForm login={login} />;
+          }}
         </Mutation>
       )}
     </ApolloConsumer>
