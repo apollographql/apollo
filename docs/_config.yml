@@ -6,6 +6,9 @@ versions:
 sidebar_categories:
   null:
     - index
+    - intro/platform
+    - intro/benefits
+
   Tutorial:
     - tutorial/introduction
     - tutorial/schema
@@ -18,20 +21,20 @@ sidebar_categories:
     - tutorial/local-state
     # - tutorial/whats-next
 
+  Platform:
+    - platform/schema-design
+    - platform/schema-registry
+    - platform/client-awareness
+    - platform/schema-validation
+    - platform/operation-registry
+    - platform/vscode
+    - platform/tracing
+    - platform/errors
+    - platform/integrations
+
   Resources:
     - resources/graphql-glossary
     - resources/faq
-
-  Guides:
-    - guides/security
-    - guides/versioning
-    - guides/monitoring
-    - guides/performance
-    - guides/file-uploads
-    - guides/schema-design
-    - guides/access-control
-    - guides/state-management
-    - guides/testing-react-components
 
   Documentation:
     - title: Apollo Client
