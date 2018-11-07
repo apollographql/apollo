@@ -42,9 +42,9 @@ We can also add local fields to server data by extending types from our server. 
 
 <h2 id="store-initializers">Initialize the store</h2>
 
-Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to create `storeInitializers` for both `isLoggedIn` and `cartItems` to prevent these two local queries from erroring out:
+Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to create `initializers` for both `isLoggedIn` and `cartItems` to prevent these two local queries from erroring out:
 
-Jump to `src/index.js` and specify your `storeInitializers` on the `ApolloClient` constructor:
+Jump to `src/index.js` and specify your `initializers` on the `ApolloClient` constructor:
 
 _src/index.js_
 
@@ -57,14 +57,14 @@ const client = new ApolloClient({
       authorization: localStorage.getItem('token'),
     },
   }),
-  storeInitializers: {
+  initializers: {
     isLoggedIn: () => !!localStorage.getItem('token'),
     cartItems: () => [],
   },
 });
 ```
 
-These `storeInitializers` will be called as soon as `ApolloClient` is created. They will also run if the store is reset.
+These `initializers` will be called as soon as `ApolloClient` is created. They will also run if the store is reset.
 
 Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
 
@@ -138,7 +138,7 @@ export default function Cart() {
           <Fragment>
             <Header>My Cart</Header>
             {!data.cartItems || !data.cartItems.length ? (
-              <p>No items in your cart</p>
+              <p data-testid="empty-message">No items in your cart</p>
             ) : (
               <Fragment>
                 {data.cartItems.map(launchId => (
@@ -291,9 +291,11 @@ export default function BookTrips({ cartItems }) {
     >
       {(bookTrips, { data, loading, error }) =>
         data && data.bookTrips && !data.bookTrips.success ? (
-          <p>{data.bookTrips.message}</p>
+          <p data-testid="message">{data.bookTrips.message}</p>
         ) : (
-          <Button onClick={bookTrips}>Book All</Button>
+          <Button onClick={bookTrips} data-testid="book-button">
+            Book All
+          </Button>
         )
       }
     </Mutation>
@@ -318,7 +320,7 @@ export const resolvers = {
       const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
       const data = {
         cartItems: cartItems.includes(id)
-          ? cartItems.filter(i => !i)
+          ? cartItems.filter(i => i !== id)
           : [...cartItems, id],
       };
       cache.writeQuery({ query: GET_CART_ITEMS, data });
@@ -383,10 +385,17 @@ export default function ActionButton({ isBooked, id, isInCart }) {
         },
       ]}
     >
-      {(mutate, { data, loading, error }) => {
+      {(mutate, { loading, error }) => {
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>An error occurred</p>;
+
         return (
           <div>
-            <Button onClick={mutate} isBooked={isBooked}>
+            <Button
+              onClick={mutate}
+              isBooked={isBooked}
+              data-testid={'action-button'}
+            >
               {isBooked
                 ? 'Cancel This Trip'
                 : isInCart
