@@ -51,16 +51,17 @@ Operations defined within client applications are automatically extracted and up
 
     When successful, this command should return output similar to the following:
 
-      ```
-      ✔ Loading Apollo config
-      ✔ Fetching current schema
-      ✔ Publishing <service> to Apollo Engine
-
-
-      id      schema        tag
-      ------  ------------- -------
-      abc123  <service>     current
     ```
+    ✔ Loading Apollo config
+    ✔ Fetching current schema
+    ✔ Publishing <service> to Apollo Engine
+
+
+    id      schema        tag
+    ------  ------------- -------
+    abc123  <service>     current
+    ```
+
     > If you encounter any errors, refer to the _**Troubleshooting**_ section below.
 
 3. Register operations from the client bundle.
@@ -81,7 +82,7 @@ Operations defined within client applications are automatically extracted and up
       --key <ENGINE_API_KEY>             \
       --clientName <CLIENT_IDENTIFIER>   \
       --queries="src/**/*.{ts,js,graphql}"
-      ```
+    ```
 
     When succesful, the output from this command should look similar to the following:
 
@@ -141,6 +142,7 @@ Operations defined within client applications are automatically extracted and up
       // ...
     });
     ```
+
     For security, it's recommended to pass the Engine API key as an environment variable so it will not be checked into version control (VCS).
 
 6. Verification
@@ -155,7 +157,7 @@ Operations defined within client applications are automatically extracted and up
     curl 'http://server/graphql/' \
       -H 'Content-Type: application/json' \
       --data-binary '{"query":"query { likes{title} }"}'
-      ```
+    ```
 
     If the server  is configured properly, it should return:
 
