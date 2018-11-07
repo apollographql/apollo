@@ -175,7 +175,7 @@ Finally, to confirm that the server will allow permitted operations, try running
 
 ## Troubleshooting
 
-### Operations aren't being forbidden or operations which should be permitted are not allowed
+#### Operations aren't being forbidden or operations which should be permitted are not allowed
 
 The first step in debugging the operation registry behavior is to enable debugging.  This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
@@ -204,7 +204,7 @@ Incoming manifest ADDs: c60ac6dfe19ba70dd9d6a29a27...
 
 By clicking on the URL listed in the `Checking for manifest changes at ` message, it will be possible to see the full contents of the manifest and see the list of permitted operations.  This information is not publicly available and this URL should not be shared.
 
-### Schema registration
+#### Schema registration
 
 If a problem occurs during the `apollo service:push` command, make sure that the running Apollo Server can be accessed from the machine where the command is being executed.
 
