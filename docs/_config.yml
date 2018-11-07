@@ -26,7 +26,7 @@ sidebar_categories:
     - platform/schema-registry
     - platform/client-awareness
     - platform/schema-validation
-    - platform/operation-registry
+    # - platform/operation-registry
     - platform/vscode
     - platform/tracing
     - platform/errors
