@@ -5,7 +5,7 @@ description: Learn about deployment and essential developer tooling
 
 Great job for making it this far! We've already learned how to build a graph API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
 
-An Apollo graph API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. In this tutorial, we'll deploy our graph API to [Zeit Now](https://zeit.co/now). You will need to create a [Now account](https://zeit.co/now) in order to follow these steps. If you haven't already created an [Apollo Engine](https://engine.apollographql.com/) account, you will need to sign up for one. 
+An Apollo graph API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. In this tutorial, we'll deploy our graph API to [Zeit Now](https://zeit.co/now). You will need to create a [Now account](https://zeit.co/now) in order to follow these steps. If you haven't already created an [Apollo Engine](https://engine.apollographql.com/) account, you will need to sign up for one.
 
 <h2 id="engine">Publish your schema to Engine</h2>
 
@@ -33,6 +33,8 @@ It's time to publish our schema to Engine! First, start your server in one termi
 npx apollo schema:check && npx apollo schema:publish
 ```
 
+> npx is a tool bundled with npm for easily running packages that are not installed globally.
+
 This command checks your schema to ensure there are no breaking changes and publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Engine](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Engine in order to power the Apollo VSCode extension.
 
 <h3 id="benefits">What are the benefits of Engine?</h3>
@@ -44,7 +46,7 @@ Publishing your schema to Apollo Engine unlocks many features necessary for runn
 * **Performance analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution
 * **Performance alerts:** You can configure notifications to be sent to various channels like Slack, and PagerDuty. Apollo Engine can be set to send alerts when a request rate, duration or error rate exceeds a certain threshold.
 
-We also want to be transparent that the features we just described, such as field metrics, performance alerts, and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VSCode makes them more intelligent over time. 
+We also want to be transparent that the features we just described, such as field metrics, performance alerts, and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VSCode makes them more intelligent over time.
 
 We're committed to helping you succeed building and running an Apollo graph API. This is why features such as publishing and downloading schemas from the registry, our open source offerings like Apollo Client and Apollo Server, and certain developer tools like Apollo VSCode and Apollo DevTools will always be free forever.
 
