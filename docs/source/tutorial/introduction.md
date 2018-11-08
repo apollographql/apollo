@@ -49,11 +49,12 @@ While it's not a requirement, we recommend using [VSCode](https://code.visualstu
 <h2 id="dev-environment">Set up your development environment</h2>
 
 Now the fun begins! First, you'll need to install our developer tools:
-- [Apollo Engine (required)](https://engine.apollographql.com) : Our cloud service where you'll register and manage your graph API
-- [Apollo DevTools for Chrome (suggested)](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) : Our Chrome extension giving you full visibility into your client
-- [Apollo VSCode (suggested)](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo): Our editor integration that offers intelligent autocomplete, metrics, and more
+- [Apollo Engine (required)](https://engine.apollographql.com) : Our cloud service where you'll register and manage your graph API.
+- [Apollo DevTools for Chrome (suggested)](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) : Our Chrome extension giving you full visibility into your client.
+- [Apollo VSCode (suggested)](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo): Our editor integration that offers intelligent autocomplete, metrics, and more.
 
 Next, in your terminal, clone this repository:
+
 ```bash
 git clone https://github.com/apollographql/fullstack-tutorial/
 ```
