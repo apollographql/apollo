@@ -27,12 +27,13 @@ sidebar_categories:
     # - platform/client-awareness
     - platform/schema-validation
     - platform/operation-registry
-    # - platform/vscode
+    - platform/editor-plugins
     - platform/tracing
     - platform/errors
     - platform/integrations
 
   Resources:
+    - resources/apollo-config
     - resources/graphql-glossary
     - resources/faq
 
