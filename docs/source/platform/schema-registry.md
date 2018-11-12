@@ -52,7 +52,7 @@ Now that the service has been pushed, it can be viewed by going to [Engine](http
 
 <h2 id="schema-tags">Schema tags</h2>
 
-Product cycles move incredible fast and coordination of teams is critical to shipping features quickly. To enable this coordination, the Apollo schema registry allows teams to push proposed or future versions of their schema to the registry so teams can use them in their editors, validate against them, and have a center point of truth even for the future of their graph.
+Product cycles move incredibly fast and coordination of teams is critical to shipping features quickly. To enable this coordination, the Apollo schema registry allows teams to push proposed or future versions of their schema to the registry so teams can use them in their editors, validate against them, and have a center point of truth even for the future of their graph.
 
 There are two parts to getting the most out of schema tags. The first is pushing the tagged schema to the registry:
 
