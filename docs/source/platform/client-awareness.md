@@ -94,7 +94,7 @@ import { ApolloLink } from 'apollo-link';
 
 const client = new ApolloClient({
   link: ApolloLink.from([
-    ApolloLink((operation, forward) => {
+    new ApolloLink((operation, forward) => {
 
       operation.extensions.clientInfo = {
         clientName: 'Web',
