@@ -51,7 +51,7 @@ to a request.. To provide metrics to the Apollo Platform, pass a
 following checks the GraphQL query `extensions` for a `clientInfo` field and
 then provides a fallback.
 
-```js line=8-23
+```js line=8-20
 const { ApolloServer } = require("apollo-server");
 
 const server = new ApolloServer({
@@ -87,7 +87,7 @@ information in a way that the server understands.In this case, we add the
 client name and version to the `extensions` field. We do this by defining a
 custom `ApolloLink`:
 
-```js 8-11
+```js line=9-12
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
@@ -95,20 +95,22 @@ import { ApolloLink } from 'apollo-link';
 const client = new ApolloClient({
   link: ApolloLink.from([
     ApolloLink((operation, forward) => {
+
       operation.extensions.clientInfo = {
         clientName: 'Web',
         clientVersion: '1',
       };
+
       operation.setContext({
         http: {
           includeExtensions: true,
         },
       });
+
       return forward(operation);
     }),
     new HttpLink({
-      uri: 'https://w5xlvm3vzz.lp.gql.zone/graphql',
-      credentials: 'same-origin'
+      uri: 'http://localhost:4000/graphql',
     })
   ]),
 });
