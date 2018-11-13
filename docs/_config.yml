@@ -24,7 +24,7 @@ sidebar_categories:
   Platform:
     - platform/schema-design
     - platform/schema-registry
-    # - platform/client-awareness
+    - platform/client-awareness
     - platform/schema-validation
     - platform/operation-registry
     - platform/editor-plugins
