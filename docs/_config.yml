@@ -51,13 +51,3 @@ url: https://www.apollographql.com/docs
 root: /docs/
 
 public_dir: public/docs
-
-redirects:
-  /docs/guides/schema-design.html:
-    docs/platform/schema-design
-  /docs/guides/security.html:
-    docs/platform/operation-registry
-  /docs/guides/monitoring.html:
-    docs/platform/integrations
-  /docs/guides/versioning.html:
-    docs/platform/schema-design.html#versioning
