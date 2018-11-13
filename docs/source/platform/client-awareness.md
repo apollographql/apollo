@@ -27,10 +27,10 @@ enables effective isolation and rapid triage for issues that affect a single
 client or portion of clients begin to experience issues, by filtering out of
 the functional clients. In the opposite sense, if a certain client becomes
 problematic, such as requesting expensive fields or using deprecated fields,
-the Apollo Platform enables tacking down the misbehaving client to start a
+the Apollo Platform enables tracking down the misbehaving client to start a
 conversation with the owner and move toward solving the issue. When changing,
 replacing, or deprecating a field in the api, the client metadata enables
-quickly identifying down the client side changes that need to occur.
+quickly identifying the client side changes that need to occur.
 
 ![client field](../img/client-awareness/field-usage.png)
 
@@ -46,7 +46,7 @@ the consumer to server, so we need to add some code to the server and client.
 ### Server
 
 The server is responsible for collecting and assigning the client information
-to a request.. To provide metrics to the Apollo Platform, pass a
+to a request. To provide metrics to the Apollo Platform, pass a
 `generateClientInfo` function into the `ApolloServer` constructor. The
 following checks the GraphQL query `extensions` for a `clientInfo` field and
 then provides a fallback.
@@ -83,7 +83,7 @@ server.listen().then(({ url }) => {
 ### Client
 
 The client or consumer of the GraphQL api is responsible for including the
-information in a way that the server understands.In this case, we add the
+information in a way that the server understands. In this case, we add the
 client name and version to the `extensions` field. We do this by defining a
 custom `ApolloLink`:
 
