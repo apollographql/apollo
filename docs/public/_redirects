@@ -3,5 +3,5 @@
 # Redirect Removed Guides to Platform Features
 /docs/guides/schema-design.html /docs/platform/schema-design.html
 /docs/guides/security.html /docs/platform/operation-registry.html
-/docs/guides/monitoring.html /docs/platform/integrations
+/docs/guides/monitoring.html /docs/platform/integrations.html
 /docs/guides/versioning.html /docs/platform/schema-design.html#versioning
