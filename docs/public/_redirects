@@ -5,3 +5,6 @@
 /docs/guides/security.html /docs/platform/operation-registry.html
 /docs/guides/monitoring.html /docs/platform/integrations.html
 /docs/guides/versioning.html /docs/platform/schema-design.html#versioning
+
+# File uploads no longer have a home, but the blog post is the same content.
+/docs/guides/file-uploads.html https://blog.apollographql.com/file-uploads-with-apollo-server-2-0-5db2f3f60675
