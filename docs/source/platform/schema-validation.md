@@ -200,6 +200,6 @@ jobs:
       # of the schema to Apollo Engine.
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            apollo schema:publish
+            apollo service:push
           fi
 ```
