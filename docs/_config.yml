@@ -1,6 +1,6 @@
-title: Developers
-propertytitle: A guide to using the Apollo platform
-description: A guide to using the Apollo platform
+title: Platform
+propertytitle: How to use the Apollo GraphQL platform
+description: How to use the Apollo GraphQL platform
 versions:
   - '1'
 sidebar_categories:
@@ -33,17 +33,9 @@ sidebar_categories:
     - platform/integrations
 
   Resources:
-    - resources/apollo-config
     - resources/graphql-glossary
     - resources/faq
 
-  Documentation:
-    - title: Apollo Client
-      href: https://www.apollographql.com/docs/react/
-    - title: Apollo Server
-      href: https://www.apollographql.com/docs/apollo-server/v2/
-    - title: Apollo Engine
-      href: https://www.apollographql.com/docs/engine/
 github_repo: apollographql/apollo
 content_root: docs/source
 
