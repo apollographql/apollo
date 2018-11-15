@@ -22,7 +22,7 @@ sidebar_categories:
     # - tutorial/whats-next
 
   Platform:
-    - platform/schema-design
+    - platform/apollo-config
     - platform/schema-registry
     # - platform/client-awareness
     - platform/schema-validation
