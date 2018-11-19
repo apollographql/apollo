@@ -3,63 +3,53 @@ title: Configuring Apollo projects
 description: How to configure Apollo VS Code and CLI with apollo.config.js
 ---
 
-Apollo projects are configured using an `apollo.config.js` file at the root of your project. The Apollo tools leverage what you've put in the Apollo config, reducing the net amount of configuration you need to do in your project in the end.
+Apollo projects are configured using an `apollo.config.js` file at the root of the project. This config file powers [editor integrations](../platform/editor-plugins.html) and the [Apollo CLI](https://www.npmjs.com/package/apollo). The configuration file how Apollo projects are setup. There are two types of projects, `client` and `service` which can be in the same configuration file if necessary.
 
-If you're using one of our workflow tools like the Apollo CLI or the Apollo VS Code extension, you'll need to have an `apollo.config.js` project to get the features those tools bring.
+<h2 id="client-config">Configuring a client project</h2>
 
-There are two types of projects, `client` and `service`, which can be in the same configuration file if necessary. This document describes all the options available in the Apollo config and defines which are required vs. optional.
+Configuration of a client project is done through a top level `client` key in the config. In the simplest form, this is meant to link a client to a service:
 
-<h2 id="client-config">Client projects</h2>
-
-Client projects are configured through a top level `client` key in the config.
-
-```js line=2
-module.exports = {
-  client: { ... },
-};
-```
-
-### `client.service`
-
-**Required** –– the CLI and VS Code extension rely on knowledge of your schema to show you "intellisense" (eg. autocomplete on fields, metrics annotations, query validation).
-
-There are a few different ways you can link your client to a schema:
-1. Use the Apollo [schema registry](/docs/platform/schema-registry.html)
-1. With a remote endpoint (from a running server)
-1. With a local schema file
-
-#### _Option 1_: Use the Apollo schema registry
-
-To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](/docs/platform/schema-registry.html).
-
-With Engine set up, you can point your client directly to your Engine service (and therefore its schema) by putting your Engine service's id in your Apollo config, like so:
-
-```js line=3
+```js
 module.exports = {
   client: {
-    service: 'my-apollo-service', // the id of your service in Engine (from the URL)
+    service: 'my-apollo-service',
   },
 };
 ```
 
-> **Note:** you must have a [registered schema](/docs/platform/schema-registry.html#publish) for features like intellisense that require knowledge of your schema to work fully.
+<h3 id="client-to-service">Linking a service</h3>
+Service's can be linked in one of three ways:
 
-If you're tracking different versions of your schema in the registry using schema tags, you can include the tag you're interested in linking your client to like so:
+* using the [schema registry](../platform/schema-registry.html)
+* using a remote endpoint
+* using a local schema file
 
-```js line=3
+<h4 id="client-schema-registry">Schema registry</h4>
+To use the schema registry, pass the id of the service from Engine as the value for service:
+
+```js
 module.exports = {
   client: {
-    service: 'my-apollo-service@beta', // "beta" is the schema tag we're using
+    service: 'my-apollo-service',
   },
 };
 ```
-If a schema tag is not specified, the default value is `current`.
 
-#### _Option 2_: Link a schema from a remote endpoint
+If a schema tag is being used, it can be included in the config after the service id:
+
+```js
+module.exports = {
+  client: {
+    service: 'my-apollo-service@beta',
+  },
+};
+```
+
+<h4 id="client-remote-endpoint">Remote endpoint</h4>
 
 Remote endpoints can be used to pull down a schema from a running service. This can be configured like so:
 
-```js line=3-11
+```js
 module.exports = {
   client: {
     service: {
@@ -76,11 +66,11 @@ module.exports = {
 };
 ```
 
-#### _Option 3_: Link a schema from a local file
+<h4 id="client-local-file">Local schema</h4>
 
-In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
+In some cases, teams may have a local generated file of their schema they want to link. This can be either a `.graphql` file with the schma in SDL, or a saved introspection result in `.json`. To link a client with a local file, configure the project like this:
 
-```js line=3-6
+```js
 module.exports = {
   client: {
     service: {
@@ -91,41 +81,22 @@ module.exports = {
 };
 ```
 
-### `client.includes`
+<h3 id="loading-files">Loading operation and schema files</h3>
+Client projects can contain both operations and schema definitions for local state with Apollo Client. By default, Apollo will look under a `./src` directory to find all operations and SDL to extract. To configure which folders to include, and which to ignore, adjust the config like so:
 
-*Optional* –– by default, Apollo tools will look under a `./src` directory to find all operations and SDL to extract.
-
-Client projects often contain client-side schema definitions for local state with Apollo Client. To make sure the Apollo CLI and VS Code extension can find these files and read them correctly, you may need to tell Apollo which folders to look for your schema and queries in like so:
-
-```js line=3
+```js
 module.exports = {
   client: {
-    includes: ['./imports/**/*.js'], // array of glob patterns
+    includes: ['./imports/**/*.js'],
+    excludes: ['**/__tests__/**/*'],
   },
 };
 ```
 
-### `client.excludes`
+<h4>Custom tagged template name</h4>
+When using GraphQL with JavaScript of TypeScript projects, it is common to use the `gql` tagged template literal to write out operations. If a different template literal is used, it can be configured like so:
 
-*Optional* –– by default, Apollo tools will exclude `**/node_modules` and `**/__tests___` when looking for your queries and schema files.
-
-If you want Apollo to ignore any of your other folders when looking for queries and schema definitions, adjust your config like so:
-
-```js line=3
-module.exports = {
-  client: {
-    excludes: ['**/__tests__/**/*'], // array of glob patterns
-  },
-};
-```
-
-### `client.tagName`
-
-*Optional* –– custom tagged template literal.
-
-When using GraphQL with JavaScript or TypeScript projects, it is common to use the `gql` tagged template literal to write out operations. Apollo tools will be looking through your files for the `gql` tag to extract your queries, so if you use a different template literal, you can configure it like so:
-
-```js line=3
+```js
 module.exports = {
   client: {
     tagName: 'graphql',
@@ -133,13 +104,10 @@ module.exports = {
 };
 ```
 
-### `client.addTypename`
+<h4>Typename addition</h4>
+GraphQL clients like Apollo Client often add the `__typename` field to an operation automatically. This is turned on by default in Apollo projects but can be turned off by adding `addTypename: false` to the client config:
 
-*Optional* –– Apollo will by default add the `__typename` field to all your operations automatically and to all your generated types during codegen.
-
-GraphQL clients like Apollo Client often add the `__typename` field to operations automatically when they're sent over the wire. This can come in really handy for things like caching, but it can be turned off by adding `addTypename: false` to the client config:
-
-```js line=3
+```js
 module.exports = {
   client: {
     addTypename: false,
@@ -147,20 +115,17 @@ module.exports = {
 };
 ```
 
-> **Note:** For consistency, we recommend that you keep this option 1:1 with how your `ApolloClient` is configured.
+<h4>Custom schema directives</h4>
+Client side applications with Apollo can use custom directives that aren't meant to be sent to the server. By default, Apollo projects support the following client side only directives:
 
-### `client.clientOnlyDirectives`, `client.clientSchemaDirectives`
+* `@client` for local state
+* `@rest` for using apollo-link-rest
+* `@connection` for custom pagignation with Apollo Client
+* `@type` for dynamic type names with apollo-link-rest
 
-*Optional* –– By default, Apollo projects support the following client-side directives:
+Futher configuration of client side directives can be done in two ways:
 
-- `@client` for local state
-- `@rest` for using apollo-link-rest
-- `@connection` for custom pagination with Apollo Client
-- `@type` for dynamic type names with apollo-link-rest
-
-Client side applications can use custom directives on their queries that aren't meant to be sent to the server. Configuration of client side directives beyond the defaults listed above can be set up like so:
-
-```js line=3-4
+```js
 module.exports = {
   client: {
     clientOnlyDirectives: ['connection', 'type'],
@@ -171,46 +136,53 @@ module.exports = {
 
 `clientOnlyDirectives` are directives that should be stripped out of the operation before being sent to the server. An example of this is the `@connection` directive.
 
-`clientSchemaDirectives` are directives that indicate a portion of the operation that is not meant to be sent to the server. These directives are removed as well as the fields they are placed on. An example of this type of directive is the `@client` directive.
+`clientSchemaDirectives` are directives that indicate a portion of the operation that is not meant to be sent to the server. These directives are removed as well as the fields they are placed on. An example of this type of of directive is the `@client` directive.
 
-<h2 id="service-config">Server projects</h2>
+<h2 id="service-config">Configuring a service project</h2>
 
-Server projects are configured through a top level `service` key in the config.
+Configuration of a service project is done through a top level `service` key in the config. In the simplest form, this is meant to link a service to the Apollo schema registry:
 
-```js line=2
+```js
 module.exports = {
-  service: { ... },
+  service: {
+    name: 'my-apollo-service',
+  },
 };
 ```
 
-Defining a `service` key in your Apollo config will provide the CLI with the information it needs to perform commands like `apollo service:push` and `apollo service:check`. You can set up the schema for your service to load in one of two ways:
+Services can be configured to remove the need for using flags when using the Apollo CLI. By configuring a service in the config, commands like `apollo service:push` and `apollo service:check` can have all flags removed and just use the config
 
-1. Using a remote endpoint
-1. Using a local schema file
+<h3 id="service-schema">Loading a schema</h3>
+Loading a schema for a service can be linked in one of two ways:
 
-<h4 id="service-remote-endpoint">Option 1: Remote endpoint</h4>
+* using a remote endpoint
+* using a local schema file
+
+<h4 id="service-remote-endpoint">Remote endpoint</h4>
 
 Remote endpoints can be used to pull down a schema from a running service. This can be configured like so:
 
-```js line=2-10
+```js
 module.exports = {
   service: {
     endpoint: {
-      url: 'https://api.github.com/graphql', // defaults to http://localhost:4000
-      headers: { // optional
+      url: 'https://api.github.com/graphql',
+      // optional headers
+      headers: {
         authorization: 'Bearer lkjfalkfjadkfjeopknavadf',
       },
-      skipSSLValidation: true, // optional, disables SSL validation check
+      // optional disable SSL validation check
+      skipSSLValidation: true,
     },
   },
 };
 ```
 
-<h4 id="service-local-file">Option 2: Local schema</h4>
+<h4 id="service-local-file">Local schema</h4>
 
-In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
+In some cases, teams may have a local generated file of their schema they want to link. This can be either a `.graphql` file with the schma in SDL, or a saved introspection result in `.json`. To link a service with a local file, configure the project like this:
 
-```js line=3
+```js
 module.exports = {
   service: {
     localSchemaFile: './path/to/schema.graphql',

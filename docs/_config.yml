@@ -49,9 +49,9 @@ sidebar_categories:
 >>>>>>> annotate _config.yml file with intended structure changes
 
   Resources:
+    - resources/benefits
     - resources/graphql-glossary
     - resources/faq
-    - resources/benefits
 
   References:
     - references/apollo-config # TODO(dman): new, to be moved from platform/apollo-config
