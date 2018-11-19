@@ -2,12 +2,13 @@ title: Platform
 propertytitle: How to use the Apollo GraphQL platform
 description: How to use the Apollo GraphQL platform
 versions:
-  - '1'
+  - "1"
+
 sidebar_categories:
   null:
     - index
     - intro/platform
-    - intro/benefits
+    # - intro/benefits # TODO(dman): redirect to resources/benefits
 
   Tutorial:
     - tutorial/introduction
@@ -19,22 +20,39 @@ sidebar_categories:
     - tutorial/queries
     - tutorial/mutations
     - tutorial/local-state
-    # - tutorial/whats-next
+    # - tutorial/whats-next # TODO: content coming, not written yet.
 
-  Platform:
-    - platform/apollo-config
-    - platform/schema-registry
-    # - platform/client-awareness
-    - platform/schema-validation
-    - platform/operation-registry
-    - platform/editor-plugins
-    - platform/tracing
-    - platform/errors
-    - platform/integrations
+  Workflows:
+    - workflows/register-schema # TODO(dman): new, to be written
+    - workflows/validate-schema # TODO(dman): new, to be written
+    - workflows/secure-server # TODO(dman): new, to be written
+    - workflows/editor-plugins # TODO(dman): new, to be written
+    - workflows/setup-analytics # TODO(dman): new, to be written
+    - workflows/schema-usage # TODO(dman): new, to be written
+    - workflows/performance-analysis # TODO(dman): new, to be written
+    - workflows/third-party-integrations # TODO(dman): new, to be written
+    # - workflows/caching # TODO: content coming, not written yet.
+    # - workflows/persisted-queries # TODO: content coming, not written yet. maybe put in workflows/secure-server?
 
   Resources:
     - resources/graphql-glossary
     - resources/faq
+    - resources/benefits
+
+  References:
+    - references/apollo-config # TODO(dman): new, to be moved from platform/apollo-config
+    - references/apollo-engine # TODO(dman): new, to be written
+
+  # Platform:
+  # - platform/apollo-config # TODO(dman): redirect to references/apollo-config
+  # - platform/schema-registry # TODO(dman): redirect to workflows/register-schema or workflows/validate-schema
+  # - platform/client-awareness # TODO: content coming, waiting in a PR. the move to /workflows + redirect
+  # - platform/schema-validation # TODO(dman): redirect to workflows/validate-schema
+  # - platform/operation-registry # TODO(dman): redirect to workflows/secure-server
+  # - platform/editor-plugins # TODO(dman): redirect to workflows/editor-plugins
+  # - platform/tracing # TODO(dman): redirect to workflows/performance-analysis
+  # - platform/errors  # TODO(dman): redirect to workflows/performance-analysis
+  # - platform/integrations # TODO(dman): redirect to workflows/third-party-integrations
 
 github_repo: apollographql/apollo
 content_root: docs/source
