@@ -35,9 +35,9 @@ sidebar_categories:
     # - workflows/persisted-queries # TODO: content coming, not written yet. maybe put in workflows/secure-server?
 
   Resources:
+    - resources/benefits
     - resources/graphql-glossary
     - resources/faq
-    - resources/benefits
 
   References:
     - references/apollo-config # TODO(dman): new, to be moved from platform/apollo-config
