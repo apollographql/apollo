@@ -1,66 +1,40 @@
 const sidebar = {
+  title: 'Developers',
   sections: [
     // root section
     {
       title: null,
-      items: [
-        {
-          title: 'Welcome',
-          href: '/index',
-          relative: true,
-        },
-      ],
+      items: [{ title: 'Welcome', href: '/' }],
     },
     {
       title: 'Fundamentals',
       items: [
-        { title: 'Platform', href: '/fundamentals/platform', relative: true },
-        { title: 'Benefits', href: '/fundamentals/benefits', relative: true },
-        { title: 'Tips', href: '/fundamentals/tips', relative: true },
+        { title: 'Platform', href: '/fundamentals/platform' },
+        { title: 'Benefits', href: '/fundamentals/benefits' },
+        { title: 'Tips', href: '/fundamentals/tips' },
       ],
     },
     {
       title: 'Resources',
       items: [
-        {
-          title: 'GraphQL Glossary',
-          href: '/resources/graphql-glossary',
-          relative: true,
-        },
-        {
-          title: 'Frequently Asked Questions',
-          href: '/resources/faq',
-          relative: true,
-        },
+        { title: 'GraphQL Glossary', href: '/resources/graphql-glossary' },
+        { title: 'Frequently Asked Questions', href: '/resources/faq' },
       ],
     },
     {
       title: 'Guides',
       items: [
-        { title: 'Security', href: '/guides/security', relative: true },
-        { title: 'Versioning', href: '/guides/versioning', relative: true },
-        { title: 'Monitoring', href: '/guides/monitoring', relative: true },
-        { title: 'Performance', href: '/guides/performance', relative: true },
-        { title: 'File Uploads', href: '/guides/file-uploads', relative: true },
-        {
-          title: 'Schema Design',
-          href: '/guides/schema-design',
-          relative: true,
-        },
-        {
-          title: 'Access Control',
-          href: '/guides/access-control',
-          relative: true,
-        },
-        {
-          title: 'State Management',
-          href: '/guides/state-management',
-          relative: true,
-        },
+        { title: 'Security', href: '/guides/security' },
+        { title: 'Versioning', href: '/guides/versioning' },
+        { title: 'Monitoring', href: '/guides/monitoring' },
+        { title: 'Performance', href: '/guides/performance' },
+        { title: 'File Uploads', href: '/guides/file-uploads' },
+        { title: 'Schema Design', href: '/guides/schema-design' },
+        { title: 'Access Control', href: '/guides/access-control' },
+        { title: 'State Management', href: '/guides/state-management' },
         {
           title: 'Testing React Components',
           href: '/guides/testing-react-components',
-          relative: true,
         },
       ],
     },
@@ -371,7 +345,7 @@ module.exports = {
         background_color: '#663399',
         theme_color: '#663399',
         display: 'minimal-ui',
-        icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
+        // icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
     'gatsby-plugin-offline',

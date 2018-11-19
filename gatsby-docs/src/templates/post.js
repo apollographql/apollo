@@ -37,12 +37,12 @@ export const query = graphql`
           }
         }
         sidebar {
+          title
           sections {
             title
             items {
               title
               href
-              relative
             }
           }
         }
@@ -93,10 +93,12 @@ export default ({ data, children }) => {
     <Layout>
       <Container>
         <Sidebar
+          title={data.site.siteMetadata.sidebar.title}
           items={sidebarItems}
           activePageSlug={post.fields.slug}
           activeHeadingAnchor={'what-is-apollo'}
         />
+
         <div className={css({ flexDirection: 'column' })}>
           {/* todo: proper edit/discussion links */}
           <PostHeader
