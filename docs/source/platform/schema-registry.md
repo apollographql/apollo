@@ -70,7 +70,7 @@ The only change in this push is the addition of the `--tag` flag on the end of t
 
 To get the most out of using tagged schemas, teams can send metrics to [Engine](https://engine.apollographql.com) associated with this tag. This enables a single service to be tracked in production, staging, and any other environment a schema is being run. To track metrics with a schema, make sure the latest Apollo Server is installed and turn on tagging in one of two ways:
 
-1. Starting up the service with an environment variable called `APOLLO_SCHEMA_TAG` will link metrics sent to Engine with the value of that environment variable. This is the best way to associate metrics so that the schema tag isn't hardcoded into the server.
+1. Starting up the service with an environment variable called `ENGINE_SCHEMA_TAG` will link metrics sent to Engine with the value of that environment variable. This is the best way to associate metrics so that the schema tag isn't hardcoded into the server.
 2. Alternatively, schema tag can be set within the `engine` settings of Apollo Server 2.2 and up:
 
 ```js

@@ -351,6 +351,32 @@ subscription onCommentAdded($repoFullName: String!){
 <h2 id="type-system">Type System</h2>
 <p>A collection of types which characterizes the set of data that can be validated, queried and executed on a GraphQL API.</p>
 
+<h2 id="variable">Variable</h2>
+
+A value that can be passed to an operation. Variables can be used to fill arguments, or be passed to directives.
+
+```graphql
+query GetUser($userId: ID!){
+  user(id: $userId){
+    firstName
+  }
+}
+```
+
+In the query above, `userId` is a variable. The variable and its type is declared in the operation signature, signified by a `$`. The type of the variable here is a required `ID`. It's important to note that variable types must match the type of the arguments that they fill.
+
+The userId variable would be passed to the operation by `apollo-client` like this:
+
+```js
+client.query({ query: getUserQuery, variables: { userId: 1 }});
+```
+
+In `react-apollo` it would be passed like this: 
+
+```jsx
+<Query query={getUserQuery} variables={{ userId: 1 }}> ... </Query>
+```
+
 
 <h2 id="whole-response-caching">Whole response caching</h2>
 <p>A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide](../guides/performance.html).</p>
