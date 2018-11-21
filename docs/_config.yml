@@ -35,6 +35,7 @@ sidebar_categories:
   Resources:
     - resources/graphql-glossary
     - resources/faq
+    - references/apollo-engine
 
 github_repo: apollographql/apollo
 content_root: docs/source
