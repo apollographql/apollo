@@ -15,15 +15,25 @@ In a production application, you should set up this publishing script as part of
 
 <h3 id="api-key">Get an Engine API key</h3>
 
-First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://engine.apollographql.com/), login, and click on New Service at the top. The prompt will instruct you to name your service. When you're finished, click Create Service. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://engine.apollographql.com/), login, and click on New Service at the top. The prompt will instruct you to name your service. Name the new service `space-explorer`. When you're finished, click Create Service. You'll see a key appear prefixed by `service:space-explorer:`. Copy that key so we can save it as an environment variable.
 
 Let's save our key as an environment variable. It's important to make sure we don't check our Engine API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Engine API key that you copied from the previous step to the file:
 
 ```
-ENGINE_API_KEY=service:your-key-here
+ENGINE_API_KEY=service:space-explorer:your-key-here
 ```
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`.
+
+Next, create an Apollo config file called apollo.config.js. Paste the snippet below into the file:
+
+```js
+module.exports = {
+  service: {
+    name: 'space-explorer',
+  },
+};
+```
 
 <h3 id="publish">Check and publish with the Apollo CLI</h3>
 
