@@ -283,7 +283,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     // simple auth check on every request
     const auth = (req.headers && req.headers.authorization) || '';
-    const email = new Buffer(auth, 'base64').toString('ascii');
+    const email = Buffer.from(auth, 'base64').toString('ascii');
 
     // if the email isn't formatted validly, return null for user
     if (!isEmail.validate(email)) return { user: null };
@@ -310,7 +310,7 @@ _src/resolvers.js_
 Mutation: {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
-    if (user) return new Buffer(email).toString('base64');
+    if (user) return Buffer.from(email).toString('base64');
   }
 },
 ```
