@@ -7,7 +7,8 @@ description: Account management, data privacy, GDPR compliance, and other inform
 
 Engine's core schema management features are all availble in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
 
-More information on pricing and billing can be found [here](https://www.apollographql.com/plans/). You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html).
+More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
+<!-- You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html). -->
 
 <h2 id="accounts">Accounts</h2>
 
@@ -27,7 +28,7 @@ If you’d like to work with additional team members and you are the admin of a 
 
 If you’re looking for a GitHub organization that you’re a member of and don’t see it in Engine, it’s likely that Engine does not have read access for that organization.
 
-If you want to Add or Remove an organization from Engine, you should manage those settings on GitHub. There, you will be able to Grant or Revoke access to Engine for organizations you can administer. For organizations you do not administer, you can Request access to Engine and the administrators will receive a request by E-mail.
+If you want to add or remove an organization from Engine, you should manage those settings on GitHub. There, you will be able to Grant or Revoke access to Engine for organizations you can administer. For organizations you do not administer, you can Request access to Engine and the administrators will receive a request by E-mail.
 
 <h3 id="github-permissions">GitHub permissions</h3>
 
@@ -47,23 +48,21 @@ Engine was built to mirror GitHub’s login and does not currently support other
 
 <h2 id="services">Services</h2>
 
-A service in Engine is an entity that is provisioned in the Engine cloud service that your server can report performance metrics and schema versions to via an API key. The information reported by your server is processed and stored in the Engine cloud service and made accessible to you through the Engine interface.
+A service in Engine represents a "project" or "application". When you create a new service, we provision an API key for you that you can use to send performance metrics and schema versions to our cloud service. This information is then accessible to you through the Engine interface.
 
 <h3 id="creating-services">Creating a service</h3>
 
-Services in Engine have globally unique IDs, so we recommend that you prefix your service ID with the name of your company or organization. To create a service, you will need to select an account for that service to belong to. All members of the account will be able to see the service’s data and settings options.
+To create a service, you will need to select an account for that service to belong to. All members of the account will be able to see the service’s data and settings options. You can transfer services between any Engine account that you’re a member of. To transfer a service, visit its Settings page and change the “Endpoint owner” to whichever account you’d like.
 
-You can transfer services between any Engine account that you’re a member of. To transfer a service, visit its Settings page and change the “Endpoint owner” to whichever account you’d like.
+Services in Engine have globally unique IDs, so we recommend that you prefix your service ID with the name of your company or organization.
 
 <h3 id="environments">Managing environments</h3>
 
-Services in Engine represent different projects/applications. Environments within your application can be tracked using [schema tags] (//TODO(dman): find link and figure out this recommendation) and managed within a single service.
-
-// TODO(dman): figure out if we want to add more schema tag information here
+Each service in Engine should represent a single application, and environments within your application should be tracked using [schema tags](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual environments within the service.
 
 #### API keys
 
-API keys can be added and removed form a service at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
+API keys can be added and removed from a service at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
 
 You can manage your API keys on your service's settings page. It's recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
 
