@@ -3,7 +3,7 @@
 # Redirect Removed Guides to Platform Features
 /docs/guides/security.html /docs/platform/operation-registry.html
 /docs/guides/monitoring.html /docs/platform/integrations.html
-/docs/guides/versioning.html /docs/platform/schema-design.html#versioning
+/docs/guides/versioning.html /docs/platform/schema-validation.html#versioning
 
 # Redirect Removed Guides to Client & Server Docs
 /docs/guides/schema-design.html /docs/apollo-server/essentials/schema.html
