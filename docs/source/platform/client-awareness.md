@@ -23,7 +23,7 @@ client or set of clients across different stacks. This segmentation provides:
 
 ## Setup
 
-By default, Apollo Server >2.2 looks at the request headers for `apollographql-client-name` and `apollographql-client-version`.
+By default, Apollo Server >=2.2.3 looks at the request headers for `apollographql-client-name` and `apollographql-client-version`.
 With Apollo Client >2.4.6, we set the `name` and `version` inside of the `ApolloClient` constructor:
 
 ```js line=8-9
