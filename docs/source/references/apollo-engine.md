@@ -152,6 +152,43 @@ We've added the option to disable reporting of proxy stats and response traces t
 
 To disable all reporting, use the [`disabled` option](./proxy-config.html#Reporting) for the Engine proxy.
 
+<h2 id="gdpr" title="GDPR">GDPR</h2>
+
+Effective May 25, 2018, the General Data Protection Regulation (GDPR) expands European Union (EU) residents’ (Data Subjects) rights concerning their personal data. Meteor Development Group Inc. (“MDG” also dba Apollo) stands ready to assist our customers to become or remain compliant with GDPR after this crucial transition.
+
+#### What is GDPR?
+
+GDPR standardizes EU regulations and expands the rights of Data Subjects pertaining to personal data while expanding the definition of what constitutes personal data. GDPR provides Data Subjects with increased rights to control and delete their personal data, and it broadly prohibits the processing of special categories of personal data.
+
+#### How has Apollo prepared for GDPR?
+
+We have been complying with GDPR since before it became enforceable on May 25, 2018. We are enhancing our products, processes, and procedures to meet our obligations as a data processor (Processor).
+
+#### How will GDPR affect the way companies use Apollo's products or services?
+
+Our products and services are not intended to be used for processing personal data. Our products and services are focused on software, systems, and applications - not individuals. If a customer wishes to set up a custom API, custom attribute, or custom event to track such data, it may do so. Our processing is data agnostic and automated, so all data is processed in the same way in accordance with a customer’s configuration. If, however, a customer believes that it has included personal data in the information processed by Apollo, we will assist the customer in meeting its obligations in accordance with the requirements of GDPR and the terms of our Data Processing Agreement.
+
+#### How can Apollo assist customers in meeting their obligations under GDPR?
+
+As a Processor, we will assist customers in fulfilling their obligations as data controllers (Controllers) by:
+
+- supporting customers in complying with requests from Data Subjects
+- aggregating applicable personal data for customers replying to complaints from Data Subjects
+- replying to investigations and inquiries from supervisory authorities concerning processing activities on behalf of a customer
+- conducting Data Protection Impact Assessments
+
+#### How can Apollo help address requests from Data Subjects?
+
+Apollo has implemented a process to intake, review, and fulfill customer requests arising from Data Subject Access Requests (DSAR) they receive. As a result of a DSAR, customers might request that Apollo securely delete or return the Data Subject’s personal data. Due to their sensitivity, such requests will be handled by Apollo on a case-by-case basis.
+
+#### Where can I learn more about Apollo's security and privacy policies?
+
+The legal terms and policies that apply to Apollo's corporate websites and customer products or services are available at https://www.meteor.com/policy.
+
+#### Where can I get more help?
+
+If you have any questions (including interest in a Data Processing Addendum (DPA)), or encounter any issues, please reach out to <a href="javascript:Intercom('showNewMessage');">support</a>.
+
 <h2 id="policies" title="Policies and Agreements">Policies and Agreements</h2>
 
 To learn about other ways that we protect your data, please read over our [Terms of Service](https://www.apollographql.com/policies/terms) and [Privacy Policy](https://www.apollographql.com/policies/privacy).
