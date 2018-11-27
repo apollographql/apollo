@@ -1,39 +1,42 @@
-title: Developers
-propertytitle: Add GraphQL to your stack and start building apps faster.
-subtitle:
-description: A guide to using the Apollo platform.
+title: Platform
+propertytitle: How to use the Apollo GraphQL platform
+description: How to use the Apollo GraphQL platform
 versions:
   - '1'
 sidebar_categories:
   null:
     - index
-  Fundamentals:
-    - fundamentals/platform
-    - fundamentals/benefits
-    - fundamentals/tips
+    - intro/platform
+    - intro/benefits
+
+  Tutorial:
+    - tutorial/introduction
+    - tutorial/schema
+    - tutorial/data-source
+    - tutorial/resolvers
+    - tutorial/production
+    - tutorial/client
+    - tutorial/queries
+    - tutorial/mutations
+    - tutorial/local-state
+    # - tutorial/whats-next
+
+  Platform:
+    - platform/apollo-config
+    - platform/schema-registry
+    - platform/client-awareness
+    - platform/schema-validation
+    - platform/operation-registry
+    - platform/editor-plugins
+    - platform/tracing
+    - platform/errors
+    - platform/integrations
 
   Resources:
     - resources/graphql-glossary
     - resources/faq
+    - references/apollo-engine
 
-  Guides:
-    - guides/security
-    - guides/versioning
-    - guides/monitoring
-    - guides/performance
-    - guides/file-uploads
-    - guides/schema-design
-    - guides/access-control
-    - guides/state-management
-    - guides/testing-react-components
-
-  Documentation:
-    - title: Apollo Client
-      href: https://www.apollographql.com/docs/react/
-    - title: Apollo Server
-      href: https://www.apollographql.com/docs/apollo-server/v2/
-    - title: Apollo Engine
-      href: https://www.apollographql.com/docs/engine/
 github_repo: apollographql/apollo
 content_root: docs/source
 
