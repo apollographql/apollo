@@ -279,6 +279,8 @@ Let's open up `src/index.js` and update the `context` function on `ApolloServer`
 _src/index.js_
 
 ```js line=4,8,10
+const isEmail = require('isemail');
+
 const server = new ApolloServer({
   context: async ({ req }) => {
     // simple auth check on every request
