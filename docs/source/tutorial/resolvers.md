@@ -169,7 +169,7 @@ _src/resolvers.js_
 ```js line=1
 const { paginateResults } = require('./utils');
 
-{
+module.exports = {
   Query: {
     launches: async (_, { pageSize = 20, after }, { dataSources }) => {
       const allLaunches = await dataSources.launchAPI.getAllLaunches();
