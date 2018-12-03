@@ -82,7 +82,7 @@ To register operations, use the following command as a reference, taking care to
 npx apollo client:push              \
     --key <ENGINE_API_KEY>               \
     --clientName <CLIENT_IDENTIFIER>     \
-    --queries="src/**/*.{ts,js,graphql}"
+    --includes="src/**/*.{ts,js,graphql}"
 ```
 
 When succesfull, the output from this command should look similar to the following:
