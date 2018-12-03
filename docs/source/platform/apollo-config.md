@@ -1,6 +1,6 @@
 ---
-title: Apollo Config
-description: Configuration options for Apollo projects
+title: Configuring Apollo projects
+description: How to configure Apollo VS Code and CLI with apollo.config.js
 ---
 
 Apollo projects are configured using an `apollo.config.js` file at the root of the project. This config file powers [editor integrations](../platform/editor-plugins.html) and the [Apollo CLI](https://www.npmjs.com/package/apollo). The configuration file how Apollo projects are setup. There are two types of projects, `client` and `service` which can be in the same configuration file if necessary.

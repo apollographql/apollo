@@ -30,7 +30,7 @@ Our key is now stored under the environment variable `ENGINE_API_KEY`.
 It's time to publish our schema to Engine! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
 
 ```bash
-npx apollo schema:check && npx apollo schema:publish
+npx apollo service:check && npx apollo service:push
 ```
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
