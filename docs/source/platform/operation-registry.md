@@ -174,7 +174,13 @@ Finally, to confirm that the server will allow permitted operations, try running
 When the server cannot fetch the manifest, the message may indicate indicate that access is denied:
 
 ```xml
-Could not fetch manifest <?xml version='1.0' encoding='UTF-8'?><Error><Code>AccessDenied</Code><Message>Access denied.</Message><Details>Anonymous caller does not have storage.objects.get access to engine-op-manifest-storage-prod/.../....</Details></Error>
+Could not fetch manifest
+<?xml version='1.0' encoding='UTF-8'?>
+<Error>
+   <Code>AccessDenied</Code>
+   <Message>Access denied.</Message>
+   <Details>Anonymous caller does not have storage.objects.get access (...snipped...)</Details>
+</Error>
 ```
 
 This can occur if the schema hasn't been published since the operation registry plugin was enabled.  You can publish the schema using the `apollo service:push` command.  When receiving this message on a service which has already had its schema pushed, the `apollo client:push` command can be used.  Check the above documentation for more information on how to use those commands.
