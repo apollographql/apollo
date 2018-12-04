@@ -35,6 +35,8 @@ sidebar_categories:
   Resources:
     - resources/graphql-glossary
     - resources/faq
+
+  References:
     - references/apollo-engine
     - references/engine-proxy
 
