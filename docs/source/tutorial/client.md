@@ -58,9 +58,12 @@ _src/index.js_
 
 ```js
 import { ApolloClient } from "apollo-client";
+import { createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  link: createHttpLink({ uri: 'http://localhost:4000/graphql' }),
+  cache: new InMemoryCache()
 });
 ```
 
