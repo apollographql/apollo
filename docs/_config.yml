@@ -24,7 +24,7 @@ sidebar_categories:
   Platform:
     - platform/apollo-config
     - platform/schema-registry
-    # - platform/client-awareness
+    - platform/client-awareness
     - platform/schema-validation
     - platform/operation-registry
     - platform/editor-plugins
@@ -35,6 +35,10 @@ sidebar_categories:
   Resources:
     - resources/graphql-glossary
     - resources/faq
+
+  References:
+    - references/apollo-engine
+    - references/engine-proxy
 
 github_repo: apollographql/apollo
 content_root: docs/source
