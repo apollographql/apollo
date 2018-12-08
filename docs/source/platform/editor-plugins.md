@@ -27,7 +27,7 @@ To get started, first install the extension by using this [link](https://marketp
 To get all of the benefits of the VS Code experience, its best to link the schema that is being developed against. The best way to do that is by [publishing a schema](./schema-registry.html#publish) to the Apollo schema registry. Once that is done, two steps are needed:
 
 1. Create an `apollo.config.js` at the root of the project
-2. Copy an api key from the Engine dashboard of the published service
+2. Copy an API key from the Engine dashboard of the published service
 
 <h3 id="apollo-config">Setting up an Apollo config</h3>
 In order for the VS Code plugin to know how to find the schema, it needs to be linked to either a published schema or a local one. To link a project to a published schema, edit the `apollo.config.js` file to look like this:
@@ -44,10 +44,10 @@ The service name is the id of the service created in Engine and can be found in 
 
 > Important note: If the name of the service in Engine is changed, this value should be the service id. This can be found in the url when browsing the service in Engine. This will be easier to manage in the near future
 
-<h3 id="api-key">Setting up an api key</h3>
-To authenticate with Engine to pull down the schema, create a file next to the `apollo.config.js` called `.env`. This should be an untraced file (i.e. don't push it to GitHub). Go to the settings page of the published service and create a new api key.
+<h3 id="api-key">Setting up an API key</h3>
+To authenticate with Engine to pull down the schema, create a file next to the `apollo.config.js` called `.env`. This should be an untraced file (i.e. don't push it to GitHub). Go to the settings page of the published service and create a new API key.
 
-> It is best practice to create a new api key for each member of the team and name the api so its easy to find and revoke if needed
+> It is best practice to create a new API key for each member of the team and name the key so its easy to find and revoke if needed
 
 After the key is found, add the following line to the `.env` file:
 
@@ -59,7 +59,7 @@ After this is done, VS Code can be restarted and the editor integration will sta
 
 <h2 id="local-schemas">Local schemas</h2>
 
-Sometimes it may make sense to link the editor to a locally running vrsion of a schema to try out new designs that are in active development. To do this, the `apollo.config.js` file can be linked to a local service definition:
+Sometimes it may make sense to link the editor to a locally running version of a schema to try out new designs that are in active development. To do this, the `apollo.config.js` file can be linked to a local service definition:
 
 ```js
 module.exports = {
