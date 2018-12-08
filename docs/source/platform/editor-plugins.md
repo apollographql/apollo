@@ -1,9 +1,9 @@
 ---
 title: Editor plugins
-description: How to get the most out of your editor with Apolo
+description: How to get the most out of your editor with Apollo
 ---
 
-By design, GraphQL has the ability to create incredible developer experiences thank's to its strongly type schema and query language. The Apollo GraphQL Platform brings these possibilities to life with deep editor integrations. Currently only [VS Code](https://code.visualstudio.com/) is supported, but more are coming soon.
+By design, GraphQL has the ability to create incredible developer experiences thank's to its strongly typed schema and query language. The Apollo GraphQL Platform brings these possibilities to life with deep editor integrations. Currently only [VS Code](https://code.visualstudio.com/) is supported, but more are coming soon.
 
 <h2 id="vscode">Getting started with Apollo and VS Code</h2>
 
@@ -11,7 +11,7 @@ The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apol
 
 * Get instant feedback and intelligent autocomplete as you write queries
 * Seamlessly manage your client side schema alongside your remote one
-* View performance statistics next to your query definitions
+* See performance information inline with your query definitions
 * Loads GraphQL schemas and queries automatically from an Apollo Config file
 * Adds syntax highlighting for GraphQL files and gql templates inside JavaScript files
 * Code-completes fields, arguments, types, and variables in your queries
