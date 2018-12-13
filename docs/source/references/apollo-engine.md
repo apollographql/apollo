@@ -10,6 +10,14 @@ Engine's core schema management features are all availble in an unlimited capaci
 More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
 <!-- You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html). -->
 
+![The Apollo Engine Architecture](../img/apollo-engine/engine-architecture.png)
+
+<!--
+######################################################################
+Accounts
+######################################################################
+-->
+
 <h2 id="accounts">Accounts</h2>
 
 Engine accounts are authenticated using GitHub by default. There is also an SSO login option for teams that can be requested by [contacting us](https://www.apollographql.com/contact-sales/).
@@ -45,6 +53,11 @@ Engine was built to mirror GitHub’s login and does not currently support other
 3. Hide membership of the organization if desired.
 4. Use this organization to collaborate on Engine.
 
+<!--
+######################################################################
+Services
+######################################################################
+-->
 
 <h2 id="services">Services</h2>
 
@@ -65,6 +78,12 @@ Each service in Engine should represent a single application, and environments w
 API keys can be added and removed from a service at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
 
 You can manage your API keys on your service's settings page. It's recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
+
+<!--
+######################################################################
+Data privacy
+######################################################################
+-->
 
 <h2 id="data-privacy">Data privacy</h2>
 
@@ -152,6 +171,12 @@ We've added the option to disable reporting of proxy stats and response traces t
 
 To disable all reporting, use the [`disabled` option](./proxy-config.html#Reporting) for the Engine proxy.
 
+<!--
+######################################################################
+GDOR
+######################################################################
+-->
+
 <h2 id="gdpr" title="GDPR">GDPR</h2>
 
 Effective May 25, 2018, the General Data Protection Regulation (GDPR) expands European Union (EU) residents’ (Data Subjects) rights concerning their personal data. Meteor Development Group Inc. (“MDG” also dba Apollo) stands ready to assist our customers to become or remain compliant with GDPR after this crucial transition.
@@ -188,6 +213,12 @@ The legal terms and policies that apply to Apollo's corporate websites and custo
 #### Where can I get more help?
 
 If you have any questions (including interest in a Data Processing Addendum (DPA)), or encounter any issues, please reach out to <a href="javascript:Intercom('showNewMessage');">support</a>.
+
+<!--
+######################################################################
+Policies and Agreements
+######################################################################
+-->
 
 <h2 id="policies" title="Policies and Agreements">Policies and Agreements</h2>
 

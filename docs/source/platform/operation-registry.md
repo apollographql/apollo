@@ -82,7 +82,7 @@ To register operations, use the following command as a reference, taking care to
 npx apollo client:push              \
     --key <ENGINE_API_KEY>               \
     --clientName <CLIENT_IDENTIFIER>     \
-    --queries="src/**/*.{ts,js,graphql}"
+    --includes="src/**/*.{ts,js,graphql}"
 ```
 
 When succesfull, the output from this command should look similar to the following:
@@ -168,6 +168,22 @@ Execution forbidden
 Finally, to confirm that the server will allow permitted operations, try running an operation from the client.
 
 ## Troubleshooting
+
+#### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
+
+When the server cannot fetch the manifest, the message may indicate indicate that access is denied:
+
+```xml
+Could not fetch manifest
+<?xml version='1.0' encoding='UTF-8'?>
+<Error>
+   <Code>AccessDenied</Code>
+   <Message>Access denied.</Message>
+   <Details>Anonymous caller does not have storage.objects.get access (...snipped...)</Details>
+</Error>
+```
+
+This can occur if the schema hasn't been published since the operation registry plugin was enabled.  You can publish the schema using the `apollo service:push` command.  When receiving this message on a service which has already had its schema pushed, the `apollo client:push` command can be used.  Check the above documentation for more information on how to use those commands.
 
 #### Operations aren't being forbidden or operations which should be permitted are not allowed
 
