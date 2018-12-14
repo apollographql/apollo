@@ -139,7 +139,7 @@ To check and see the difference between the current published schema and a new v
 apollo service:check --key="<API_KEY>" --endpoint="http://localhost:4000/graphql"
 ```
 
-> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though the CLI also reference a local file. See [config options](../resources/apollo-config.html) for more information.
+> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though the CLI also reference a local file. See [config options](../platform/apollo-config.html) for more information.
 
 After analyzing the changes against current usage metrics, Apollo will identify three categories of changes and report them to the developer on the command line or within a GitHub pull-request:
 
