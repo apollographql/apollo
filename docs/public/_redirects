@@ -17,3 +17,6 @@
 
 # File uploads no longer have a home, but the blog post is the same content.
 /docs/guides/file-uploads.html https://blog.apollographql.com/file-uploads-with-apollo-server-2-0-5db2f3f60675
+
+# Move our Apollo config docs to the References section
+/docs/platform/apollo-config.html /docs/references/apollo-config.html

@@ -22,7 +22,6 @@ sidebar_categories:
     # - tutorial/whats-next
 
   Platform:
-    - platform/apollo-config
     - platform/schema-registry
     - platform/client-awareness
     - platform/schema-validation
@@ -37,6 +36,7 @@ sidebar_categories:
     - resources/faq
 
   References:
+    - references/apollo-config
     - references/apollo-engine
     - references/engine-proxy
 
