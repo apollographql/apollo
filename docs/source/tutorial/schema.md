@@ -135,7 +135,7 @@ _src/schema.js_
 
 ```graphql
 type Mutation {
-  # if false, signup failed -- check errors
+  # if false, booking trips failed -- check errors
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
 
   # if false, cancellation failed -- check errors
