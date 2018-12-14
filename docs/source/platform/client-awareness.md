@@ -23,37 +23,19 @@ client or set of clients across different stacks. This segmentation provides:
 
 ## Setup
 
-By default, Apollo Server >2.2 looks at `clientInfo` inside of the `extensions`
-field of the GraphQL query body. On the client, we add this by defining a custom
-`ApolloLink`:
+By default, Apollo Server >=2.2.3 looks at the request headers for `apollographql-client-name` and `apollographql-client-version`.
+With Apollo Client >2.4.6, we set the `name` and `version` inside of the `ApolloClient` constructor:
 
-```js line=9-12
+```js line=8-9
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
 
 const client = new ApolloClient({
-  link: ApolloLink.from([
-    new ApolloLink((operation, forward) => {
-
-      // Note: the `extensions` field in a GraphQL query body is not part of the GraphQL spec
-      operation.extensions.clientInfo = {
-        clientName: 'Web',
-        clientVersion: '1',
-      };
-
-      operation.setContext({
-        http: {
-          includeExtensions: true,
-        },
-      });
-
-      return forward(operation);
-    }),
-    new HttpLink({
-      uri: 'http://localhost:4000/graphql',
-    })
-  ]),
+  link: new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+  })
+  name: 'insert your client name',
+  version: 'insert your client version',
 });
 ```
 
@@ -102,8 +84,8 @@ const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
     headers: {
-      'apollo-client-name': 'Web',
-      'apollo-client-version': '1',
+      'client-name': 'Web',
+      'client-version': '1',
     }
   }),
 });
@@ -129,8 +111,8 @@ const server = new ApolloServer({
     }) => {
       const headers = request.headers;
       return {
-        clientName: headers && headers['apollo-client-name'] || 'Unknown Client',
-        clientVersion: headers && headers['apollo-client-version'] || 'Unversioned',
+        clientName: headers && headers['client-name'] || 'Unknown Client',
+        clientVersion: headers && headers['client-version'] || 'Unversioned',
       };
     },
   }
