@@ -74,7 +74,7 @@ module.exports = {
 
 > Linking to the local schema won't provide all features such as switching schema tags and performance metrics.
 
-More information about configuring an Apollo project can be found [here](../resources/apollo-config.html)
+More information about configuring an Apollo project can be found [here](../platform/apollo-config.html)
 
 <h2 id="client-side-schemas">Client side schemas</h2>
 
