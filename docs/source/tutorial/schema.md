@@ -127,7 +127,7 @@ You'll notice that the field `missionPatch` takes an argument of `size`. GraphQL
 
 There are some other less common types you might also encounter when building your graph's schema. For a full list, you can reference this handy [cheat sheet](https://devhints.io/graphql#schema).
 
-<h3 id="object">Mutation type</h3>
+<h3 id="mutation">Mutation type</h3>
 
 Now, let's define the **Mutation type**. The `Mutation` type is the entry point into our graph for modifying data. Just like the `Query` type, the `Mutation` type is a special object type.
 
@@ -135,7 +135,7 @@ _src/schema.js_
 
 ```graphql
 type Mutation {
-  # if false, signup failed -- check errors
+  # if false, booking trips failed -- check errors
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
 
   # if false, cancellation failed -- check errors
