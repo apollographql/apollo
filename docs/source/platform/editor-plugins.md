@@ -66,7 +66,7 @@ module.exports = {
   client: {
     service: {
       name: 'my-graphql-app',
-      endpoint: 'http://localhost:4000/graphql',
+      url: 'http://localhost:4000/graphql',
     },
   },
 };
