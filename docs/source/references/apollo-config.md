@@ -210,7 +210,7 @@ module.exports = {
 
 In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
 
-```js
+```js line=3
 module.exports = {
   service: {
     localSchemaFile: './path/to/schema.graphql',
