@@ -58,19 +58,29 @@ module.exports = typeDefs;
 
 <h3 id="query">Query type</h3>
 
-We'll start with the **Query type**, which is the entry point into our schema that describes what data we can fetch.
+We'll start with the **Query type**, which is the entry point into our schema that describes what business logic we can trigger along with the data we can fetch.
 
-The language we use to write our schema is GraphQL's [schema definition language](https://graphql.org/learn/schema/) (SDL). If you've used TypeScript before, the syntax will look familiar. Copy the following code into `src/schema.js`.
+The language we use to write our schema is GraphQL's [schema definition language](https://graphql.org/learn/schema/) (SDL). If you've used TypeScript before, the syntax will look familiar. Copy the following code into `src/schema.js` between the backticks in line three.
+
+```graphql
+const typeDefs = gql``
+```
+
+like this:
+
+NOTE: All further schema entries will be added in the same manner. 
 
 _src/schema.js_
 
 ```graphql
-type Query {
-  launches: [Launch]!
-  launch(id: ID!): Launch
-  # Queries for the current user
-  me: User
-}
+const typeDefs = gql`
+  type Query {
+    launches: [Launch]!
+    launch(id: ID!): Launch
+    # Queries for the current user
+    me: User
+  }
+`;
 ```
 
 First, we define a `launches` query to fetch all upcoming rocket launches. This query returns an array of launches, which will never be null. Since all types in GraphQL are nullable by default, we need to add the `!` to indicate that our query will always return data. Next, we define a query to fetch a `launch` by its ID. This query takes an argument of `id` and returns a single launch. Finally, we will add a `me` query to fetch the current user's data. Above the `me` query is an example of a comment added to the schema.
