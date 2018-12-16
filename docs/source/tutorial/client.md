@@ -3,6 +3,8 @@ title: "5. Connect your API to a client"
 description: Hook up your graph to Apollo Client
 ---
 
+Time to accomplish: _10 Minutes_
+
 The next half of this tutorial exclusively focuses on connecting a graph API to a frontend with Apollo Client. **Apollo Client** is a complete data management solution for any client. It's view-layer agnostic, which means it can integrate with React, Vue, Angular, or even vanilla JS. Thanks to its intelligent cache, Apollo Client offers a single source of truth for all of the local and remote data in your application.
 
 While Apollo Client works with any view layer, it's most commonly used with React. In this section, you'll learn how to connect the graph API you just built in the previous half of this tutorial to a React app. Even if you're more comfortable with Vue or Angular, you should still be able to follow many of the examples since the concepts are the same. Along the way, you'll also learn how to build essential features like authentication and pagination, as well as tips for optimizing your workflow.
