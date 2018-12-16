@@ -3,11 +3,11 @@ title: "1. Build a schema"
 description: Create a blueprint for your graph's data
 ---
 
-The first step on our journey toward building our graph API is constructing its **schema**. You can think of a schema as a blueprint for all of the data you can access in your graph. Throughout this section, you'll learn how to build and explore your graph's schema with Apollo.
+The first step on our journey toward building our graph API is constructing its **schema**. You can think of a schema as a blueprint for all of the data you can access in your business graph. Throughout this section, you'll learn how to build and explore your graph's schema with Apollo.
 
 <h2 id="setup">Set up Apollo Server</h2>
 
-Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
+Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data and business logic. It can connect to any business logic service/ application, including a REST API, and it seamlessly integrates with Apollo developer tooling.
 
 From the root, let's install our projects dependencies:
 
@@ -32,11 +32,11 @@ Before we can start the server, we need to write our schema first.
 
 <h2 id="write-schema">Write your graph's schema</h2>
 
-Every graph API is centered around its schema. You can think of a schema as a blueprint that describes all of your data's types and their relationships. A schema also defines what data we can fetch through queries and what data we can update through mutations. It is strongly typed, which unlocks powerful developer tooling.
+Every graph API is centered around its schema, which should represent your business model. You can think of a schema as a blueprint that describes all of your data's types and their relationships within the realm of your business or application. A schema also defines what data we can fetch through queries and what data we can update through mutations. Mutations and Queries can also trigger actions within business logic. They are strongly typed, which unlocks powerful developer tooling.
 
-Schemas are at their best when they are designed around the needs of the clients that are consuming them. Since a schema sits in between your clients and your underlying services, it serves as a perfect middle ground for frontend and backend teams to collaborate. We recommend that teams practice **Schema First Development** and agree upon the schema first before any API development begins.
+Schemas are at their best, when they are designed around the needs of the clients that are consuming them. Since a schema sits in between your clients and your underlying services, it serves as a perfect middle ground for frontend and backend teams to collaborate. We recommend that teams practice **Schema First Development** and agree upon the schema first, before any API development begins.
 
-Let's think about the data we will need to expose in order to build our app. Our app needs to:
+Let's think about the data and/ or business logic we will need to expose in order to build our app. Our app needs to:
 
 * Fetch all upcoming rocket launches
 * Fetch a specific launch by its ID
@@ -60,7 +60,7 @@ module.exports = typeDefs;
 
 We'll start with the **Query type**, which is the entry point into our schema that describes what data we can fetch.
 
-The language we use to write our schema is GraphQL's schema definition language (SDL). If you've used TypeScript before, the syntax will look familiar. Copy the following code into `src/schema.js`.
+The language we use to write our schema is GraphQL's [schema definition language](https://graphql.org/learn/schema/) (SDL). If you've used TypeScript before, the syntax will look familiar. Copy the following code into `src/schema.js`.
 
 _src/schema.js_
 
