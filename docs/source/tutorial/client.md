@@ -28,8 +28,12 @@ While Apollo VSCode is not required to successfully complete the tutorial, setti
 First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Engine API key that you already created in step #4 to the file:
 
 ```
-ENGINE_API_KEY=service:your-key-here
+ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
+ The entry should basically look something like this:
+ ```
+ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+```	```
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
 
@@ -57,26 +61,39 @@ If you didn't complete the server portion, you can use the `uri` from the code b
 _src/index.js_
 
 ```js
-import { ApolloClient } from "apollo-client";
+import { ApolloClient } from 'apollo-client';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import {HttpLink} from 'apollo-link-http';
 
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:4000/'
+})
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
-});
+  cache,
+  link
+})
+
 ```
 
-In just a couple lines of code, our client is ready to fetch data! Let's try making a query in the next section.
+In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.
 
 <h2 id="apollo-client-setup">Make your first query</h2>
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
-With a `client.query()` call, we can query our graph's API. Copy the code below and add it to `src/index.js`.
+With a `client.query()` call, we can query our graph's API. And the following line of code to your imports in `src/index.js`.
 
 _src/index.js_
 
 ```js line=1
 import gql from "graphql-tag";
+```
+And add this code to the bottom of `index.js`: 
 
+_src/index.js_
+```
+// ... above is the instantiation of the client object.
 client
   .query({
     query: gql`
@@ -93,9 +110,9 @@ client
   .then(result => console.log(result));
 ```
 
-Open up your console and you should see an object with a `data` property containing the result of our query. You'll also see some other properties, like `loading` and `networkStatus`. This is because Apollo Client tracks the loading state of your query for you.
+Open up your console and run `npm start`. This will compile your client app. Once it is finished, your browser should open to `http://localhost:3000/` automatically. Once the index page opens, open up your console and you should see an object with a `data` property containing the result of our query. You'll also see some other properties, like `loading` and `networkStatus`. This is because Apollo Client tracks the loading state of your query for you.
 
-Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to UI.
+Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to the UI.
 
 Go ahead and delete the `client.query()` call you just made. Now, we'll connect our client to React.
 
