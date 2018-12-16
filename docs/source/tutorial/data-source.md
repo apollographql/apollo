@@ -3,7 +3,9 @@ title: "2. Hook up your data sources"
 description: Connect REST and SQL data to your graph
 ---
 
-Now that we've constructed our schema, we need to hook up our data sources to our graph API. Graph APIs are extremely flexible because you can layer them on top of any service, including REST APIs, databases, or gRPC services.
+Time to accomplish: _10 Minutes_
+
+Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any busness logic, REST APIs, databases, or gRPC services.
 
 Apollo makes connecting these services to your graph simple with our data source API. An **Apollo data source** is a class that encapsulates all of the data fetching logic, as well as caching and deduplication, for a particular service. By using Apollo data sources to hook up your services to your graph API, you're also following best practices for organizing your code.
 
