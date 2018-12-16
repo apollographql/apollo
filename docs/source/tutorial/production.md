@@ -3,7 +3,7 @@ title: '4. Run your graph in production'
 description: Learn about deployment and essential developer tooling
 ---
 
-Time to accomplish: _5 Minutes_
+Time to accomplish: _15 Minutes_
 
 Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
 
