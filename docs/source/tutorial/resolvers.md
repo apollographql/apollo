@@ -3,7 +3,9 @@ title: "3. Write your graph's resolvers"
 description: Learn how a GraphQL query fetches data
 ---
 
-Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to fetch and update data. 
+Time to accomplish: _15 Minutes_
+
+Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/ or to fetch and/ or update data. 
 
 <h2 id="resolver-api">What is a resolver?</h2>
 
@@ -123,15 +125,15 @@ You can paste `{ "id": 60 }` into the Query Variables section below before runni
 
 Running the `launches` query returned a large data set of launches, which can slow down our app. How can we ensure we're not fetching too much data at once?
 
-**Pagination** is a solution to this problem that ensures that the server only sends data in small chunks. Cursor-based pagination is our recommended approach over numbered pages because it eliminates the possibility of skipping items and displaying the same item more than once. In cursor-based pagination, a constant pointer (or **cursor**) is used to keep track of where in the data set the next items should be fetched from.
+**Pagination** is a solution to this problem that ensures that the server only sends data in small chunks. Cursor-based pagination is our recommended approach over numbered pages, because it eliminates the possibility of skipping items and displaying the same item more than once. In cursor-based pagination, a constant pointer (or **cursor**) is used to keep track of where in the data set the next items should be fetched from.
 
-We'll use cursor-based pagination for our graph API. Open up the `src/schema.js` file and update the `Query` type. Go ahead and add a new type called `LaunchConnection` to the schema as shown below:
+We'll use cursor-based pagination for our graph API. Open up the `src/schema.js` file and update the `Query` type with `launches` and also add a new type called `LaunchConnection` to the schema as shown below:
 
 _src/schema.js_
 
 ```js
 type Query {
-  launches(
+  launches( // replace the current launches query with this one.
     """
     The number of results to show. Must be >= 1. Default = 20
     """
@@ -150,7 +152,7 @@ Simple wrapper around our list of launches that contains a cursor to the
 last item in the list. Pass this cursor to the launches query to fetch results
 after these.
 """
-type LaunchConnection {
+type LaunchConnection { // add this below the Query type as an additional type.
   cursor: String!
   hasMore: Boolean!
   launches: [Launch]!
@@ -162,14 +164,14 @@ You'll also notice we've added comments (also called docstrings) to our schema, 
 
 Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accomodate pagination.
 
-Let's import `paginateResults` and update the `launches` resolver function in the `src/resolvers.js` file with the code below:
+Let's import `paginateResults` and replace the `launches` resolver function in the `src/resolvers.js` file with the code below:
 
 _src/resolvers.js_
 
 ```js line=1
 const { paginateResults } = require('./utils');
 
-{
+module.exports = {
   Query: {
     launches: async (_, { pageSize = 20, after }, { dataSources }) => {
       const allLaunches = await dataSources.launchAPI.getAllLaunches();
@@ -197,7 +199,7 @@ const { paginateResults } = require('./utils');
 };
 ```
 
-Let's test the cursor-based pagination we just implemented. Go ahead and run your graph API with `npm start`, and run this query in the playground:
+Let's test the cursor-based pagination we just implemented. If you stopped your server, go ahead and restart your graph API again with `npm start`, and run this query in the playground:
 
 ```graphql
 query GetLaunches {
@@ -295,7 +297,7 @@ const server = new ApolloServer({
 
     return { user: { ...user.dataValues } };
   },
-});
+  // .... with the rest of the server object code below, typeDefs, resolvers, etc....
 ```
 
 Just like in the steps outlined above, we're checking the authorization headers on the request, authenticating the user by looking up their credentials in the database, and attaching the user to the `context`. While we definitely don't advocate using this specific implementation in production since it's not secure, all of the concepts outlined here are transferable to how you'll implement authentication in a real world application.
@@ -365,7 +367,9 @@ Both `bookTrips` and `cancelTrips` must return the properties specified on our `
 
 <h3 id="mutation-playground">Run mutations in the playground</h3>
 
-It's time for the fun part - running our mutations in the playground! Go ahead and start your server with `npm start` and open up the playground. GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Let's copy the mutation below and run in the playground:
+It's time for the fun part - running our mutations in the playground! Go back to the playground in your browser and reload the schema with the little return arrow at the top on the right of the address line. 
+
+GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Let's copy the mutation below and run in the playground:
 
 ```graphql
 mutation LoginUser {
