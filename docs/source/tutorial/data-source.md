@@ -46,12 +46,14 @@ _src/datasources/launch.js_
 
 ```js
 async getAllLaunches() {
-  const res = await this.get('launches');
-  return res && res.length ? res.map(l => this.launchReducer(l)) : [];
+  const response = await this.get('launches');
+  return Array.isArray(result)
+    ? response.map(launch => this.launchReducer(launch))
+    : [];
 }
 ```
 
-The Apollo REST data sources has helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned launches in the `res` variable. Then, the `getAllLaunches` method maps over the launches and transforms the response from our REST endpoint with `this.launchReducer`. If there are no launches, an empty array is returned.
+The Apollo REST data sources has helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned launches in the `response` variable. Then, the `getAllLaunches` method maps over the launches and transforms the response from our REST endpoint with `this.launchReducer`. If there are no launches, an empty array is returned.
 
 Now, we need to write our `launchReducer` method in order to transform our launch data into the shape our schema expects. We recommend this approach in order to decouple your graph API from business logic specific to your REST API. First, let's recall what our `Launch` type looks like in our schema. You don't have to copy this code:
 
@@ -99,8 +101,8 @@ _src/datasources/launch.js_
 
 ```js
 async getLaunchById({ launchId }) {
-  const res = await this.get('launches', { flight_number: launchId });
-  return this.launchReducer(res[0]);
+  const response = await this.get('launches', { flight_number: launchId });
+  return this.launchReducer(response[0]);
 }
 
 getLaunchesByIds({ launchIds }) {
