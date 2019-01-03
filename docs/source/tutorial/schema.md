@@ -145,7 +145,7 @@ type Mutation {
 }
 ```
 
-Both the `bookTrip` and `cancelTrip` mutations take a `launchId` as an argument and return a `TripUpdateResponse`. The return type for your GraphQL mutation is completely up to you, but we recommend defining a special response type to ensure a proper response is returned back to the client. In a larger project, you might abstract this type into an interface, but for now, we're going to define `TripUpdateResponse`:
+Both the `bookTrips` and `cancelTrip` mutations take a `launchId` as an argument and return a `TripUpdateResponse`. The return type for your GraphQL mutation is completely up to you, but we recommend defining a special response type to ensure a proper response is returned back to the client. In a larger project, you might abstract this type into an interface, but for now, we're going to define `TripUpdateResponse`:
 
 _src/schema.js_
 
