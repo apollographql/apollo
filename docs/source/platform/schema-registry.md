@@ -130,6 +130,6 @@ jobs:
       # of the schema to Apollo Engine.
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            apollo service:push
+            apollo service:push --tag=master
           fi
 ```
