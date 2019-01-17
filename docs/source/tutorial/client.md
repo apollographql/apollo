@@ -84,7 +84,7 @@ In just a few lines of code, our client is ready to fetch data! Let's try making
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
-With a `client.query()` call, we can query our graph's API. And the following line of code to your imports in `src/index.js`.
+With a `client.query()` call, we can query our graph's API. Add the following line of code to your imports in `src/index.js`.
 
 _src/index.js_
 
