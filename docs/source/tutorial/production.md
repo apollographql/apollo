@@ -3,9 +3,11 @@ title: '4. Run your graph in production'
 description: Learn about deployment and essential developer tooling
 ---
 
-Great job for making it this far! We've already learned how to build a graph API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
+Time to accomplish: _15 Minutes_
 
-An Apollo graph API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. In this tutorial, we'll deploy our graph API to [Zeit Now](https://zeit.co/now). You will need to create a [Now account](https://zeit.co/now) in order to follow these steps. If you haven't already created an [Apollo Engine](https://engine.apollographql.com/) account, you will need to sign up for one.
+Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
+
+An Apollo GraphQL API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. In this tutorial, we'll deploy our graph API to [Zeit Now](https://zeit.co/now). You will need to create a [Now account](https://zeit.co/now) in order to follow these steps. If you haven't already created an [Apollo Engine](https://engine.apollographql.com/) account, you will need to sign up for one.
 
 <h2 id="engine">Publish your schema to Engine</h2>
 
@@ -20,7 +22,13 @@ First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://eng
 Let's save our key as an environment variable. It's important to make sure we don't check our Engine API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Engine API key that you copied from the previous step to the file:
 
 ```
-ENGINE_API_KEY=service:your-key-here
+ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+```
+
+The entry should basically look like this:
+
+```
+ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`.
