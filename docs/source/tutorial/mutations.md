@@ -101,8 +101,6 @@ const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
     headers: {
       authorization: localStorage.getItem('token'),
-      'apollographql-client-name': 'Space Explorer [web]',
-      'apollographql-client-version': '1.0.0',
     },
   }),
   initializers: {
