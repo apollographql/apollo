@@ -327,7 +327,7 @@ export default function Profile() {
         return (
           <Fragment>
             <Header>My Trips</Header>
-            {data.me.trips.length ? (
+            {data.me && data.me.trips.length ? (
               data.me.trips.map(launch => (
                 <LaunchTile key={launch.id} launch={launch} />
               ))
