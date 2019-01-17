@@ -50,15 +50,13 @@ Jump back to `src/index.js` and notice we had already added the `initializers` o
 
 _src/index.js_
 
-```js lines=11-14
+```js lines=9-12
 const client = new ApolloClient({
   cache,
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
     headers: {
       authorization: localStorage.getItem('token'),
-      'client-name': 'Space Explorer [web]',
-      'client-version': '1.0.0',
     },
   }),
   initializers: {
