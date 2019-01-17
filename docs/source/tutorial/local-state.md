@@ -3,6 +3,8 @@ title: "8. Manage local state"
 description: How to store and query local data in the Apollo cache
 ---
 
+Time to accomplish: _15 Minutes_
+
 In almost every app we build, we display a combination of remote data from our graph API and local data such as network status, form state, and more. What's awesome about Apollo Client is that it allows us to store local data inside the Apollo cache and query it alongside our remote data with GraphQL.
 
 We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
@@ -44,7 +46,7 @@ We can also add local fields to server data by extending types from our server. 
 
 Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to create `initializers` for both `isLoggedIn` and `cartItems` to prevent these two local queries from erroring out:
 
-Jump to `src/index.js` and specify your `initializers` on the `ApolloClient` constructor:
+Jump back to `src/index.js` and notice we had already added the `initializers` on the `ApolloClient` constructor in the last section:
 
 _src/index.js_
 
@@ -111,10 +113,8 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Header from '../components/header';
-import Loading from '../components/loading';
-import CartItem from '../containers/cart-item';
-import BookTrips from '../containers/book-trips';
+import { Header, Loading } from '../components';
+import { CartItem, BookTrips } from '../containers';
 
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
@@ -218,7 +218,7 @@ Up until now, we've focused on querying local data from the Apollo cache. Apollo
 
 <h3 id="direct-writes">Direct cache writes</h3>
 
-Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write when we called `client.writeData` in the `onCompleted` handler for the login `Mutation` component. Let's look at a similar example where we copy the code below to create a logout button:
+Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `Mutation` component. Let's look at a similar example, where we copy the code below to create a logout button:
 
 _src/containers/logout-button.js_
 
