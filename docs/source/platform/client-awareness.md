@@ -33,7 +33,7 @@ import { HttpLink } from 'apollo-link-http';
 const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
-  })
+  }),
   name: 'insert your client name',
   version: 'insert your client version',
 });
@@ -86,7 +86,7 @@ const client = new ApolloClient({
     headers: {
       'client-name': 'Web',
       'client-version': '1',
-    }
+    },
   }),
 });
 ```
@@ -115,7 +115,7 @@ const server = new ApolloServer({
         clientVersion: headers && headers['client-version'] || 'Unversioned',
       };
     },
-  }
+  },
 });
 
 server.listen().then(({ url }) => {

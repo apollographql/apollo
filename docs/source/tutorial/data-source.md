@@ -3,7 +3,9 @@ title: "2. Hook up your data sources"
 description: Connect REST and SQL data to your graph
 ---
 
-Now that we've constructed our schema, we need to hook up our data sources to our graph API. Graph APIs are extremely flexible because you can layer them on top of any service, including REST APIs, databases, or gRPC services.
+Time to accomplish: _10 Minutes_
+
+Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any busness logic, REST APIs, databases, or gRPC services.
 
 Apollo makes connecting these services to your graph simple with our data source API. An **Apollo data source** is a class that encapsulates all of the data fetching logic, as well as caching and deduplication, for a particular service. By using Apollo data sources to hook up your services to your graph API, you're also following best practices for organizing your code.
 
@@ -116,7 +118,7 @@ Now that we've connected our REST API successfully, let's connect our database!
 
 <h2 id="database">Connect a database</h2>
 
-Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
+Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Our `package.json` already entailed these packages, thus they were installed in the first part of this tutorial with `npm install`. Also, since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
 
 <h3 id="custom-data-source">Build a custom data source</h3>
 
