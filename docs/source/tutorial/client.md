@@ -58,13 +58,19 @@ _src/index.js_
 
 ```js
 import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
 
+const cache = new InMemoryCache();
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  cache,
+  link: new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+  }),
 });
 ```
 
-In just a couple lines of code, our client is ready to fetch data! Let's try making a query in the next section.
+Our client is ready to fetch data! Let's try making a query in the next section.
 
 <h2 id="apollo-client-setup">Make your first query</h2>
 
