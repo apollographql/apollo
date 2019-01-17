@@ -49,7 +49,7 @@ _src/datasources/launch.js_
 ```js
 async getAllLaunches() {
   const response = await this.get('launches');
-  return Array.isArray(result)
+  return Array.isArray(response)
     ? response.map(launch => this.launchReducer(launch))
     : [];
 }
