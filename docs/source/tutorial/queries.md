@@ -3,6 +3,8 @@ title: "6. Fetch data with queries"
 description: Learn how to fetch data with the Query component
 ---
 
+ Time to accomplish: _15 Minutes_
+
 Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `Query` component from `react-apollo` to fetch more complex queries and execute features like pagination.
 
 <h2 id="fetch-data">The Query component</h2>
@@ -24,10 +26,7 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import LaunchTile from '../components/launch-tile';
-import Header from '../components/header';
-import Button from '../components/button';
-import Loading from '../components/loading';
+import { LaunchTile, Header, Button, Loading } from '../components';
 
 const GET_LAUNCHES = gql`
   query launchList($after: String) {
@@ -296,9 +295,7 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Loading from '../components/loading';
-import Header from '../components/header';
-import LaunchTile from '../components/launch-tile';
+import { Loading, Header, LaunchTile } from '../components';
 import { LAUNCH_TILE_DATA } from './launches';
 
 const GET_MY_TRIPS = gql`
