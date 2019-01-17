@@ -5,7 +5,7 @@ description: Learn how a GraphQL query fetches data
 
 Time to accomplish: _15 Minutes_
 
-Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/ or to fetch and/ or update data. 
+Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/or to fetch and/or update data. 
 
 <h2 id="resolver-api">What is a resolver?</h2>
 
@@ -133,7 +133,7 @@ _src/schema.js_
 
 ```js
 type Query {
-  launches( // replace the current launches query with this one.
+  launches( # replace the current launches query with this one.
     """
     The number of results to show. Must be >= 1. Default = 20
     """
@@ -152,7 +152,7 @@ Simple wrapper around our list of launches that contains a cursor to the
 last item in the list. Pass this cursor to the launches query to fetch results
 after these.
 """
-type LaunchConnection { // add this below the Query type as an additional type.
+type LaunchConnection { # add this below the Query type as an additional type.
   cursor: String!
   hasMore: Boolean!
   launches: [Launch]!
