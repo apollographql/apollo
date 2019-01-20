@@ -35,7 +35,7 @@ ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
  The entry should basically look something like this:
  ```
 ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
-```	```
+```
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
 
