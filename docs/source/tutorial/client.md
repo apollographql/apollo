@@ -80,7 +80,7 @@ const client = new ApolloClient({
 
 In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.
 
-<h2 id="apollo-client-setup">Make your first query</h2>
+<h2 id="first-query">Make your first query</h2>
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
