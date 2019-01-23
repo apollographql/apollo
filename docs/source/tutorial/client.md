@@ -132,10 +132,11 @@ _src/index.js_
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
+import Pages from './pages';
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <div />
+    <Pages />
   </ApolloProvider>, document.getElementById('root'));
 ```
 
