@@ -107,8 +107,6 @@ const client = new ApolloClient({
     isLoggedIn: () => !!localStorage.getItem('token'),
     cartItems: () => [],
   },
-  resolvers,
-  typeDefs,
 });
 ```
 
