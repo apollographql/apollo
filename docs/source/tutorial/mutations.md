@@ -141,7 +141,7 @@ export default function Pages() {
 }
 ```
 
-You can now visit the `/login` route in your browser and enter your email. In browser DevTools, you should see a Local Storage item called `token` with the same value as in [part 3 of this tutorial](https://www.apollographql.com/docs/tutorial/resolvers.html#mutation-playground).
+You can now visit the `/login` route in your browser and enter your email. In the DevTools, you should see a Local Storage item called `token` with the same value as in [part 3 of this tutorial](https://www.apollographql.com/docs/tutorial/resolvers.html#mutation-playground), and when you navigate to a profile, you should see your email there too.
 
 ---
 
