@@ -14,7 +14,7 @@ While Apollo Client works with any view layer, it's most commonly used with Reac
 For this half of the tutorial, we will be working in the `client/` folder of the project. You should have the project already from the server portioned, but if you don't, make sure to clone [the tutorial](https://github.com/apollographql/fullstack-tutorial/). From the root of the project, run:
 
 ```bash
-cd start/client && npm install
+cd start/client && yarn
 ```
 
 Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
