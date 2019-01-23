@@ -51,7 +51,7 @@ Our `Mutation` component takes a render prop function as a child that exposes a 
 
 To create a better experience for our users, we want to persist the login between sessions. In order to do that, we need to save our login token to `localStorage`. Let's learn how we can use the `onCompleted` handler on `Mutation` to persist our login:
 
-<h3 id="apolloconsumer">Expose Apollo Client with ApolloConsumer</h3>
+<h2 id="apolloconsumer">Expose Apollo Client with ApolloConsumer</h2>
 
 One of the main functions of `react-apollo` is that it puts your `ApolloClient` instance on React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `react-apollo` helper components. The `ApolloConsumer` component can help us access the client.
 
@@ -88,7 +88,7 @@ export default function Login() {
 }
 ```
 
-<h3 id="authenticate">Attach authorization headers to the request</h3>
+<h2 id="authenticate">Attach authorization headers to the request</h2>
 
 We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.js` where we create our `ApolloClient` and replace the code below for the constructor:
 
