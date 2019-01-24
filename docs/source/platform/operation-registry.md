@@ -133,6 +133,7 @@ const server = new ApolloServer({
   // Existing configuration
   typeDefs,
   resolvers,
+  subscriptions: false,
   // ...
   // New configuration
   plugins: [
