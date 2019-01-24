@@ -20,6 +20,7 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 * Apollo Server 2.2.x (or newer).
+  * Subscriptions should be disabled when using the operation registry.  For more information, see the instructions below.  Please contact the Apollo sales team if this support is necessary.
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
