@@ -131,15 +131,37 @@ Of course, it’s also possible to leave the field in place indefinitely!
 
 <h2 id="cli">Checking schema changes with the Apollo CLI</h2>
 
-To check and see the difference between the current published schema and a new version, run the following command, substituting the appropriate GraphQL endpoint URL and an API key:
+To check and see the difference between the current published schema and a new version, make sure you have a valid [service configuration](../resources/apollo-config.html#service-config) like so, substituting the appropriate GraphQL endpoint URL and an API key:
+
+```bash
+# .env
+ENGINE_API_KEY=<API_KEY>
+```
 
 > An API key can be obtained from a service's _Settings_ menu within the [Apollo Engine dashboard](https://engine.apollographql.com/).
 
-```bash
-apollo service:check --key="<API_KEY>" --endpoint="http://localhost:4000/graphql"
+```javascript
+// apollo.config.js
+module.exports = {
+  service: {
+    endpoint: {
+      url: 'http://localhost:4000/graphql'
+    }
+  }
+};
 ```
 
-> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though the CLI also reference a local file. See [config options](../platform/apollo-config.html) for more information.
+And run the following command:
+
+```bash
+npx apollo service:check
+```
+
+> Alternatively, you may skip configuration and pass flags to the command, however we recommend [configuring](../resources/apollo-config.html) the project. The configuration file behaves as a source of truth for various Apollo features including IDE support and other CLI commands.
+
+```bash
+npx apollo service:check --key="<API_KEY>" --endpoint="http://localhost:4000/graphql"
+```
 
 After analyzing the changes against current usage metrics, Apollo will identify three categories of changes and report them to the developer on the command line or within a GitHub pull-request:
 
