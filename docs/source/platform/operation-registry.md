@@ -20,6 +20,7 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 * Apollo Server 2.2.x (or newer).
+  * Subscriptions should be disabled when using the operation registry.  For more information, see the instructions below.  Please contact the Apollo sales team if this support is necessary.
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
@@ -94,7 +95,26 @@ When succesfull, the output from this command should look similar to the followi
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-**4. Enable demand control by adding the operation registry to Apollo Server.**
+**4. Disable subscription support on Apollo Server**
+
+Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline.  Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
+
+In the future, the subscription support will have its request pipeline unified with that of the main request pipeline, thus enabling plugin support and permitting the the operation registry to work with subscriptions in the same way that it works with regular GraphQL requests.
+
+To disable subscriptions support on Apollo Server 2.x, a `subscriptions: false` setting should be included on the instantiation of Apollo Server, as follows:
+
+```js line=5-6
+const server = new ApolloServer({
+  // Existing configuration
+  typeDefs,
+  resolvers,
+  // Ensure that subscriptions are disabled.
+  subscriptions: false,
+  // ...
+});
+```
+
+**5. Enable demand control by adding the operation registry to Apollo Server.**
 
 To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Engine.
 
@@ -108,11 +128,12 @@ npm install apollo-server-plugin-operation-registry
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
-```js
+```js line=8-12
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
   resolvers,
+  subscriptions: false,
   // ...
   // New configuration
   plugins: [
@@ -123,7 +144,7 @@ const server = new ApolloServer({
 });
 ```
 
-**5. Start Apollo Server with Apollo Engine enabled**
+**6. Start Apollo Server with Apollo Engine enabled**
 
 If the server was already configured to use Apollo Engine, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
@@ -135,7 +156,7 @@ ENGINE_API_KEY=<ENGINE_API_KEY> npm start
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
 
-```js
+```js line=3
 const server = new ApolloServer({
   // ...
   engine: '<ENGINE_API_KEY>',
@@ -145,7 +166,7 @@ const server = new ApolloServer({
 
 For security, it's recommended to pass the Engine API key as an environment variable so it will not be checked into version control (VCS).
 
-**6. Verification**
+**7. Verification**
 
 With the operation registry enabled, _only_ operations which have been registered will be permitted.
 
@@ -189,7 +210,7 @@ This can occur if the schema hasn't been published since the operation registry 
 
 The first step in debugging the operation registry behavior is to enable debugging. This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
-```js
+```js line=7
 const server = new ApolloServer({
   typeDefs,
   resolvers,
