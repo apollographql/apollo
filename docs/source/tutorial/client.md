@@ -32,8 +32,10 @@ First, make a copy of the `.env.example` file located in `client/` and call it `
 ```
 ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
- The entry should basically look something like this:
- ```
+
+The entry should basically look something like this:
+
+```
 ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
