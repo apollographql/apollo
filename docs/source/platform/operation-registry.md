@@ -128,7 +128,7 @@ npm install apollo-server-plugin-operation-registry
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
-```js
+```js line=8-12
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -156,7 +156,7 @@ ENGINE_API_KEY=<ENGINE_API_KEY> npm start
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
 
-```js
+```js line=3
 const server = new ApolloServer({
   // ...
   engine: '<ENGINE_API_KEY>',
@@ -210,7 +210,7 @@ This can occur if the schema hasn't been published since the operation registry 
 
 The first step in debugging the operation registry behavior is to enable debugging. This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
-```js
+```js line=7
 const server = new ApolloServer({
   typeDefs,
   resolvers,
