@@ -19,7 +19,7 @@ It might be tempting to version a GraphQL API the same way, but it's unnecessary
 
 <h3 id="field-usage">Field usage</h3>
 
-Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need. This field-based granularity is valuable and avoids "over-fetching", but also makes it more difficult to understand which parts of the schema are being used.
+Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need. This field-based granularity is valuable and avoids "over-fetching", but also makes it more difficult to understand which parts of the schema are used.
 
 To improve the understanding of field usage within an API, Apollo Server extends GraphQL with rich tracing data that demonstrates _how_ a GraphQL field is used and _when_ it's safe to change or eliminate a field.
 
