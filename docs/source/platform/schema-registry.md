@@ -9,12 +9,12 @@ A schema is the center point of all GraphQL applications. It powers incredible d
 
 The Apollo schema registry provides a number of benefits to help teams collaborate and ship high quality software faster. A few of these benefits are:
 
-* Powering editor tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo)
-* Empowering better code reviews and safer changes with [schema validation](./schema-validation.html)
-* Having a single point of knowledge for all teams to view through the [Apollo schema explorer](https://engine.apollographql.com)
-* Sharing upcoming changes with [schema tags](#schema-tags)
-* Protecting the server along with the [Apollo operation registry](./operation-registry.html)
-* Having a historical view of how a schema changes with the [Apollo schema history tab in Engine](#history)
+- Powering editor tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo)
+- Empowering better code reviews and safer changes with [schema validation](./schema-validation.html)
+- Having a single point of knowledge for all teams to view through the [Apollo schema explorer](https://engine.apollographql.com)
+- Sharing upcoming changes with [schema tags](#schema-tags)
+- Protecting the server along with the [Apollo operation registry](./operation-registry.html)
+- Having a historical view of how a schema changes with the [Apollo schema history tab in Engine](#history)
 
 <h2 id="setup">Publishing a schema</h2>
 
@@ -77,8 +77,8 @@ To get the most out of using tagged schemas, teams can send metrics to [Engine](
 const server = new ApolloServer({
   // rest of normal server settings
   engine: {
-    schemaTag: 'beta',
-  },
+    schemaTag: "beta"
+  }
 });
 ```
 
