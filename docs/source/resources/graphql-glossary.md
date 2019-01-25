@@ -152,6 +152,9 @@ const typeDefs = gql`
 <h2 id="graphql-playground">GraphQL Playground</h2>
 <p>An in-browser IDE for GraphQL development and workflow. Added benefits exist such as theme change, automatic schema reloading, HTTP headers configuration, query history and GraphQL subscription support. In addition, it comes [out-of-the-box in Apollo Server 2](https://www.apollographql.com/docs/apollo-server/features/graphql-playground.html).</p>
 
+<h2 id="graphql-service">GraphQL Service</h2>
+<p>The entity that that contains a schema and how to run it. In addition to the runtime information, the Apollo Platform associates metrics and a history of schemas with a service.</p>
+
 <h2 id="graphiql">GraphiQL</h2>
 <p>An in-browser IDE for GraphQL development.</p>
 
@@ -371,7 +374,7 @@ The userId variable would be passed to the operation by `apollo-client` like thi
 client.query({ query: getUserQuery, variables: { userId: 1 }});
 ```
 
-In `react-apollo` it would be passed like this: 
+In `react-apollo` it would be passed like this:
 
 ```jsx
 <Query query={getUserQuery} variables={{ userId: 1 }}> ... </Query>
