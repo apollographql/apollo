@@ -114,35 +114,4 @@ const client = new ApolloClient({
 
 Specifying the `headers` option on `HttpLink` allows us to read the token from `localStorage` and attach it to the request's headers each time a GraphQL operation is made.
 
-<h2 id="test-login">Test login form</h2>
-
-To test what you have built, add a `<Login>` component to the list of pages:
-
-_src/pages/index.js_
-
-```js line=1,12
-import Login from './login';
-
-export default function Pages() {
-  return (
-    <Fragment>
-      <PageContainer>
-        <Router primary={false} component={Fragment}>
-          <Launches path="/" />
-          <Launch path="launch/:launchId" />
-          <Cart path="cart" />
-          <Profile path="profile" />
-          <Login path="login" />
-        </Router>
-      </PageContainer>
-      <Footer />
-    </Fragment>
-  );
-}
-```
-
-You can now visit the `/login` route in your browser and enter your email. In the DevTools, you should see a Local Storage item called `token` with the same value as in [part 3 of this tutorial](https://www.apollographql.com/docs/tutorial/resolvers.html#mutation-playground), and when you navigate to a profile, you should see your email there too.
-
----
-
-Now that we know the basics, it's time to dive deeper into mutations. In the next section, we'll practice creating more complex `Mutation` components to manage local state in our app. We'll also learn how to query local data and write a local schema.
+In the next section, we'll add the `<Login>` form to the user interface. For that, we need to learn how Apollo allows us to manage local state in our app.
