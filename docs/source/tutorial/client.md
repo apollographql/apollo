@@ -32,10 +32,12 @@ First, make a copy of the `.env.example` file located in `client/` and call it `
 ```
 ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
- The entry should basically look something like this:
- ```
+
+The entry should basically look something like this:
+
+```
 ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
-```	```
+```
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
 
@@ -80,7 +82,7 @@ const client = new ApolloClient({
 
 In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.
 
-<h2 id="apollo-client-setup">Make your first query</h2>
+<h2 id="first-query">Make your first query</h2>
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
