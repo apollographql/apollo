@@ -47,7 +47,7 @@ npm install apollo --save-dev
 
 > Yarn users should run `yarn add apollo --dev`.
 
-**2. Register the server's schema with Apollo:**
+**2. Register the server's schema with Apollo Engine:**
 
 > If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
 
