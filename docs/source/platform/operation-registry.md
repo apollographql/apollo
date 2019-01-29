@@ -32,6 +32,13 @@ Operations defined within client applications are automatically extracted and up
 
 > Make sure you've met the requirements for _Prerequisites_ above.
 
+These installation steps require access to both the client and server codebases to perform the following tasks:
+
+* The `apollo` CLI is used to search the client codebase for GraphQL operations and upload them to Apollo Engine.
+* Apollo Server is then configured with a plugin which fetches the manifest from Apollo Server and enforces safe-listing using that manifest.
+
+The following steps will walk through the steps necessary for both the client and server codebases.
+
 **1. Install the `apollo` command line tool as a development dependency of your client application:**
 
 ```
