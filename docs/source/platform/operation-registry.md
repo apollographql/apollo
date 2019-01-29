@@ -133,7 +133,7 @@ First, add the appropriate plugin to the Apollo Server's `package.json`:
 npm install apollo-server-plugin-operation-registry
 ```
 
-> Yarn uses run: `yarn add apollo-server-plugin-operation-registry`.
+> Yarn users should run: `yarn add apollo-server-plugin-operation-registry`.
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
