@@ -26,7 +26,7 @@ Operations defined within client applications are automatically extracted and up
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
-  * To grab a key, visit [Engine](https://engine.apollographql.com) and create a service.
+  * To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
 
 ### Installation steps
 
