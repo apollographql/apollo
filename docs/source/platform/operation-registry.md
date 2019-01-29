@@ -5,6 +5,8 @@ description: How to secure your graph with operation safelisting
 
 ## Overview
 
+> The operation registry is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/).  To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/).
+
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
 The Apollo Operation Registry allows organizations to:
