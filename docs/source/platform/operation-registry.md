@@ -45,7 +45,7 @@ The following steps will walk through the steps necessary for both the client an
 npm install apollo --save-dev
 ```
 
-> Yarn users can run `yarn add apollo --dev`.
+> Yarn users should run `yarn add apollo --dev`.
 
 **2. Register the server's schema with Apollo:**
 
