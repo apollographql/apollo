@@ -3,7 +3,7 @@ title: Editor plugins
 description: How to get the most out of your editor with Apollo
 ---
 
-By design, GraphQL has the ability to create incredible developer experiences thank's to its strongly typed schema and query language. The Apollo GraphQL Platform brings these possibilities to life with deep editor integrations. Currently only [Visual Studio Code](https://code.visualstudio.com/) (VS Code) is supported, but more are coming soon.
+GraphQL has the potential to create incredible developer experiences, thanks to its strongly typed schema and query language. The Apollo platform brings these possibilities to life by enhancing your editor with rich metadata from your graph API. Currently only [Visual Studio Code](https://code.visualstudio.com/) (VS Code) is supported, but more are coming soon.
 
 <img src="../images/editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
