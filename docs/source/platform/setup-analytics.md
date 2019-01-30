@@ -60,7 +60,7 @@ To create a new reporting agent, you'll want to satisfy a few separate concerns:
 3. Emitting batches of Traces to the reporting endpoint
 4. Providing plugins for more advanced reporting functionality
 
-<h4 id="tracing-format">1. Tracing Format</h4>
+<h3 id="tracing-format">1. Tracing Format</h3>
 
 The first step of creating a metrics reporting agent will be to hook into the GraphQL execution pipeline to create the metrics and translate them into the proper data format.
 
@@ -74,40 +74,49 @@ As a good starting point, we recommend implementing an extension to the GraphQL 
 
 An example of a FullTracesReport message, represented as JSON, can be found below*
 
-<h4 id="query-signature">2. Operation Signing</h4>
+<h3 id="query-signature">2. Operation Signing</h3>
 
-In order to correctly group GraphQL operations, it's important to define a method for "signing" a query. Compare the following queries:
+In order to correctly group GraphQL operations, it's important to define a method for "signing" a query. Because GraphQL queries can be expressed in a variety of ways, this is a harder problem than it may
+appear to be at first thought. For instance, even though all of the following queries request the same
+information, it's ambiguous whether they should be treated equally.
 
 ```gql
-(1)
 query AuthorForPost($foo: String!) {
   post(id: $foo) {
     author
   }
 }
 
-(2)
 query AuthorForPost($bar: String!) {
   post(id: $bar) {
     author
   }
 }
 
-(3)
-query AuthorForPost($foo: String!) { post(id: $foo) { author }}
+query AuthorForPost($foo: String!) {
+  post(id: $foo) {
+    author
+  }
+}
 
-(4)
-query AuthorForPost { post(id: "my-post-id") { author }}
+query AuthorForPost {
+  post(id: "my-post-id") {
+    author
+  }
+}
 
-(5)
-query AuthorForPost { post(id: "my-post-id") { writer: author }}
+query AuthorForPost {
+  post(id: "my-post-id") {
+    writer: author
+  }
+}
 ```
 
-Which of these should be grouped together? Why? As you can see, there's not always an obvious answer for identifying if two distinct queries should represent the same thing. The concept of a "query signature" is what is used to group similar operations together even if their exact textual representations are not identical. The query signature, along with the operation name, are used to group queries together in the `FullTracesReport`.
+Even though this concept lacks definition, it's important to decide on how queries shoudld be grouped together when tracking metrics about GraphQL execution. The concept of a **"query signature"** is what we use at Apollo to group similar operations together even if their exact textual representations are not identical. The query signature, along with the operation name, are used to group queries together in the `FullTracesReport`.
 
 The TypeScript reference implementation uses a default signature method and allows for that signature method to also be overridden by the user. The [implementation of the default](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts) drops unused fragments and/or operations, hides String literals, ignores aliases, sorts the tree deterministically, and ignores whitespace differences. We recommend using the same default signature method for consistency across different server runtimes.
 
-<h4 id="sending-metrics">3. Sending Metrics</h4>
+<h3 id="sending-metrics">3. Sending Metrics</h3>
 
 Once a metrics report (i.e. batch of traces) is prepared, it will need to be sent to an ingress for aggregation and sampling. Currently, this is all performed in Apollo's cloud services. The endpoint for this aggregation and sampling is at `https://engine-report.apollodata.com/api/ingress/traces`, which supports the protobuf format mentioned above via a `POST` request. The reporting endpoint accepts a gzipped body as well. To see the full reference implementation, see the `sendReport()` method in the [TypeScript reference agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L210).
 
@@ -117,7 +126,7 @@ We recommend implementing retries with backoff on 5xx responses and network erro
 
 >NOTE: In the future, we plan to release a local aggregation and sampling agent that could be used to lessen the bandwidth requirements on reporting agents.
 
-<h4 id="advanced-features">4. [Optional] Advanced Reporting Features</h4>
+<h3 id="advanced-features">4. [Optional] Advanced Reporting Features</h3>
 
 The reference TypeScript implementation also includes several more advanced features which may be worth porting to new implementations. All of these features are implemented in the agent itself and are documented in the interface description for the EngineReportingOptions of [the agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L51).
 
@@ -125,7 +134,7 @@ For example, the option to send reports immediately may be particularly useful t
 
 Another important feature is the ability to limit information sent, particularly to avoid reporting [PII](https://en.wikipedia.org/wiki/Personally_identifiable_information). Because the most common place for PII to appear is in variables and headers, the TypeScript agent offers options for `privateVariables` and `privateHeaders`.
 
-<h4 id="traces-report-example">Example FullTracesReport, represented as JSON</h4>
+<h3 id="traces-report-example">Example FullTracesReport, represented as JSON</h3>
 ```json
 {
   "header": {
