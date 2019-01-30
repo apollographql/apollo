@@ -78,9 +78,9 @@ More information about configuring an Apollo project can be found [here](../plat
 
 <h3 id="client-only-schemas">Client-only schemas</h3>
 
-One of the best features of the VS Code extension is the automatic merging of remote schemas and local ones when using integrated state management with Apollo Client. This happens automatically whenever schema definitions are found within a client project.
+One of the best features of the VS Code extension is the automatic merging of remote schemas and local ones when using integrated state management with Apollo Client. This happens automatically whenever schema definitions are found within a client project. By default, the VS Code extension will look for all files under `./src` to find both the operations and schema definitions for building a complete schema for the application.
 
-Client side schema definitions can be spread throughout the client app project and will be merged together to create one single schema. This can be controlled through the `apollo.config.js` at the root of he project:
+Client side schema definitions can be spread throughout the client app project and will be merged together to create one single schema. If the default behavior isn't ideal, this can be controlled through the `apollo.config.js` at the root of the project:
 
 ```js
 module.exports = {
@@ -92,15 +92,9 @@ module.exports = {
 }
 ```
 
-By default, the VS Code extension will look for all files under "./src" to find both the operations and schema definitions for building a complete schema for the application.
-
 <h2 id="features">Features</h2>
 
 Apollo for VS Code brings many helpful features for working on a GraphQL project.
-
-<h3 id="syntax">Syntax highlighting</h3>
-
-Apollo's editor extension provides syntax highlighting for all things GraphQL, including schema definitions in `.graphql` files, complex queries in TypeScript, and even client-only schema extensions. Syntax highlighting for GraphQL works out-of-the-box for `.graphql`, `.gql`, `.js` and `.ts` file types!
 
 <h3 id="autocomplete">Intelligent autocomplete</h3>
 
@@ -129,6 +123,10 @@ To turn on tracing for your GraphQL server, please visit our [guide](./setup-ana
 The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Engine. As operations are typed, any fields that take longer than 1ms to respond will be annoated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
 
 <img src="../images/editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
+
+<h3 id="syntax">Syntax highlighting</h3>
+
+Apollo's editor extension provides syntax highlighting for all things GraphQL, including schema definitions in `.graphql` files, complex queries in TypeScript, and even client-only schema extensions. Syntax highlighting for GraphQL works out-of-the-box for `.graphql`, `.gql`, `.js` and `.ts` file types!
 
 <h3 id="navigating-projects">Navigating projects</h3>
 
