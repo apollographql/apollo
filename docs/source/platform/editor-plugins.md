@@ -9,18 +9,16 @@ GraphQL has the potential to create incredible developer experiences, thanks to 
 
 <h2 id="vscode">Apollo VS Code</h2>
 
-The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) for Apollo brings an all-in-one tooling experience for developing apps with Apollo. 
+The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) for Apollo brings an all-in-one tooling experience for developing apps with Apollo.
 
+- Add [syntax highlighting](#syntax) for GraphQL files and gql templates inside JavaScript files
 - Get instant feedback and [intelligent autocomplete](#autocomplete) for fields, arguments, types, and variables as you write queries
 - Seamlessly manage your client side schema alongside your remote one
 - [See performance information](#performance-insights) inline with your query definitions
-- Load GraphQL schemas and queries automatically from an Apollo Config file
-- Add [syntax highlighting](#syntax) for GraphQL files and gql templates inside JavaScript files
-- Detect and load client-side schemas and validates client side field usage in operations
+- Validate field and argument usage in operations
 - [Navigate projects](#navigating-projects) easier with jump-to and peek-at definitions and more
-- Manage [local](#local-schemas) and [client-only](#client-only-schemas) schemas
+- Manage [client-only](#client-only-schemas) schemas
 - [Switch schema tags](#commands) to work on upcoming features
-- And more...
 
 To get started, first **install the Apollo GraphQL extension** by using this [link](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) or by searching `Apollo` in the VS Code extension marketplace. After installation, GraphQL syntax highlighting should automatically be enabled for `.graphql`, `.gql`, `.js` and `.ts` file types.
 
@@ -138,18 +136,16 @@ Navigating large codebases can be difficult, but the Apollo GraphQL extension ma
 
 <img src="../images/editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
-<h3 id="commands">Apollo commands</h3>
-The VS Code extension integrates with the VS Code command palate and provides two commands currently:
+<h3 id="commands">Schema tag switching</h3>
 
-- switch schema tags
-- reload the schema and diagnostics
-
-These can be run by typing `cmd+shift+p` then typing `apollo` into thr prompt. That will show the two commands which can help teams stay on top of changes to the schema right in their editors
+The Apollo GraphQL platform supports publishing multiple versions (tags) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To choose another schema tag, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
 The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file.
 There is more information about configuring an Apollo projects [here](../platform/apollo-config.html).
+
+Other errors may be caused from an old version of a published schema. To reload a schema, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Reload Schema" option.
 
 Sometimes errors will show up as a notification at the bottom of your editor. Other, less critical, messages may be shown in the output pane of the editor. To open the output pane and get diagnostic information about the extension and the current service loaded (if working with a client project), just click the "Apollo GraphQL" icon in the status bar at the bottom.
 
