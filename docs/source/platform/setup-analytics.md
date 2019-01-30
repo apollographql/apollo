@@ -37,9 +37,9 @@ For advanced Apollo Server configuration options to set up logging and client-aw
 
 #### Configuring metrics reporting with Apollo Server pre-`2.0`
 
-To configure metrics reporting with versions of Apollo Server pre-`2.0` you'll need to use the [`apollo-engine` npm package](https://www.npmjs.com/package/apollo-engine), which is a wrapper that runs our deprecated [Engine proxy] (//TODO(dman): get link). **We highly recommend that you upgrade to Apollo Server 2** and use the built-in integration instead of using this option because Engine's newer features are not supported in the Engine proxy.
+To configure metrics reporting with versions of Apollo Server pre-`2.0` you'll need to use the [`apollo-engine` npm package](https://www.npmjs.com/package/apollo-engine), which is a wrapper that runs our deprecated [Engine proxy](https://www.apollographql.com/docs/references/engine-proxy.html#Background). **We highly recommend that you upgrade to Apollo Server 2** and use the built-in integration instead of using this option because Engine's newer features are not supported in the Engine proxy.
 
-To set up your server with the Engine proxy using the `apollo-engine` npm package take a look at our guide [here] (//TODO(dman): get link).
+To set up your server with the Engine proxy using the `apollo-engine` npm package take a look at our guide [here](https://www.apollographql.com/docs/references/engine-proxy.html#Setup).
 
 <h2 id="other-servers">Other servers</h2>
 
@@ -201,4 +201,4 @@ The Engine proxy is our legacy option for sending trace metrics from your server
 
 You first install an [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) package in your server, which augments your server's responses with an `extensions` field that contains the request's trace timings. The Engine proxy, which is running in front of your server, will strip the `extensions` from your response, send the regular `data` response on to your clients, and send the request trace timings to Engine.
 
-To view detailed information on how to set up the Engine proxy for non-JavaScript servers see our detailed guide [here] (//TODO(dman): find the link).
+To view detailed information on how to set up the Engine proxy for non-JavaScript servers see our detailed guide [here](https://www.apollographql.com/docs/references/engine-proxy.html#standalone-proxy-with-node).
