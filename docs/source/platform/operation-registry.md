@@ -196,6 +196,8 @@ In some cases, deployments may want to selectively enable the behavior of `forbi
 
 To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor.  The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+
 For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
 
 ```js line=12-27
@@ -217,8 +219,6 @@ const server = new ApolloServer({
         }
       }) {
         // If a magic header is in place, allow any unregistered operation.
-        // The `headers` implements the Fetch API which is documented here:
-        //   https://developer.mozilla.org/en-US/docs/Web/API/Headers
         if (headers.get("Let-me-pass") === "Pretty please?") {
           return false;
         }
