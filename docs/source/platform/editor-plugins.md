@@ -9,17 +9,17 @@ By design, GraphQL has the ability to create incredible developer experiences th
 
 <h2 id="vscode">Apollo VS Code</h2>
 
-The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) for Apollo brings an all-in-one tooling experience for developing apps with Apollo.
+The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) for Apollo brings an all-in-one tooling experience for developing apps with Apollo. 
 
 - Get instant feedback and [intelligent autocomplete](#autocomplete) for fields, arguments, types, and variables as you write queries
 - Seamlessly manage your client side schema alongside your remote one
 - [See performance information](#performance-insights) inline with your query definitions
-- Loads GraphQL schemas and queries automatically from an Apollo Config file
-- Adds [syntax highlighting](#syntax) for GraphQL files and gql templates inside JavaScript files
-- Detects and loads client-side schemas and validates client side field usage in operations
-- [Jump-to-definition](#jump-to-def) for fragments and schema types
-- Supports [local](#local-schemas) and [client-only](#client-only-schemas) schemas
-- Allows [switching schema tags](#commands) to work on upcoming features
+- Load GraphQL schemas and queries automatically from an Apollo Config file
+- Add [syntax highlighting](#syntax) for GraphQL files and gql templates inside JavaScript files
+- Detect and load client-side schemas and validates client side field usage in operations
+- [Navigate projects](#navigating-projects) easier with jump-to and peek-at definitions and more
+- Manage [local](#local-schemas) and [client-only](#client-only-schemas) schemas
+- [Switch schema tags](#commands) to work on upcoming features
 - And more...
 
 To get started, first **install the Apollo GraphQL extension** by using this [link](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) or by searching `Apollo` in the VS Code extension marketplace. After installation, GraphQL syntax highlighting should automatically be enabled for `.graphql`, `.gql`, `.js` and `.ts` file types.
@@ -130,9 +130,9 @@ The VS Code extension will show inline performance diagnostics when connected to
 
 <img src="../images/editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
 
-<h3 id="jump-to-def">Jump to definition</h3>
+<h3 id="navigating-projects">Navigating projects</h3>
 
-Navigating large codebases can be difficult. In GraphQL projects, fragments of an operation may be shared throughout the project. Rather than navigating imports to find fragment definitions, the Apollo extension lets developers jump straight to it. Just command + click (mac) on a fragment to go to its definition.
+Navigating large codebases can be difficult, but the Apollo GraphQL extension makes this easier than ever. Right-clicking on any field in operations or schemas gives you the ability to jump to (or peek at) definitions, as well as find any other references to that field in your project. Searching a project for any occurrence of a certain field is now a thing of the past!
 
 <img src="../images/editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
