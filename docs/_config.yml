@@ -28,6 +28,7 @@ sidebar_categories:
     - platform/operation-registry
     - platform/editor-plugins
     - platform/tracing
+    - platform/setup-analytics
     - platform/errors
     - platform/integrations
 
