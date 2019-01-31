@@ -40,7 +40,7 @@ const client = new ApolloClient({
 ```
 
 If you are not using Apollo Server and would like to gain client awareness,
-please reach out to opensource [at] apollographql.com to work with us to add
+please reach out to <opensource@apollographql.com> to work with us to add
 support to your server language of choice.
 
 ## Use Cases
