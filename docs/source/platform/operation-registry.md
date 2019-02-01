@@ -188,6 +188,51 @@ Execution forbidden
 
 Finally, to confirm that the server will allow permitted operations, try running an operation from the client.
 
+## Configuration
+
+### Selective enforcement
+
+In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
+
+To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor.  The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+
+For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
+
+```js line=12-27
+const server = new ApolloServer({
+  // Existing configuration
+  typeDefs,
+  resolvers,
+  subscriptions: false,
+  engine: "<ENGINE_API_KEY>",
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      // De-structure the object to get the HTTP `headers` and the GraphQL
+      // request `context`.  Additional validation is possible, but this
+      // function must be synchronous.  For more details, see the note below.
+      forbidUnregisteredOperations({
+        context, // Destructure the shared request `context`.
+        request: {
+          http: { headers } // Destructure the `headers` class.
+        }
+      }) {
+        // If a magic header is in place, allow any unregistered operation.
+        if (headers.get("Let-me-pass") === "Pretty please?") {
+          return false;
+        }
+
+        // Enforce operation safe-listing on all other users.
+        return true;
+      }
+    })
+  ]
+});
+```
+
+> *Note:* The `forbidUnregisteredOperations` callback must be synchronous.  If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
+
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
