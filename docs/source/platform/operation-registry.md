@@ -66,25 +66,46 @@ abc123  <service>     current
 
 > If you encounter any errors, refer to the _**Troubleshooting**_ section below.
 
-**3. Register operations from the client bundle.**
+**3. Configure client reporting in the client bundle.**
 
-Now we'll use `apollo client:push` to locate operations within the client codebase and upload a manifest of those operations to Apollo operation registry. Once Apollo Server has been configured to respect the operation registry, only operations which have been included in the manifest will be permitted.
+The client must identity itself so we can match operations with a client and version. See the [Identifying clients](../platform/client-awareness.html#Setup) documentation to configure `ApolloClient` to identity itself. The following is an example:
 
-The `apollo client:push` command:
+```js line=8-9
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
 
-* Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`).
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+  }),
+  name: 'insert your client name',
+  version: 'insert your client version',
+});
+```
+
+**4. Register operations from the client bundle.**
+
+Now we'll use [`apollo client:push`](https://github.com/apollographql/apollo-tooling#apollo-clientpush) to locate operations within the client codebase and upload a manifest of those operations for a specific [client version](../platform/client-awareness.html) to the Apollo operation registry. Once Apollo Server has been configured to respect the operation registry, only operations which have been included in the manifest will be permitted for the corresponding client version.
+
+The [`apollo client:push`](https://github.com/apollographql/apollo-tooling#apollo-clientpush) command:
+
+* Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`) and `clientVersion` (e.g. `v1.2.3` or `abcdefg`).
 * Supports JavaScript, TypeScript and `.graphql` files.
 * Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 * By default, includes the `__typename` fields which are added by Apollo Client at runtime.
 
-To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Engine API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
+To register operations, use the following command as a reference; taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Engine API key, `<CLIENT_IDENTIFIER>` with a unique name for this application, and `<CLIENT_VERSION>` with the the unique version; and indicating the correct glob of files to search:
 
 ```
-npx apollo client:push              \
-    --key <ENGINE_API_KEY>               \
-    --clientName <CLIENT_IDENTIFIER>     \
+npx apollo client:push \
+    --key <ENGINE_API_KEY> \
+    --clientName <CLIENT_IDENTIFIER> \
+    --clientVersion=<CLIENT_VERSION> \
+    --tag <SCHEMA_TAG [default="current"]> \
     --includes="src/**/*.{ts,js,graphql}"
 ```
+
+`<CLIENT_IDENTIFIER>` and `<CLIENT_VERSION>` should be the same as you defined in step 3.
 
 When succesfull, the output from this command should look similar to the following:
 
@@ -95,7 +116,7 @@ When succesfull, the output from this command should look similar to the followi
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-**4. Disable subscription support on Apollo Server**
+**5. Disable subscription support on Apollo Server**
 
 Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline.  Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
 
@@ -114,7 +135,7 @@ const server = new ApolloServer({
 });
 ```
 
-**5. Enable demand control by adding the operation registry to Apollo Server.**
+**6. Enable demand control by adding the operation registry to Apollo Server.**
 
 To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Engine.
 
@@ -144,7 +165,7 @@ const server = new ApolloServer({
 });
 ```
 
-**6. Start Apollo Server with Apollo Engine enabled**
+**7. Start Apollo Server with Apollo Engine enabled**
 
 If the server was already configured to use Apollo Engine, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
@@ -166,7 +187,7 @@ const server = new ApolloServer({
 
 For security, it's recommended to pass the Engine API key as an environment variable so it will not be checked into version control (VCS).
 
-**7. Verification**
+**8. Verification**
 
 With the operation registry enabled, _only_ operations which have been registered will be permitted.
 
@@ -249,7 +270,7 @@ Could not fetch manifest
 </Error>
 ```
 
-This can occur if the schema hasn't been published since the operation registry plugin was enabled.  You can publish the schema using the `apollo service:push` command.  When receiving this message on a service which has already had its schema pushed, the `apollo client:push` command can be used.  Check the above documentation for more information on how to use those commands.
+This can occur if the schema hasn't been published since the operation registry plugin was enabled.  You can publish the schema using the `apollo service:push` command.  When receiving this message on a service which has already had its schema pushed, the[ `apollo client:push` ](https://github.com/apollographql/apollo-tooling#apollo-clientpush)command can be used.  Check the above documentation for more information on how to use those commands.
 
 #### Operations aren't being forbidden or operations which should be permitted are not allowed
 
