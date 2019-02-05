@@ -5,6 +5,8 @@ description: How to secure your graph with operation safelisting
 
 ## Overview
 
+> The operation registry is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/).  To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/).
+
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
 The Apollo Operation Registry allows organizations to:
@@ -24,11 +26,18 @@ Operations defined within client applications are automatically extracted and up
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
-  * To grab a key, visit [Engine](https://engine.apollographql.com) and create a service.
+  * To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
 
 ### Installation steps
 
 > Make sure you've met the requirements for _Prerequisites_ above.
+
+These installation steps require access to both the client and server codebases to perform the following tasks:
+
+* The `apollo` CLI is used to search the client codebase for GraphQL operations and upload them to Apollo Engine.
+* Apollo Server is then configured with a plugin which fetches the manifest from Apollo Server and enforces safe-listing using that manifest.
+
+The following steps will walk through the steps necessary for both the client and server codebases.
 
 **1. Install the `apollo` command line tool as a development dependency of your client application:**
 
@@ -36,9 +45,9 @@ Operations defined within client applications are automatically extracted and up
 npm install apollo --save-dev
 ```
 
-> Yarn users can run `yarn add apollo --dev`.
+> Yarn users should run `yarn add apollo --dev`.
 
-**2. Register the server's schema with Apollo:**
+**2. Push your schema to the Apollo schema registry:**
 
 > If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
 
@@ -124,7 +133,7 @@ First, add the appropriate plugin to the Apollo Server's `package.json`:
 npm install apollo-server-plugin-operation-registry
 ```
 
-> Yarn uses run: `yarn add apollo-server-plugin-operation-registry`.
+> Yarn users should run: `yarn add apollo-server-plugin-operation-registry`.
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
@@ -187,6 +196,51 @@ Execution forbidden
 ```
 
 Finally, to confirm that the server will allow permitted operations, try running an operation from the client.
+
+## Configuration
+
+### Selective enforcement
+
+In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
+
+To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor.  The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+
+For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
+
+```js line=12-27
+const server = new ApolloServer({
+  // Existing configuration
+  typeDefs,
+  resolvers,
+  subscriptions: false,
+  engine: "<ENGINE_API_KEY>",
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      // De-structure the object to get the HTTP `headers` and the GraphQL
+      // request `context`.  Additional validation is possible, but this
+      // function must be synchronous.  For more details, see the note below.
+      forbidUnregisteredOperations({
+        context, // Destructure the shared request `context`.
+        request: {
+          http: { headers } // Destructure the `headers` class.
+        }
+      }) {
+        // If a magic header is in place, allow any unregistered operation.
+        if (headers.get("Let-me-pass") === "Pretty please?") {
+          return false;
+        }
+
+        // Enforce operation safe-listing on all other users.
+        return true;
+      }
+    })
+  ]
+});
+```
+
+> *Note:* The `forbidUnregisteredOperations` callback must be synchronous.  If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
 
 ## Troubleshooting
 
