@@ -5,6 +5,8 @@ description: How to secure your graph with operation safelisting
 
 ## Overview
 
+> The operation registry is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/).  To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/).
+
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
 The Apollo Operation Registry allows organizations to:
@@ -24,11 +26,18 @@ Operations defined within client applications are automatically extracted and up
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
-  * To grab a key, visit [Engine](https://engine.apollographql.com) and create a service.
+  * To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
 
 ### Installation steps
 
 > Make sure you've met the requirements for _Prerequisites_ above.
+
+These installation steps require access to both the client and server codebases to perform the following tasks:
+
+* The `apollo` CLI is used to search the client codebase for GraphQL operations and upload them to Apollo Engine.
+* Apollo Server is then configured with a plugin which fetches the manifest from Apollo Server and enforces safe-listing using that manifest.
+
+The following steps will walk through the steps necessary for both the client and server codebases.
 
 **1. Install the `apollo` command line tool as a development dependency of your client application:**
 
@@ -36,9 +45,9 @@ Operations defined within client applications are automatically extracted and up
 npm install apollo --save-dev
 ```
 
-> Yarn users can run `yarn add apollo --dev`.
+> Yarn users should run `yarn add apollo --dev`.
 
-**2. Register the server's schema with Apollo:**
+**2. Push your schema to the Apollo schema registry:**
 
 > If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
 
@@ -124,7 +133,7 @@ First, add the appropriate plugin to the Apollo Server's `package.json`:
 npm install apollo-server-plugin-operation-registry
 ```
 
-> Yarn uses run: `yarn add apollo-server-plugin-operation-registry`.
+> Yarn users should run: `yarn add apollo-server-plugin-operation-registry`.
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
