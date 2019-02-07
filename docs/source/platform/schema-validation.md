@@ -9,18 +9,17 @@ A GraphQL schema can change in a number of ways between releases and, depending 
 
 By comparing a new schema to the last published schema, the Apollo Platform can highlight points of concern by showing detailed schema changes alongside current usage information for those fields. With this pairing of data, the risks of changes can be greatly reduced.
 
-
 <h2 id="versioning">Understanding schema changes</h2>
 
-Versioning is a technique to prevent necessary changes from becoming "breaking changes" which affect the existing consumers of an API.  These iterations might be as trivial as renaming a field, or as substantial as refactoring the whole data model.
+Versioning is a technique to prevent necessary changes from becoming "breaking changes" which affect the existing consumers of an API. These iterations might be as trivial as renaming a field, or as substantial as refactoring the whole data model.
 
-Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`).  With this technique, an application can easily end up with many different API endpoints over time, and the question of _when_ an API can be deprecated can become problematic.
+Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`). With this technique, an application can easily end up with many different API endpoints over time, and the question of _when_ an API can be deprecated can become problematic.
 
-It might be tempting to version a GraphQL API the same way, but it's unnecessary with the right techniques.  By following the strategies and precautions outlined in this guide and using Apollo tooling that adds clarity to every change, many iterations of an API can be served from a single endpoint.
+It might be tempting to version a GraphQL API the same way, but it's unnecessary with the right techniques. By following the strategies and precautions outlined in this guide and using Apollo tooling that adds clarity to every change, many iterations of an API can be served from a single endpoint.
 
 <h3 id="field-usage">Field usage</h3>
 
-Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need.  This field-based granularity is valuable and avoids "over-fetching" but also makes it more difficult to understand what data is currently being used.
+Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need. This field-based granularity is valuable and avoids "over-fetching" but also makes it more difficult to understand what data is currently being used.
 
 To improve the understanding of field usage within an API, Apollo Server extends GraphQL with rich tracing data that demonstrates _how_ a GraphQL field is used and _when_ it's safe to change or eliminate a field.
 
@@ -34,13 +33,13 @@ We'll go over these two kinds of field rollovers separately and show how to make
 
 <h3 id="renaming-or-removing">Renaming or removing a field</h3>
 
-When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed.  Unfortunately, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made.
+When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed. Unfortunately, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made.
 
 Take the following `user` query as an example:
 
 ```graphql
 type Query {
- user(id: ID!): User
+  user(id: ID!): User
 }
 ```
 
@@ -64,8 +63,8 @@ const getUserResolver = (root, args, context) => {
 const resolvers = {
   Query: {
     getUser: getUserResolver,
-    user: getUserResolver,
-  },
+    user: getUserResolver
+  }
 };
 ```
 
@@ -80,10 +79,10 @@ type Query {
 }
 ```
 
-GraphQL-aware client tooling, like GraphQL Playground and GraphiQL, use this information to assist developers in making the right choices.  These tools will:
+GraphQL-aware client tooling, like GraphQL Playground and GraphiQL, use this information to assist developers in making the right choices. These tools will:
 
-* Provide developers with the helpful deprecation message referring them to the new name.
-* Avoid auto-completing the field.
+- Provide developers with the helpful deprecation message referring them to the new name.
+- Avoid auto-completing the field.
 
 Over time, usage will fall for the deprecated field and grow for the new field.
 
@@ -125,7 +124,7 @@ If we wanted to leave the old `groupId` argument active, we wouldn't need to do 
 
 Instead of supporting it, if we wanted to remove the old argument, the safest option would be to create a new field and deprecate the current `getUsers` field.
 
-Using an API management tool, like the Apollo platform, it’s possible to determine when usage of an old field has dropped to an acceptable level and remove it.  The previously discussed [field rollover](#field-rollover) section gives more info on how to do that.
+Using an API management tool, like the Apollo platform, it’s possible to determine when usage of an old field has dropped to an acceptable level and remove it. The previously discussed [field rollover](#field-rollover) section gives more info on how to do that.
 
 Of course, it’s also possible to leave the field in place indefinitely!
 
@@ -171,7 +170,6 @@ apollo service:check \
 # Only validate against operations that account for at least 3% of total operation volume
 --queryCountThresholdPercentage=3
 ```
-
 
 <h2 id="github">GitHub Integration</h2>
 
