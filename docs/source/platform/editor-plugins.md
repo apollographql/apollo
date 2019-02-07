@@ -20,11 +20,9 @@ The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apol
 - Manage [client-only](#client-only-schemas) schemas
 - [Switch schema tags](#commands) to work on upcoming features
 
-To get started, first **install the Apollo GraphQL extension** by using this [link](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) or by searching `Apollo` in the VS Code extension marketplace. After installation, GraphQL syntax highlighting should automatically be enabled for `.graphql`, `.gql`, `.js` and `.ts` file types.
+<h2 id="getting-started">Getting started</h2>
 
-<h2 id="linking-a-schema">Linking a schema</h2>
-
-To get all of the benefits of the VS Code experience, its best to link the schema that is being developed against. The best way to do that is by [publishing a schema](./schema-registry.html#publish) to the Apollo schema registry. Once that is done, two steps are needed:
+To get all of the benefits of the VS Code experience, its best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](./schema-registry.html#publish) to the Apollo schema registry. Once that is done, two steps are needed:
 
 1. Create an `apollo.config.js` at the root of the project
 2. Copy an API key from the Engine dashboard of the published service
@@ -91,6 +89,14 @@ module.exports = {
   }
 }
 ```
+
+<h3 id="get-the-extension">Get the extension</h3>
+
+Once you have a config set up and a schema published, **install the Apollo GraphQL extension** by using this [link](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) or by searching `Apollo` in the VS Code extension marketplace. After installation, try opening a file containing a GraphQL operation.
+
+When a file open, clicking the status bar icon will open the output window and print stats about the project associated with that file. This is helpful when confirming the project is setup properly.
+
+<img src="../images/editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
 
 <h2 id="features">Features</h2>
 
