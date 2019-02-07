@@ -147,7 +147,31 @@ After analyzing the changes against current usage metrics, Apollo will identify 
 2. **Warning**: There are potential problems that may come from this change, but no clients are immediately impacted.
 3. **Notice**: This change is safe and will not break current clients.
 
-The more [performance metrics](./performance.html) that Apollo has, the better the report of these changes will become.
+<h3 id="cli-advanced">Advanced CLI Usage</h3>
+
+By default, the CLI will look at operations run within the last day in order to decide which changes are breaking. This period of time may not be large enough, so the `validationPeriod` flag accommodates custom timeframes:
+
+```bash
+apollo service:check --validationPeriod="P2W"
+```
+
+> Valid durations are represented in ISO 8601. For reference, see: https://bit.ly/2DEJ3UN. It can also be provided as a number in seconds, i.e. 86400 for a single day.
+
+Two other parameters for customizing the results of `service:check` are threshold values. For example, you may wish to drop support for an old version of an app in order to remove some deprecated fields. Using these parameters, you can decide what amount of breakage is acceptable before shipping any breaking changes.
+
+- `queryCountThreshold` - This flag will only validate the schema against operations that have been executed the specified number of times within the provided duration.
+- `queryCountThresholdPercentage` - Similar to `queryCountThreshold`, but expressed as a percentage of all operations.
+
+```bash
+apollo service:check \
+# Validate the schema against operations that have run in the last 5 days
+--validationPeriod=P5D \
+# Only validate against operations that have run at least 5 times during the 5 day duration
+--queryCountThreshold=5 \
+# Only validate against operations that account for at least 3% of total operation volume
+--queryCountThresholdPercentage=3
+```
+
 
 <h2 id="github">GitHub Integration</h2>
 
