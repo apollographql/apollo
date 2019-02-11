@@ -33,7 +33,7 @@ We'll go over these two kinds of field rollovers separately and show how to make
 
 <h3 id="renaming-or-removing">Renaming or removing a field</h3>
 
-When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed. Unfortunately, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made.
+When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed. However, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made. The following example demonstrates a safe approach to renaming a field.
 
 Take the following `user` query as an example:
 
