@@ -158,8 +158,9 @@ apollo service:check --validationPeriod="P2W"
 
 Two other parameters for customizing the results of `service:check` are threshold values. For example, you may wish to drop support for an old version of an app in order to remove some deprecated fields. Using these parameters, you can decide what amount of breakage is acceptable before shipping any breaking changes.
 
-- `queryCountThreshold` - This flag will only validate the schema against operations that have been executed the specified number of times within the provided duration.
-- `queryCountThresholdPercentage` - Similar to `queryCountThreshold`, but expressed as a percentage of all operations.
+- `queryCountThreshold` - This flag will only validate the schema against operations that have been executed at least the specified number of times within the provided duration.
+- `queryCountThresholdPercentage` - Similar to `queryCountThreshold`, but expressed as a percentage of all operation volume.
+  > Note: these flags are compatible with each other. In the case that both are provided, an operation must meet or exceed both thresholds.
 
 ```bash
 apollo service:check \
