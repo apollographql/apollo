@@ -148,7 +148,7 @@ After analyzing the changes against current usage metrics, Apollo will identify 
 
 <h3 id="cli-advanced">Advanced CLI Usage</h3>
 
-By default, the CLI will look at operations run within the last day in order to decide which changes are breaking. This period of time may not be large enough, so the `validationPeriod` flag accommodates custom timeframes:
+Depending on the requirements of your application, you may want to configure the timeframe to validate operations against. You can do so by providing a `validationPeriod` flag to the CLI. The timeframe will always end at "now", and go back in time by the amount specified.
 
 ```bash
 apollo service:check --validationPeriod=P2W
