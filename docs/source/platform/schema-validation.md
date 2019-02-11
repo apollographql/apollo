@@ -154,7 +154,7 @@ By default, the CLI will look at operations run within the last day in order to 
 apollo service:check --validationPeriod=P2W
 ```
 
-> Valid durations are represented in ISO 8601. For reference, see: https://bit.ly/2DEJ3UN. It can also be provided as a number in seconds, i.e. 86400 for a single day.
+> Valid durations are represented in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations). It can also be provided as a number in seconds, i.e. 86400 for a single day.
 
 Two other parameters for customizing the results of `service:check` are threshold values. For example, you may wish to drop support for an old version of an app in order to remove some deprecated fields. Using these parameters, you can decide what amount of breakage is acceptable before shipping any breaking changes.
 
