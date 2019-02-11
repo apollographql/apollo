@@ -151,7 +151,7 @@ After analyzing the changes against current usage metrics, Apollo will identify 
 By default, the CLI will look at operations run within the last day in order to decide which changes are breaking. This period of time may not be large enough, so the `validationPeriod` flag accommodates custom timeframes:
 
 ```bash
-apollo service:check --validationPeriod="P2W"
+apollo service:check --validationPeriod=P2W
 ```
 
 > Valid durations are represented in ISO 8601. For reference, see: https://bit.ly/2DEJ3UN. It can also be provided as a number in seconds, i.e. 86400 for a single day.
