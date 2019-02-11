@@ -162,6 +162,8 @@ Two other parameters for customizing the results of `service:check` are threshol
 - `queryCountThresholdPercentage` - Similar to `queryCountThreshold`, but expressed as a percentage of all operation volume.
   > Note: these flags are compatible with each other. In the case that both are provided, an operation must meet or exceed both thresholds.
 
+If you have requests for other filtering or threshold mechanisms, we'd love to hear them! Please feel free to submit a [feature request](https://github.com/apollographql/apollo-tooling/issues/new?template=feature-request.md) or PR to the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repo.
+
 ```bash
 apollo service:check \
 # Validate the schema against operations that have run in the last 5 days
