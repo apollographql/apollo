@@ -17,6 +17,8 @@ The Apollo Operation Registry allows organizations to:
 
 Operations defined within client applications are automatically extracted and uploaded to Apollo Engine using the Apollo CLI. Apollo Server fetches a manifest of these operations from Apollo Engine and forbids execution of operations which were not registered from the client bundle.
 
+All operations that are registered will be permanently stored. Future operation uploads to Apollo Engine will not invalidate operations previously registered. You can even upload operations from legacy applications to ensure their service will not be affected by operation safelisting.
+
 ## Getting started
 
 ### Prerequisites
