@@ -28,13 +28,13 @@ All operations that are registered will be permanently stored. Future operation 
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 - An Apollo Engine API key.
   - To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
-  
+
 ### Limitations
 
-- Subscriptions within Apollo Server should be disabled.  For more information, see the instructions below.
+- Subscriptions within Apollo Server should be disabled. For more information, see the instructions below.
 - Only the default schema tag (`current`) is supported.
 
-  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service.  For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
+  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service. For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
 
 Please contact the Apollo sales team if you require a solution to any of these limitations.
 
@@ -105,7 +105,9 @@ npx apollo client:push              \
     --includes="src/**/*.{ts,js,graphql}"
 ```
 
-When successful, the output from this command should look similar to the following:
+Note that you can use `clientName`, `clientTag`, and `clientVersion`. These fields are retained for analysis, not for validation. All operations that are stored in the operation registry are legal for _all_ clients.
+
+When succesfull, the output from this command should look similar to the following:
 
 ```
 ✔ Loading Apollo project
