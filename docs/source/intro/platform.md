@@ -49,7 +49,7 @@ are:
 
  * **Schema registry** &mdash; a registry for GraphQL schemas that acts
    as a central source of truth for a schema, enriched with additional
-   metadata like field-level usage statisics.
+   metadata like field-level usage statistics.
 
  * **Client registry** &mdash; a registry to track each known consumer
    of a schema, which can include both pre-registered and ad-hoc clients.
