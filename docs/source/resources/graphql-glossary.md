@@ -11,7 +11,7 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 <p>An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling across the stack ([Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).</p>
 
 <h2 id="automatic-persisted-queries">Automatic Persisted Queries (APQ) </h2>
-<p> A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/guides/performance.html#automatic-persisted-queries). </p>
+<p> A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/old/performance#automatic-persisted-queries). </p>
 
 <h2 id="argument">Argument</h2>
 <p>A set of key-value pairs attached to a specific field. Arguments can be literal values or variables.</p>
