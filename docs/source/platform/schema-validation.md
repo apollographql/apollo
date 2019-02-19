@@ -98,7 +98,7 @@ type Query {
   getUsers(ids: [ID!]!): [User]!
 
   # what we want to end up with
-  getUsers(ids: [ID!], groupId: ID!): [User]!
+  getUsers(ids: [ID!], groupId: ID): [User]!
 }
 ```
 
