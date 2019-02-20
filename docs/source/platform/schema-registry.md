@@ -44,7 +44,7 @@ To push a service, start the GraphQL server and run the following command, subst
 apollo service:push --key="<API_KEY>" --endpoint="https://example.com/graphql"
 ```
 
-> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though local files representing a schema can also be used. See the [configuration options](./platform/apollo-config.html) for more information.
+> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though local files representing a schema can also be used. See the [configuration options](../references/apollo-config.html) for more information.
 
 <h3 id="viewing-schema">Viewing a published schema</h3>
 
