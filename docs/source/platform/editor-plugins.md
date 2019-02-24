@@ -106,4 +106,4 @@ The VS Code extension integrates with the VS Code command palate and provides tw
 * switch schema tags
 * reload the schema and diagnostics
 
-These can be run by typing `cmd+shift+p` then typing `apollo` into thr prompt. That will show the two commands which can help teams stay on top of changes to the schema right in their editors
+These can be run by typing `cmd+shift+p` then typing `apollo` into the prompt. That will show the two commands which can help teams stay on top of changes to the schema right in their editors
