@@ -19,7 +19,7 @@ cd start/client && npm install
 
 Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
 
-- `apollo-client@alpha`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
+- `apollo-client`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
 - `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
 - `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
 
@@ -93,7 +93,7 @@ _src/index.js_
 ```js line=1
 import gql from "graphql-tag";
 ```
-And add this code to the bottom of `index.js`: 
+And add this code to the bottom of `index.js`:
 
 _src/index.js_
 ```
