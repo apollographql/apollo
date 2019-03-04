@@ -64,10 +64,9 @@ Similarly to deprecation, additions to a GraphQL api often mean that clients wil
 ![druid cutover](../img/client-awareness/cutover.png)
 
 
-## Advanced Setup
+## Advanced setup
 
-Client awareness is a full stack solution that threads client information from
-the consumer to server, so we can configure the client and server.
+The _Setup_ section above should cover most use cases with no additional configuration, but if more precise control is necessary (for example, when using a non-Apollo client or server), the following examples should be useful.
 
 ### Client
 
@@ -75,20 +74,26 @@ The client or consumer of the GraphQL api is responsible for including the
 information in a way that the server understands. In this case, we add the
 client name and version to the http headers:
 
-```js line=8-11
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
+```js line=8-16
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { ApolloLink } from "apollo-link";
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: "http://localhost:4000/graphql",
+    // As noted in the "Setup" instructions above, Apollo
+    // Server and Client handle this setup automatically.
+    // For advanced cases, rather than setting the `name`
+    // and `version` on `ApolloClient`, `headers`
+    // can be specified on the `HttpLink` directly.
     headers: {
-      'client-name': 'Web',
-      'client-version': '1',
-    },
-  }),
+      "client-name-for-advanced-use-cases": "Web",
+      "client-version-for-advanced-use-cases": "1"
+    }
+  })
 });
+
 ```
 
 ### Server
@@ -98,24 +103,30 @@ to a request. To provide metrics to the Apollo Platform, pass a
 `generateClientInfo` function into the `ApolloServer` constructor. The
 following checks the headers and provides a fallback.
 
-```js line=8-16
-const { ApolloServer } = require('apollo-server');
+```js line=8-22
+const { ApolloServer } = require("apollo-server");
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   engine: {
-    apiKey: 'YOUR API KEY HERE',
-    generateClientInfo: ({
-      request
-    }) => {
-      const headers = request.headers;
+    apiKey: "YOUR API KEY HERE",
+    generateClientInfo: ({ request }) => {
+      // The default approach suggested in "Setup", which
+      // uses headers provided by Apollo Client, should work
+      // for most use cases, but advanced cases can use
+      // their own logic for determining the client name
+      // and version and return them from this function.
+      const {
+        clientName,
+        clientVersion
+      } = userSuppliedLogic(request);
       return {
-        clientName: headers && headers['client-name'] || 'Unknown Client',
-        clientVersion: headers && headers['client-version'] || 'Unversioned',
+        clientName,
+        clientVersion
       };
-    },
-  },
+    }
+  }
 });
 
 server.listen().then(({ url }) => {
