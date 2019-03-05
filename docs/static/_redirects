@@ -1,0 +1,22 @@
+/ /docs/
+
+# Redirect Removed Guides to Platform Features
+/docs/guides/security.html /docs/platform/operation-registry.html
+/docs/guides/monitoring.html /docs/platform/integrations.html
+/docs/guides/versioning.html /docs/platform/schema-validation.html#versioning
+
+# This lived here for a short period of time.
+/docs/resources/apollo-config.html /docs/platform/apollo-config.html
+
+# Redirect Removed Guides to Client & Server Docs
+/docs/guides/schema-design.html /docs/apollo-server/essentials/schema.html
+/docs/guides/testing-react-components.html /docs/react/recipes/testing.html
+/docs/guides/state-management.html /docs/react/essentials/local-state.html
+/docs/guides/access-control.html /docs/apollo-server/features/authentication.html
+
+
+# File uploads no longer have a home, but the blog post is the same content.
+/docs/guides/file-uploads.html https://blog.apollographql.com/file-uploads-with-apollo-server-2-0-5db2f3f60675
+
+# Move our Apollo config docs to the References section
+/docs/platform/apollo-config.html /docs/references/apollo-config.html
