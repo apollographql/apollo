@@ -186,15 +186,13 @@ The GraphQL Playground provides the ability to introspect your schema. **Introsp
 
 
 <div style="text-align:center">
-![Schema button](../images/schematab.png)
-<br></br>
+  <img src="../images/schematab.png" alt="Schema button">
 </div>
 
 You can quickly have access to the documentation of a GraphQL API via the `schema` button.
 
 <div style="text-align:center">
-![More details on a Schema Type](../images/moredetailsonatype.png)
-<br></br>
+  <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
 </div>
 
 That's all for building our schema. Let's move on to the next part of our tutorial.

@@ -15,7 +15,7 @@ components, commercial extensions, and cloud services. The major pieces
 are:
 
 <div style="text-align:center">
-![Graph layer](../img/platform-diagram.png)
+  <img src="../img/platform-diagram.png" alt="Graph layer">
 </div>
 
 <h2 id="open-source">Core open source components</h2>

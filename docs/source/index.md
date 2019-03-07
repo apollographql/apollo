@@ -13,7 +13,7 @@ The Apollo GraphQL platform is an implementation of GraphQL that helps you manag
 </div>
 
 <div style="text-align:center">
-![Graph layer](./img/platform.jpg)
+  <img src="./img/platform.jpg" alt="Graph layer>
 </div>
 
 
