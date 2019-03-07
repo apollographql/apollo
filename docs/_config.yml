@@ -33,6 +33,8 @@ sidebar_categories:
     - platform/integrations
 
   Resources:
+    - title: Principled GraphQL
+      href: https://www.principledgraphql.com
     - resources/graphql-glossary
     - resources/faq
 
