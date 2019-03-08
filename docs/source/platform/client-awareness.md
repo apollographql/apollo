@@ -6,14 +6,14 @@ description: What is client awareness and how to add it to the Apollo Platform
 Client identity is central to the Apollo Platform and enables tracking how all
 the consumers use the data graph. The Apollo Platform allows **segmenting usage
 data by client name and version**. Filtering by client provides a
-**field-level understanding** of how the consumers interact with the GraphQL api in
+**field-level understanding** of how the consumers interact with the GraphQL API in
 real-time. In addition to per-client metrics, understanding this granular
 detail informs **how the GraphQL schema can evolve** and react to new **client
 releases**.
 
 ![client overview](../img/client-awareness/overview.png)
 
-Often a GraphQL api is used by multiple consumers with different frequencies,
+Often a GraphQL API is used by multiple consumers with different frequencies,
 subselections, and permissions. The Apollo Platform allows tagging all reported
 metrics with client name and version, which enables filtering on a specific
 client or set of clients across different stacks. This segmentation provides:
@@ -51,7 +51,7 @@ Filtering queries by client enables isolation of issues that affect a portion
 of all clients. In the opposite sense, if a client becomes problematic, such as
 requesting expensive fields or using deprecated fields, the Apollo Platform
 enables tracking down the faulty client to start solving the issue with the
-owner. When changing, replacing, or deprecating a field in the api, the client
+owner. When changing, replacing, or deprecating a field in the API, the client
 metadata enables quickly identifying the client-side changes that need to
 occur to completely remove the field.
 
@@ -59,7 +59,7 @@ occur to completely remove the field.
 
 ### Cutover
 
-Similarly to deprecation, additions to a GraphQL api often mean that clients will change. These modifications can be done incrementally or discretely during a cutover period. The cutover period and time immediately following change the utilization of the GraphQL api drastically and can expose some unexpected behavior. Filtering by client version enables monitoring the health of a release in real-time. The following demonstrates a cutover from one backend to another.
+Similarly to deprecation, additions to a GraphQL API often mean that clients will change. These modifications can be done incrementally or discretely during a cutover period. The cutover period and time immediately following change the utilization of the GraphQL API drastically and can expose some unexpected behavior. Filtering by client version enables monitoring the health of a release in real-time. The following demonstrates a cutover from one backend to another.
 
 ![druid cutover](../img/client-awareness/cutover.png)
 
@@ -70,7 +70,7 @@ The _Setup_ section above should cover most use cases with no additional configu
 
 ### Client
 
-The client or consumer of the GraphQL api is responsible for including the
+The client or consumer of the GraphQL API is responsible for including the
 information in a way that the server understands. In this case, we add the
 client name and version to the http headers:
 
