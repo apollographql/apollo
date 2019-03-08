@@ -131,6 +131,7 @@ Open `src/index.js` and add the following lines of code:
 _src/index.js_
 
 ```js lines=1,4,6
+import { React, ReactDOM } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
 ReactDOM.render(
