@@ -3,7 +3,7 @@ title: Validate schema changes
 description: Check if proposed schema changes are safe or breaking by comparing against live server traffic
 ---
 
-As GraphQL scales within an organization, it becomes harder to evolve the schema while guaranteeing that no query or client will ever break from a change. Some organizations take the appraoch of just _never_ making schema changes that might be breaking; however, managing an only-ever-growing schema is unnecessarily difficult for most teams. It can actually be very safe to evolve the schema through field removals and return type changes if you have the right tools to guarantee that no such change will ever break an active query.
+As GraphQL scales within an organization, it becomes harder to evolve the schema while guaranteeing that no query or client will ever break from a change. Some organizations take the approach of just _never_ making schema changes that might be breaking; however, managing an only-ever-growing schema is unnecessarily difficult for most teams. It can actually be very safe to evolve the schema through field removals and return type changes if you have the right tools to guarantee that no such change will ever break an active query.
 
 As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
 
@@ -35,7 +35,7 @@ View full details at: https://engine.apollographql.com/service/example-1234/chec
 
 <h3 id="algorithm">Change algorithm</h3>
 
-The schema change algorithm uses utilities from the [graphql](https://www.npmjs.com/package/graphql) package to generate a schema diff and identify potentially breaknig changes. It then checks with Apollo's trace warehouse to see if any of the changes in the diff will affect active clients and clients.
+The schema change algorithm uses utilities from the [graphql](https://www.npmjs.com/package/graphql) package to generate a schema diff and identify potentially breaking changes. It then checks with Apollo's trace warehouse to see if any of the changes in the diff will affect active clients and clients.
 
 The following list enumerates which changes types are potentially breaking and the conditions on which each change type will _fail the `apollo service:check` command_.
 
@@ -74,13 +74,13 @@ The change algorithm identifies two change severities for each diff in a check:
 1. **Failure**: Either the schema is invalid or the changes _will_ break current clients.
 2. **Notice**: This change is safe and will not break current clients.
 
-Changes are assigned a severity based on the operation reported against the schema(chosen with `--tag`, `current` by default). If an operation uses an affected element, then the change is marked as a `Faulure`. When any change in the set is marked as a failure, the overall status of validation dictates the CLI's exit code and GitHub status.
+Changes are assigned a severity based on the operation reported against the schema(chosen with `--tag`, `current` by default). If an operation uses an affected element, then the change is marked as a `Failure`. When any change in the set is marked as a failure, the overall status of validation dictates the CLI's exit code and GitHub status.
 
 > Note: If no metrics are associated with the tag, then all changes will be assigned `Notice`.f
 
 ### CLI output
 
-Running a schema validation check is as simple as running `apollo service:check` on the command line from within an service repository that has been configured to be an Apollo project.
+Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that has been configured to be an Apollo project.
 
 > **Note:** [Skip ahead](#setup) to the setup section for details on how to configure your project for schema change validation.
 
@@ -174,14 +174,14 @@ jobs:
 
 ![GitHub Status View](../img/schema-history/github-check.png)
 
-Like most tools, schema validation is best used when it's integrated directly into the rest of your workflow. If you're using GitHub, you can install the Apollo Engine GitHub app. This will enable Apollo's systems to send a webhook back to your project on each `apollo schema:check`, providing built-in pass/fail status checks on your pull requests.
+Like most tools, schema validation is best used when it is integrated directly into the rest of your workflow. If you're using GitHub, you can install the Apollo Engine GitHub app. This will enable Apollo's systems to send a webhook back to your project on each `apollo schema:check`, providing built-in pass/fail status checks on your pull requests.
 
 Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Engine integration on the appropriate GitHub profile or organization.
 
 <h3 id="multiple-environments">Multiple environments</h3>
 
 Product cycles move fast, and it’s common for a schemas to be slightly different across environments as changes make their way through your system. To accommodate for this, schemas can be registered under specific "schema tags
-, and checks can be performaned against specific "schema tags".
+, and checks can be performed against specific "schema tags".
 
 schema registry allows each schema to be registered under a “schema tag”. Tags are mostly commonly used to represent environments, but can also be used to represent things like branches and future schemas. Passing the `--tag` flag to `apollo service:check` specifies which schema to compare against, such as `prod` or `staging`. It's common to run checks against multiple different schema tags during continuous integration to ensure that all important deployments are accounted for. Checking multiple tags will result in check statuses similar to:
 

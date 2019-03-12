@@ -5,7 +5,7 @@ description: Connect to the Apollo schema registry and track changes in your sch
 
 The [GraphQL schema](https://www.apollographql.com/docs/tutorial/schema.html) is the center point of all GraphQL applications. It creates an enforceable contract between clients and servers, it is its own self-updating API documentation, and it provides powerful development workflows thanks to its type safety. As GraphQL scales in an organization and as GraphQL schemas grow, it becomes really important to have tools to help your team safely evolve your schema over time. At scale, you might have hundreds or thousands of clients in the world making queries that rely on fields, types, and arguments in your schema that are impossible to track without tooling.
 
-At Apollo, we're driven to help teams be successful with GraphQL both at the initial adoption phase and as they scale GraphQL across their organization. As such, the [Apollo Platform](/docs/intro/platform.html) provides a free schema registration service for teams of all sizes to use. Much like version control for your code, the Schema Registry allows you to evolve your API over time while keeping a record of when each change was made and helping you catch breaking changes before they're every deployed.
+At Apollo, we're driven to help teams be successful with GraphQL both at the initial adoption phase and as they scale GraphQL across their organization. As such, the [Apollo Platform](/docs/intro/platform.html) provides a free schema registration service for teams of all sizes to use. Much like version control for your code, the Schema Registry allows you to evolve your API over time while keeping a record of when each change was made and help you catch breaking changes before they're every deployed.
 
 <h4 id="benefits">Benefits of registering your schema</h4>
 
@@ -13,7 +13,7 @@ By keeping your schema up-to-date in Apollo's schema registry, you can get a num
 
 - The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo), which provides built-in linting on queries by validating against the schema in your registry, and annotates fields on your queries with performance indicators collected in Apollo's trace warehouse.
 - [Schema validation](./schema-validation.html), which creates a diff between your local schema and the last schema uploaded to the registry, and validates this diff against live traffic seen on your endpoint to make sure you never accidentally deploy a breaking schema change to production.
-- The [Schema History](#history) log, which keeps track of all the changes made to your schema over time.
+- The [Schema History](#history), which keeps track of all the changes made to your schema over time.
 - The [Schema Explorer](https://engine.apollographql.com), which precisely links the fields in your schema to clients and queries that are using them.
 
 <h2 id="setup">Using the Schema Registry</h2>
@@ -76,7 +76,7 @@ Type `apollo service --help` for full details on the commands available in the C
 
 <h2 id="push">Uploading a schema</h2>
 
-You publish a schema to the registry by running `apollo service:push` from within your respository. The CLI will know where to fetch your local schema from based on the configuration you gave in your `apollo.config.js` file. Each time a new veresion of your schema is published, it is logged in your schema history and it becomes the basis of comparison for `apollo service:check`.
+You publish a schema to the registry by running `apollo service:push` from within your repository. The CLI will know where to fetch your local schema from based on the configuration you gave in your `apollo.config.js` file. Each time a new version of your schema is published, it is logged in your schema history and it becomes the basis of comparison for `apollo service:check`.
 
 Here's what running `apollo service:push` will look like:
 
@@ -87,12 +87,12 @@ Here's what running `apollo service:push` will look like:
 
 id      schema        tag
 ──────  ────────────  ───────
-190330  example-4218  staging
+190330  example-4218  current
 ```
 
 ### Hooking into CI
 
-To get the full value out of Apollo's platform, the schema registry should always be representing what's running live on your services. We highly recommend that you set up the `apollo service:push` command in your continuous delivery pipeline so that you push a new version of your schema to the registry every time a change is deployed. This is how you will maintain accurate schema change tracking, schema change validation, schema documentation, etc.
+To get the full value out of Apollo's platform, the schema registry should be an accurate representation of what's running live on your services. To achieve this, you should add the `apollo service:push` command to your continuous delivery pipeline so that your schema is pushed to the registry on every deploy. This is how you will maintain accurate schema change tracking, schema change validation, schema documentation, etc.
 
 Here is a sample configuration for pushing a schema using CircleCI:
 
@@ -131,6 +131,8 @@ jobs:
 ```
 
 <h2 id="history">Viewing schema change history</h2>
+
+Changes made to your schema over time can be tracked in Apollo's UI in Engine by browsing to the History page in your service.
 
 Once you have uploaded your schema, you can view it through [Apollo's UI in Engine](https://engine.apollographql.com) by browsing to the History page in your Service. The published schema will appear in your history log along with a list of changes comparing it to the previously published versions of your schema. You can view the full contents of the most recently published version of your schema in the Explorer page.
 
