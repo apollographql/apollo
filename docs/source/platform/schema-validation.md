@@ -40,26 +40,36 @@ The schema change algorithm uses utilities from the [graphql](https://www.npmjs.
 The following list enumerates which changes types are potentially breaking and the conditions on which each change type will _fail the `apollo service:check` command_.
 
 - **Removals**
-  - `FIELD_REMOVED` A field referenced by at least one operation was removed
-  - `TYPE_REMOVED` A referenced type(scalar, object) was removed
-  - `ARG_REMOVED` A referenced argument was removed
-  - `TYPE_REMOVED_FROM_UNION` A type in a union used by at least one operation was removed
-  - `INPUT_FIELD_REMOVED` A field in an input type used by at least one operation was removed
-  - `VALUE_REMOVED_FROM_ENUM` A value in an enum used by at least one operation was removed
-  - `TYPE_REMOVED_FROM_INTERFACE` An object used by at least one operation was removed from an interface
+  <ul>
+    <li id="FIELD_REMOVED">`FIELD_REMOVED` A field referenced by at least one operation was removed</li>
+    <li id="TYPE_REMOVED">`TYPE_REMOVED` A referenced type(scalar, object) was removed</li>
+    <li id="ARG_REMOVED">`ARG_REMOVED` A referenced argument was removed</li>
+    <li id="TYPE_REMOVED_FROM_UNION">`TYPE_REMOVED_FROM_UNION` A type in a union used by at least one operation was removed</li>
+    <li id="INPUT_FIELD_REMOVED">`INPUT_FIELD_REMOVED` A field in an input type used by at least one operation was removed</li>
+    <li id="VALUE_REMOVED_FROM_ENUM">`VALUE_REMOVED_FROM_ENUM` A value in an enum used by at least one operation was removed</li>
+    <li id="TYPE_REMOVED_FROM_INTERFACE">`TYPE_REMOVED_FROM_INTERFACE` An object used by at least one operation was removed from an interface</li>
+  </ul>
 - **Required arguments**
-  - `REQUIRED_ARG_ADDED` Non-nullable argument added to field used by at least one operation
-  - `NON_NULL_INPUT_FIELD_ADDED` Non-null field added to an input object used by at least one operation
+  <ul>
+    <li id="REQUIRED_ARG_ADDED">`REQUIRED_ARG_ADDED` Non-nullable argument added to field used by at least one operation</li>
+    <li id="NON_NULL_INPUT_FIELD_ADDED">`NON_NULL_INPUT_FIELD_ADDED` Non-null field added to an input object used by at least one operation</li>
+  </ul>
 - **In-place updates**
-  - `FIELD_CHANGED_TYPE` Field used by at least one operation changed return type
-  - `INPUT_FIELD_CHANGED_TYPE` Field in input object referenced in field argument used by at least one operation changed type
-  - `TYPE_CHANGED_KIND` Type used by at least one operation changed, ex: scalar to object or enum to union
-  - `ARG_CHANGED_TYPE` Argument used by at least one operation changed a type
+  <ul>
+    <li id="FIELD_CHANGED_TYPE">`FIELD_CHANGED_TYPE` Field used by at least one operation changed return type</li>
+    <li id="INPUT_FIELD_CHANGED_TYPE">`INPUT_FIELD_CHANGED_TYPE` Field in input object referenced in field argument used by at least one operation changed type</li>
+    <li id="TYPE_CHANGED_KIND">`TYPE_CHANGED_KIND` Type used by at least one operation changed, ex: scalar to object or enum to union</li>
+    <li id="ARG_CHANGED_TYPE">`ARG_CHANGED_TYPE` Argument used by at least one operation changed a type</li>
+  </ul>
 - **Type extensions**
-  - `TYPE_ADDED_TO_UNION` New type added to a union used by at least one operation
-  - `TYPE_ADDED_TO_INTERFACE` New interface added to an object used by at least one operation
+  <ul>
+    <li id="TYPE_ADDED_TO_UNION">`TYPE_ADDED_TO_UNION` New type added to a union used by at least one operation</li>
+    <li id="TYPE_ADDED_TO_INTERFACE">`TYPE_ADDED_TO_INTERFACE` New interface added to an object used by at least one operation</li>
+  </ul>
 - **Optional arguments**
-  - `ARG_DEFAULT_VALUE_CHANGE` Default value added or changed for argument on a field that is used by at least one operation
+  <ul>
+    <li id="ARG_DEFAULT_VALUE_CHANGE">`ARG_DEFAULT_VALUE_CHANGE` Default value added or changed for argument on a field that is used by at least one operation</li>
+  </ul>
 
 > **Note:** This is not an exhaustive list of all possible change types, just breaking change types. Visit the [`graphql` package's repository](https://github.com/graphql/graphql-js/blob/9e404659a15d59c5ce12aae433dd2a636ea9eb82/src/utilities/findBreakingChanges.js#L39) for more details on changes types.
 
