@@ -1,152 +1,205 @@
 ---
-title: Validating schema changes
-description: How to validate your schema in your existing CI workflow
+title: Validate schema changes
+description: Check if proposed schema changes are safe or breaking by comparing against live server traffic
 ---
 
-The Apollo GraphQL Platform allows developers to confidently iterate a GraphQL schema by validating the new schema against field-level usage data from the previous schema. By knowing exactly which clients will be broken by a new schema, developers can avoid inadvertently deploying a breaking change.
+As GraphQL scales within an organization, it becomes harder to evolve the schema while guaranteeing that no query or client will ever break from a change. Some organizations take the approach of just _never_ making schema changes that might be breaking; however, managing an only-ever-growing schema is unnecessarily difficult for most teams. It can actually be very safe to evolve the schema through field removals and return type changes if you have the right tools to guarantee that no such change will ever break an active query.
 
-A GraphQL schema can change in a number of ways between releases and, depending on the type of change, can affect clients in a variety of ways. Since changes can range from "decidedly safe" to "certain breakage", it's helpful to use schema tools which are aware of actual API usage.
+As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
 
-By comparing a new schema to the last published schema, the Apollo Platform can highlight points of concern by showing detailed schema changes alongside current usage information for those fields. With this pairing of data, the risks of changes can be greatly reduced.
+<h2 id="schema-validation">How it works</h2>
 
-<h2 id="versioning">Understanding schema changes</h2>
+Schema validation is possible through the use of Apollo's schema registry and Apollo's trace warehouse, both of which are free to use.
 
-Versioning is a technique to prevent necessary changes from becoming "breaking changes" which affect the existing consumers of an API. These iterations might be as trivial as renaming a field, or as substantial as refactoring the whole data model.
+The **schema registry** is used to identify changes between schema versions. The first step of validation is to create the "schema diff" between your local schema (the schema to validate) and the previously registered schema in the registry. By taking the diff between these two schemas, we identify which changes are being proposed and can validate them against live traffic one-by-one.
 
-Developers who have worked with REST APIs in the past have probably recognized various patterns for versioning the API, commonly by using a different URI (e.g. `/api/v1`, `/api/v2`, etc.) or a query parameter (e.g. `?version=1`). With this technique, an application can easily end up with many different API endpoints over time, and the question of _when_ an API can be deprecated can become problematic.
+The **trace warehouse** is used to identify which clients and which operations are using which fields in the schema, in real time. The second step of schema validation is to make sure that none of the proposed changes in the schema diff will affect live traffic in a breaking way. This is done by comparing the fields in the schema diff to the usage of fields seen by the trace warehouse.
 
-It might be tempting to version a GraphQL API the same way, but it's unnecessary with the right techniques. By following the strategies and precautions outlined in this guide and using Apollo tooling that adds clarity to every change, many iterations of an API can be served from a single endpoint.
+If it is determined by the [change algorithm](#algorithm) that one of the proposed changes to a field could be breaking, and that field is still being actively used by clients, the schema validation check will fail. Schema checks are run through the Apollo CLI using the `apollo schema:check` command. Each invocation of the command will trigger a check to be run in registry. The registry will perform the diffing algorithm and talk to the trace warehouse to determine of any of the changes will break live-running clients.
 
-<h3 id="field-usage">Field usage</h3>
+The output of the check is printed to the console, and a URL is provided to see a detailed view of the results in Apollo Engine like so:
 
-Rather than returning extensive amounts of data which might not be necessary, GraphQL allows consumers to specify exactly what data they need. This field-based granularity is valuable and avoids "over-fetching", but also makes it more difficult to understand which parts of the schema are being used.
+```console
+~/Development/apollo/example$ apollo schema:check
+  ✔ Loading Apollo Project
+  ✔ Checking service for changes
 
-To improve the understanding of field usage within an API, Apollo Server extends GraphQL with rich tracing data that demonstrates _how_ a GraphQL field is used and _when_ it's safe to change or eliminate a field.
 
-> For details on how tracing data can be used to avoid shipping breaking changes to clients, check out the schema history tooling in [Apollo Engine](https://www.apollographql.com/platform) which utilizes actual usage data to provide warnings and notices about changes that might break existing clients.
+Change   Code           Description
+───────  ─────────────  ───────────────────────────
+FAILURE  FIELD_REMOVED  `User.name` was removed
 
-Since GraphQL clients only receive exactly what they ask for, adding new fields, arguments, queries, or mutations won't introduce any new breaking changes and these changes can be confidently made without consideration about existing clients or field usage metrics.
 
-_Field rollover_ is a term given to an API change that's an evolution of a field, such as a rename or a change in arguments. Some of these changes can be really small, resulting in many variations and making an API harder to manage.
-
-We'll go over these two kinds of field rollovers separately and show how to make these changes safely.
-
-<h3 id="renaming-or-removing">Renaming or removing a field</h3>
-
-When a field is unused, renaming or removing it is as straightforward as it sounds: it can be renamed or removed. However, if a GraphQL deployment doesn't have per-field usage metrics, additional considerations should be made. The following example demonstrates a safe approach to renaming a field.
-
-Take the following `user` query as an example:
-
-```graphql
-type Query {
-  user(id: ID!): User
-}
+View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
 ```
 
-We may want to rename it to `getUser` to be more descriptive of what the query is for, like so:
+<h3 id="algorithm">Change algorithm</h3>
 
-```graphql
-type Query {
-  getUser(id: ID!): User
-}
-```
+The schema change algorithm uses utilities from the [graphql](https://www.npmjs.com/package/graphql) package to generate a schema diff and identify potentially breaking changes. It then checks with Apollo's trace warehouse to see if any of the changes in the diff will affect active clients and clients.
 
-Even if that was the only change, this would be a breaking change for some clients, since those expecting a `user` query would receive error.
+The following list enumerates which changes types are potentially breaking and the conditions on which each change type will _fail the `apollo service:check` command_.
 
-To make this change safely, instead of renaming the existing field we can simply add a new `getUser` field and leave the existing `user` field untouched. To prevent code duplication, the resolver logic can be shared between the two fields:
+- **Removals**
+  <ul>
+    <li id="FIELD_REMOVED">`FIELD_REMOVED` A field referenced by at least one operation was removed</li>
+    <li id="TYPE_REMOVED">`TYPE_REMOVED` A referenced type(scalar, object) was removed</li>
+    <li id="ARG_REMOVED">`ARG_REMOVED` A referenced argument was removed</li>
+    <li id="TYPE_REMOVED_FROM_UNION">`TYPE_REMOVED_FROM_UNION` A type in a union used by at least one operation was removed</li>
+    <li id="INPUT_FIELD_REMOVED">`INPUT_FIELD_REMOVED` A field in an input type used by at least one operation was removed</li>
+    <li id="VALUE_REMOVED_FROM_ENUM">`VALUE_REMOVED_FROM_ENUM` A value in an enum used by at least one operation was removed</li>
+    <li id="TYPE_REMOVED_FROM_INTERFACE">`TYPE_REMOVED_FROM_INTERFACE` An object used by at least one operation was removed from an interface</li>
+  </ul>
+- **Required arguments**
+  <ul>
+    <li id="REQUIRED_ARG_ADDED">`REQUIRED_ARG_ADDED` Non-nullable argument added to field used by at least one operation</li>
+    <li id="NON_NULL_INPUT_FIELD_ADDED">`NON_NULL_INPUT_FIELD_ADDED` Non-null field added to an input object used by at least one operation</li>
+  </ul>
+- **In-place updates**
+  <ul>
+    <li id="FIELD_CHANGED_TYPE">`FIELD_CHANGED_TYPE` Field used by at least one operation changed return type</li>
+    <li id="INPUT_FIELD_CHANGED_TYPE">`INPUT_FIELD_CHANGED_TYPE` Field in input object referenced in field argument used by at least one operation changed type</li>
+    <li id="TYPE_CHANGED_KIND">`TYPE_CHANGED_KIND` Type used by at least one operation changed, ex: scalar to object or enum to union</li>
+    <li id="ARG_CHANGED_TYPE">`ARG_CHANGED_TYPE` Argument used by at least one operation changed a type</li>
+  </ul>
+- **Type extensions**
+  <ul>
+    <li id="TYPE_ADDED_TO_UNION">`TYPE_ADDED_TO_UNION` New type added to a union used by at least one operation</li>
+    <li id="TYPE_ADDED_TO_INTERFACE">`TYPE_ADDED_TO_INTERFACE` New interface added to an object used by at least one operation</li>
+  </ul>
+- **Optional arguments**
+  <ul>
+    <li id="ARG_DEFAULT_VALUE_CHANGE">`ARG_DEFAULT_VALUE_CHANGE` Default value added or changed for argument on a field that is used by at least one operation</li>
+  </ul>
 
-```js
-const getUserResolver = (root, args, context) => {
-  context.User.getById(args.id);
-};
+> **Note:** This is not an exhaustive list of all possible change types, just breaking change types. Visit the [`graphql` package's repository](https://github.com/graphql/graphql-js/blob/9e404659a15d59c5ce12aae433dd2a636ea9eb82/src/utilities/findBreakingChanges.js#L39) for more details on changes types.
 
-const resolvers = {
-  Query: {
-    getUser: getUserResolver,
-    user: getUserResolver
-  }
-};
-```
+A failed `apollo schema:check` command will exit with a non-0 exit code and fail CI checks on purpose! There are actually many cases where breaking changes can be made intentionally, but should be treated thoughtfully and with intention. Here's an example:
 
-<h3 id="deprecating">Deprecating a field</h3>
+- Changing the return type of a field with queries actively using it is safe **if and only if** the new return type contains the same selection options that all active queries were using the old return type.
 
-The tactic we used works well to avoid breaking changes, but we still haven’t provided a way for consumers to know that they should switch to using the new field name. Luckily, the GraphQL specification provides a built-in `@deprecated` schema directive (sometimes called decorators in other languages):
+<h3 id="severity">Change severity</h3>
 
-```
-type Query {
-  user(id: ID!): User @deprecated(reason: "renamed to 'getUser'")
-  getUser(id: ID!): User
-}
-```
-
-GraphQL-aware client tooling, like GraphQL Playground and GraphiQL, use this information to assist developers in making the right choices. These tools will:
-
-- Provide developers with the helpful deprecation message referring them to the new name.
-- Avoid auto-completing the field.
-
-Over time, usage will fall for the deprecated field and grow for the new field.
-
-> Using tools like [Apollo Engine](https://www.apollographql.com/platform), it’s possible to make educated decisions about when to retire a field based on actual usage data through schema analytics.
-
-<h3 id="non-breaking">Non-breaking changes</h3>
-
-Sometimes we want to keep a field, but change how clients use it by adjusting its variables. For example, if we had a `getUsers` query that we used to fetch user data based off of a list of user `ids`, but wanted to change the arguments to support a `groupId` to look up users of a group or filter the users requested by the `ids` argument to only return users in the group:
-
-```graphql
-type Query {
-  # what we have
-  getUsers(ids: [ID!]!): [User]!
-
-  # what we want to end up with
-  getUsers(ids: [ID!], groupId: ID!): [User]!
-}
-```
-
-Since this is an _additive_ change, and doesn't actually change the default behavior of the `getUsers` query, this isn't a breaking change!
-
-<h3 id="breaking">Breaking changes</h3>
-
-An example of a breaking change on an argument would be renaming (or deleting) an argument.
-
-```graphql
-type Query {
-  # What we have.
-  getUsers(ids: [ID!], groupId: ID!): [User]!
-
-  # What we want to end up with.
-  getUsers(ids: [ID!], groupIds: [ID!]): [User]!
-}
-```
-
-There's no way to mark an argument as deprecated, but there are a couple options.
-
-If we wanted to leave the old `groupId` argument active, we wouldn't need to do anything; adding a new argument isn't a breaking change as long as existing functionality doesn't change.
-
-Instead of supporting it, if we wanted to remove the old argument, the safest option would be to create a new field and deprecate the current `getUsers` field.
-
-Using an API management tool, like the Apollo platform, it’s possible to determine when usage of an old field has dropped to an acceptable level and remove it. The previously discussed [field rollover](#field-rollover) section gives more info on how to do that.
-
-Of course, it’s also possible to leave the field in place indefinitely!
-
-<h2 id="cli">Checking schema changes with the Apollo CLI</h2>
-
-To check and see the difference between the current published schema and a new version, run the following command, substituting the appropriate GraphQL endpoint URL and an API key:
-
-> An API key can be obtained from a service's _Settings_ menu within the [Apollo Engine dashboard](https://engine.apollographql.com/).
-
-```bash
-apollo service:check --key="<API_KEY>" --endpoint="http://localhost:4000/graphql"
-```
-
-> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though the CLI also reference a local file. See [config options](../platform/apollo-config.html) for more information.
-
-After analyzing the changes against current usage metrics, Apollo will identify three categories of changes and report them to the developer on the command line or within a GitHub pull-request:
+The change algorithm identifies two change severities for each diff in a check:
 
 1. **Failure**: Either the schema is invalid or the changes _will_ break current clients.
-2. **Warning**: There are potential problems that may come from this change, but no clients are immediately impacted.
-3. **Notice**: This change is safe and will not break current clients.
+2. **Notice**: This change is safe and will not break current clients.
 
-<h3 id="cli-advanced">Advanced CLI Usage</h3>
+Changes are assigned a severity based on the operation reported against the schema(chosen with `--tag`, `current` by default). If an operation uses an affected element, then the change is marked as a `Failure`. When any change in the set is marked as a failure, the overall status of validation dictates the CLI's exit code and GitHub status.
+
+> Note: If no metrics are associated with the tag, then all changes will be assigned `Notice`.f
+
+### CLI output
+
+Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that has been configured to be an Apollo project.
+
+> **Note:** [Skip ahead](#setup) to the setup section for details on how to configure your project for schema change validation.
+
+Running the `apollo service:check` will output the diff of all schema changes found, and highlight changes determined to be breaking as `FAILING`. All other changes in the diff will be labeled with `NOTICE`. Here's a sample of what the output looks like:
+
+```console
+~/Development/apollo/example$ apollo schema:check
+  ✔ Loading Apollo Project
+  ✔ Checking service for changes
+
+
+Change   Code           Description
+───────  ─────────────  ──────────────────────────────────
+FAILURE  FIELD_REMOVED  `User.name` was removed
+NOTICE   FIELD_ADDED    `User.friends` was added
+
+
+View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
+```
+
+A details URL will be generated if there are _any_ changes found by the diff algorithm, even if none of the changes are failing.
+
+### View full change details
+
+Following the details link from the CLI will take you to a special URL on your Engine account where the details of each change in your check and its impact are enumerated in the UI. This URL is unique to each `service:check`.
+
+<img src="../images/schema-checks.png" width="100%" alt="Schema checks page in the Engine UI">
+
+If you [set up your checks on GitHub](#github), the "Details" link in your checks will take you to this special URL as well.
+
+<h2 id="setup">Set up schema validation</h2>
+
+You will need to be actively sending traces to the Apollo trace warehouse and registering schemas to the Apollo schema registry to properly use schema validation. Follow these guides if you have not set these up:
+
+1. [Set up trace reporting to Apollo Engine](/docs/platform/setup-analytics.html) (either through Apollo Server 2+ or the Engine proxy).
+1. [Set up schema registration in your continuous delivery pipeline](/docs/platform/schema-registry.html).
+
+For the `apollo schema:check` command to be configured properly, you will also need:
+
+1. [A `.env` file with an `ENGINE_API_KEY`](/docs/platform/schema-registry.html#Get-your-Engine-API-key).
+1. [An `apollo.config.js` file with a `service` configured](/docs/platform/schema-registry.html#Create-an-apollo-config-js-file).
+
+If you have set up schema registration, your project may already have its `.env` file and `apollo.config.js` file configured. Once you've got these set up, running your schema check is as simple as running:
+
+```console
+apollo service:check
+```
+
+The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). By default, the check verifies the schema diff against the past day and can be [configured](#cli-advanced) for a longer time range.
+
+> **Note:** The Apollo CLI will be looking in your Apollo config for a location from which to fetch your local schema and using your ENGINE_API_KEY to authenticate its requests with the Engine service.
+
+<h3 id="service-check-on-ci">Run validation on each commit</h3>
+
+We highly recommended that you set up validation as part of your continuous integration workflow (e.g. CircleCI, etc.). This will help you detect potential problems automatically and display them directly on a pull-requests status checks.
+
+Here's a example of how to add a schema validation check to CircleCI:
+
+```yaml line=29
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+
+      - run: npm install
+
+      # Start the GraphQL server.  If a different command is used to
+      # start the server, use it in place of `npm start` here.
+      - run:
+          name: Starting server
+          command: npm start
+          background: true
+
+      # make sure the server has enough time to start up before running
+      # commands against it
+      - run: sleep 5
+
+      # This will authenticate using the `ENGINE_API_KEY` environment
+      # variable. Configure your endpoint's location in your Apollo config.
+      - run: npx apollo service:check
+```
+
+> Note: with a GitHub status check, to allow continuous integration to complete without failing early, ignore the exit code of the `apollo service:check` command. The exit code can be ignored by appending `|| echo 'validation failed'` to the command call.
+
+<h3 id="github">GitHub integration</h3>
+
+![GitHub Status View](../img/schema-history/github-check.png)
+
+Like most tools, schema validation is best used when it is integrated directly into the rest of your workflow. If you're using GitHub, you can install the Apollo Engine GitHub app. This will enable Apollo's systems to send a webhook back to your project on each `apollo schema:check`, providing built-in pass/fail status checks on your pull requests.
+
+Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Engine integration on the appropriate GitHub profile or organization.
+
+<h3 id="multiple-environments">Multiple environments</h3>
+
+Product cycles move fast, and it’s common for a schemas to be slightly different across environments as changes make their way through your system. To accommodate for this, schemas can be registered under specific "schema tags
+, and checks can be performed against specific "schema tags".
+
+schema registry allows each schema to be registered under a “schema tag”. Tags are mostly commonly used to represent environments, but can also be used to represent things like branches and future schemas. Passing the `--tag` flag to `apollo service:check` specifies which schema to compare against, such as `prod` or `staging`. It's common to run checks against multiple different schema tags during continuous integration to ensure that all important deployments are accounted for. Checking multiple tags will result in check statuses similar to:
+
+<div style="text-align:center">
+![multiple service checks](../img/schema-validation/service-checks.png)
+</div>
+
+<h3 id="cli-advanced">Advanced configuration</h3>
 
 Depending on the requirements of your application, you may want to configure the timeframe to validate operations against. You can do so by providing a `validationPeriod` flag to the CLI. The timeframe will always end at "now", and go back in time by the amount specified.
 
@@ -172,59 +225,4 @@ apollo service:check \
 --queryCountThreshold=5 \
 # Only validate against operations that account for at least 3% of total operation volume
 --queryCountThresholdPercentage=3
-```
-
-<h2 id="github">GitHub Integration</h2>
-
-![GitHub Status View](../img/schema-history/github-check.png)
-
-Schema validation is best used when integrated in a team's development workflow. To make this easy, Apollo integrates with GitHub to provide status checks on pull requests when schema changes are proposed. To enable schema validation in GitHub, follow these steps:
-
-<h3 id="install-github">Install GitHub application</h3>
-
-Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Engine integration on the appropriate GitHub profile or organization.
-
-<h3 id="check-schema-on-ci">Run validation on each commit</h3>
-
-By enabling schema validation in a continuous integration workflow (e.g. CircleCI, etc.), validation can be performed automatically and potential problems can be displayed directly on a pull-request's status checks — providing feedback to developers where they can appreciate it the most.
-
-To run the validation command, the GraphQL server must have introspection enabled and run the `apollo service:check` command. An example of what this could look like is shown below with a CircleCI config:
-
-```yaml
-version: 2
-
-jobs:
-  build:
-    docker:
-      - image: circleci/node:8
-
-    steps:
-      - checkout
-
-      - run: npm install
-      # CircleCI needs global installs to be sudo
-      - run: sudo npm install --global apollo
-
-      # Start the GraphQL server.  If a different command is used to
-      # start the server, use it in place of `npm start` here.
-      - run:
-          name: Starting server
-          command: npm start
-          background: true
-
-      # make sure the server has enough time to start up before running
-      # commands against it
-      - run: sleep 5
-
-      # This will authenticate using the `ENGINE_API_KEY` environment
-      # variable. If the GraphQL server is available elsewhere than
-      # http://localhost:4000/graphql, set it with `--endpoint=<URL>`.
-      - run: apollo service:check
-
-      # When running on the 'master' branch, publish the latest version
-      # of the schema to Apollo Engine.
-      - run: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            apollo service:push
-          fi
 ```

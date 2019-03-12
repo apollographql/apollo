@@ -1,102 +1,102 @@
 ---
-title: Registering your schema
-description: How to publish your schema to the Apollo registry
+title: Track schema change history
+description: Connect to the Apollo schema registry and track changes in your schema over time
 ---
 
-A schema is the center point of all GraphQL applications. It powers incredible development tools, is an always up to date set of documentation, and creates an enforcable contract between clients and servers through validation. Since this is such a center point of how teams work on GraphQL, the Apollo GraphQL Platform provides a free schema registry for teams of all sizes to use. In storing a schema in the registry, teams can share an always up to date picture of their data model into every facet of their workflow.
+The [GraphQL schema](https://www.apollographql.com/docs/tutorial/schema.html) is the center point of all GraphQL applications. It creates an enforceable contract between clients and servers, it is its own self-updating API documentation, and it provides powerful development workflows thanks to its type safety. As GraphQL scales in an organization and as GraphQL schemas grow, it becomes really important to have tools to help your team safely evolve your schema over time. At scale, you might have hundreds or thousands of clients in the world making queries that rely on fields, types, and arguments in your schema that are impossible to track without tooling.
 
-<h2 id="benefits">Benefits of publishing a schema</h2>
+At Apollo, we're driven to help teams be successful with GraphQL both at the initial adoption phase and as they scale GraphQL across their organization. As such, the [Apollo Platform](/docs/intro/platform.html) provides a free schema registration service for teams of all sizes to use. Much like version control for your code, the Schema Registry allows you to evolve your API over time while keeping a record of when each change was made and help you catch breaking changes before they're every deployed.
 
-The Apollo schema registry provides a number of benefits to help teams collaborate and ship high quality software faster. A few of these benefits are:
+<h4 id="benefits">Benefits of registering your schema</h4>
 
-* Powering editor tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo)
-* Empowering better code reviews and safer changes with [schema validation](./schema-validation.html)
-* Having a single point of knowledge for all teams to view through the [Apollo schema explorer](https://engine.apollographql.com)
-* Sharing upcoming changes with [schema tags](#schema-tags)
-* Protecting the server along with the [Apollo operation registry](./operation-registry.html)
-* Having a historical view of how a schema changes with the [Apollo schema history tab in Engine](#history)
+By keeping your schema up-to-date in Apollo's schema registry, you can get a number of workflow benefits through integrations with Apollo's other tools:
 
-<h2 id="setup">Publishing a schema</h2>
+- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo), which provides built-in linting on queries by validating against the schema in your registry, and annotates fields on your queries with performance indicators collected in Apollo's trace warehouse.
+- [Schema validation](./schema-validation.html), which creates a diff between your local schema and the last schema uploaded to the registry, and validates this diff against live traffic seen on your endpoint to make sure you never accidentally deploy a breaking schema change to production.
+- The [Schema History](#history), which keeps track of all the changes made to your schema over time.
+- The [Schema Explorer](https://engine.apollographql.com), which precisely links the fields in your schema to clients and queries that are using them.
 
-Publishing schemas to the Apollo schema registry is done by pushing a GraphQL service to Engine. A service represents information about the schema and how it can be run. Part of this push includes registering the service's schema in the schema registry.
+<h2 id="setup">Using the Schema Registry</h2>
 
-To begin using the schema registry, the first step that needs to be done is pushing a service into the registry. This is done by using the [`apollo` command line interface (CLI)](https://npm.im/apollo).
+To get started using Apollo's schema registration service, you'll need to configure your repository to be an Apollo project by:
 
-<h3 id="install-apollo-cli">Install Apollo CLI</h3>
+1. Installing the Apollo CLI
+1. Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`
+1. Creating an `apollo.config.js` file at the root of your project and adding the right configuration
 
-To install the [`apollo`](https://npm.im/apollo) CLI, ensure that `node` and `npm` are installed, then run:
+### Install the Apollo CLI
+
+To install the [`apollo` CLI](https://npm.im/apollo), ensure that `node` and `npm` are both installed, then run:
 
 ```bash
 npm install --global apollo
 ```
 
-> Note: This guide will utilize the global installation method, but the `apollo` command can also be installed in a project's `devDependencies` and used via [`npm-scripts`](https://docs.npmjs.com/misc/scripts) or [`npx`](https://npm.im/npx).
+> **Note:** This guide will utilize the global installation method, but the `apollo` command can also be installed in a project's `devDependencies` and used via [`npm-scripts`](https://docs.npmjs.com/misc/scripts) or [`npx`](https://npm.im/npx).
 
-<h3 id="publish">Pushing a service</h3>
+### Get your Engine API key
 
-Once the `apollo` command is installed, the `apollo service:push` command is used to publish a schema to Apollo Engine.
+To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. Once you have your API key, add it to your `.env` file like so:
 
-To push a service, start the GraphQL server and run the following command, substituting the appropriate GraphQL endpoint URL and an API key:
-
-> An API key can be obtained from a service's _Settings_ menu within the [Engine dashboard](https://engine.apollographql.com/).
-
-```bash
-apollo service:push --key="<API_KEY>" --endpoint="https://example.com/graphql"
+```
+ENGINE_API_KEY=service:foobar:d1rzyrmanmrZXxTTQLxghX
 ```
 
-> For accuracy, it's best to retrieve the schema from a running GraphQL server (with introspection enabled), though local files representing a schema can also be used. See the [configuration options](../references/apollo-config.html) for more information.
+The Apollo CLI uses your Engine API key to authenticate with the registry when it uploads your schema.
 
-<h3 id="viewing-schema">Viewing a published schema</h3>
+> **Note:** Make sure your `.env` file is in the root of your project so the Apollo CLI knows where to find it. You can also export `ENGINE_API_KEY` as an environment variable.
 
-Now that the service has been pushed, it can be viewed by going to [Engine](https://engine.apollographql.com) and browsing to the service's dashboard. The schema that was pushed should now appear with overal information about its number of types and fields, as well as full information about every type, argument, and description of the schema. With this done, teams can now use productivity boosters like the [Apollo VS Code extension](./editor-plugins.html)
+### Create an `apollo.config.js` file
 
-<h2 id="schema-tags">Schema tags</h2>
+The commands executed through the Apollo CLI will be looking for your Apollo config to inform their behavior. Visit the [Apollo config docs](/docs/references/apollo-config.html#service-config) for full details on how to set up your `apollo.config.js` file in your application.
 
-Product cycles move incredibly fast and coordination of teams is critical to shipping features quickly. To enable this coordination, the Apollo schema registry allows teams to push proposed or future versions of their schema to the registry so teams can use them in their editors, validate against them, and have a center point of truth even for the future of their graph.
-
-There are two parts to getting the most out of schema tags. The first is pushing the tagged schema to the registry:
-
-<h3 id="publishing-a-tag">Publishing a tag</h3>
-
-Publishing a tagged version of a schema is done using the same command as publishing the initial schema. In fact, the `apollo service:push` command publishes a schema under a tag called `current`. To publish a tagged version, run the server with the new schema and then push the service:
-
-```bash
-apollo service:push --key="<API_KEY>" --endpoint="https://example.com/graphql" --tag=beta
-```
-
-The only change in this push is the addition of the `--tag` flag on the end of the push command.
-
-<h3 id="sending-tagged-metrics">Running a tagged schema</h3>
-
-To get the most out of using tagged schemas, teams can send metrics to [Engine](https://engine.apollographql.com) associated with this tag. This enables a single service to be tracked in production, staging, and any other environment a schema is being run. To track metrics with a schema, make sure the latest Apollo Server is installed and turn on tagging in one of two ways:
-
-1. Starting up the service with an environment variable called `ENGINE_SCHEMA_TAG` will link metrics sent to Engine with the value of that environment variable. This is the best way to associate metrics so that the schema tag isn't hardcoded into the server.
-2. Alternatively, schema tag can be set within the `engine` settings of Apollo Server 2.2 and up:
+To set up schema registration, you'll need to configure a source that the CLI can fetch your schema from like so:
 
 ```js
-const server = new ApolloServer({
-  // rest of normal server settings
-  engine: {
-    schemaTag: 'beta',
-  },
-});
+module.exports = {
+  service: {
+    endpoint: {
+      url: "http://localhost:4000"
+    }
+    // OR
+    localSchemaFile: './path/to/schema.graphql'
+  }
+};
 ```
 
-Both the new version of the schema, as well as its performance and error metrics can be viewed using [Engine](https://engine.apollographql.com) and can even be used with [schema validation](./schema-validation.html).
+### CLI commands
 
-<h2 id="history">Schema history</h2>
+Once you have the Apollo CLI installed, your Engine API key set up, and your Apollo config created, you will be ready to start connecting to the schema registry. The main commands to interface with the registry are:
 
-As your schema grows and evolves to meet the needs of your product, it is helpful to see a history of changes for a team. This allows everyone to know when new features were introduced, when old fields were removed, and even link back to the commit that caused the change. Apollo Engine provides all the tooling needed to track this history in a simple way. Every time your schema is updated, you can simply run the [`apollo service:push`](#publish) command to keep an up to date history of your schema.
+- `apollo service:push`: upload a new schema to the registry
+- `apollo service:download`: download a schema from the registry
+- `apollo service:check`: compare the local schema against running traffic and validate if proposed changes will break any live queries
 
-Each time a schema is published, it becomes the basis for comparison for validating future schemas and avoiding breaking changes. Therefore, a service should be pushed to [Engine](https://engine.apollographql.com) each time a new schema is deployed.
+Type `apollo service --help` for full details on the commands available in the CLI.
 
-This is best accomplished from automatic steps within a continuous integration workflow and an example CircleCI configuration is available below.
+<h2 id="push">Uploading a schema</h2>
 
-In order to keep provide accurate analysis of breaking changes, it important to run the `apollo service:push` command each time the schema is deployed. This can be done by configuring continuous integration to run `apollo service:push` automatically on the `master` branch (or the appropriate mainline branch).
+You publish a schema to the registry by running `apollo service:push` from within your repository. The CLI will know where to fetch your local schema from based on the configuration you gave in your `apollo.config.js` file. Each time a new version of your schema is published, it is logged in your schema history and it becomes the basis of comparison for `apollo service:check`.
 
-Below is a sample configuration for pushing a schema using CircleCI:
+Here's what running `apollo service:push` will look like:
 
-```yaml
+```
+~/Development/apollo/example$ apollo service:push
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
+
+id      schema        tag
+──────  ────────────  ───────
+190330  example-4218  current
+```
+
+### Hooking into CI
+
+To get the full value out of Apollo's platform, the schema registry should be an accurate representation of what's running live on your services. To achieve this, you should add the `apollo service:push` command to your continuous delivery pipeline so that your schema is pushed to the registry on every deploy. This is how you will maintain accurate schema change tracking, schema change validation, schema documentation, etc.
+
+Here is a sample configuration for pushing a schema using CircleCI:
+
+```yaml line=13,29-31
 version: 2
 
 jobs:
@@ -122,14 +122,58 @@ jobs:
       # commands against it
       - run: sleep 5
 
-      # This will authenticate using the `ENGINE_API_KEY` environment
-      # variable. If the GraphQL server is available elsewhere than
-      # http://localhost:4000/graphql, set it with `--endpoint=<URL>`.
-
-      # When running on the 'master' branch, publish the latest version
+      # When running on the 'master' branch, push the latest version
       # of the schema to Apollo Engine.
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             apollo service:push --tag=master
           fi
+```
+
+<h2 id="history">Viewing schema change history</h2>
+
+Changes made to your schema over time can be tracked in Apollo's UI in Engine by browsing to the History page in your service.
+
+Once you have uploaded your schema, you can view it through [Apollo's UI in Engine](https://engine.apollographql.com) by browsing to the History page in your Service. The published schema will appear in your history log along with a list of changes comparing it to the previously published versions of your schema. You can view the full contents of the most recently published version of your schema in the Explorer page.
+
+<img src="../images/schema-history.png" width="100%" alt="Schema history page in the Engine UI">
+
+> **Note:** in addition to pushing on deploy, registering the schema on the `master` branch can provide a granular history of schema changes. This is often useful for teams without continuous delivery
+
+<h2 id="schema-tags">Managing environments</h2>
+
+Product cycles move fast, and it's common for a schemas to be slightly different across environments as changes make their way through your system. To accommodate for this, the schema registry allows each schema to be registered under a "schema tag". Tags are mostly commonly used to represent environments, but can also be used to represent things like branches and future schemas.
+
+There are two parts to setting up schema tags:
+
+1. Configuring each `service:push` to send along a tag with each schema publish.
+1. Configuring metrics sent from your server to send along a tag with each trace.
+
+### Register a schema to a tag
+
+To register your schema to a specific tag, simply add the `--tag=<TAG>` flag to your push command:
+
+```bash
+apollo service:push --tag=beta
+```
+
+> **Note:** Untagged publishes to the registry will be associated with the default tag, `current`.
+
+### Send tagged metrics
+
+Tagging both schemas publishes and metrics sent enables a single service to be tracked across production, staging, and any other environments running a schema.
+
+Configure the metrics sent to [Engine](https://engine.apollographql.com) from your server to send a tag with each trace in one of two ways:
+
+1. Starting up the service with an environment variable called `ENGINE_SCHEMA_TAG`. This will link metrics sent to Engine with the value of that environment variable. This is the best way to associate metrics so that the schema tag isn't hardcoded into the server.
+1. Alternatively, add the `schemaTag` option to your Apollo Server configuration (only works for Apollo Server 2.2+):
+
+```js line=5
+const server = new ApolloServer({
+  ...
+  engine: {
+    apiKey: "<ENGINE_API_KEY>",
+    schemaTag: "beta"
+  }
+});
 ```
