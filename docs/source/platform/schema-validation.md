@@ -35,7 +35,7 @@ View full details at: https://engine.apollographql.com/service/example-1234/chec
 
 <h3 id="algorithm">Change algorithm</h3>
 
-The schema change algorithm uses utilities from the [graphql](https://www.npmjs.com/package/graphql) package to generate a schema diff and identify potentially breaking changes. It then checks with Apollo's trace warehouse to see if any of the changes in the diff will affect active clients and clients.
+The Apollo validation algorithm takes a schema diff and checks Apollo's trace warehouse to see if any of the changes in the diff will affect active queries and clients. We've written an Apollo version of the diffing algorithm from [graphql](https://www.npmjs.com/package/graphql) because the potential list of breaking changes is different and more complex when we have a list of operations to check against.
 
 The following list enumerates which changes types are potentially breaking and the conditions on which each change type will _fail the `apollo service:check` command_.
 
@@ -76,6 +76,8 @@ The following list enumerates which changes types are potentially breaking and t
 A failed `apollo schema:check` command will exit with a non-0 exit code and fail CI checks on purpose! There are actually many cases where breaking changes can be made intentionally, but should be treated thoughtfully and with intention. Here's an example:
 
 - Changing the return type of a field with queries actively using it is safe **if and only if** the new return type contains the same selection options that all active queries were using the old return type.
+
+> **Note:** With a GitHub status check, to allow continuous integration to complete without failing early, ignore the exit code of the `apollo service:check` command. The exit code can be ignored by appending `|| echo 'validation failed'` to the command call.
 
 <h3 id="severity">Change severity</h3>
 
