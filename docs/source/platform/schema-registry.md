@@ -3,18 +3,9 @@ title: Track schema change history
 description: Connect to the Apollo schema registry and track changes in your schema over time
 ---
 
-The [GraphQL schema](https://www.apollographql.com/docs/tutorial/schema.html) is the center point of all GraphQL applications. It creates an enforceable contract between clients and servers, it is its own self-updating API documentation, and it provides powerful development workflows thanks to its type safety. As GraphQL scales in an organization and as GraphQL schemas grow, it becomes really important to have tools to help your team safely evolve your schema over time. At scale, you might have hundreds or thousands of clients in the world making queries that rely on fields, types, and arguments in your schema that are impossible to track without tooling.
+As GraphQL scales in an organization, teams often find that growing and evolving their schema over time becomes difficult to manage. Product teams want to move fast with GraphQL, but they also want reassurance that their code changes won't break existing clients. At scale, you might have hundreds of clients querying against a single schema. How can we ensure adding or removing a field, type, or argument won't break existing clients?
 
-At Apollo, we're driven to help teams be successful with GraphQL both at the initial adoption phase and as they scale GraphQL across their organization. As such, the [Apollo Platform](/docs/intro/platform.html) provides a free schema registration service for teams of all sizes to use. Much like version control for your code, the Schema Registry allows you to evolve your API over time while keeping a record of when each change was made and help you catch breaking changes before they're every deployed.
-
-<h4 id="benefits">Benefits of registering your schema</h4>
-
-By keeping your schema up-to-date in Apollo's schema registry, you can get a number of workflow benefits through integrations with Apollo's other tools:
-
-- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo), which provides built-in linting on queries by validating against the schema in your registry, and annotates fields on your queries with performance indicators collected in Apollo's trace warehouse.
-- [Schema validation](./schema-validation.html), which creates a diff between your local schema and the last schema uploaded to the registry, and validates this diff against live traffic seen on your endpoint to make sure you never accidentally deploy a breaking schema change to production.
-- The [Schema History](#history), which keeps track of all the changes made to your schema over time.
-- The [Schema Explorer](https://engine.apollographql.com), which precisely links the fields in your schema to clients and queries that are using them.
+The [Apollo platform](/docs/intro/platform.html) includes a free schema registration service to help teams of all sizes easily evolve their API over time. Just like it's important to track source code in a version control system, it's a [best practice](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) to track the definition of your graph in a schema registry. Once a team registers its schema with Apollo, developers have visibility into when a change was made, who made the change, and the type of change. The registry also supports tracking multiple versions of the graph (for example, staging vs. production).
 
 <h2 id="setup">Using the Schema Registry</h2>
 
@@ -134,11 +125,9 @@ jobs:
 
 Changes made to your schema over time can be tracked in Apollo's UI in Engine by browsing to the History page in your service.
 
-Once you have uploaded your schema, you can view it through [Apollo's UI in Engine](https://engine.apollographql.com) by browsing to the History page in your Service. The published schema will appear in your history log along with a list of changes comparing it to the previously published versions of your schema. You can view the full contents of the most recently published version of your schema in the Explorer page.
+Once you have uploaded your schema, you can view it through [in Apollo Engine](https://engine.apollographql.com) by browsing to the History page in your Service. The published schema will appear in your history log along with a list of changes comparing it to the previously published versions of your schema. You can view the full contents of the most recently published version of your schema in the Explorer page.
 
 <img src="../images/schema-history.png" width="100%" alt="Schema history page in the Engine UI">
-
-> **Note:** in addition to pushing on deploy, registering the schema on the `master` branch can provide a granular history of schema changes. This is often useful for teams without continuous delivery
 
 <h2 id="schema-tags">Managing environments</h2>
 
@@ -177,3 +166,12 @@ const server = new ApolloServer({
   }
 });
 ```
+
+<h2 id="benefits">Tools that use the schema registry</h2>
+
+By keeping your schema up-to-date in Apollo's schema registry, you can get a number of workflow benefits through integrations with Apollo's other tools:
+
+- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo), which provides built-in linting on queries by validating against the schema in your registry, and annotates fields on your queries with performance indicators collected in Apollo's trace warehouse.
+- [Schema validation](./schema-validation.html), which creates a diff between your local schema and the last schema uploaded to the registry, and validates this diff against live traffic seen on your endpoint if you're on an [Apollo Team or Enterprise plan](https://www.apollographql.com/plans). This makes sure you never accidentally deploy a breaking schema change to production.
+- The [Schema History](#history), which keeps track of all the changes made to your schema over time.
+- The [Schema Explorer](https://engine.apollographql.com), which precisely links the fields in your schema to clients and queries that are using them.
