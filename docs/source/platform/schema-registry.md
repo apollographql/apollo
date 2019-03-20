@@ -1,5 +1,5 @@
 ---
-title: Track schema change history
+title: Tracking schema change history
 description: Connect to the Apollo schema registry and track changes in your schema over time
 ---
 
@@ -11,11 +11,20 @@ The [Apollo platform](/docs/intro/platform.html) includes a free schema registra
 
 To get started using Apollo's schema registration service, you'll need to configure your repository to be an Apollo project by:
 
-1. Installing the Apollo CLI
-1. Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`
-1. Creating an `apollo.config.js` file at the root of your project and adding the right configuration
+1. [Installing the Apollo CLI](#install-cli)
+1. [Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`](#api-key)
+1. [Creating an `apollo.config.js` file at the root of your project and adding the right configuration](#apollo-config)
 
-### Install the Apollo CLI
+#### CLI commands
+
+Once you have the Apollo CLI installed, your Engine API key set up, and your Apollo config created, you will be ready to start connecting to the schema registry. The main commands to interface with the registry are:
+
+- `apollo service:push`: upload a new schema to the registry
+- `apollo service:check`: compare the local schema against running traffic and validate if proposed changes will break any live queries
+
+Type `apollo service --help` for full details on the commands available in the CLI.
+
+<h3 id="install-cli">Install the Apollo CLI</h3>
 
 To install the [`apollo` CLI](https://npm.im/apollo), ensure that `node` and `npm` are both installed, then run:
 
@@ -25,7 +34,7 @@ npm install --global apollo
 
 > **Note:** This guide will utilize the global installation method, but the `apollo` command can also be installed in a project's `devDependencies` and used via [`npm-scripts`](https://docs.npmjs.com/misc/scripts) or [`npx`](https://npm.im/npx).
 
-### Get your Engine API key
+<h3 id="api-key">Get your Engine API key</h3>
 
 To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. Once you have your API key, add it to your `.env` file like so:
 
@@ -37,7 +46,7 @@ The Apollo CLI uses your Engine API key to authenticate with the registry when i
 
 > **Note:** Make sure your `.env` file is in the root of your project so the Apollo CLI knows where to find it. You can also export `ENGINE_API_KEY` as an environment variable.
 
-### Create an `apollo.config.js` file
+<h3 id="apollo-config">Create an `apollo.config.js` file</h3>
 
 The commands executed through the Apollo CLI will be looking for your Apollo config to inform their behavior. Visit the [Apollo config docs](/docs/references/apollo-config.html#service-config) for full details on how to set up your `apollo.config.js` file in your application.
 
@@ -54,16 +63,6 @@ module.exports = {
   }
 };
 ```
-
-### CLI commands
-
-Once you have the Apollo CLI installed, your Engine API key set up, and your Apollo config created, you will be ready to start connecting to the schema registry. The main commands to interface with the registry are:
-
-- `apollo service:push`: upload a new schema to the registry
-- `apollo service:download`: download a schema from the registry
-- `apollo service:check`: compare the local schema against running traffic and validate if proposed changes will break any live queries
-
-Type `apollo service --help` for full details on the commands available in the CLI.
 
 <h2 id="push">Uploading a schema</h2>
 
@@ -135,10 +134,10 @@ Product cycles move fast, and it's common for a schemas to be slightly different
 
 There are two parts to setting up schema tags:
 
-1. Configuring each `service:push` to send along a tag with each schema publish.
-1. Configuring metrics sent from your server to send along a tag with each trace.
+1. [Configuring each `service:push` to send along a tag with each schema publish.](#registry-tag)
+1. [Configuring metrics sent from your server to send along a tag with each trace.](#metrics-tag)
 
-### Register a schema to a tag
+<h3 id="registry-tag">Register a schema to a tag</h3>
 
 To register your schema to a specific tag, simply add the `--tag=<TAG>` flag to your push command:
 
@@ -148,7 +147,7 @@ apollo service:push --tag=beta
 
 > **Note:** Untagged publishes to the registry will be associated with the default tag, `current`.
 
-### Send tagged metrics
+<h3 id="metrics-tag">Send tagged metrics</h3>
 
 Tagging both schemas publishes and metrics sent enables a single service to be tracked across production, staging, and any other environments running a schema.
 
