@@ -44,7 +44,7 @@ Let's think about the data we will need to expose in order to build our app. Our
 * Book launch trips if the user is logged in
 * Cancel launch trips if the user is logged in
 
-Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function.
+Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function (between the backticks in this portion: <code>gql``</code>).
 
 _src/schema.js_
 

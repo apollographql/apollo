@@ -67,6 +67,6 @@ TODO: Add in this section after Apollo VSCode works for server development
 
 <h3 id="help">Where can I get help?</h3>
 
-We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Slack](https://www.apollographql.com/slack) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
+We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Spectrum](https://spectrum.chat/apollo) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
 
 If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the Edit on GitHub link at the bottom to open a new pull request or open an issue on the repository.
