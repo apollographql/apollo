@@ -1,5 +1,5 @@
 ---
-title: Validate schema changes
+title: Validating schema changes
 description: Check if proposed schema changes are safe or breaking by comparing against live server traffic
 ---
 
@@ -7,37 +7,24 @@ As GraphQL scales within an organization, it becomes harder to evolve the schema
 
 As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
 
+> **Note:** Schema validation is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/). If you already have an Engine account, upgrade to a Team plan [here](https://engine.apollographql.com/trypro).
+
 <h2 id="schema-validation">How it works</h2>
 
-Schema validation is possible through the use of Apollo's schema registry and Apollo's trace warehouse, both of which are free to use.
+The schema validation mechanism utilizes both Apollo's schema registry and Apollo's trace warehouse. The **schema registry** is used to identify a "schema diff" with changes between schema versions. The **trace warehouse** is used to identify which clients and which operations are using which fields in the schema in real time. We compare each change in the schema diff against the live usage data to determine if that change will be a "breaking change" for any clients.
 
-The **schema registry** is used to identify changes between schema versions. The first step of validation is to create the "schema diff" between your local schema (the schema to validate) and the previously registered schema in the registry. By taking the diff between these two schemas, we identify which changes are being proposed and can validate them against live traffic one-by-one.
+Here's how it works:
 
-The **trace warehouse** is used to identify which clients and which operations are using which fields in the schema, in real time. The second step of schema validation is to make sure that none of the proposed changes in the schema diff will affect live traffic in a breaking way. This is done by comparing the fields in the schema diff to the usage of fields seen by the trace warehouse.
+1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
+1. Engine creates a diff between the local schema and the most recently published schema in the registry.
+1. Engine fetches a list of all operations sent to your service in the last day (time window is [configurable](#cli-advanced)).
+1. Engine walks through the schema diff change-by-change and compares against the operation list to see if the changes will affect the behavior of any operations.
+1. Engine will return the schema diff and indicate any breaking changes found.
+1. The CLI will print the output of this check with a link to _view more details in the Engine UI_.
 
-If it is determined by the [change algorithm](#algorithm) that one of the proposed changes to a field could be breaking, and that field is still being actively used by clients, the schema validation check will fail. Schema checks are run through the Apollo CLI using the `apollo schema:check` command. Each invocation of the command will trigger a check to be run in registry. The registry will perform the diffing algorithm and talk to the trace warehouse to determine of any of the changes will break live-running clients.
+<h3 id="algorithm">Breaking change detection</h3>
 
-The output of the check is printed to the console, and a URL is provided to see a detailed view of the results in Apollo Engine like so:
-
-```console
-~/Development/apollo/example$ apollo schema:check
-  ✔ Loading Apollo Project
-  ✔ Checking service for changes
-
-
-Change   Code           Description
-───────  ─────────────  ───────────────────────────
-FAILURE  FIELD_REMOVED  `User.name` was removed
-
-
-View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
-```
-
-<h3 id="algorithm">Change algorithm</h3>
-
-The schema change algorithm uses utilities from the [graphql](https://www.npmjs.com/package/graphql) package to generate a schema diff and identify potentially breaking changes. It then checks with Apollo's trace warehouse to see if any of the changes in the diff will affect active clients and clients.
-
-The following list enumerates which changes types are potentially breaking and the conditions on which each change type will _fail the `apollo service:check` command_.
+Engine's cloud service uses an algorithm to detect breaking changes in a schema diff. It follows the following rules to determine which potentially breaking change types should actually _fail_ the `apollo service:check` command and return a non-0 exit code.
 
 - **Removals**
   <ul>
@@ -71,33 +58,22 @@ The following list enumerates which changes types are potentially breaking and t
     <li id="ARG_DEFAULT_VALUE_CHANGE">`ARG_DEFAULT_VALUE_CHANGE` Default value added or changed for argument on a field that is used by at least one operation</li>
   </ul>
 
-> **Note:** This is not an exhaustive list of all possible change types, just breaking change types. Visit the [`graphql` package's repository](https://github.com/graphql/graphql-js/blob/9e404659a15d59c5ce12aae433dd2a636ea9eb82/src/utilities/findBreakingChanges.js#L39) for more details on changes types.
+> **Note:** This is not an exhaustive list of all possible schema change types, just _breaking_ change types. Visit the [`graphql` package's repository](https://github.com/graphql/graphql-js/blob/9e404659a15d59c5ce12aae433dd2a636ea9eb82/src/utilities/findBreakingChanges.js#L39) for more details on schema changes types.
 
-A failed `apollo schema:check` command will exit with a non-0 exit code and fail CI checks on purpose! There are actually many cases where breaking changes can be made intentionally, but should be treated thoughtfully and with intention. Here's an example:
+A failed `apollo schema:check` command will exit with a non-0 exit code and fail CI checks on purpose! There are actually many cases where it is safe to make a potentially breaking change, as long as the change is made intentionally.
 
-- Changing the return type of a field with queries actively using it is safe **if and only if** the new return type contains the same selection options that all active queries were using the old return type.
+Since breaking changes are detected using live traffic, your service will need active metrics for the change algorithm to detect failures. If there are no metrics associated with your service, _all_ changes will be assigned the `NOTICE` severity as opposed to the `FAILURE` severity.
 
-<h3 id="severity">Change severity</h3>
-
-The change algorithm identifies two change severities for each diff in a check:
-
-1. **Failure**: Either the schema is invalid or the changes _will_ break current clients.
-2. **Notice**: This change is safe and will not break current clients.
-
-Changes are assigned a severity based on the operation reported against the schema(chosen with `--tag`, `current` by default). If an operation uses an affected element, then the change is marked as a `Failure`. When any change in the set is marked as a failure, the overall status of validation dictates the CLI's exit code and GitHub status.
-
-> Note: If no metrics are associated with the tag, then all changes will be assigned `Notice`.f
-
-### CLI output
+### Validation output
 
 Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that has been configured to be an Apollo project.
 
 > **Note:** [Skip ahead](#setup) to the setup section for details on how to configure your project for schema change validation.
 
-Running the `apollo service:check` will output the diff of all schema changes found, and highlight changes determined to be breaking as `FAILING`. All other changes in the diff will be labeled with `NOTICE`. Here's a sample of what the output looks like:
+Running the `apollo service:check` command will output the diff of all schema changes found and highlight changes determined to be breaking as `FAILURE`. Here's an example:
 
 ```console
-~/Development/apollo/example$ apollo schema:check
+~example$ apollo schema:check
   ✔ Loading Apollo Project
   ✔ Checking service for changes
 
@@ -111,19 +87,17 @@ NOTICE   FIELD_ADDED    `User.friends` was added
 View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
 ```
 
-A details URL will be generated if there are _any_ changes found by the diff algorithm, even if none of the changes are failing.
-
-### View full change details
-
-Following the details link from the CLI will take you to a special URL on your Engine account where the details of each change in your check and its impact are enumerated in the UI. This URL is unique to each `service:check`.
+If there are any changes to the schema, `FAILURE` or `NOTICE`, a URL to Engine will be generated with details showing which clients and operations are affected by the changes specifically:
 
 <img src="../images/schema-checks.png" width="100%" alt="Schema checks page in the Engine UI">
 
-If you [set up your checks on GitHub](#github), the "Details" link in your checks will take you to this special URL as well.
+The Service Check page in Engine will have full details on the changes in the diff and which clients are affected by the changes, if any.
+
+> **Note:** If you [set up your checks on GitHub](#github), the "Details" link in your checks will take you to this special URL as well.
 
 <h2 id="setup">Set up schema validation</h2>
 
-You will need to be actively sending traces to the Apollo trace warehouse and registering schemas to the Apollo schema registry to properly use schema validation. Follow these guides if you have not set these up:
+You will need to be actively sending traces to the Apollo trace warehouse and registering schemas to the Apollo schema registry to properly use schema validation. Follow these guides to set those up:
 
 1. [Set up trace reporting to Apollo Engine](/docs/platform/setup-analytics.html) (either through Apollo Server 2+ or the Engine proxy).
 1. [Set up schema registration in your continuous delivery pipeline](/docs/platform/schema-registry.html).
@@ -139,13 +113,13 @@ If you have set up schema registration, your project may already have its `.env`
 apollo service:check
 ```
 
-The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). By default, the check verifies the schema diff against the past day and can be [configured](#cli-advanced) for a longer time range.
+The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The check command validates against traffic from the past day by default, but this time window can be [configured](#cli-advanced) to be a longer range.
 
 > **Note:** The Apollo CLI will be looking in your Apollo config for a location from which to fetch your local schema and using your ENGINE_API_KEY to authenticate its requests with the Engine service.
 
 <h3 id="service-check-on-ci">Run validation on each commit</h3>
 
-We highly recommended that you set up validation as part of your continuous integration workflow (e.g. CircleCI, etc.). This will help you detect potential problems automatically and display them directly on a pull-requests status checks.
+We highly recommended that you add validation to your continuous integration workflow (e.g. Jenkins, CircleCI, etc.). In doing so, you can detect potential problems automatically and display the results of checks directly on pull requests.
 
 Here's a example of how to add a schema validation check to CircleCI:
 
@@ -178,7 +152,7 @@ jobs:
       - run: npx apollo service:check
 ```
 
-> Note: with a GitHub status check, to allow continuous integration to complete without failing early, ignore the exit code of the `apollo service:check` command. The exit code can be ignored by appending `|| echo 'validation failed'` to the command call.
+> **Note:** With a GitHub status check, to allow continuous integration to complete without failing early, ignore the exit code of the `apollo service:check` command. The exit code can be ignored by appending `|| echo 'validation failed'` to the command call.
 
 <h3 id="github">GitHub integration</h3>
 
@@ -199,7 +173,7 @@ schema registry allows each schema to be registered under a “schema tag”. Ta
 ![multiple service checks](../img/schema-validation/service-checks.png)
 </div>
 
-<h3 id="cli-advanced">Advanced configuration</h3>
+<h2 id="cli-advanced">Adjusting validation parameters</h2>
 
 Depending on the requirements of your application, you may want to configure the timeframe to validate operations against. You can do so by providing a `validationPeriod` flag to the CLI. The timeframe will always end at "now", and go back in time by the amount specified.
 
