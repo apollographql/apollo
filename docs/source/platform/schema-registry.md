@@ -20,7 +20,7 @@ To get started using Apollo's schema registration service, you'll need to config
 Once you have the Apollo CLI installed, your Engine API key set up, and your Apollo config created, you will be ready to start connecting to the schema registry. The main commands to interface with the registry are:
 
 - `apollo service:push`: push a new schema to the registry
-- `apollo service:check`: compare the local schema against running traffic and validate if proposed changes will break any live queries
+- `apollo service:check`: compare the local schema against collected usage metrics and validate if proposed changes will break any live queries
 
 Type `apollo service --help` for full details on the commands available in the CLI.
 
@@ -36,7 +36,7 @@ npm install --global apollo
 
 <h3 id="api-key">Get your Engine API key</h3>
 
-To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. Once you have your API key, add it to your `.env` file like so:
+To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. If you already have a service, get your API key by visiting your service's settings page. Once you have your API key, add it to your `.env` file like so:
 
 ```
 ENGINE_API_KEY=service:foobar:d1rzyrmanmrZXxTTQLxghX
@@ -149,7 +149,7 @@ apollo service:push --tag=beta
 
 <h3 id="metrics-tag">Send tagged metrics</h3>
 
-Tagging both schemas pushes and metrics sent enables a single service to be tracked across production, staging, and any other environments running a schema.
+Tagging both schemas pushes and metrics sent enables a single service to be tracked across production, staging, and any other environments exposing a schema.
 
 Configure the metrics sent to [Engine](https://engine.apollographql.com) from your server to send a tag with each trace in one of two ways:
 
