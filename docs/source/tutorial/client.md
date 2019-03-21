@@ -130,7 +130,7 @@ Open `src/index.js` and add the following lines of code:
 
 _src/index.js_
 
- ```js lines=3,7,9
+ ```js line=3,7,9
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
