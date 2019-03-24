@@ -168,7 +168,7 @@ Let's import `paginateResults` and replace the `launches` resolver function in t
 
 _src/resolvers.js_
 
-```js line=1
+```js line=1,5-26
 const { paginateResults } = require('./utils');
 
 module.exports = {
@@ -194,7 +194,11 @@ module.exports = {
             allLaunches[allLaunches.length - 1].cursor
           : false,
       };
-    }
+    },
+    launch: (_, { id }, { dataSources }) =>
+      dataSources.launchAPI.getLaunchById({ launchId: id }),
+     me: async (_, __, { dataSources }) =>
+      dataSources.userAPI.findOrCreateUser(),
   }
 };
 ```
