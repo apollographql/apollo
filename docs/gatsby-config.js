@@ -29,8 +29,8 @@ module.exports = {
           ],
           Platform: [
             'platform/schema-registry',
-            'platform/client-awareness',
             'platform/schema-validation',
+            'platform/client-awareness',
             'platform/operation-registry',
             'platform/editor-plugins',
             'platform/tracing',
