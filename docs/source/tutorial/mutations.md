@@ -103,8 +103,6 @@ const client = new ApolloClient({
       authorization: localStorage.getItem('token'),
     },
   }),
-  resolvers,
-  typeDefs,
 });
 
 cache.writeData({
