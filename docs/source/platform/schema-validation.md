@@ -241,3 +241,44 @@ apollo service:check \
 # Only validate against operations that account for at least 3% of total operation volume
 --queryCountThresholdPercentage=3
 ```
+
+<h2 id="compatible-changes">Compatible Changes</h2>
+
+The following changes are compatible with existing clients by default, since they will not affect the behavior of clients.
+
+#### Optional arguments
+
+Optional arguments include changes that add any input that can be nullable.
+Existing operations will not include the new value. The behavior of the clients will
+stay the same provided the result of the operation remains the same with a <code>null</code> input.
+
+  <ul>
+    <li id="OPTIONAL_ARG_ADDED"><code>OPTIONAL_ARG_ADDED</code> Nullable argument added to a field</li>
+    <li id="NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT"><code>NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT</code> Nullable field added to an input object</li>
+  </ul>
+
+#### Additions
+
+Additions are changes that will not affect client behavior, since clients
+will not access the new schema elements.
+
+  <ul>
+    <li id="FIELD_ADDED"><code>FIELD_ADDED</code> Field added to a type</li>
+    <li id="TYPE_ADDED"><code>TYPE_ADDED</code> Type added to the schema</li>
+    <li id="VALUE_ADDED_TO_ENUM"><code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients contain a switch case on the enum and do not include the `default`, this change could cause unexpected behavior</li>
+  </ul>
+
+#### Deprecations
+
+Deprecations will not affect the behavior of the clients directly, since
+they are a signal to developer to avoid the schema element rather than a
+behavior change.
+
+  <ul>
+    <li id="FIELD_DEPRECATED"><code>FIELD_DEPRECATED</code> Field deprecated</li>
+    <li id="FIELD_DEPRECATION_REMOVED"><code>FIELD_DEPRECATION_REMOVED</code> Field no longer deprecated</li>
+    <li id="FIELD_DEPRECATED_REASON_CHANGE"><code>FIELD_DEPRECATED_REASON_CHANGE</code> Reason for deprecation changed</li>
+    <li id="ENUM_DEPRECATED"><code>ENUM_DEPRECATED</code> Enum deprecated</li>
+    <li id="ENUM_DEPRECATION_REMOVED"><code>ENUM_DEPRECATION_REMOVED</code> Enum no longer deprecated</li>
+    <li id="ENUM_DEPRECATED_REASON_CHANGE"><code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation changed</li>
+  </ul>
