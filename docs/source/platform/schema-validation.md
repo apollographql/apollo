@@ -24,7 +24,7 @@ Here's how it works:
 
 <h3 id="algorithm">Breaking change detection</h3>
 
-Engine's cloud service uses an algorithm to detect breaking changes in a schema diff. It uses the following rules to determine which potentially breaking change types should actually _fail_ the `apollo service:check` command and return a non-0 exit code. If the changes are deployed without additional scrutiny, clients could experience unexpected behavior.
+Engine's cloud service uses an algorithm to detect breaking changes in a schema diff. The following sections describe the rules that determine when a change type _fails_ the `apollo service:check` command, which returns a non-0 exit code. If these changes are deployed without additional scrutiny, clients could experience unexpected behavior.
 
 #### Removals
 
@@ -32,19 +32,19 @@ Each of these changes removes a schema element can be actively used by an operat
 
 <ul>
   <li id="FIELD_REMOVED">
-    <code>FIELD_REMOVED</code> A field referenced by at least one operation was removed
+    <code>FIELD_REMOVED</code> Field used by at least one operation was removed
   </li>
   <li id="TYPE_REMOVED">
-    <code>TYPE_REMOVED</code> A referenced type(scalar, object) was removed
+    <code>TYPE_REMOVED</code> Type(scalar, object) used by at least one operation was removed
   </li>
   <li id="ARG_REMOVED">
-    <code>ARG_REMOVED</code> A referenced argument was removed
+    <code>ARG_REMOVED</code> Argument on a field used by at least one operation was removed
   </li>
   <li id="TYPE_REMOVED_FROM_UNION">
-    <code>TYPE_REMOVED_FROM_UNION</code> A type in a union used by at least one operation was removed
+    <code>TYPE_REMOVED_FROM_UNION</code> Type in a union used by at least one operation was removed
   </li>
   <li id="INPUT_FIELD_REMOVED">
-    <code>INPUT_FIELD_REMOVED</code> A field in an input type used by at least one operation was removed
+    <code>INPUT_FIELD_REMOVED</code> Field in an input type referenced by argument on field used by at least one operation was removed
   </li>
   <li id="VALUE_REMOVED_FROM_ENUM">
     <code>VALUE_REMOVED_FROM_ENUM</code> A value in an enum used by at least one operation was removed
@@ -76,13 +76,13 @@ Each of these changes updates an existing schema element. Any operation that use
     <code>FIELD_CHANGED_TYPE</code> Field used by at least one operation changed return type
   </li>
   <li id="INPUT_FIELD_CHANGED_TYPE">
-    <code>INPUT_FIELD_CHANGED_TYPE</code> Field in input object referenced in field argument used by at least one operation changed type
+    <code>INPUT_FIELD_CHANGED_TYPE</code> Field in input object referenced by argument on field used by at least one operation changed type
   </li>
   <li id="TYPE_CHANGED_KIND">
     <code>TYPE_CHANGED_KIND</code> Type used by at least one operation changed, ex: scalar to object or enum to union
   </li>
   <li id="ARG_CHANGED_TYPE">
-    <code>ARG_CHANGED_TYPE</code> Argument used by at least one operation changed a type
+    <code>ARG_CHANGED_TYPE</code> Argument on field used by at least one operation changed a type
   </li>
 </ul>
 
@@ -92,10 +92,10 @@ These changes add a type to an existing union or interface. Any operation that u
 
 <ul>
   <li id="TYPE_ADDED_TO_UNION">
-    <code>TYPE_ADDED_TO_UNION</code> New type added to a union used by at least one operation
+    <code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least one operation
   </li>
   <li id="TYPE_ADDED_TO_INTERFACE">
-    <code>TYPE_ADDED_TO_INTERFACE</code> New interface added to an object used by at least one operation
+    <code>TYPE_ADDED_TO_INTERFACE</code> Interface added to an object used by at least one operation
   </li>
 </ul>
 
@@ -105,7 +105,7 @@ These changes update the default value for an argument. If an operation does not
 
 <ul>
   <li id="ARG_DEFAULT_VALUE_CHANGE">
-    <code>ARG_DEFAULT_VALUE_CHANGE</code> Default value added or changed for argument on a field that is used by at least one operation
+    <code>ARG_DEFAULT_VALUE_CHANGE</code> Default value added or changed for argument on a field used by at least one operation
   </li>
 </ul>
 
