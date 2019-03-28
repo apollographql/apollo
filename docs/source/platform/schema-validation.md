@@ -24,9 +24,11 @@ Here's how it works:
 
 <h3 id="algorithm">Breaking change detection</h3>
 
-Engine's cloud service uses an algorithm to detect breaking changes in a schema diff. It follows the following rules to determine which potentially breaking change types should actually _fail_ the `apollo service:check` command and return a non-0 exit code.
+Engine's cloud service uses an algorithm to detect breaking changes in a schema diff. It uses the following rules to determine which potentially breaking change types should actually _fail_ the `apollo service:check` command and return a non-0 exit code. If the changes are deployed without additional scrutiny, clients could experience unexpected behavior.
 
 #### Removals
+
+Each of these changes removes a schema element can be actively used by an operation. If removed, the GraphQL layer will return an error to the dependent operation.
 
 <ul>
   <li id="FIELD_REMOVED">
@@ -54,6 +56,8 @@ Engine's cloud service uses an algorithm to detect breaking changes in a schema 
 
 #### Required arguments
 
+Each of these changes adds a required input to a schema element. If an existing operation uses the schema element, the GraphQL layer will return an error to the dependent operation.
+
 <ul>
   <li id="REQUIRED_ARG_ADDED">
     <code>REQUIRED_ARG_ADDED</code> Non-nullable argument added to field used by at least one operation
@@ -64,6 +68,8 @@ Engine's cloud service uses an algorithm to detect breaking changes in a schema 
 </ul>
 
 #### In-place updates
+
+Each of these changes updates an existing schema element. Any operation that uses the schema element could receive an error or in some cases an unexpected result.
 
 <ul>
   <li id="FIELD_CHANGED_TYPE">
@@ -82,6 +88,8 @@ Engine's cloud service uses an algorithm to detect breaking changes in a schema 
 
 #### Type extensions
 
+These changes add a type to an existing union or interface. Any operation that uses the union or interface could receive an unexpected result depending on the fragment spreads requested.
+
 <ul>
   <li id="TYPE_ADDED_TO_UNION">
     <code>TYPE_ADDED_TO_UNION</code> New type added to a union used by at least one operation
@@ -91,7 +99,9 @@ Engine's cloud service uses an algorithm to detect breaking changes in a schema 
   </li>
 </ul>
 
-#### Optional arguments
+#### Default arguments
+
+These changes update the default value for an argument. If an operation does not specify a value for this argument and relies on the value, the operation can experience unexpected results, which can lead to modified client behavior.
 
 <ul>
   <li id="ARG_DEFAULT_VALUE_CHANGE">
