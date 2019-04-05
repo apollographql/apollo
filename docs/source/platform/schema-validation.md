@@ -128,16 +128,22 @@ Running the `apollo service:check` command will output the diff of all schema ch
 ```console
 ~example$ apollo service:check
   ✔ Loading Apollo Project
-  ✔ Checking service for changes
+  ✔ Validated local schema against tag prod on service engine
+  ✔ Compared 8 schema changes against 110 operations over the last 24 hours
+  ✖ Found 3 breaking changes and 5 compatible changes
+    → breaking changes found
 
+FAIL    ARG_REMOVED                `ServiceMutation.checkSchema` arg `gitContext` was removed
+FAIL    FIELD_REMOVED              `Schema.fieldCount` was removed
+FAIL    FIELD_REMOVED              `Schema.typeCount` was removed
 
-Change   Code           Description
-───────  ─────────────  ──────────────────────────────────
-FAILURE  FIELD_REMOVED  `User.name` was removed
-NOTICE   FIELD_ADDED    `User.friends` was added
+PASS    FIELD_ADDED                `SchemaTag.schemaRepoID` was added
+PASS    FIELD_CHANGED_TYPE         `ServiceMutation.uploadPartialSchema` changed type from `UploadPartialSchemaResponse!` to `CompositionResult!`
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.fieldCount` is no longer deprecated
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.typeCount` is no longer deprecated
+PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
 
-
-View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
+View full details at: https://engine.apollographql.com/service/example-1234/check/<DETAILS>
 ```
 
 If there are any changes to the schema, `FAILURE` or `NOTICE`, a URL to Engine will be generated with details showing which clients and operations are affected by the changes specifically:
