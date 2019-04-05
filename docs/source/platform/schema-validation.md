@@ -126,7 +126,7 @@ Running a schema validation check is as simple as running `apollo service:check`
 Running the `apollo service:check` command will output the diff of all schema changes found and highlight changes determined to be breaking as `FAILURE`. Here's an example:
 
 ```console
-~example$ apollo service:check
+~example$ npx apollo service:check --tag=prod
   ✔ Loading Apollo Project
   ✔ Validated local schema against tag prod on service engine
   ✔ Compared 8 schema changes against 110 operations over the last 24 hours
@@ -169,7 +169,8 @@ For the `apollo service:check` command to be configured properly, you will also 
 If you have set up schema registration, your project may already have its `.env` file and `apollo.config.js` file configured. Once you've got these set up, running your schema check is as simple as running:
 
 ```console
-apollo service:check
+$ npm install apollo
+$ npx apollo service:check
 ```
 
 The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The check command validates against traffic from the past day by default, but this time window can be [configured](#cli-advanced) to be a longer range.
@@ -256,7 +257,7 @@ Two other parameters for customizing the results of `service:check` are threshol
 If you have requests for other filtering or threshold mechanisms, we'd love to hear them! Please feel free to submit a [feature request](https://github.com/apollographql/apollo-tooling/issues/new?template=feature-request.md) or PR to the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repo.
 
 ```bash
-apollo service:check \
+npx apollo service:check \
 # Validate the schema against operations that have run in the last 5 days
 --validationPeriod=P5D \
 # Only validate against operations that have run at least 5 times during the 5 day duration
