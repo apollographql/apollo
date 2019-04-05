@@ -142,7 +142,7 @@ View full details at: https://engine.apollographql.com/service/example-1234/chec
 
 If there are any changes to the schema, `FAILURE` or `NOTICE`, a URL to Engine will be generated with details showing which clients and operations are affected by the changes specifically:
 
-<img src="../images/schema-checks.png" width="100%" alt="Schema checks page in the Engine UI">
+<img src="../img/schema-validation/service-check-page.png" width="100%" alt="Service check page in the Engine UI">
 
 The Service Check page in Engine will have full details on the changes in the diff and which clients are affected by the changes, if any.
 
@@ -211,7 +211,7 @@ jobs:
 
 <div style="text-align:center">
 
-![GitHub Status View](../img/schema-history/github-check.png)
+![GitHub Status View](../img/schema-validation/github-check.png)
 
 </div>
 
@@ -227,7 +227,7 @@ Tags mostly commonly represent environments and can also indicate branches or fu
 
 <div style="text-align:center">
 
-![multiple service checks](../img/schema-validation/service-checks.png)
+![multiple service checks](../img/schema-validation/multi-github-check.png)
 
 </div>
 
