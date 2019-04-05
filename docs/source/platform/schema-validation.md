@@ -126,23 +126,29 @@ Running a schema validation check is as simple as running `apollo service:check`
 Running the `apollo service:check` command will output the diff of all schema changes found and highlight changes determined to be breaking as `FAILURE`. Here's an example:
 
 ```console
-~example$ apollo service:check
+~example$ npx apollo service:check --tag=prod
   ✔ Loading Apollo Project
-  ✔ Checking service for changes
+  ✔ Validated local schema against tag prod on service engine
+  ✔ Compared 8 schema changes against 110 operations over the last 24 hours
+  ✖ Found 3 breaking changes and 5 compatible changes
+    → breaking changes found
 
+FAIL    ARG_REMOVED                `ServiceMutation.checkSchema` arg `gitContext` was removed
+FAIL    FIELD_REMOVED              `Schema.fieldCount` was removed
+FAIL    FIELD_REMOVED              `Schema.typeCount` was removed
 
-Change   Code           Description
-───────  ─────────────  ──────────────────────────────────
-FAILURE  FIELD_REMOVED  `User.name` was removed
-NOTICE   FIELD_ADDED    `User.friends` was added
+PASS    FIELD_ADDED                `SchemaTag.schemaRepoID` was added
+PASS    FIELD_CHANGED_TYPE         `ServiceMutation.uploadPartialSchema` changed type from `UploadPartialSchemaResponse!` to `CompositionResult!`
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.fieldCount` is no longer deprecated
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.typeCount` is no longer deprecated
+PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
 
-
-View full details at: https://engine.apollographql.com/service/example-1234/checks?<DETAILS>
+View full details at: https://engine.apollographql.com/service/example-1234/check/<DETAILS>
 ```
 
 If there are any changes to the schema, `FAILURE` or `NOTICE`, a URL to Engine will be generated with details showing which clients and operations are affected by the changes specifically:
 
-<img src="../images/schema-checks.png" width="100%" alt="Schema checks page in the Engine UI">
+<img src="../img/schema-validation/service-check-page.png" width="100%" alt="Service check page in the Engine UI">
 
 The Service Check page in Engine will have full details on the changes in the diff and which clients are affected by the changes, if any.
 
@@ -163,7 +169,8 @@ For the `apollo service:check` command to be configured properly, you will also 
 If you have set up schema registration, your project may already have its `.env` file and `apollo.config.js` file configured. Once you've got these set up, running your schema check is as simple as running:
 
 ```console
-apollo service:check
+$ npm install apollo
+$ npx apollo service:check
 ```
 
 The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The check command validates against traffic from the past day by default, but this time window can be [configured](#cli-advanced) to be a longer range.
@@ -211,7 +218,7 @@ jobs:
 
 <div style="text-align:center">
 
-![GitHub Status View](../img/schema-history/github-check.png)
+![GitHub Status View](../img/schema-validation/github-check.png)
 
 </div>
 
@@ -227,7 +234,7 @@ Tags mostly commonly represent environments and can also indicate branches or fu
 
 <div style="text-align:center">
 
-![multiple service checks](../img/schema-validation/service-checks.png)
+![multiple service checks](../img/schema-validation/multi-github-check.png)
 
 </div>
 
@@ -250,7 +257,7 @@ Two other parameters for customizing the results of `service:check` are threshol
 If you have requests for other filtering or threshold mechanisms, we'd love to hear them! Please feel free to submit a [feature request](https://github.com/apollographql/apollo-tooling/issues/new?template=feature-request.md) or PR to the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repo.
 
 ```bash
-apollo service:check \
+npx apollo service:check \
 # Validate the schema against operations that have run in the last 5 days
 --validationPeriod=P5D \
 # Only validate against operations that have run at least 5 times during the 5 day duration
