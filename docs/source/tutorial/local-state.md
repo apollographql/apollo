@@ -85,6 +85,7 @@ import gql from 'graphql-tag';
 
 import Pages from './pages';
 import Login from './pages/login';
+import injectStyles from './styles';
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
