@@ -6,7 +6,7 @@ description: Integrate Apollo tools with the existing parts of your workflow
 One of our fundamental beliefs is that our Apollo workflows should hook into and enhance the workflows you're already using. As such, we've built a number of integrations into third-party services that are common in the developer world:
 
 1. [**GitHub**](#github) –– Ensure the safe evolution of your GraphQL schema by adding schema change validation directly to your continuous integration and GitHub checks.
-1. [**Slack**](#slack) –– Get a daily summary of key information from your server, including the overall request rate, error rate, and performance latenty. Set up notifications for noteworthy events in your service, like increases in errors or particularly slow response times for important queries.
+1. [**Slack**](#slack) –– Get a daily summary of key information from your server, including the overall request rate, error rate, and performance latency. Set up notifications for noteworthy events in your service, like increases in errors or particularly slow response times for important queries.
 1. [**Datadog**](#datadog) –– Forward the key metrics and performance data available in the Engine UI to Datadog as well.
 
 <h2 id="github">GitHub</h2>
@@ -62,7 +62,7 @@ jobs:
           fi
 ```
 
-> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your shcema in it. See other options [here](/docs/platform/schema-registry.html#setup).
+> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See other options [here](/docs/platform/schema-registry.html#setup).
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Engine. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 
@@ -105,7 +105,7 @@ We've constructed the report provided to give you an actionable summary of what'
 
 <h3 id="slack-notifications">Notifications</h3>
 
-In the Engine UI you can configure notifications that are triggered on the performance data of your service, like error percentages and request latencies. This is particularly useful for detecting anomolies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
+In the Engine UI you can configure notifications that are triggered on the performance data of your service, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
 
 - **Request rate:**  requests per minute
 - **Request duration:** p50/p95/p99 service time
