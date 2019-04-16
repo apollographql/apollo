@@ -22,7 +22,7 @@ The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apol
 
 <h2 id="getting-started">Getting started</h2>
 
-To get all of the benefits of the VS Code experience, its best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](./schema-registry.html#publish) to the Apollo schema registry. Once that is done, two steps are needed:
+To get all of the benefits of the VS Code experience, it's best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](./schema-registry.html#publish) to the Apollo schema registry. Once that is done, two steps are needed:
 
 1. Create an `apollo.config.js` at the root of the project
 2. Copy an API key from the Engine dashboard of the published service

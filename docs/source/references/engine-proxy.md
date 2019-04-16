@@ -3,6 +3,8 @@ title: Apollo Engine proxy (deprecated)
 description: Configuring and running the Engine proxy
 ---
 
+> DEPRECATED: The engine proxy is not maintained, and to integrate with the Apollo platform's metrics, we recommend using Apollo Server's native reporting functionality. To integrate a non-Node server, take a look at our guide [here](https://www.apollographql.com/docs/platform/setup-analytics#other-servers)
+
 ## Background
 
 The Apollo Engine proxy is a small process that can be run in front of your GraphQL server. Its primary functions are:
@@ -10,16 +12,16 @@ The Apollo Engine proxy is a small process that can be run in front of your Grap
 1. Proving a **full query caching** layer, which is controlled using the [`cacheControl`](https://github.com/apollographql/apollo-cache-control) directive and configured to be either in-memory or shared through Memcache.
 1. Automatically **persisting queries** through a caching layer that can map query IDs to full query strings, allowing clients to send just query IDs over the wire.
 
-The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), and [persisted queries](https://www.apollographql.com/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead running the proxy.
+The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), [persisted queries](https://www.apollographql.com/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries), and [full query caching](https://github.com/apollographql/apollo-server/blob/release-2.5.0/docs/source/features/caching.md) (starting at Apollo Server 2.5) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead of running the proxy.
 
 That said, the proxy is still a good option for getting set up with Engine in a few **specific** circumstances:
 1. You are not using Apollo Server, your server has an [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) plugin, and you want to get **performance metrics** insights.
-1. You are relying on **full query caching** in your infrastructure.
 1. You are not using Apollo Server and you want to use Apollo's **automatic persisted queries**.
 
 ## Setup
 
 To get started with using Engine through the Engine proxy, you will need to:
+
 1. [Install a package in your GraphQL server that adds `extension` data (in the Apollo Tracing format) to each request's response.](#Instrument-your-server)
 1. [Get your Engine API key.](#Get-your-API-key)
 1. [Configure and deploy the Engine proxy to run in front of your server using either Docker or npm.](#Run-the-proxy)
@@ -74,7 +76,7 @@ Option 1: Running the proxy with Apollo Server
 
 The two cases where you should be running the Engine proxy with Apollo Server are:
 1. You are using Apollo Server 1 and want the Apollo platform features that Engine brings.
-1. You are using Apollo Server 2+ and want full query caching using the Engine proxy.
+1. You are using Apollo Server >2 & <2.5+ and want full query caching using the Engine proxy.
 
 > **Note:** If you're using Apollo Server but neither of these conditions apply to you, you should be using the built-in features of Apollo Server 2+ instead of the Engine proxy.
 
@@ -209,10 +211,10 @@ As it is JSON file, all object keys must be quoted, and trailing commas and comm
 
 Next, make sure you have a working [Docker installation](https://docs.docker.com/engine/installation/) and type the following lines in your shell:
 
-{% codeblock %}
+```
 $ ENGINE_PORT=3000
-$ docker run --env "ENGINE_CONFIG=$(cat engine-config.json)" -p "${ENGINE_PORT}:${ENGINE_PORT}" gcr.io/mdg-public/engine:{% proxyDockerVersion %}
-{% endcodeblock %}
+$ docker run --env "ENGINE_CONFIG=$(cat engine-config.json)" -p "${ENGINE_PORT}:${ENGINE_PORT}" gcr.io/mdg-public/engine:1.1
+```
 
 > **Note:** We use [semver](https://semver.org/) to name Engine Proxy release versions, and we release version 1.2.3 under the tags `1.2.3`, `1.2`, and `1`.  If you want to pin to a precise version, use the `1.2.3` tag. If you'd like to take patch upgrades but not minor upgrades, use the `1.2` tag. If you'd like to take minor upgrades, use the `1` tag.
 
@@ -307,7 +309,7 @@ If you've got a proxy running and successfully configured to talk to your cloud 
 
 ## Feature configuration
 
-The following proxy features require specific setup steps to get working. Full query caching is the only proxy feature that hasn't been built-in to Apollo Server 2.
+The following proxy features require specific setup steps to get working.
 1. [Automatically **persisting** your queries](#automatic-persisted-queries)
 1. [**Caching** full query responses](#caching)
 1. [Integrating with your **CDN**](#cdn)
@@ -778,7 +780,7 @@ View our [full proxy configuration doc](/docs/references/proxy-config.html) for 
 
 ## Release notes
 
-View our [proxy release notes doc](/docs/references/release-notes.html) for documentation on each proxy version that's been released and a changelog of what that version contained.
+View our [proxy release notes doc](/docs/references/engine-proxy-release-notes) for documentation on each proxy version that's been released and a changelog of what that version contained.
 
 ## Troubleshooting
 
