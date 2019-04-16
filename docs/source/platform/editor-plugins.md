@@ -72,7 +72,7 @@ module.exports = {
 
 > Linking to the local schema won't provide all features such as switching schema tags and performance metrics.
 
-More information about configuring an Apollo project can be found [here](../platform/apollo-config.html)
+Please see [Configuring Apollo Projects](https://www.apollographql.com/docs/references/apollo-config) for more information.
 
 <h3 id="client-only-schemas">Client-only schemas</h3>
 
@@ -146,8 +146,7 @@ The Apollo GraphQL platform supports publishing multiple versions (tags) of a sc
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
-The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file.
-There is more information about configuring an Apollo projects [here](../platform/apollo-config.html).
+The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file. Please see [Configuring Apollo Projects](https://www.apollographql.com/docs/references/apollo-config) for more configuration guidance.
 
 Other errors may be caused from an old version of a published schema. To reload a schema, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Reload Schema" option.
 

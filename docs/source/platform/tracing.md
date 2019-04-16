@@ -79,7 +79,7 @@ becomes
 query Foo{user(id:""){name timezone...Baz}}fragment Baz on User{dob}
 ```
 
-> A reference implementation of query signatures is available [here](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts).
+> See the reference implementation of [query signatures](https://github.com/apollographql/apollo-tooling/blob/7e1f62a8635466e653d52064745bf8c66bb7dd10/packages/apollo-graphql/src/operationId.ts#L60) for more information.
 
 <h3 id="signatures-sensitive-data">Signatures and sensitive data</h3>
 
