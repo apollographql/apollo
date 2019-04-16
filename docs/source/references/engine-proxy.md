@@ -3,6 +3,8 @@ title: Apollo Engine proxy (deprecated)
 description: Configuring and running the Engine proxy
 ---
 
+> DEPRECATED: The engine proxy is not maintained, and to integrate with the Apollo platform's metrics, we recommend using Apollo Server's native reporting functionality. To integrate a non-Node server, take a look at our guide [here](https://www.apollographql.com/docs/platform/setup-analytics#other-servers)
+
 ## Background
 
 The Apollo Engine proxy is a small process that can be run in front of your GraphQL server. Its primary functions are:
@@ -10,11 +12,10 @@ The Apollo Engine proxy is a small process that can be run in front of your Grap
 1. Proving a **full query caching** layer, which is controlled using the [`cacheControl`](https://github.com/apollographql/apollo-cache-control) directive and configured to be either in-memory or shared through Memcache.
 1. Automatically **persisting queries** through a caching layer that can map query IDs to full query strings, allowing clients to send just query IDs over the wire.
 
-The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), and [persisted queries](https://www.apollographql.com/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead running the proxy.
+The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), [persisted queries](https://www.apollographql.com/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries), and [full query caching](https://github.com/apollographql/apollo-server/blob/release-2.5.0/docs/source/features/caching.md) (strarting at Apollo Server 2.5) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead running the proxy.
 
 That said, the proxy is still a good option for getting set up with Engine in a few **specific** circumstances:
 1. You are not using Apollo Server, your server has an [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) plugin, and you want to get **performance metrics** insights.
-1. You are relying on **full query caching** in your infrastructure.
 1. You are not using Apollo Server and you want to use Apollo's **automatic persisted queries**.
 
 ## Setup
@@ -74,7 +75,7 @@ Option 1: Running the proxy with Apollo Server
 
 The two cases where you should be running the Engine proxy with Apollo Server are:
 1. You are using Apollo Server 1 and want the Apollo platform features that Engine brings.
-1. You are using Apollo Server 2+ and want full query caching using the Engine proxy.
+1. You are using Apollo Server >2 & <2.5+ and want full query caching using the Engine proxy.
 
 > **Note:** If you're using Apollo Server but neither of these conditions apply to you, you should be using the built-in features of Apollo Server 2+ instead of the Engine proxy.
 
@@ -307,7 +308,7 @@ If you've got a proxy running and successfully configured to talk to your cloud 
 
 ## Feature configuration
 
-The following proxy features require specific setup steps to get working. Full query caching is the only proxy feature that hasn't been built-in to Apollo Server 2.
+The following proxy features require specific setup steps to get working.
 1. [Automatically **persisting** your queries](#automatic-persisted-queries)
 1. [**Caching** full query responses](#caching)
 1. [Integrating with your **CDN**](#cdn)
