@@ -43,6 +43,7 @@ If you are not using Apollo Server and would like to gain client awareness,
 please reach out to opensource [at] apollographql.com to work with us to add
 support to your server language of choice.
 
+> NOTE: Apollo Engine Proxy [deprecated] does not provide any support for client identity.
 ## Use Cases
 
 ### Isolating Clients

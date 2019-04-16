@@ -49,7 +49,8 @@ module.exports = {
           References: [
             'references/apollo-config',
             'references/apollo-engine',
-            'references/engine-proxy'
+            'references/engine-proxy',
+            'references/engine-proxy-release-notes'
           ]
         }
       }
