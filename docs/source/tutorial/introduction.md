@@ -14,7 +14,7 @@ Apollo is a complete platform for implementing a graph over your data. It includ
 Why do you need a graph? Today, one of the most difficult parts of building an app is figuring out your data layer. Often, there's many data sources you need to fetch from and many clients you need to support. When you layer a graph in between your services and your UI, you can remove a lot of complexity from your data fetching logic and ship features faster.
 
 <div style="text-align:center">
-![Graph layer](../images/graph-layer.png)
+  <img src="../images/graph-layer.png" alt="Graph layer">
 </div>
 
 **[GraphQL](https://www.graphql.org/)** is the specification that we'll be using to communicate between our graph API and client. The spec itself is language-agnostic and unopinionated, so we're choosing to implement GraphQL with the Apollo platform.
@@ -26,7 +26,7 @@ In this tutorial, we'll build an interactive app for reserving your spot on an u
 Here's what the finished app will look like:
 
 <div style="text-align:center">
-![Space explorer](../images/space-explorer.png)
+  <img src="../images/space-explorer.png" alt="Space explorer">
 </div>
 
 The app has five screens: a login screen, a list of launches, a launch detail, a profile page, and a cart. The graph API powering our space app connects to a REST API and a SQLite database. Don't worry if you're unfamiliar with those technologies, you don't need to know how to build a REST API or SQLite database from scratch in order to complete the tutorial.

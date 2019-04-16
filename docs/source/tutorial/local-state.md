@@ -25,7 +25,7 @@ import gql from 'graphql-tag';
 export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
-    cartItems: [Launch]!
+    cartItems: [ID!]!
   }
 
   extend type Launch {
@@ -85,6 +85,7 @@ import gql from 'graphql-tag';
 
 import Pages from './pages';
 import Login from './pages/login';
+import injectStyles from './styles';
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
@@ -248,6 +249,12 @@ export default function LogoutButton() {
     </ApolloConsumer>
   );
 }
+
+const StyledButton = styled("button")(menuItemClassName, {
+  background: "none",
+  border: "none",
+  padding: 0
+});
 ```
 
 When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.

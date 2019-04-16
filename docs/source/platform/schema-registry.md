@@ -1,11 +1,15 @@
 ---
-title: Tracking schema change history
-description: Connect to the Apollo schema registry and track changes in your schema over time
+title: Tracking your GraphQL schema
+description: A central hub for your GraphQL API
 ---
 
-As GraphQL scales in an organization, teams often find that growing and evolving their schema over time becomes difficult to manage. Product teams want to move fast with GraphQL, but they also want reassurance that their code changes won't break existing clients. At scale, you might have hundreds of clients querying against a single schema. How can we ensure that adding or removing a field, type, or argument won't break existing clients and cause a service outage?
+Apollo includes a schema registry that serves as a [central hub](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) for tracking your GraphQL schema. Adopting a shared schema registry for your project has many benefits:
 
-The [Apollo platform](/docs/intro/platform.html) includes a free schema registration service to help teams of all sizes easily evolve their API over time. Just like it's important to track source code in a version control system, it's a [best practice](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) to track the definition of your graph in a schema registry. Once a team registers its schema with Apollo, developers have visibility into when a change was made, who made the change, and the type of change. The registry also supports tracking multiple variants of the graph (for example, staging vs. production).
+- Unlike introspection, which provides a snapshot of a particular server's current schema, the registry serves as a global source of truth for the schema. In small projects this frees you from always needing a running server to access the schema. At scale, it avoids issues related to running multiple servers that may not always be in sync (eg, rolling updates).
+- Much like a source control system, Apollo's schema registry tracks a full history of a schema and how it changed over time. This is valuable for understanding and collaborating on a GraphQL API, especially as your team grows.
+- Having a registry allows you to disable introspection in production – a recommended best practice for good security.
+- Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) automatically fetch schema definitions from the registry.
+- Apollo's registry lets you track related _variants_ of a schema, like staging or alpha versions. It's helpful to have these schema definitions handy without having to juggle running servers that implement them.
 
 <h2 id="setup">Using the Schema Registry</h2>
 

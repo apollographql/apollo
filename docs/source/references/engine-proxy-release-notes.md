@@ -23,7 +23,7 @@ Because this is a minor release, if you are using Engine via the Docker containe
 
 <h3 id="v1.0.6" title="v1.0.6">1.0.6 - 2018-04-06</h3>
 
-* New `reporting.noTraceErrors` option to disable sending error traces to Apollo servers. Use this if your error messages may contain [PII](https://en.wikipedia.org/wiki/Personally_identifiable_information). If you are interested in a more fine-grained way to configure this, contact <a href="javascript:void(0);" onclick="Intercom('showNewMessage')">Apollo support</a>.
+* New `reporting.noTraceErrors` option to disable sending error traces to Apollo servers. Use this if your error messages may contain [personal data](https://en.wikipedia.org/wiki/Personal_data). If you are interested in a more fine-grained way to configure this, contact <a href="https://engine.apollographql.com/support">Apollo support</a>.
 * Fix problems running `ApolloEngine` when a corporate HTTP proxy is configured with an environment variable such as `$HTTP_PROXY`. (Specifically, make the default [`innerHost` option to `engine.listen`](../setup-node.html#api-engine.listen) actually be `127.0.0.1` as documented rather than the unspecified interface; the previously implemented default was unintentional as well as the cause of the corporate proxy bug.)
 
 <h3 id="v1.0.5" title="v1.0.5">1.0.5 - 2018-04-05</h3>
