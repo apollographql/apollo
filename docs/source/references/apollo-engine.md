@@ -212,7 +212,7 @@ The legal terms and policies that apply to Apollo's corporate websites and custo
 
 #### Where can I get more help?
 
-If you have any questions (including interest in a Data Processing Addendum or DPA), or encounter any issues, please reach out to <a href="javascript:Intercom('showNewMessage');">support</a>.
+If you have any questions (including interest in a Data Processing Addendum or DPA), or encounter any issues, please reach out to <a href="https://engine.apollographql.com/support">support</a>.
 
 <!--
 ######################################################################
