@@ -30,8 +30,16 @@ This might sound confusing at first, but it will start to make more sense once w
 
 First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
 
-```js line=1,5
+```js line=4,13
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+const { createStore } = require('./utils');
 const resolvers = require('./resolvers');
+
+const LaunchAPI = require('./datasources/launch');
+const UserAPI = require('./datasources/user');
+
+const store = createStore();
 
 const server = new ApolloServer({
   typeDefs,
@@ -40,6 +48,10 @@ const server = new ApolloServer({
     launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store })
   })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
 });
 ```
 
@@ -167,7 +179,7 @@ Let's import `paginateResults` and replace the `launches` resolver function in t
 
 _src/resolvers.js_
 
-```js line=1
+```js line=1,5-26
 const { paginateResults } = require('./utils');
 
 module.exports = {
@@ -193,7 +205,11 @@ module.exports = {
             allLaunches[allLaunches.length - 1].cursor
           : false
       };
-    }
+    },
+    launch: (_, { id }, { dataSources }) =>
+      dataSources.launchAPI.getLaunchById({ launchId: id }),
+     me: async (_, __, { dataSources }) =>
+      dataSources.userAPI.findOrCreateUser(),
   }
 };
 ```

@@ -1,5 +1,5 @@
 ---
-title: "7. Update data with mutations"
+title: '7. Update data with mutations'
 description: Learn how to update data with the Mutation component
 ---
 
@@ -103,8 +103,6 @@ const client = new ApolloClient({
       authorization: localStorage.getItem('token'),
     },
   }),
-  resolvers,
-  typeDefs,
 });
 
 cache.writeData({

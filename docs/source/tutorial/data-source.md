@@ -148,7 +148,9 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js line=1,3,4,6,10-13
+```js line=3,5,6,8,12-15
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
 const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');
@@ -162,6 +164,10 @@ const server = new ApolloServer({
     launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store })
   })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
 });
 ```
 
