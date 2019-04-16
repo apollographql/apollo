@@ -3,7 +3,9 @@ title: "2. Hook up your data sources"
 description: Connect REST and SQL data to your graph
 ---
 
-Now that we've constructed our schema, we need to hook up our data sources to our graph API. Graph APIs are extremely flexible because you can layer them on top of any service, including REST APIs, databases, or gRPC services.
+Time to accomplish: _10 Minutes_
+
+Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any business logic, REST APIs, databases, or gRPC services.
 
 Apollo makes connecting these services to your graph simple with our data source API. An **Apollo data source** is a class that encapsulates all of the data fetching logic, as well as caching and deduplication, for a particular service. By using Apollo data sources to hook up your services to your graph API, you're also following best practices for organizing your code.
 
@@ -46,12 +48,14 @@ _src/datasources/launch.js_
 
 ```js
 async getAllLaunches() {
-  const res = await this.get('launches');
-  return res && res.length ? res.map(l => this.launchReducer(l)) : [];
+  const response = await this.get('launches');
+  return Array.isArray(response)
+    ? response.map(launch => this.launchReducer(launch))
+    : [];
 }
 ```
 
-The Apollo REST data sources has helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned launches in the `res` variable. Then, the `getAllLaunches` method maps over the launches and transforms the response from our REST endpoint with `this.launchReducer`. If there are no launches, an empty array is returned.
+The Apollo REST data sources has helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above, `this.get('launches')`, makes a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the returned launches in the `response` variable. Then, the `getAllLaunches` method maps over the launches and transforms the response from our REST endpoint with `this.launchReducer`. If there are no launches, an empty array is returned.
 
 Now, we need to write our `launchReducer` method in order to transform our launch data into the shape our schema expects. We recommend this approach in order to decouple your graph API from business logic specific to your REST API. First, let's recall what our `Launch` type looks like in our schema. You don't have to copy this code:
 
@@ -99,8 +103,8 @@ _src/datasources/launch.js_
 
 ```js
 async getLaunchById({ launchId }) {
-  const res = await this.get('launches', { flight_number: launchId });
-  return this.launchReducer(res[0]);
+  const response = await this.get('launches', { flight_number: launchId });
+  return this.launchReducer(response[0]);
 }
 
 getLaunchesByIds({ launchIds }) {
@@ -116,7 +120,7 @@ Now that we've connected our REST API successfully, let's connect our database!
 
 <h2 id="database">Connect a database</h2>
 
-Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
+Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Our `package.json` already entailed these packages, thus they were installed in the first part of this tutorial with `npm install`. Also, since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
 
 <h3 id="custom-data-source">Build a custom data source</h3>
 
@@ -126,7 +130,7 @@ Here are some of the core concepts for creating your own data source:
 
 - The `initialize` method: You'll need to implement this method if you want to pass in any configuration options to your class. Here, we're using this method to access our graph API's context.
 - `this.context`: A graph API's context is an object that's shared among every resolver in a GraphQL request. We're going to explain this in more detail in the next section. Right now, all you need to know is that the context is useful for storing user information.
-- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#Using-Memcached-Redis-as-a-cache-storage-backend) to build your own, however!
+- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#using-memcached-redis-as-a-cache-storage-backend) to build your own, however!
 
 Let's go over some of the methods we created in `src/datasources/user.js` to fetch and update data in our database. You will want to reference these in the next section:
 
@@ -144,7 +148,7 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js line=3,4,10-13
+```js line=1,3,4,6,10-13
 const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');

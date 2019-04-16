@@ -14,7 +14,7 @@ Apollo is a complete platform for implementing a graph over your data. It includ
 Why do you need a graph? Today, one of the most difficult parts of building an app is figuring out your data layer. Often, there's many data sources you need to fetch from and many clients you need to support. When you layer a graph in between your services and your UI, you can remove a lot of complexity from your data fetching logic and ship features faster.
 
 <div style="text-align:center">
-![Graph layer](../images/graph-layer.png)
+  <img src="../images/graph-layer.png" alt="Graph layer">
 </div>
 
 **[GraphQL](https://www.graphql.org/)** is the specification that we'll be using to communicate between our graph API and client. The spec itself is language-agnostic and unopinionated, so we're choosing to implement GraphQL with the Apollo platform.
@@ -26,7 +26,7 @@ In this tutorial, we'll build an interactive app for reserving your spot on an u
 Here's what the finished app will look like:
 
 <div style="text-align:center">
-![Space explorer](../images/space-explorer.png)
+  <img src="../images/space-explorer.png" alt="Space explorer">
 </div>
 
 The app has five screens: a login screen, a list of launches, a launch detail, a profile page, and a cart. The graph API powering our space app connects to a REST API and a SQLite database. Don't worry if you're unfamiliar with those technologies, you don't need to know how to build a REST API or SQLite database from scratch in order to complete the tutorial.
@@ -53,7 +53,7 @@ Now the fun begins! First, you'll need to install our developer tools:
 - [Apollo DevTools for Chrome (suggested)](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) : Our Chrome extension giving you full visibility into your client.
 - [Apollo VSCode (suggested)](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo): Our editor integration that offers intelligent autocomplete, metrics, and more.
 
-Next, in your terminal, clone this repository:
+Next, in your terminal, clone [this repository](https://github.com/apollographql/fullstack-tutorial):
 
 ```bash
 git clone https://github.com/apollographql/fullstack-tutorial/
@@ -67,6 +67,6 @@ TODO: Add in this section after Apollo VSCode works for server development
 
 <h3 id="help">Where can I get help?</h3>
 
-We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Slack](https://www.apollographql.com/slack) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
+We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Spectrum](https://spectrum.chat/apollo) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
 
 If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the Edit on GitHub link at the bottom to open a new pull request or open an issue on the repository.

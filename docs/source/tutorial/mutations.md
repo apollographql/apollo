@@ -3,6 +3,8 @@ title: "7. Update data with mutations"
 description: Learn how to update data with the Mutation component
 ---
 
+Time to accomplish: _12 Minutes_
+
 With Apollo Client, updating data from a graph API is as simple as calling a function. Additionally, the Apollo Client cache is smart enough to automatically update in most cases. In this section, we'll learn how to use the `Mutation` component from `react-apollo` to login a user.
 
 <h2 id="query-component">What is a Mutation component?</h2>
@@ -22,7 +24,7 @@ import React from 'react';
 import { Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import LoginForm from '../components/login-form';
+import { LoginForm, Loading } from '../components';
 
 const LOGIN_USER = gql`
   mutation login($email: String!) {
@@ -88,7 +90,7 @@ export default function Login() {
 
 <h3 id="authenticate">Attach authorization headers to the request</h3>
 
-We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.js` where we create our `ApolloClient` and add the code below to the constructor:
+We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.js` where we create our `ApolloClient` and replace the code below for the constructor:
 
 _src/index.js_
 
@@ -100,10 +102,19 @@ const client = new ApolloClient({
     headers: {
       authorization: localStorage.getItem('token'),
     },
-  })
+  }),
+  resolvers,
+  typeDefs,
+});
+
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
+  },
 });
 ```
 
 Specifying the `headers` option on `HttpLink` allows us to read the token from `localStorage` and attach it to the request's headers each time a GraphQL operation is made.
 
-Now that we know the basics, it's time to dive deeper into mutations. In the next section, we'll practice creating more complex `Mutation` components to manage local state in our app. We'll also learn how to query local data and write a local schema.
+In the next section, we'll add the `<Login>` form to the user interface. For that, we need to learn how Apollo allows us to manage local state in our app.

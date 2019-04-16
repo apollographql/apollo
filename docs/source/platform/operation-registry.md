@@ -5,6 +5,8 @@ description: How to secure your graph with operation safelisting
 
 ## Overview
 
+> The operation registry is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/).  To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/).
+
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
 The Apollo Operation Registry allows organizations to:
@@ -20,14 +22,22 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 * Apollo Server 2.2.x (or newer).
+  * Subscriptions should be disabled when using the operation registry.  For more information, see the instructions below.  Please contact the Apollo sales team if this support is necessary.
   * To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 * A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 * An Apollo Engine API key.
-  * To grab a key, visit [Engine](https://engine.apollographql.com) and create a service.
+  * To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
 
 ### Installation steps
 
 > Make sure you've met the requirements for _Prerequisites_ above.
+
+These installation steps require access to both the client and server codebases to perform the following tasks:
+
+* The `apollo` CLI is used to search the client codebase for GraphQL operations and upload them to Apollo Engine.
+* Apollo Server is then configured with a plugin which fetches the manifest from Apollo Server and enforces safe-listing using that manifest.
+
+The following steps will walk through the steps necessary for both the client and server codebases.
 
 **1. Install the `apollo` command line tool as a development dependency of your client application:**
 
@@ -35,9 +45,9 @@ Operations defined within client applications are automatically extracted and up
 npm install apollo --save-dev
 ```
 
-> Yarn users can run `yarn add apollo --dev`.
+> Yarn users should run `yarn add apollo --dev`.
 
-**2. Register the server's schema with Apollo:**
+**2. Push your schema to the Apollo schema registry:**
 
 > If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
 
@@ -82,7 +92,7 @@ To register operations, use the following command as a reference, taking care to
 npx apollo client:push              \
     --key <ENGINE_API_KEY>               \
     --clientName <CLIENT_IDENTIFIER>     \
-    --queries="src/**/*.{ts,js,graphql}"
+    --includes="src/**/*.{ts,js,graphql}"
 ```
 
 When succesfull, the output from this command should look similar to the following:
@@ -94,7 +104,26 @@ When succesfull, the output from this command should look similar to the followi
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-**4. Enable demand control by adding the operation registry to Apollo Server.**
+**4. Disable subscription support on Apollo Server**
+
+Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline.  Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
+
+In the future, the subscription support will have its request pipeline unified with that of the main request pipeline, thus enabling plugin support and permitting the the operation registry to work with subscriptions in the same way that it works with regular GraphQL requests.
+
+To disable subscriptions support on Apollo Server 2.x, a `subscriptions: false` setting should be included on the instantiation of Apollo Server, as follows:
+
+```js line=5-6
+const server = new ApolloServer({
+  // Existing configuration
+  typeDefs,
+  resolvers,
+  // Ensure that subscriptions are disabled.
+  subscriptions: false,
+  // ...
+});
+```
+
+**5. Enable demand control by adding the operation registry to Apollo Server.**
 
 To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Engine.
 
@@ -104,15 +133,16 @@ First, add the appropriate plugin to the Apollo Server's `package.json`:
 npm install apollo-server-plugin-operation-registry
 ```
 
-> Yarn uses run: `yarn add apollo-server-plugin-operation-registry`.
+> Yarn users should run: `yarn add apollo-server-plugin-operation-registry`.
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
-```js
+```js line=8-12
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
   resolvers,
+  subscriptions: false,
   // ...
   // New configuration
   plugins: [
@@ -123,7 +153,7 @@ const server = new ApolloServer({
 });
 ```
 
-**5. Start Apollo Server with Apollo Engine enabled**
+**6. Start Apollo Server with Apollo Engine enabled**
 
 If the server was already configured to use Apollo Engine, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
@@ -135,7 +165,7 @@ ENGINE_API_KEY=<ENGINE_API_KEY> npm start
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
 
-```js
+```js line=3
 const server = new ApolloServer({
   // ...
   engine: '<ENGINE_API_KEY>',
@@ -145,7 +175,7 @@ const server = new ApolloServer({
 
 For security, it's recommended to pass the Engine API key as an environment variable so it will not be checked into version control (VCS).
 
-**6. Verification**
+**7. Verification**
 
 With the operation registry enabled, _only_ operations which have been registered will be permitted.
 
@@ -167,13 +197,74 @@ Execution forbidden
 
 Finally, to confirm that the server will allow permitted operations, try running an operation from the client.
 
+## Configuration
+
+### Selective enforcement
+
+In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
+
+To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor.  The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+
+For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
+
+```js line=12-27
+const server = new ApolloServer({
+  // Existing configuration
+  typeDefs,
+  resolvers,
+  subscriptions: false,
+  engine: "<ENGINE_API_KEY>",
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      // De-structure the object to get the HTTP `headers` and the GraphQL
+      // request `context`.  Additional validation is possible, but this
+      // function must be synchronous.  For more details, see the note below.
+      forbidUnregisteredOperations({
+        context, // Destructure the shared request `context`.
+        request: {
+          http: { headers } // Destructure the `headers` class.
+        }
+      }) {
+        // If a magic header is in place, allow any unregistered operation.
+        if (headers.get("Let-me-pass") === "Pretty please?") {
+          return false;
+        }
+
+        // Enforce operation safe-listing on all other users.
+        return true;
+      }
+    })
+  ]
+});
+```
+
+> *Note:* The `forbidUnregisteredOperations` callback must be synchronous.  If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
+
 ## Troubleshooting
+
+#### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
+
+When the server cannot fetch the manifest, the message may indicate indicate that access is denied:
+
+```xml
+Could not fetch manifest
+<?xml version='1.0' encoding='UTF-8'?>
+<Error>
+   <Code>AccessDenied</Code>
+   <Message>Access denied.</Message>
+   <Details>Anonymous caller does not have storage.objects.get access (...snipped...)</Details>
+</Error>
+```
+
+This can occur if the schema hasn't been published since the operation registry plugin was enabled.  You can publish the schema using the `apollo service:push` command.  When receiving this message on a service which has already had its schema pushed, the `apollo client:push` command can be used.  Check the above documentation for more information on how to use those commands.
 
 #### Operations aren't being forbidden or operations which should be permitted are not allowed
 
 The first step in debugging the operation registry behavior is to enable debugging. This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
-```js
+```js line=7
 const server = new ApolloServer({
   typeDefs,
   resolvers,

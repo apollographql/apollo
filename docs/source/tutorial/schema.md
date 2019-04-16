@@ -44,7 +44,7 @@ Let's think about the data we will need to expose in order to build our app. Our
 * Book launch trips if the user is logged in
 * Cancel launch trips if the user is logged in
 
-Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function.
+Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function (between the backticks in this portion: <code>gql``</code>).
 
 _src/schema.js_
 
@@ -127,7 +127,7 @@ You'll notice that the field `missionPatch` takes an argument of `size`. GraphQL
 
 There are some other less common types you might also encounter when building your graph's schema. For a full list, you can reference this handy [cheat sheet](https://devhints.io/graphql#schema).
 
-<h3 id="object">Mutation type</h3>
+<h3 id="mutation">Mutation type</h3>
 
 Now, let's define the **Mutation type**. The `Mutation` type is the entry point into our graph for modifying data. Just like the `Query` type, the `Mutation` type is a special object type.
 
@@ -135,7 +135,7 @@ _src/schema.js_
 
 ```graphql
 type Mutation {
-  # if false, signup failed -- check errors
+  # if false, booking trips failed -- check errors
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
 
   # if false, cancellation failed -- check errors
@@ -145,7 +145,7 @@ type Mutation {
 }
 ```
 
-Both the `bookTrip` and `cancelTrip` mutations take a `launchId` as an argument and return a `TripUpdateResponse`. The return type for your GraphQL mutation is completely up to you, but we recommend defining a special response type to ensure a proper response is returned back to the client. In a larger project, you might abstract this type into an interface, but for now, we're going to define `TripUpdateResponse`:
+Both the `bookTrips` and `cancelTrip` mutations take an argument and return a `TripUpdateResponse`. The return type for your GraphQL mutation is completely up to you, but we recommend defining a special response type to ensure a proper response is returned back to the client. In a larger project, you might abstract this type into an interface, but for now, we're going to define `TripUpdateResponse`:
 
 _src/schema.js_
 
@@ -186,15 +186,13 @@ The GraphQL Playground provides the ability to introspect your schema. **Introsp
 
 
 <div style="text-align:center">
-![Schema button](../images/schematab.png)
-<br></br>
+  <img src="../images/schematab.png" alt="Schema button">
 </div>
 
 You can quickly have access to the documentation of a GraphQL API via the `schema` button.
 
 <div style="text-align:center">
-![More details on a Schema Type](../images/moredetailsonatype.png)
-<br></br>
+  <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
 </div>
 
 That's all for building our schema. Let's move on to the next part of our tutorial.
