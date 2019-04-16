@@ -7,7 +7,7 @@
 
 # This lived here for a short period of time.
 /docs/resources/apollo-config.html /docs/platform/apollo-config.html
-/docs/platform/setup-analytics.md /docs/references/setup-analytics.md
+/docs/platform/setup-analytics.html /docs/references/setup-analytics.html
 
 # Redirect Removed Guides to Client & Server Docs
 /docs/guides/schema-design.html /docs/apollo-server/essentials/schema.html
