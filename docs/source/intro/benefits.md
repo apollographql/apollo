@@ -140,7 +140,7 @@ GET /api/dogs/images
 GET /api/dogs/activities
 ```
 
-With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](https://www.apollographql.com/docs/engine/query-batching.html) to batch multiple queries into a single request. 
+With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request. 
 
 <h3 id="production">Ready for production</h3>
 
