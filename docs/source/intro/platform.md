@@ -33,7 +33,7 @@ are:
    queries as part of UI components; the client manages all the hairy
    details of binding query results to the UI, managing consistency,
    caching, and so on. Apollo Client also supports an
-   exceptionally elegant approach to state managment by *extending* the
+   exceptionally elegant approach to state management by *extending* the
    GraphQL schema inside the client with additional structure. Apollo Client
    includes integrations for React, React Native, Vue, Angular, and
    other view layers.
