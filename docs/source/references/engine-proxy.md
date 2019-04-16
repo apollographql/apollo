@@ -21,6 +21,7 @@ That said, the proxy is still a good option for getting set up with Engine in a 
 ## Setup
 
 To get started with using Engine through the Engine proxy, you will need to:
+
 1. [Install a package in your GraphQL server that adds `extension` data (in the Apollo Tracing format) to each request's response.](#Instrument-your-server)
 1. [Get your Engine API key.](#Get-your-API-key)
 1. [Configure and deploy the Engine proxy to run in front of your server using either Docker or npm.](#Run-the-proxy)
