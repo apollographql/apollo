@@ -3,7 +3,7 @@ title: Validating schema changes
 description: Check if proposed schema changes are safe or breaking by comparing against live server traffic
 ---
 
-As GraphQL scales within an organization, evolving the schema to contain necessary fields only while guaranteeing that no query or client will break from a change. Some organizations take the approach of _never_ making schema changes that might be breaking, which leads to an ever-growing schema and reduced api accessibility. In reality, removing field removal and updating return types is safe with tools to guarantee that no change will ever break an active query.
+As GraphQL scales within an organization, it's important in schema evolution to keep current queries and clients in mind and avoid breaking changes. Some organizations take the approach of _never_ making schema changes that might be breaking, which leads to an ever-growing schema and reduced api accessibility. In reality, removing field removal and updating return types is safe with tools to guarantee that no change will ever break an active query.
 
 As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
 
