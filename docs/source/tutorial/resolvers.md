@@ -14,13 +14,13 @@ Up until now, our graph API hasn't been very useful. We can inspect our graph's 
 Before we can start writing resolvers, we need to learn more about what a resolver function looks like. Resolver functions accept four arguments:
 
 ```js
-fieldName: (parent, args, context, info) => data
+fieldName: (parent, args, context, info) => data;
 ```
 
-* **parent**: An object that contains the result returned from the resolver on the parent type
-* **args**: An object that contains the arguments passed to the field
-* **context**: An object shared by all resolvers in a GraphQL operation. We use the context to contain per-request state such as authentication information and access our data sources.
-* **info**: Information about the execution state of the operation which should only be used in advanced cases
+- **parent**: An object that contains the result returned from the resolver on the parent type
+- **args**: An object that contains the arguments passed to the field
+- **context**: An object shared by all resolvers in a GraphQL operation. We use the context to contain per-request state such as authentication information and access our data sources.
+- **info**: Information about the execution state of the operation which should only be used in advanced cases
 
 Remember the `LaunchAPI` and `UserAPI` data sources we created in the previous section and passed to the `context` property of `ApolloServer`? We're going to call them in our resolvers by accessing the `context` argument.
 
@@ -38,7 +38,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => ({
     launchAPI: new LaunchAPI(),
-    userAPI: new UserAPI({ store }),
+    userAPI: new UserAPI({ store })
   })
 });
 ```
@@ -56,17 +56,16 @@ _src/resolvers.js_
 ```js
 module.exports = {
   Query: {
-    launches: async (_, __, { dataSources }) =>
+    launches: (_, __, { dataSources }) =>
       dataSources.launchAPI.getAllLaunches(),
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: async (_, __, { dataSources }) =>
-      dataSources.userAPI.findOrCreateUser(),
-  },
+    me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+  }
 };
 ```
 
-The code above shows the resolver functions for the `Query` type fields: `launches`, `launch`, and `me`. The first argument to our resolvers, `parent`, is always blank because it refers to the root of our graph. The second argument refers to any `arguments` passed into our query, which we use in our `launch` query to fetch a launch by its id. Finally, we destructure our data sources off the third argument, `context`, in order to call them in our resolvers.
+The code above shows the resolver functions for the `Query` type fields: `launches`, `launch`, and `me`. The first argument to our _top-level_ resolvers, `parent`, is always blank because it refers to the root of our graph. The second argument refers to any `arguments` passed into our query, which we use in our `launch` query to fetch a launch by its id. Finally, we destructure our data sources from the third argument, `context`, in order to call them in our resolvers.
 
 Our resolvers are simple and concise because the logic is embedded in the `LaunchAPI` and `UserAPI` data sources. We recommend keeping your resolvers thin as a best practice, which allows you to safely refactor without worrying about breaking your API.
 
@@ -119,7 +118,7 @@ query GetLaunchById($id: ID!) {
 }
 ```
 
-You can paste `{ "id": 60 }` into the Query Variables section below before running your query. Feel free to experiment with running more queries before moving onto the next section.
+You can paste `{ "id": 60 }` into the Query Variables section below before running your query. Feel free to experiment with running more queries before moving on to the next section.
 
 <h3 id="pagination">Paginated queries</h3>
 
@@ -181,7 +180,7 @@ module.exports = {
       const launches = paginateResults({
         after,
         pageSize,
-        results: allLaunches,
+        results: allLaunches
       });
 
       return {
@@ -192,7 +191,7 @@ module.exports = {
         hasMore: launches.length
           ? launches[launches.length - 1].cursor !==
             allLaunches[allLaunches.length - 1].cursor
-          : false,
+          : false
       };
     }
   }
@@ -272,9 +271,10 @@ You may be wondering where we're getting the user from in order to fetch their b
 Access control is a feature that almost every app will have to handle at some point. In this tutorial, we're going to focus on teaching you the essential concepts of authenticating users instead of focusing on a specific implementation.
 
 Here are the steps you'll want to follow:
+
 1. The context function on your `ApolloServer` instance is called with the request object each time a GraphQL operation hits your API. Use this request object to read the authorization headers.
-2. Authenticate the user within the context function.
-3. Once the user is authenticated, attach the user to the object returned from the context function. This allows us to read the user's information from within our data sources and resolvers, so we can authorize whether they can access the data.
+1. Authenticate the user within the context function.
+1. Once the user is authenticated, attach the user to the object returned from the context function. This allows us to read the user's information from within our data sources and resolvers, so we can authorize whether they can access the data.
 
 Let's open up `src/index.js` and update the `context` function on `ApolloServer` to the code shown below:
 
@@ -302,7 +302,7 @@ const server = new ApolloServer({
 
 Just like in the steps outlined above, we're checking the authorization headers on the request, authenticating the user by looking up their credentials in the database, and attaching the user to the `context`. While we definitely don't advocate using this specific implementation in production since it's not secure, all of the concepts outlined here are transferable to how you'll implement authentication in a real world application.
 
-How do we create the token passed to the `authorization` headers? Let's move onto the next section, so we can write our resolver for the `login` mutation.
+How do we create the token passed to the `authorization` headers? Let's move on to the next section, so we can write our resolver for the `login` mutation.
 
 <h2 id="mutation">Write Mutation resolvers</h2>
 
@@ -345,7 +345,7 @@ Mutation: {
     };
   },
   cancelTrip: async (_, { launchId }, { dataSources }) => {
-    const result = dataSources.userAPI.cancelTrip({ launchId });
+    const result = await dataSources.userAPI.cancelTrip({ launchId });
 
     if (!result)
       return {
@@ -383,7 +383,7 @@ Now, let's try booking some trips. Only authorized users are permitted to book t
 
 ```graphql
 mutation BookTrips {
-  bookTrips(launchIds: [67,68,69]) {
+  bookTrips(launchIds: [67, 68, 69]) {
     success
     message
     launches {

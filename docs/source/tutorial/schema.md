@@ -1,5 +1,5 @@
 ---
-title: "1. Build a schema"
+title: '1. Build a schema'
 description: Create a blueprint for your graph's data
 ---
 
@@ -9,7 +9,7 @@ The first step on our journey toward building our graph API is constructing its 
 
 Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
 
-From the root, let's install our projects dependencies:
+From the root, let's install our project's dependencies:
 
 ```bash
 cd start/server && npm install
@@ -38,20 +38,20 @@ Schemas are at their best when they are designed around the needs of the clients
 
 Let's think about the data we will need to expose in order to build our app. Our app needs to:
 
-* Fetch all upcoming rocket launches
-* Fetch a specific launch by its ID
-* Login the user
-* Book launch trips if the user is logged in
-* Cancel launch trips if the user is logged in
+- Fetch all upcoming rocket launches
+- Fetch a specific launch by its ID
+- Login the user
+- Book launch trips if the user is logged in
+- Cancel launch trips if the user is logged in
 
-Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function (between the backticks in this portion: <code>gql``</code>).
+Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function (between the backticks in this portion: <code>gql\`\`</code>).
 
 _src/schema.js_
 
 ```js
 const { gql } = require('apollo-server');
 
-const typeDefs = gql``
+const typeDefs = gql``;
 
 module.exports = typeDefs;
 ```
@@ -157,7 +157,7 @@ type TripUpdateResponse {
 }
 ```
 
-Our mutation response type contains a success status, a corresponding message, and the launch that we updated. It's always good practice to return the data that you're updating in order for the Apollo Client cache to update automatically. 
+Our mutation response type contains a success status, a corresponding message, and the launch that we updated. It's always good practice to return the data that you're updating in order for the Apollo Client cache to update automatically.
 
 <h2 id="apollo-server-run">Run your server</h2>
 
@@ -183,7 +183,6 @@ In your terminal, run `npm start` to start your server! 🎉 Apollo Server will 
 By default, Apollo Server supports [GraphQL Playground](/docs/apollo-server/features/graphql-playground.html). The Playground is an interactive, in-browser GraphQL IDE for exploring your schema and testing your queries. Apollo Server automatically serves GraphQL Playground in development only.
 
 The GraphQL Playground provides the ability to introspect your schema. **Introspection** is a technique used to provide detailed information about a graph's schema. To see this in action, check out the right hand side of GraphQL Playground and click on the `schema` button.
-
 
 <div style="text-align:center">
   <img src="../images/schematab.png" alt="Schema button">
