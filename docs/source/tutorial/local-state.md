@@ -52,7 +52,7 @@ Jump back to `src/index.js` and notice we had already added a `cache.writeData` 
 
 _src/index.js_
 
-```js lines=9-12
+```js line=1,11-12,15-20
 import { resolvers, typeDefs } from './resolvers';
 
 const client = new ApolloClient({
@@ -85,7 +85,7 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 
 _src/index.js_
 
-```js lines=6,13-15
+```js line=8,17-19
 import { Query, ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -204,7 +204,7 @@ Now, you're ready to query your virtual field on the launch detail page! Similar
 
 _src/pages/launch.js_
 
-```js lines=4
+```js line=4
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
@@ -230,7 +230,7 @@ Direct cache writes are convenient when you want to write a simple field, like a
 
 _src/containers/logout-button.js_
 
-```js lines=14
+```js line=14
 import React from 'react';
 import styled from 'react-emotion';
 import { ApolloConsumer } from 'react-apollo';
@@ -269,7 +269,7 @@ We can also perform direct writes within the `update` function of a `Mutation` c
 
 _src/containers/book-trips.js_
 
-```js lines=30-32
+```js line=30-32
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
