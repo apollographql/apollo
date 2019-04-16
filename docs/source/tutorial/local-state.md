@@ -25,7 +25,7 @@ import gql from 'graphql-tag';
 export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
-    cartItems: [Launch]!
+    cartItems: [ID!]!
   }
 
   extend type Launch {
@@ -42,11 +42,11 @@ To build a client schema, we **extend** the types of our server schema and wrap 
 
 We can also add local fields to server data by extending types from our server. Here, we're adding the `isInCart` local field to the `Launch` type we receive back from our graph API.
 
-<h2 id="store-initializers">Initialize the store</h2>
+<h2 id="store-initialization">Initialize the store</h2>
 
-Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to create `initializers` for both `isLoggedIn` and `cartItems` to prevent these two local queries from erroring out:
+Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
 
-Jump back to `src/index.js` and notice we had already added the `initializers` on the `ApolloClient` constructor in the last section:
+Jump back to `src/index.js` and notice we had already added a `cache.writeData` call to prepare the cache, in the last section:
 
 _src/index.js_
 
@@ -59,14 +59,15 @@ const client = new ApolloClient({
       authorization: localStorage.getItem('token'),
     },
   }),
-  initializers: {
-    isLoggedIn: () => !!localStorage.getItem('token'),
-    cartItems: () => [],
+});
+
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
   },
 });
 ```
-
-These `initializers` will be called as soon as `ApolloClient` is created. They will also run if the store is reset.
 
 Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
 
@@ -84,6 +85,7 @@ import gql from 'graphql-tag';
 
 import Pages from './pages';
 import Login from './pages/login';
+import injectStyles from './styles';
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
@@ -247,6 +249,12 @@ export default function LogoutButton() {
     </ApolloConsumer>
   );
 }
+
+const StyledButton = styled("button")(menuItemClassName, {
+  background: "none",
+  border: "none",
+  padding: 0
+});
 ```
 
 When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.

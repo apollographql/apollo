@@ -15,14 +15,14 @@ components, commercial extensions, and cloud services. The major pieces
 are:
 
 <div style="text-align:center">
-![Graph layer](../img/platform-diagram.png)
+  <img src="../img/platform-diagram.png" alt="Graph layer">
 </div>
 
 <h2 id="open-source">Core open source components</h2>
 
  * **Apollo Server** is a JavaScript GraphQL server for defining a
    *schema* and a set of *resolvers* that implement each part of that
-   *schema. Typically  Apollo Server is extensible: plugins can hook in to each stage of the
+   schema. Typically  Apollo Server is extensible: plugins can hook in to each stage of the
    request pipeline and server's own lifecycle, making it possible to
    implement custom behaviors in add-on packages. Apollo Server supports
    AWS Lambda and other serverless environments.
@@ -49,7 +49,7 @@ are:
 
  * **Schema registry** &mdash; a registry for GraphQL schemas that acts
    as a central source of truth for a schema, enriched with additional
-   metadata like field-level usage statisics.
+   metadata like field-level usage statistics.
 
  * **Client registry** &mdash; a registry to track each known consumer
    of a schema, which can include both pre-registered and ad-hoc clients.

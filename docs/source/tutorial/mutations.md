@@ -106,10 +106,17 @@ const client = new ApolloClient({
   initializers: {
     isLoggedIn: () => !!localStorage.getItem('token'),
     cartItems: () => [],
+  }
+});
+
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
   },
 });
 ```
 
 Specifying the `headers` option on `HttpLink` allows us to read the token from `localStorage` and attach it to the request's headers each time a GraphQL operation is made.
 
-Now that we know the basics, it's time to dive deeper into mutations. In the next section, we'll practice creating more complex `Mutation` components to manage local state in our app. We'll also learn how to query local data and write a local schema.
+In the next section, we'll add the `<Login>` form to the user interface. For that, we need to learn how Apollo allows us to manage local state in our app.

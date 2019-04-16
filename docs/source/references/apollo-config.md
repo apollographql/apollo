@@ -24,6 +24,7 @@ module.exports = {
 **Required** –– the CLI and VS Code extension rely on knowledge of your schema to show you "intellisense" (eg. autocomplete on fields, metrics annotations, query validation).
 
 There are a few different ways you can link your client to a schema:
+
 1. Use the Apollo [schema registry](/docs/platform/schema-registry.html)
 1. With a remote endpoint (from a running server)
 1. With a local schema file
@@ -37,8 +38,8 @@ With Engine set up, you can point your client directly to your Engine service (a
 ```js line=3
 module.exports = {
   client: {
-    service: 'my-apollo-service', // the id of your service in Engine (from the URL)
-  },
+    service: "my-apollo-service" // the id of your service in Engine (from the URL)
+  }
 };
 ```
 
@@ -49,10 +50,11 @@ If you're tracking different versions of your schema in the registry using schem
 ```js line=3
 module.exports = {
   client: {
-    service: 'my-apollo-service@beta', // "beta" is the schema tag we're using
-  },
+    service: "my-apollo-service@beta" // "beta" is the schema tag we're using
+  }
 };
 ```
+
 If a schema tag is not specified, the default value is `current`.
 
 #### _Option 2_: Link a schema from a remote endpoint
@@ -63,16 +65,16 @@ Remote endpoints can be used to pull down a schema from a running service. This 
 module.exports = {
   client: {
     service: {
-      name: 'github',
-      url: 'https://api.github.com/graphql',
+      name: "github",
+      url: "https://api.github.com/graphql",
       // optional headers
       headers: {
-        authorization: 'Bearer lkjfalkfjadkfjeopknavadf',
+        authorization: "Bearer lkjfalkfjadkfjeopknavadf"
       },
       // optional disable SSL validation check
-      skipSSLValidation: true,
-    },
-  },
+      skipSSLValidation: true
+    }
+  }
 };
 ```
 
@@ -84,16 +86,16 @@ In some cases you may have a locally generated file with your schema that you wa
 module.exports = {
   client: {
     service: {
-      name: 'my-service-name',
-      localSchemaFile: './path/to/schema.graphql',
-    },
-  },
+      name: "my-service-name",
+      localSchemaFile: "./path/to/schema.graphql"
+    }
+  }
 };
 ```
 
 ### `client.includes`
 
-*Optional* –– by default, Apollo tools will look under a `./src` directory to find all operations and SDL to extract.
+_Optional_ –– by default, Apollo tools will look under a `./src` directory to find all operations and SDL to extract.
 
 Client projects often contain client-side schema definitions for local state with Apollo Client. To make sure the Apollo CLI and VS Code extension can find these files and read them correctly, you may need to tell Apollo which folders to look for your schema and queries in like so:
 
@@ -101,13 +103,14 @@ Client projects often contain client-side schema definitions for local state wit
 module.exports = {
   client: {
     includes: ['./imports/**/*.js'], // array of glob patterns
+    service: ...
   },
 };
 ```
 
 ### `client.excludes`
 
-*Optional* –– by default, Apollo tools will exclude `**/node_modules` and `**/__tests___` when looking for your queries and schema files.
+_Optional_ –– by default, Apollo tools will exclude `**/node_modules` and `**/__tests___` when looking for your queries and schema files.
 
 If you want Apollo to ignore any of your other folders when looking for queries and schema definitions, adjust your config like so:
 
@@ -115,27 +118,29 @@ If you want Apollo to ignore any of your other folders when looking for queries 
 module.exports = {
   client: {
     excludes: ['**/__tests__/**/*'], // array of glob patterns
+    service: ...
   },
 };
 ```
 
 ### `client.tagName`
 
-*Optional* –– custom tagged template literal.
+_Optional_ –– custom tagged template literal.
 
 When using GraphQL with JavaScript or TypeScript projects, it is common to use the `gql` tagged template literal to write out operations. Apollo tools will be looking through your files for the `gql` tag to extract your queries, so if you use a different template literal, you can configure it like so:
 
 ```js line=3
 module.exports = {
   client: {
-    tagName: 'graphql',
-  },
+    tagName: "graphql",
+    service: ...
+  }
 };
 ```
 
 ### `client.addTypename`
 
-*Optional* –– Apollo will by default add the `__typename` field to all your operations automatically and to all your generated types during codegen.
+_Optional_ –– Apollo will by default add the `__typename` field to all your operations automatically and to all your generated types during codegen.
 
 GraphQL clients like Apollo Client often add the `__typename` field to operations automatically when they're sent over the wire. This can come in really handy for things like caching, but it can be turned off by adding `addTypename: false` to the client config:
 
@@ -143,7 +148,8 @@ GraphQL clients like Apollo Client often add the `__typename` field to operation
 module.exports = {
   client: {
     addTypename: false,
-  },
+    service: ...
+  }
 };
 ```
 
@@ -151,7 +157,7 @@ module.exports = {
 
 ### `client.clientOnlyDirectives`, `client.clientSchemaDirectives`
 
-*Optional* –– By default, Apollo projects support the following client-side directives:
+_Optional_ –– By default, Apollo projects support the following client-side directives:
 
 - `@client` for local state
 - `@rest` for using apollo-link-rest
@@ -163,9 +169,10 @@ Client side applications can use custom directives on their queries that aren't 
 ```js line=3-4
 module.exports = {
   client: {
-    clientOnlyDirectives: ['connection', 'type'],
-    clientSchemaDirectives: ['client', 'rest'],
-  },
+    clientOnlyDirectives: ["connection", "type"],
+    clientSchemaDirectives: ["client", "rest"],
+    service: ...
+  }
 };
 ```
 
@@ -196,13 +203,14 @@ Remote endpoints can be used to pull down a schema from a running service. This 
 module.exports = {
   service: {
     endpoint: {
-      url: 'https://api.github.com/graphql', // defaults to http://localhost:4000
-      headers: { // optional
-        authorization: 'Bearer lkjfalkfjadkfjeopknavadf',
+      url: "https://api.github.com/graphql", // defaults to http://localhost:4000
+      headers: {
+        // optional
+        authorization: "Bearer lkjfalkfjadkfjeopknavadf"
       },
-      skipSSLValidation: true, // optional, disables SSL validation check
-    },
-  },
+      skipSSLValidation: true // optional, disables SSL validation check
+    }
+  }
 };
 ```
 
@@ -213,7 +221,7 @@ In some cases you may have a locally generated file with your schema that you wa
 ```js line=3
 module.exports = {
   service: {
-    localSchemaFile: './path/to/schema.graphql',
-  },
+    localSchemaFile: "./path/to/schema.graphql"
+  }
 };
 ```
