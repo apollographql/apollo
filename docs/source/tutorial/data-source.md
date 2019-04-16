@@ -5,7 +5,7 @@ description: Connect REST and SQL data to your graph
 
 Time to accomplish: _10 Minutes_
 
-Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any busness logic, REST APIs, databases, or gRPC services.
+Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any business logic, REST APIs, databases, or gRPC services.
 
 Apollo makes connecting these services to your graph simple with our data source API. An **Apollo data source** is a class that encapsulates all of the data fetching logic, as well as caching and deduplication, for a particular service. By using Apollo data sources to hook up your services to your graph API, you're also following best practices for organizing your code.
 
@@ -49,7 +49,7 @@ _src/datasources/launch.js_
 ```js
 async getAllLaunches() {
   const response = await this.get('launches');
-  return Array.isArray(result)
+  return Array.isArray(response)
     ? response.map(launch => this.launchReducer(launch))
     : [];
 }
@@ -130,7 +130,7 @@ Here are some of the core concepts for creating your own data source:
 
 - The `initialize` method: You'll need to implement this method if you want to pass in any configuration options to your class. Here, we're using this method to access our graph API's context.
 - `this.context`: A graph API's context is an object that's shared among every resolver in a GraphQL request. We're going to explain this in more detail in the next section. Right now, all you need to know is that the context is useful for storing user information.
-- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#Using-Memcached-Redis-as-a-cache-storage-backend) to build your own, however!
+- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#using-memcached-redis-as-a-cache-storage-backend) to build your own, however!
 
 Let's go over some of the methods we created in `src/datasources/user.js` to fetch and update data in our database. You will want to reference these in the next section:
 
@@ -148,7 +148,7 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js line=3,4,10-13
+```js line=1,3,4,6,10-13
 const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');
