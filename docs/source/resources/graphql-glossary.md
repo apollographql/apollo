@@ -100,7 +100,7 @@ type User {
 <p>A file or request string that contains one or multiple definitions of a GraphQL type system and can be interpreted by a GraphQL execution engine.</p>
 
 <h2 id="extensions">Extensions</h2>
-<p>Special fields in the Graphql response that allows you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension. </p>
+<p>Special fields in the GraphQL response that allows you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension. </p>
 
 <h2 id="field">Field</h2>
 <p>A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.</p>

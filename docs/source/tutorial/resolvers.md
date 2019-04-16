@@ -5,7 +5,7 @@ description: Learn how a GraphQL query fetches data
 
 Time to accomplish: _15 Minutes_
 
-Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/or to fetch and/or update data. 
+Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/or to fetch and/or update data.
 
 <h2 id="resolver-api">What is a resolver?</h2>
 
@@ -47,7 +47,7 @@ Apollo Server will automatically add the `launchAPI` and `userAPI` to our resolv
 
 <h2 id="query">Write Query resolvers</h2>
 
-First, let's start by writing our resolvers for the `launches`, `launch`, and `me` fields on our `Query` type. We structure our resolvers into a map where the keys correspond to the types and fields in our schema. If you ever get stuck remembering which fields are on a type, you can always check your graph API's schema. 
+First, let's start by writing our resolvers for the `launches`, `launch`, and `me` fields on our `Query` type. We structure our resolvers into a map where the keys correspond to the types and fields in our schema. If you ever get stuck remembering which fields are on a type, you can always check your graph API's schema.
 
 Navigate to `src/resolvers.js` and paste the code below into the file:
 
@@ -162,7 +162,7 @@ type LaunchConnection { # add this below the Query type as an additional type.
 
 You'll also notice we've added comments (also called docstrings) to our schema, indicated by `"""`. Now, the `launches` query takes in two parameters, `pageSize` and `after`, and returns a `LaunchConnection`. The `LaunchConnection` type returns a result that shows the list of launches, in addition to a `cursor` field that keeps track of where we are in the list and a `hasMore` field to indicate if there's more data to be fetched.
 
-Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accomodate pagination.
+Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accommodate pagination.
 
 Let's import `paginateResults` and replace the `launches` resolver function in the `src/resolvers.js` file with the code below:
 
@@ -274,7 +274,7 @@ Access control is a feature that almost every app will have to handle at some po
 Here are the steps you'll want to follow:
 1. The context function on your `ApolloServer` instance is called with the request object each time a GraphQL operation hits your API. Use this request object to read the authorization headers.
 2. Authenticate the user within the context function.
-3. Once the user is authenticated, attach the user to the object returned from the context function. This allows us to read the user's information from within our data sources and resolvers, so we can authorize whether they can access the data. 
+3. Once the user is authenticated, attach the user to the object returned from the context function. This allows us to read the user's information from within our data sources and resolvers, so we can authorize whether they can access the data.
 
 Let's open up `src/index.js` and update the `context` function on `ApolloServer` to the code shown below:
 
@@ -367,7 +367,7 @@ Both `bookTrips` and `cancelTrips` must return the properties specified on our `
 
 <h3 id="mutation-playground">Run mutations in the playground</h3>
 
-It's time for the fun part - running our mutations in the playground! Go back to the playground in your browser and reload the schema with the little return arrow at the top on the right of the address line. 
+It's time for the fun part - running our mutations in the playground! Go back to the playground in your browser and reload the schema with the little return arrow at the top on the right of the address line.
 
 GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Let's copy the mutation below and run in the playground:
 
