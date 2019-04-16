@@ -779,7 +779,7 @@ View our [full proxy configuration doc](/docs/references/proxy-config.html) for 
 
 ## Release notes
 
-View our [proxy release notes doc](/docs/references/release-notes.html) for documentation on each proxy version that's been released and a changelog of what that version contained.
+View our [proxy release notes doc](/docs/references/engine-proxy-release-notes) for documentation on each proxy version that's been released and a changelog of what that version contained.
 
 ## Troubleshooting
 
