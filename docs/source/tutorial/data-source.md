@@ -1,11 +1,11 @@
 ---
-title: "2. Hook up your data sources"
+title: '2. Hook up your data sources'
 description: Connect REST and SQL data to your graph
 ---
 
 Time to accomplish: _10 Minutes_
 
-Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible, because you can layer them on top of any service, including any business logic, REST APIs, databases, or gRPC services.
+Now that we've constructed our schema, we need to hook up our data sources to our GraphQL API. GraphQL APIs are extremely flexible because you can layer them on top of any service, including any business logic, REST APIs, databases, or gRPC services.
 
 Apollo makes connecting these services to your graph simple with our data source API. An **Apollo data source** is a class that encapsulates all of the data fetching logic, as well as caching and deduplication, for a particular service. By using Apollo data sources to hook up your services to your graph API, you're also following best practices for organizing your code.
 
@@ -120,7 +120,7 @@ Now that we've connected our REST API successfully, let's connect our database!
 
 <h2 id="database">Connect a database</h2>
 
-Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Our `package.json` already entailed these packages, thus they were installed in the first part of this tutorial with `npm install`. Also, since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
+Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Our `package.json` already included these packages, thus they were installed in the first part of this tutorial with `npm install`. Also, since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
 
 <h3 id="custom-data-source">Build a custom data source</h3>
 
@@ -130,14 +130,14 @@ Here are some of the core concepts for creating your own data source:
 
 - The `initialize` method: You'll need to implement this method if you want to pass in any configuration options to your class. Here, we're using this method to access our graph API's context.
 - `this.context`: A graph API's context is an object that's shared among every resolver in a GraphQL request. We're going to explain this in more detail in the next section. Right now, all you need to know is that the context is useful for storing user information.
-- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#Using-Memcached-Redis-as-a-cache-storage-backend) to build your own, however!
+- Caching: While the REST data source comes with its own built in cache, the generic data source does not. You can use [our cache primitives](/docs/apollo-server/features/data-sources.html#using-memcached-redis-as-a-cache-storage-backend) to build your own, however!
 
 Let's go over some of the methods we created in `src/datasources/user.js` to fetch and update data in our database. You will want to reference these in the next section:
 
 - `findOrCreateUser({ email })`: Finds or creates a user with a given `email` in the database
 - `bookTrips({ launchIds })`: Takes an object with an array of `launchIds` and books them for the logged in user
 - `cancelTrip({ launchId })`: Takes an object with a `launchId` and cancels that launch for the logged in user
-- `getLaunchIdsByUser()`: Returns all booked launches for the logged in user.
+- `getLaunchIdsByUser()`: Returns all booked launches for the logged in user
 - `isBookedOnLaunch({ launchId })`: Determines whether the logged in user booked a certain launch
 
 <h2 id="apollo-server">Add data sources to Apollo Server</h2>
@@ -148,7 +148,9 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js line=3,4,10-13
+```js line=3,5,6,8,12-15
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
 const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');
@@ -160,11 +162,15 @@ const server = new ApolloServer({
   typeDefs,
   dataSources: () => ({
     launchAPI: new LaunchAPI(),
-    userAPI: new UserAPI({ store }),
+    userAPI: new UserAPI({ store })
   })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
 });
 ```
 
 First, we import our `createStore` function to set up our database, as well as our data sources: `LaunchAPI` and `UserAPI`. Then, we create our database by calling `createStore`. Finally, we add the `dataSources` function to our `ApolloServer` to connect `LaunchAPI` and `UserAPI` to our graph. We also pass in our database we created to the `UserAPI` data source.
 
-Now that we've hooked up our data sources to Apollo Server, it's time to move onto the next section and learn how to call our data sources from within our resolvers.
+Now that we've hooked up our data sources to Apollo Server, it's time to move on to the next section and learn how to call our data sources from within our resolvers.

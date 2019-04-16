@@ -14,7 +14,7 @@ Apollo is a complete platform for implementing a graph over your data. It includ
 Why do you need a graph? Today, one of the most difficult parts of building an app is figuring out your data layer. Often, there's many data sources you need to fetch from and many clients you need to support. When you layer a graph in between your services and your UI, you can remove a lot of complexity from your data fetching logic and ship features faster.
 
 <div style="text-align:center">
-![Graph layer](../images/graph-layer.png)
+  <img src="../images/graph-layer.png" alt="Graph layer">
 </div>
 
 **[GraphQL](https://www.graphql.org/)** is the specification that we'll be using to communicate between our graph API and client. The spec itself is language-agnostic and unopinionated, so we're choosing to implement GraphQL with the Apollo platform.
@@ -26,7 +26,7 @@ In this tutorial, we'll build an interactive app for reserving your spot on an u
 Here's what the finished app will look like:
 
 <div style="text-align:center">
-![Space explorer](../images/space-explorer.png)
+  <img src="../images/space-explorer.png" alt="Space explorer">
 </div>
 
 The app has five screens: a login screen, a list of launches, a launch detail, a profile page, and a cart. The graph API powering our space app connects to a REST API and a SQLite database. Don't worry if you're unfamiliar with those technologies, you don't need to know how to build a REST API or SQLite database from scratch in order to complete the tutorial.
@@ -40,6 +40,7 @@ The tutorial assumes that you're comfortable with JavaScript/ES6, you've fetched
 <h3 id="system-requirements">System requirements</h3>
 
 Before we begin, make sure you have:
+
 - [Node.js](https://nodejs.org/) v6.9.0 or greater
 - [npm](https://www.npmjs.com/) 3.10.8 or greater
 - [git](https://git-scm.com/) v2.14.1 or greater
@@ -49,6 +50,7 @@ While it's not a requirement, we recommend using [VSCode](https://code.visualstu
 <h2 id="dev-environment">Set up your development environment</h2>
 
 Now the fun begins! First, you'll need to install our developer tools:
+
 - [Apollo Engine (required)](https://engine.apollographql.com) : Our cloud service where you'll register and manage your graph API.
 - [Apollo DevTools for Chrome (suggested)](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) : Our Chrome extension giving you full visibility into your client.
 - [Apollo VSCode (suggested)](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo): Our editor integration that offers intelligent autocomplete, metrics, and more.
@@ -59,7 +61,7 @@ Next, in your terminal, clone [this repository](https://github.com/apollographql
 git clone https://github.com/apollographql/fullstack-tutorial/
 ```
 
-There are two folders: one for the starting point (`start/`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
+There are two folders: one for the starting point (`start`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
 
 <!--
 TODO: Add in this section after Apollo VSCode works for server development
@@ -67,6 +69,6 @@ TODO: Add in this section after Apollo VSCode works for server development
 
 <h3 id="help">Where can I get help?</h3>
 
-We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Slack](https://www.apollographql.com/slack) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
+We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Spectrum](https://spectrum.chat/apollo) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
 
-If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the Edit on GitHub link at the bottom to open a new pull request or open an issue on the repository.
+If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the Edit on GitHub link on the right side of the page to open a new pull request or open an issue on the repository.

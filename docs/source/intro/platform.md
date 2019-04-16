@@ -15,14 +15,14 @@ components, commercial extensions, and cloud services. The major pieces
 are:
 
 <div style="text-align:center">
-![Graph layer](../img/platform-diagram.png)
+  <img src="../img/platform-diagram.png" alt="Graph layer">
 </div>
 
 <h2 id="open-source">Core open source components</h2>
 
  * **Apollo Server** is a JavaScript GraphQL server for defining a
    *schema* and a set of *resolvers* that implement each part of that
-   *schema. Typically  Apollo Server is extensible: plugins can hook in to each stage of the
+   schema. Typically  Apollo Server is extensible: plugins can hook in to each stage of the
    request pipeline and server's own lifecycle, making it possible to
    implement custom behaviors in add-on packages. Apollo Server supports
    AWS Lambda and other serverless environments.
@@ -33,7 +33,7 @@ are:
    queries as part of UI components; the client manages all the hairy
    details of binding query results to the UI, managing consistency,
    caching, and so on. Apollo Client also supports an
-   exceptionally elegant approach to state managment by *extending* the
+   exceptionally elegant approach to state management by *extending* the
    GraphQL schema inside the client with additional structure. Apollo Client
    includes integrations for React, React Native, Vue, Angular, and
    other view layers.

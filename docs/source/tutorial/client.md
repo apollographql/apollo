@@ -118,7 +118,7 @@ Open up your console and run `npm start`. This will compile your client app. Onc
 
 Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to the UI.
 
-Go ahead and delete the `client.query()` call you just made. Now, we'll connect our client to React.
+Go ahead and delete the `client.query()` call you just made and the `gql` import statement. Now, we'll connect our client to React.
 
 <h2 id="react-apollo">Connect your client to React</h2>
 
@@ -132,6 +132,11 @@ _src/index.js_
 
 ```js lines=1,4,6
 import { ApolloProvider } from 'react-apollo';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Pages from './pages';
+
+// previous variable declarations
 
 ReactDOM.render(
   <ApolloProvider client={client}>
