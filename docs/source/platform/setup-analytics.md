@@ -132,7 +132,7 @@ The reference TypeScript implementation also includes several more advanced feat
 
 For example, the option to send reports immediately may be particularly useful to GraphQL servers running in a serverless environment, like AWS Lambda or Google Cloud Functions.
 
-Another important feature is the ability to limit information sent, particularly to avoid reporting [PII](https://en.wikipedia.org/wiki/Personally_identifiable_information). Because the most common place for PII to appear is in variables and headers, the TypeScript agent offers options for `privateVariables` and `privateHeaders`.
+Another important feature is the ability to limit information sent, particularly to avoid reporting [personal data](https://en.wikipedia.org/wiki/Personal_data). Because the most common place for personal data to appear is in variables and headers, the TypeScript agent offers options for `privateVariables` and `privateHeaders`.
 
 <h3 id="traces-report-example">Example FullTracesReport, represented as JSON</h3>
 ```json

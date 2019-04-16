@@ -19,7 +19,7 @@ cd start/client && npm install
 
 Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
 
-- `apollo-client@alpha`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
+- `apollo-client`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
 - `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
 - `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
 
@@ -93,7 +93,7 @@ _src/index.js_
 ```js line=1
 import gql from "graphql-tag";
 ```
-And add this code to the bottom of `index.js`: 
+And add this code to the bottom of `index.js`:
 
 _src/index.js_
 ```
@@ -118,7 +118,7 @@ Open up your console and run `npm start`. This will compile your client app. Onc
 
 Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to the UI.
 
-Go ahead and delete the `client.query()` call you just made. Now, we'll connect our client to React.
+Go ahead and delete the `client.query()` call you just made and the `gql` import statement. Now, we'll connect our client to React.
 
 <h2 id="react-apollo">Connect your client to React</h2>
 
@@ -132,6 +132,11 @@ _src/index.js_
 
 ```js lines=1,4,6
 import { ApolloProvider } from 'react-apollo';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Pages from './pages';
+
+// previous variable declarations
 
 ReactDOM.render(
   <ApolloProvider client={client}>
