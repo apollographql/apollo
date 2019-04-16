@@ -34,7 +34,6 @@ module.exports = {
             'platform/operation-registry',
             'platform/editor-plugins',
             'platform/tracing',
-            'platform/setup-analytics',
             'platform/errors',
             'platform/integrations'
           ],
@@ -48,6 +47,7 @@ module.exports = {
           ],
           References: [
             'references/apollo-config',
+	    'references/setup-analytics',
             'references/apollo-engine',
             'references/engine-proxy',
             'references/engine-proxy-release-notes'
