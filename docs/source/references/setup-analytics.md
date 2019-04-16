@@ -15,7 +15,7 @@ We've specifically built an interface to view this information into [Apollo Engi
 
 <h2 id="apollo-server">Apollo Server</h2>
 
-Apollo Server has had the ability to report its performance usage metrics to Engine as a built-in option since `2.0`. To set it up, get an API key from the Engine interface [here](https://engine.apollographql.com/) and use it as the value for the `ENGINE_API_KEY` environment variable. You can also pass it to the Apollo Server constructor like so:
+Apollo Server has had the ability to report its performance usage metrics to Engine as a built-in option since `2.0`. To set it up, get an API key from the [Engine interface](https://engine.apollographql.com/) and use it as the value for the `ENGINE_API_KEY` environment variable. You can also pass it to the Apollo Server constructor like so:
 
 ```js line=6-8
 const { ApolloServer } = require("apollo-server");
@@ -33,13 +33,13 @@ server.listen().then(({ url }) => {
 });
 ```
 
-For advanced Apollo Server configuration options to set up logging and client-aware metrics reporting take a look at our server documentation [here](https://www.apollographql.com/docs/apollo-server/features/metrics.html).
+For advanced Apollo Server configuration options to set up logging and client-aware metrics reporting take a look at our [server documentation](https://www.apollographql.com/docs/apollo-server/features/metrics.html).
 
 #### Configuring metrics reporting with Apollo Server pre-`2.0`
 
 To configure metrics reporting with versions of Apollo Server pre-`2.0` you'll need to use the [`apollo-engine` npm package](https://www.npmjs.com/package/apollo-engine), which is a wrapper that runs our deprecated [Engine proxy](https://www.apollographql.com/docs/references/engine-proxy.html#Background). **We highly recommend that you upgrade to Apollo Server 2** and use the built-in integration instead of using this option because Engine's newer features are not supported in the Engine proxy.
 
-To set up your server with the Engine proxy using the `apollo-engine` npm package take a look at our guide [here](https://www.apollographql.com/docs/references/engine-proxy.html#Setup).
+To set up your server with the Engine proxy using the `apollo-engine` npm package take a look at our [guide](https://www.apollographql.com/docs/references/engine-proxy.html#Setup).
 
 <h2 id="other-servers">Other servers</h2>
 
@@ -49,9 +49,9 @@ There are 2 ways to send metrics data from your server to Engine:
 
 ### Engine reporting endpoint
 
-We recommend following the agent pattern to report trace metrics from your server to the Engine reporting endpoint. This is what Apollo Server does internally and the code for the Apollo Server reference agent is [here](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts).
+We recommend following the agent pattern to report trace metrics from your server to the Engine reporting endpoint. This is what Apollo Server does internally and you can view the code for the [Apollo Server reference agent](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts) as an example.
 
-We've been working with our community to build agent integrations for non-JavaScript servers. If you're interested in collaborating with us on an integration for your server, please get in touch with us at support@apollographql.com or via the #engine channel on the [Apollo Community Slack](https://apollographql.com/slack). We'd love to help support you in any way we can!
+We've been working with our community to build agent integrations for non-JavaScript servers. If you're interested in collaborating with us on an integration for your server, please get in touch with us at <support@apollographql.com> or via our [Apollo Spectrum Community](https://spectrum.chat/apollo). We'd love to help support you in any way we can!
 
 To create a new reporting agent, you'll want to satisfy a few separate concerns:
 
@@ -66,11 +66,11 @@ The first step of creating a metrics reporting agent will be to hook into the Gr
 
 The reporting endpoint accepts a batch of "traces" encoded as protobuf. Each individual trace represents execution of a single operation, specifically timing and error information of that execution, broken down by field. Each trace also contains context that is operation-specific (e.g. which client an operation was sent from, if the response was fetched from the cache). In addition to the batch of trace details, the metrics report also includes the context within which all operations were executed (e.g. staging vs prod) in a report header.
 
-As mentioned, this batch of traces and context is encoded via protobuf. The schema for the protobuf message is defined as the `FullTracesReport` message in the TypeScript reference implementation [here](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/reports.proto#L380). The reporting agent is **not** responsible for aggregating this list of individual traces and filtering out certain traces to persist. That process is handled via Apollo's cloud services.
+As mentioned, this batch of traces and context is encoded via protobuf. The schema for the protobuf message is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L380). The reporting agent is **not** responsible for aggregating this list of individual traces and filtering out certain traces to persist. That process is handled via Apollo's cloud services.
 
 As a good starting point, we recommend implementing an extension to the GraphQL execution that creates a report with one trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/reports.proto#L9). The next step will be to batch multiple traces into a single report, which we recommend batches of 5-10 seconds while limiting reports to a reasonable size (~4MB).
 
->Many server runtimes already have support for emitting tracing information as a [GraphQL extension](https://github.com/apollographql/apollo-tracing), which involves hooking into the request pipeline and capturing timing and error data about each resolver's execution. These implmentations include runtimes in [Node](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts), [Ruby](https://github.com/uniiverse/apollo-tracing-ruby), [Scala](https://github.com/sangria-graphql/sangria-slowlog#apollo-tracing-extension), [Java](https://github.com/graphql-java/graphql-java/pull/577), [Elixir](https://github.com/sikanhe/apollo-tracing-elixir), and [.NET](https://graphql-dotnet.github.io/docs/getting-started/metrics/). If you're working on adding metrics reporting functionality for one of _these languages_, reading through that tracing instrumentation is a good place to start and to plug into. For _other languages_, we recommend reading through the Apollo Server instrumentation [here](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts) as reference.
+>Many server runtimes already have support for emitting tracing information as a [GraphQL extension](https://github.com/apollographql/apollo-tracing), which involves hooking into the request pipeline and capturing timing and error data about each resolver's execution. These implementations include runtimes in [Node](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts), [Ruby](https://github.com/uniiverse/apollo-tracing-ruby), [Scala](https://github.com/sangria-graphql/sangria-slowlog#apollo-tracing-extension), [Java](https://github.com/graphql-java/graphql-java/pull/577), [Elixir](https://github.com/sikanhe/apollo-tracing-elixir), and [.NET](https://graphql-dotnet.github.io/docs/getting-started/metrics/). If you're working on adding metrics reporting functionality for one of _these languages_, reading through that tracing instrumentation is a good place to start and to plug into. For _other languages_, we recommend reading through the [Apollo Server instrumentation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts) as reference.
 
 An example of a FullTracesReport message, represented as JSON, can be found below*
 
@@ -112,7 +112,7 @@ query AuthorForPost {
 }
 ```
 
-Even though this concept lacks definition, it's important to decide on how queries shoudld be grouped together when tracking metrics about GraphQL execution. The concept of a **"query signature"** is what we use at Apollo to group similar operations together even if their exact textual representations are not identical. The query signature, along with the operation name, are used to group queries together in the `FullTracesReport`.
+Even though this concept lacks definition, it's important to decide on how queries should be grouped together when tracking metrics about GraphQL execution. The concept of a **"query signature"** is what we use at Apollo to group similar operations together even if their exact textual representations are not identical. The query signature, along with the operation name, are used to group queries together in the `FullTracesReport`.
 
 The TypeScript reference implementation uses a default signature method and allows for that signature method to also be overridden by the user. The [implementation of the default](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts) drops unused fragments and/or operations, hides String literals, ignores aliases, sorts the tree deterministically, and ignores whitespace differences. We recommend using the same default signature method for consistency across different server runtimes.
 
@@ -210,4 +210,4 @@ The Engine proxy is our legacy option for sending trace metrics from your server
 
 You first install an [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) package in your server, which augments your server's responses with an `extensions` field that contains the request's trace timings. The Engine proxy, which is running in front of your server, will strip the `extensions` from your response, send the regular `data` response on to your clients, and send the request trace timings to Engine.
 
-To view detailed information on how to set up the Engine proxy for non-JavaScript servers see our detailed guide [here](https://www.apollographql.com/docs/references/engine-proxy.html#standalone-proxy-with-node).
+To view detailed information on how to set up the Engine proxy for non-JavaScript servers see our detailed [guide](https://www.apollographql.com/docs/references/engine-proxy.html#standalone-proxy-with-node).

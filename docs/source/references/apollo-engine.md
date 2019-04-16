@@ -20,7 +20,7 @@ Accounts
 
 <h2 id="accounts">Accounts</h2>
 
-Engine accounts are authenticated using GitHub by default. There is also an SSO login option for teams that can be requested by [contacting us](https://www.apollographql.com/contact-sales/).
+Engine accounts are authenticated using GitHub by default. We alternatively offer single sign-on (SAML or OIDC) to our [Enterprise](https://www.apollographql.com/plans/) customers.
 
 <h3 id="team-collaboration">Team collaboration</h3>
 
@@ -43,15 +43,6 @@ If you want to add or remove an organization from Engine, you should manage thos
 GitHub’s OAuth service is used for read-only information about organizations and users. Engine does not need access rights to your source code or to any other sensitive data in its login system.
 
 If your Engine account is owned by a GitHub organization, then Engine will allow all members of that organization to access the account. As you add or remove team members from your Github org, Engine will know about that and accordingly update the authorization for those users.
-
-<h3 id="other-logins">Support for non-GitHub login</h3>
-
-Engine was built to mirror GitHub’s login and does not currently support other forms of login or team creation. Our current recommendation for teams who want to use Engine but do not use GitHub is:
-
-1. Create a free GitHub organization (empty, public).
-2. Add your desired team members to the organization.
-3. Hide membership of the organization if desired.
-4. Use this organization to collaborate on Engine.
 
 <!--
 ######################################################################
