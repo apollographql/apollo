@@ -3,9 +3,9 @@ title: Apollo Engine guide
 description: Account management, data privacy, GDPR compliance, and other information about Apollo Engine
 ---
 
-[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on two types of data input from servers: publishing schema introspections and sending traces of request execution. From those two data inputs we can provide rich schema usage insights, schema history management, schema change valiation, query usage insights, and more.
+[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on two types of data input from servers: publishing schema introspections and sending traces of request execution. From those two data inputs we can provide rich schema usage insights, schema history management, schema change validation, query usage insights, and more.
 
-Engine's core schema management features are all availble in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
+Engine's core schema management features are all available in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
 
 More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
 <!-- You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html). -->
@@ -93,7 +93,7 @@ All data that is sent to Engine from your server can be configured and turned of
 
 Engine is primarily a cloud service that ingests and stores performance metrics data from your server. There are two ways to get data into Engine:
 
-1. Use **Apollo Server 2** (Node servers) and configure performance metrics reporting by providing an Engine API key in your serer configuration.
+1. Use **Apollo Server 2** (Node servers) and configure performance metrics reporting by providing an Engine API key in your server configuration.
 2. Run the **Engine proxy** (deprecated) in front of your server and install an Apollo tracing package in your server.
 
 #### Apollo Server 2
@@ -104,7 +104,7 @@ Apollo Server will never forward the responses of your requests to Engine, but i
 
 #### Engine Proxy (deprecated)
 
-This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through. Apollo Server 1 users and other Node users users also have the option to run the Engine proxy as a sidecar next to their Node server.
+This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through. Apollo Server 1 users and other Node users also have the option to run the Engine proxy as a sidecar next to their Node server.
 
 As your clients make requests to your server, the proxy reads response extension data to make caching decisions and aggregates tracing and error information into reports that it sends to the Engine ingress.
 
@@ -120,7 +120,7 @@ Both Apollo Server 2 and the Engine proxy report the full operation string of yo
 
 #### Variables
 
-Both Apollo Server 2 and the Engine proxy will report your the query variables for each request to the Engine cloud service by default. This can be disabled in the following ways:
+Both Apollo Server 2 and the Engine proxy will report the query variables for each request to the Engine cloud service by default. This can be disabled in the following ways:
 
 - **Apollo Server 2** – use the privateVariables option in your Apollo Server configuration for Engine.
 - **Engine proxy** – use the privateVariables option in your proxy configuration, or prevent all variables from being reported with noTraceVariables option.
