@@ -47,7 +47,7 @@ Teams who have switched to Apollo Client have reported [deleting thousands of li
 
 Developing your GraphQL API with the Apollo platform gives teams access to modern tooling that helps them uncover bugs quickly, gain visibility into their API, and develop challenging features such as caching with confidence.
 
-[Apollo Engine](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Engine displays per resolver tracing metrics that can help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog and set up Slack alerts if these numbers pass a certain threshold.
+[Apollo Engine](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API, engine displays per resolver tracing metrics that can help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
 
 ![Apollo Engine](../assets/engine.png)
 
@@ -132,7 +132,7 @@ The response back from the server will be a list of dog objects with `id`, `bree
 
 <h3 id="round-trip">Avoid round trips</h3>
 
-Since each GraphQL request returns only one response, switching to GraphQL can help you avoid costly round trips from the client to your server. With REST, each resource represents a round trip, which can quickly add up. If you're fetching items in a list, you'll have to complete a round trip for every resource multiplied by the number of items, causing slow load times especially on mobile devices.
+Since each GraphQL request returns only one response, switching to GraphQL can help you avoid costly round trips from the client to your server. With REST, each resource represents a round trip, which can quickly add up. If you're fetching items in a list, you'll have to complete a round trip for every resource multiplied by the number of items, causing slow load times, especially on mobile devices.
 
 ```bash
 GET /api/dogs/breeds
@@ -146,7 +146,7 @@ With GraphQL, each query represents a single round trip from the client to serve
 
 While the GraphQL specification was first made public by Facebook in 2015, GraphQL has been a key component of their mobile application deployment since 2012.
 
-At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques and now use it to power critical infrastructure.  Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
+At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques, and now use it to power critical infrastructure.  Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings, and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
 
 In addition to our own experience, we have received extensive feedback, contributions and support from enterprise customers who are actively using Apollo GraphQL in production. A few of our most public and notable case-studies are:
 
