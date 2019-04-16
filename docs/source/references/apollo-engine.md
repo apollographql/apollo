@@ -111,7 +111,7 @@ Both Apollo Server 2 and the Engine proxy report the full operation string of yo
 
 #### Variables
 
-Both Apollo Server 2 and the Engine proxy will report your the query variables for each request to the Engine cloud service by default. This can be disabled in the following ways:
+Both Apollo Server 2 and the Engine proxy will report the query variables for each request to the Engine cloud service by default. This can be disabled in the following ways:
 
 - **Apollo Server 2** – use the privateVariables option in your Apollo Server configuration for Engine.
 - **Engine proxy** – use the privateVariables option in your proxy configuration, or prevent all variables from being reported with noTraceVariables option.
