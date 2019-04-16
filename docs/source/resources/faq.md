@@ -122,7 +122,7 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I test my client?
 
-`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](../guides/testing-react-components.html) guide to learn more.
+`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](/docs/react/recipes/testing) guide to learn more.
 
 #### How can I safely make changes to the schema?
 
