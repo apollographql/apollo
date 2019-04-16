@@ -1,5 +1,5 @@
 ---
-title: "8. Manage local state"
+title: '8. Manage local state'
 description: How to store and query local data in the Apollo cache
 ---
 
@@ -15,7 +15,7 @@ Managing local data with Apollo Client is very similar to how you've already man
 
 Just like how a schema is the first step toward defining our data model on the server, writing a local schema is the first step we take on the client.
 
-Navigate to `src/resolvers.js` and copy the following code to create your client schema:
+Navigate to `src/resolvers.js` and copy the following code to create your client schema (as well as blank client resolvers for later):
 
 _src/resolvers.js_
 
@@ -36,6 +36,8 @@ export const typeDefs = gql`
     addOrRemoveFromCart(id: ID!): [Launch]
   }
 `;
+
+export const resolvers = {};
 ```
 
 To build a client schema, we **extend** the types of our server schema and wrap it with the `gql` function. Using the extend keyword allows us to combine both schemas inside developer tooling like Apollo VSCode and Apollo DevTools.
@@ -46,11 +48,13 @@ We can also add local fields to server data by extending types from our server. 
 
 Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
 
-Jump back to `src/index.js` and notice we had already added a `cache.writeData` call to prepare the cache, in the last section:
+Jump back to `src/index.js` and notice we had already added a `cache.writeData` call to prepare the cache in the last section. While we're here, make sure to also import the `typeDefs` and `resolvers` that we just created so we can use them later:
 
 _src/index.js_
 
 ```js lines=9-12
+import { resolvers, typeDefs } from './resolvers';
+
 const client = new ApolloClient({
   cache,
   link: new HttpLink({
@@ -59,6 +63,8 @@ const client = new ApolloClient({
       authorization: localStorage.getItem('token'),
     },
   }),
+  typeDefs,
+  resolvers,
 });
 
 cache.writeData({
@@ -188,7 +194,7 @@ export const resolvers = {
       const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
       return cartItems.includes(launch.id);
     },
-  }
+  },
 };
 ```
 
@@ -250,10 +256,10 @@ export default function LogoutButton() {
   );
 }
 
-const StyledButton = styled("button")(menuItemClassName, {
-  background: "none",
-  border: "none",
-  padding: 0
+const StyledButton = styled('button')(menuItemClassName, {
+  background: 'none',
+  border: 'none',
+  padding: 0,
 });
 ```
 
@@ -317,7 +323,7 @@ In this example, we're directly calling `cache.writeData` to reset the state of 
 
 We're not done yet! What if we wanted to perform a more complicated local data update such as adding or removing items from a list? For this situation, we'll use a local resolver. Local resolvers have the same function signature as remote resolvers (`(parent, args, context, info) => data`). The only difference is that the Apollo cache is already added to the context for you. Inside your resolver, you'll use the cache to read and write data.
 
-Let's write the local resolver for the `addOrRemoveFromCart` mutation. You should place this resolver underneath the `Launch` resolver we wrote earlier. 
+Let's write the local resolver for the `addOrRemoveFromCart` mutation. You should place this resolver underneath the `Launch` resolver we wrote earlier.
 
 _src/resolvers.js_
 
@@ -407,8 +413,8 @@ export default function ActionButton({ isBooked, id, isInCart }) {
               {isBooked
                 ? 'Cancel This Trip'
                 : isInCart
-                  ? 'Remove from Cart'
-                  : 'Add to Cart'}
+                ? 'Remove from Cart'
+                : 'Add to Cart'}
             </Button>
           </div>
         );
@@ -420,7 +426,6 @@ export default function ActionButton({ isBooked, id, isInCart }) {
 
 In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `Mutation` component.
 
-___
+---
 
 Congratulations! 🎉 You've officially made it to the end of the Apollo platform tutorial. In the final section, we're going to recap what we just learned and give you guidance on what you should learn next.
-
