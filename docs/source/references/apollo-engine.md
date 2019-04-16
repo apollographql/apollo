@@ -3,9 +3,9 @@ title: Apollo Engine guide
 description: Account management, data privacy, GDPR compliance, and other information about Apollo Engine
 ---
 
-[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on two types of data input from servers: publishing schema introspections and sending traces of request execution. From those two data inputs we can provide rich schema usage insights, schema history management, schema change valiation, query usage insights, and more.
+[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on two types of data input from servers: publishing schema introspections and sending traces of request execution. From those two data inputs we can provide rich schema usage insights, schema history management, schema change validation, query usage insights, and more.
 
-Engine's core schema management features are all availble in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
+Engine's core schema management features are all available in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
 
 More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
 <!-- You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html). -->
@@ -61,13 +61,13 @@ Services
 
 <h2 id="services">Services</h2>
 
-A service in Engine represents a "project" or "application". When you create a new service, we provision an API key for you that you can use to send performance metrics and schema versions to our cloud service. This information is then accessible to you through the Engine interface.
+A service in Engine represents a "project" or "application". When you create a new service, we provide an API key used to send performance metrics and schema versions to our cloud service. This information is then accessible through the Engine interface.
 
 <h3 id="creating-services">Creating a service</h3>
 
-To create a service, you will need to select an account for that service to belong to. All members of the account will be able to see the service’s data and settings options. You can transfer services between any Engine account that you’re a member of. To transfer a service, visit its Settings page and change the “Endpoint owner” to whichever account you’d like.
+To create a service, you will need to select an account for that service to belong to. All members of the account will be able to see the service’s data and settings options. You can transfer services between any of your Engine accounts. To transfer a service, visit its Settings page and change the “Endpoint owner” to whichever account you’d like.
 
-Services in Engine have globally unique IDs, so we recommend that you prefix your service ID with the name of your company or organization.
+Services in Engine have globally unique IDs. We recommend that you prefix your service ID with the name of your company or organization.
 
 <h3 id="environments">Managing environments</h3>
 
@@ -87,13 +87,13 @@ Data privacy
 
 <h2 id="data-privacy">Data privacy</h2>
 
-All data that is sent to Engine from your server can be configured and turned off to meet your PII/data privacy needs. This section will walk through what information Engine sees about your GraphQL service’s request, what Engine’s default behavior to handle request data is, and how you can configure Engine to the level of data privacy your team needs.
+All data that is sent to Engine from your server can be configured and turned off to meet your data privacy needs. This section will walk through what information Engine sees about your GraphQL service’s request, what Engine’s default behavior to handle request data is, and how you can configure Engine to the level of data privacy your team needs.
 
 <h3 id="architecture">Architecture</h3>
 
 Engine is primarily a cloud service that ingests and stores performance metrics data from your server. There are two ways to get data into Engine:
 
-1. Use **Apollo Server 2** (Node servers) and configure performance metrics reporting by providing an Engine API key in your serer configuration.
+1. Use **Apollo Server 2** (Node servers) and configure performance metrics reporting by providing an Engine API key in your server configuration.
 2. Run the **Engine proxy** (deprecated) in front of your server and install an Apollo tracing package in your server.
 
 #### Apollo Server 2
@@ -104,11 +104,11 @@ Apollo Server will never forward the responses of your requests to Engine, but i
 
 #### Engine Proxy (deprecated)
 
-This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through. Apollo Server 1 users and other Node users users also have the option to run the Engine proxy as a sidecar next to their Node server.
+This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through. Apollo Server 1 users and other Node users also have the option to run the Engine proxy as a sidecar next to their Node server.
 
 As your clients make requests to your server, the proxy reads response extension data to make caching decisions and aggregates tracing and error information into reports that it sends to the Engine ingress.
 
-While the Engine proxy sees your client request data and service response data, it only collects and forwards data that goes into the reports you see in the Engine dashboards. All information that is sent from your on-premise proxy to the out-of-band Engine cloud service is configurable and can be turned off through configuration options. Data is aggregated and sent approximately every 5 seconds.
+While the Engine proxy sees your client request data and service response data, it only collects and forwards data that goes into the reports you see in the Engine dashboards. All information sent by your on-premise proxy to the out-of-band Engine cloud service is configurable, and can be turned off through configuration options. Data is aggregated and sent approximately every 5 seconds.
 
 <h3 id="data-collection">Data collection</h3>
 
@@ -116,7 +116,7 @@ This section describes which parts of your GraphQL HTTP requests are seen and co
 
 #### Query operation string
 
-Both Apollo Server 2 and the Engine proxy report the full operation string of your request to the Engine cloud service. Because of this, you should be careful to put any sensitive data like passwords and PII in the GraphQL variables object rather than in the operation string itself.
+Both Apollo Server 2 and the Engine proxy report the full operation string of your request to the Engine cloud service. Because of this, you should be careful to put any sensitive data like passwords and personal data in the GraphQL variables object rather than in the operation string itself.
 
 #### Variables
 
@@ -127,7 +127,7 @@ Both Apollo Server 2 and the Engine proxy will report your the query variables f
 
 #### Authorization & Cookie HTTP Headers
 
-Engine will **never** collect your application's `Authorization`, `Cookie`, or `Set-Cookie` headers and ignores these if received. Engine will collect all other headers from your request to show in the trace inspector, unless turned off with these configurations:
+Engine will **never** collect your application's `Authorization`, `Cookie`, or `Set-Cookie` headers and ignores these if received. Engine will collect all other headers from your request to show in the trace inspector unless turned off with these configurations:
 
 - **Apollo Server 2** – use the [`privateHeaders` option](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#EngineReportingOptions) in your Apollo Server configuration for Engine.
 - **Engine Proxy** – use the [`privateHeaders` option](./proxy-config.html#Reporting) in your proxy configuration.
@@ -212,7 +212,7 @@ The legal terms and policies that apply to Apollo's corporate websites and custo
 
 #### Where can I get more help?
 
-If you have any questions (including interest in a Data Processing Addendum (DPA)), or encounter any issues, please reach out to <a href="javascript:Intercom('showNewMessage');">support</a>.
+If you have any questions (including interest in a Data Processing Addendum or DPA), or encounter any issues, please reach out to <a href="https://engine.apollographql.com/support">support</a>.
 
 <!--
 ######################################################################

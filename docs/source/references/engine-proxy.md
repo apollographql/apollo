@@ -21,6 +21,7 @@ That said, the proxy is still a good option for getting set up with Engine in a 
 ## Setup
 
 To get started with using Engine through the Engine proxy, you will need to:
+
 1. [Install a package in your GraphQL server that adds `extension` data (in the Apollo Tracing format) to each request's response.](#Instrument-your-server)
 1. [Get your Engine API key.](#Get-your-API-key)
 1. [Configure and deploy the Engine proxy to run in front of your server using either Docker or npm.](#Run-the-proxy)
@@ -210,10 +211,10 @@ As it is JSON file, all object keys must be quoted, and trailing commas and comm
 
 Next, make sure you have a working [Docker installation](https://docs.docker.com/engine/installation/) and type the following lines in your shell:
 
-{% codeblock %}
+```
 $ ENGINE_PORT=3000
-$ docker run --env "ENGINE_CONFIG=$(cat engine-config.json)" -p "${ENGINE_PORT}:${ENGINE_PORT}" gcr.io/mdg-public/engine:{% proxyDockerVersion %}
-{% endcodeblock %}
+$ docker run --env "ENGINE_CONFIG=$(cat engine-config.json)" -p "${ENGINE_PORT}:${ENGINE_PORT}" gcr.io/mdg-public/engine:1.1
+```
 
 > **Note:** We use [semver](https://semver.org/) to name Engine Proxy release versions, and we release version 1.2.3 under the tags `1.2.3`, `1.2`, and `1`.  If you want to pin to a precise version, use the `1.2.3` tag. If you'd like to take patch upgrades but not minor upgrades, use the `1.2` tag. If you'd like to take minor upgrades, use the `1` tag.
 
@@ -779,7 +780,7 @@ View our [full proxy configuration doc](/docs/references/proxy-config.html) for 
 
 ## Release notes
 
-View our [proxy release notes doc](/docs/references/release-notes.html) for documentation on each proxy version that's been released and a changelog of what that version contained.
+View our [proxy release notes doc](/docs/references/engine-proxy-release-notes) for documentation on each proxy version that's been released and a changelog of what that version contained.
 
 ## Troubleshooting
 
