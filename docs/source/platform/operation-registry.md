@@ -95,7 +95,7 @@ npx apollo client:push              \
     --includes="src/**/*.{ts,js,graphql}"
 ```
 
-When succesfull, the output from this command should look similar to the following:
+When successful, the output from this command should look similar to the following:
 
 ```
 ✔ Loading Apollo project

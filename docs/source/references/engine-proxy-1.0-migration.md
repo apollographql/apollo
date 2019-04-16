@@ -74,7 +74,7 @@ Notable differences:
 For full details including an API reference, see [the Node setup guide](./setup-node.html).
 
 
-<h3 id="behind-the-schenes">Behind the scenes</h3>
+<h3 id="behind-the-scenes">Behind the scenes</h3>
 
 The old API was based on "double proxying". If your web server was supposed to serve on port 4000, you would tell Express (or your other web framework) to listen on port 4000. The `Engine` class would start an instance of the Engine Proxy running on an ephemeral port (say, 4321). You would add a special middleware to your framework which redirects GraphQL requests to `127.0.0.1:4321`. The Engine Proxy would then make GraphQL requests back to your Node server on port 4000.  The middleware used a special header to differentiate between the initial request from an external client and the nearly-identical internal request from Engine. So GraphQL requests are routed `client -> Node -> Engine Proxy -> Node` and non-GraphQL requests are routed `client -> Node`.
 
