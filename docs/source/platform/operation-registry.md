@@ -242,6 +242,23 @@ const server = new ApolloServer({
 
 > *Note:* The `forbidUnregisteredOperations` callback must be synchronous.  If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
 
+## Testing the plugin ##
+
+We recommend testing the behavior of the plugin as well as your `forbidUnregisteredOperations` function before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in leiu of actually forbidding anything.
+
+```js line=7
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      forbidUnregisteredOperations: true,
+      dryRun: true
+    });
+  ],
+});
+```
+
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
