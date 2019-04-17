@@ -88,7 +88,7 @@ Authentication and authorization are important topics to discuss with any API. G
 
 #### How can I secure my schema from malicious or expensive queries?
 
-Public APIs of any kind need some kind of safeguards against malicious queries. Since GraphQL allows for recursive queries, it wouldn't be hard to create a query that is overly complicated and acts as a DoS attack, even by accident. There are multiple ways to prevent something like this from happening, from complexity limiting to query depth limiting. Read the [guide on security](../guides/security.html) to learn more.
+Public APIs of any kind need some kind of safeguards against malicious queries. Since GraphQL allows for recursive queries, it wouldn't be hard to create a query that is overly complicated and acts as a DoS attack, even by accident. There are multiple ways to prevent something like this from happening, from complexity limiting to query depth limiting. Read the [guide on security](https://blog.apollographql.com/securing-your-graphql-api-from-malicious-queries-16130a324a6b) to learn more.
 
 #### What kinds of cache should I set up?
 
@@ -122,7 +122,7 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I test my client?
 
-`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](../guides/testing-react-components.html) guide to learn more.
+`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](/docs/react/recipes/testing) guide to learn more.
 
 #### How can I safely make changes to the schema?
 
