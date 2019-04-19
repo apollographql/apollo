@@ -244,7 +244,7 @@ const server = new ApolloServer({
 
 ## Testing the plugin
 
-We recommend testing the behavior of the plugin as well as your `forbidUnregisteredOperations` function before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in leiu of actually forbidding anything.
+We recommend testing the behavior of the plugin, as well as your `forbidUnregisteredOperations` function, before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in lieu of actually forbidding anything.
 
 ```js line=7
 const server = new ApolloServer({
