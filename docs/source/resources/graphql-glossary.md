@@ -34,12 +34,12 @@ An alternative name given to the result of a field to avoid conflicts during dat
 
 ```js
 {
-  admin: users(role: admin) {
+  admins: users(role: "admin") {
     id
     firstname
     lastname
   }
-  managers: users(role: manager) {
+  managers: users(role: "manager") {
     id
     firstname
     lastname
@@ -47,7 +47,7 @@ An alternative name given to the result of a field to avoid conflicts during dat
 }
 ```
 
-`admin` and `managers` are aliases in the example query above.
+`admins` and `managers` are aliases in the example query above.
 
 <h2 id="data-source">Data Source</h2>
 
@@ -109,7 +109,8 @@ type User {
 A file or request string that contains one or multiple definitions of a GraphQL type system and can be interpreted by a GraphQL execution engine.
 
 <h2 id="extensions">Extensions</h2>
-Special fields in the GraphQL response that allows you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension.
+
+Special fields in the GraphQL response that allow you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension.
 
 <h2 id="field">Field</h2>
 
@@ -219,11 +220,11 @@ const cache = new InMemoryCache({
 
 <h2 id="object-type">Object Type</h2>
 
-A type in a GraphQL schema which has fields.
+A type in a GraphQL schema that has fields.
 
 ```js
 type User {
-   name: String!,
+   name: String!
 }
 ```
 
@@ -255,6 +256,7 @@ query getHuman {
 `AddTodo` and `getHuman` are names for the mutation and query operation respectively.
 
 <h2 id="partial-query-caching">Partial query caching</h2>
+
 A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources.html) caching.
 
 <h2 id="query">Query</h2>
@@ -263,7 +265,7 @@ A read-only fetch operation to request data from a GraphQL service.
 
 <h2 id="query-colocation">Query colocation</h2>
 
-A practice of placing a GraphQL query in the same location as the app component's view logic. Query co-location makes it easier to facilitate a smooth UI and chore of data retrieval. Jumping directly to the query and keeping the component in sync with its data dependencies is a bliss.
+A practice of placing a GraphQL query in the same location as the app component's view logic. Query co-location makes it easier to facilitate a smooth UI and chore of data retrieval. Jumping directly to the query and keeping the component in sync with its data dependencies is a pleasure.
 
 ```js
 const GET_DOG_PHOTO = gql`
@@ -292,7 +294,7 @@ A technique for preventing unwanted attacks by maintaining a list of approved qu
 
 <h2 id="resolver">Resolver</h2>
 
-A function that connects schema fields and types to various backends. Resolvers provide the instructions for turning a GraphQL operation into data. It can retrieve or write data from either an SQL, a No-SQL, graph database, a micro-service or a REST API. Resolvers can also return strings, ints, null, and other primitives.
+A function that connects schema fields and types to various backends. Resolvers provide the instructions for turning a GraphQL operation into data. It can retrieve data from or write data to anywhere, including a SQL, No-SQL, or graph database, a micro-service, and a REST API. Resolvers can also return strings, ints, null, and other primitives.
 
 ```js
 ...
@@ -338,6 +340,7 @@ type Query {
 ```
 
 <h2 id="schema-first-development">Schema first development</h2>
+
 A [development approach](https://www.apollographql.com/docs/fundamentals/tips.html#schema) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
 
 <h2 id="schema-registry">Schema registry</h2>
@@ -350,11 +353,11 @@ Refers to the need to evolve a schema over time. As a schema evolves, there is a
 
 <h2 id="schema-stitching">Schema stitching</h2>
 
-The process of merging [different schemas into one GraphQL schema](./docs/graphql-tools/schema-stitching.html). These schemas can be local, remote or from third party services. In a microservice-style deployment model, where your data exists across multiple APIs, Schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.
+The process of merging [different schemas into one GraphQL schema](./docs/graphql-tools/schema-stitching.html). These schemas can be local, remote, or from third-party services. In a microservice-style deployment model, where your data exists across multiple APIs, schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.
 
 <h2 id="subscription">Subscription</h2>
 
-A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions.html) is defined in a schema like queries and mutations.
+A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions.html) is defined in a schema along with queries and mutations.
 
 ```js
 type Subscription {
@@ -375,7 +378,7 @@ A type that qualifies the data a GraphQL field resolves. GraphQL ships with some
 
 <h2 id="type-system">Type System</h2>
 
-A collection of types which characterizes the set of data that can be validated, queried and executed on a GraphQL API.
+A collection of types which characterizes the set of data that can be validated, queried, and executed on a GraphQL API.
 
 <h2 id="variable">Variable</h2>
 
@@ -391,7 +394,7 @@ query GetUser($userId: ID!) {
 
 In the query above, `userId` is a variable. The variable and its type is declared in the operation signature, signified by a `$`. The type of the variable here is a required `ID`. It's important to note that variable types must match the type of the arguments that they fill.
 
-The userId variable would be passed to the operation by `apollo-client` like this:
+The `userId` variable would be passed to the operation by `apollo-client` like this:
 
 ```js
 client.query({ query: getUserQuery, variables: { userId: 1 } });
