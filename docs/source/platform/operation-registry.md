@@ -259,6 +259,38 @@ const server = new ApolloServer({
 });
 ```
 
+# Validating schema changes - enterprise
+
+## Using `service:check` with GitHub enterprise
+
+### ...intro...
+
+The CLI supported the `--markdown` flag to output a summary of the schema validation step output in markdown that can be sent directly as a GitHub comment.
+
+The output will look like either of the following:
+
+```md
+🔄 Validated your local schema against schema tag `staging` on service `engine`.
+🔢 Compared **0 schema changes** against **100 operations** seen over the **last 24 hours**.
+✅ Found **no breaking changes**.
+
+🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
+```
+
+```md
+### Apollo Service Check
+🔄 Validated your local schema against schema tag `staging` on service `engine`.
+🔢 Compared **18 schema changes** against **100 operations** seen over the **last 24 hours**.
+❌ Found **7 breaking changes** that would affect **3 operations** across **2 clients**
+
+🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
+```
+
+### TODO
+
+- [ ] Maybe link to how this can be used with `curl` to post a comment to GitHub?
+- [ ] Do we want to overwrite past comments?
+
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
