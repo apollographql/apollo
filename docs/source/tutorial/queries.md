@@ -7,13 +7,13 @@ description: Learn how to fetch data with the Query component
 
 Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `Query` component from `react-apollo` to fetch more complex queries and execute features like pagination.
 
-<h2 id="fetch-data">The Query component</h2>
+## The Query component
 
 The `Query` component is one of the most important building blocks of an Apollo app. It's a React component that fetches a GraphQL query and exposes the result so you can render your UI based on the data it returns.
 
 The `Query` component uses the **render prop** pattern to fetch and load data from queries into our UI. The render prop pattern provides the ability to add a function as a child to our `Query` component that will notify React about what you want to render. It exposes the `error`, `loading` and `data` on a result object that is passed into the render prop function. Let's see an example:
 
-<h2 id="launches">Fetching a list</h2>
+## Fetching a list
 
 To create a `Query` component, import `Query` from `react-apollo`, pass your query wrapped with `gql` to `this.props.query`, and provide a render prop function to `this.props.children` that uses the `loading`, `data`, and `error` properties on the result object to render UI in your app.
 
@@ -56,7 +56,7 @@ Now, let's pass that query to Apollo's `Query` component to render the list:
 
 _src/pages/launches.js_
 
-```js
+```jsx
 export default function Launches() {
   return (
     <Query query={GET_LAUNCHES}>
@@ -87,7 +87,7 @@ To render the list, we pass the `GET_LAUNCHES` query from the previous step into
 
 We're not done yet! Right now, this query is only fetching the first 20 launches from the list. To fetch the full list of launches, we need to build a pagination feature that displays a `Load More` button for loading more items on the screen. Let's learn how!
 
-<h3 id="pagination">Build a paginated list</h3>
+### Build a paginated list
 
 Apollo Client has built-in helpers to make adding pagination to our app much easier than it would be if we were writing the logic ourselves.
 
@@ -95,11 +95,11 @@ To build a paginated list with Apollo, we first need to destructure the `fetchMo
 
 _src/pages/launches.js_
 
-```js lines=4
+```jsx
 export default function Launches() {
   return (
     <Query query={GET_LAUNCHES}>
-      {({ data, loading, error, fetchMore }) => {
+      {({ data, loading, error, fetchMore }) => { // highlight-line
         // same as above
       }}
     </Query>
@@ -113,16 +113,16 @@ Copy the code below and add it above the closing `</Fragment>` tag in the render
 
 _src/pages/launches.js_
 
-```js lines=5,9
+```jsx
 {data.launches &&
   data.launches.hasMore && (
     <Button
       onClick={() =>
-        fetchMore({
+        fetchMore({ // highlight-line
           variables: {
             after: data.launches.cursor,
           },
-          updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
             if (!fetchMoreResult) return prev;
             return {
               ...fetchMoreResult,
@@ -150,13 +150,13 @@ We also define the `updateQuery` function to tell Apollo how to update the list 
 
 In the next step, we'll learn how to wire up the launch detail page to display a single launch when an item in the list is clicked.
 
-<h2 id="launch">Fetching a single launch</h2>
+## Fetching a single launch
 
 Let's navigate to `src/pages/launch.js` to build out our detail page. First, we should import some components and define our GraphQL query to get the launch details.
 
 _src/pages/launch.js_
 
-```js
+```jsx
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -190,7 +190,7 @@ Now that we have a query, let's render a `Query` component to execute it. This t
 
 _src/pages/launch.js_
 
-```js
+```jsx
 export default function Launch({ launchId }) {
   return (
     <Query query={GET_LAUNCH_DETAILS} variables={{ launchId }}>
@@ -215,7 +215,7 @@ export default function Launch({ launchId }) {
 
 Just like before, we use the status of the query to render either a `loading` or `error` state, or data when the query completes.
 
-<h3 id="fragments">Using fragments to share code</h3>
+### Using fragments to share code
 
 You may have noticed that the queries for fetching a list of launches and fetching a launch detail share a lot of the same fields. When we have two GraphQL operations that contain the same fields, we can use a **fragment** to share fields between the two.
 
@@ -246,7 +246,7 @@ To use our fragment in our query, we import it into the GraphQL document and use
 
 _`src/pages/launches.js`_
 
-```js lines=6,10
+```js{6,10}
 const GET_LAUNCHES = gql`
   query launchList($after: String) {
     launches(after: $after) {
@@ -263,7 +263,7 @@ const GET_LAUNCHES = gql`
 
 Let's use our fragment in our launch detail query too. Be sure to import the fragment from the `launches` page before you use it:
 
-```js lines=1,10,13
+```js{1,10,13}
 import { LAUNCH_TILE_DATA } from './launches';
 
 export const GET_LAUNCH_DETAILS = gql`
@@ -282,7 +282,7 @@ export const GET_LAUNCH_DETAILS = gql`
 
 Great, now we've successfully refactored our queries to use fragments. Fragments are a helpful tool that you'll use a lot as you're building GraphQL queries and mutations.
 
-<h3 id="fetch-policy">Customizing the fetch policy</h3>
+### Customizing the fetch policy
 
 Sometimes, it's useful to tell Apollo Client to bypass the cache altogether if you have some data that constantly needs to be refreshed. We can do this by customizing the `Query` component's `fetchPolicy`.
 
@@ -316,10 +316,10 @@ Next, let's render a `Query` component to fetch a logged in user's list of trips
 
 _src/pages/profile.js_
 
-```js lines=3
+```jsx
 export default function Profile() {
   return (
-    <Query query={GET_MY_TRIPS} fetchPolicy="network-only">
+    <Query query={GET_MY_TRIPS} fetchPolicy="network-only"> {/* highlight-line */}
       {({ data, loading, error }) => {
         if (loading) return <Loading />;
         if (error) return <p>ERROR: {error.message}</p>;

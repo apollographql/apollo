@@ -11,7 +11,7 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 - Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) can automatically fetch your schema from the registry and provide intellisense like field descriptions and deprecations directly in your editor.
 - Apollo's registry lets you track related _variants_ of a schema, like staging or alpha versions. It's helpful to have these schema definitions handy without having to juggle running servers that implement them.
 
-<h2 id="setup">Using the Schema Registry</h2>
+## Using the Schema Registry
 
 To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project by:
 
@@ -26,7 +26,7 @@ Once you have that set up, you'll be ready to start connecting to the schema reg
 - `apollo service:push`&mdash; push a new schema to the registry.
 - `apollo service:check`&mdash; calculate a local schema diff and compare the changes against live traffic to validate if the changes are _safe_ or if they will _break_ live running queries.
 
-<h3 id="install-cli">Install the Apollo CLI</h3>
+### Install the Apollo CLI
 
 To install the [`apollo` CLI](https://npm.im/apollo), ensure that `node` and `npm` are both installed, then run:
 
@@ -36,7 +36,7 @@ npm install --global apollo
 
 > **Note:** This guide will utilize the global installation method, but the `apollo` command can also be installed in a project's `devDependencies` and used via [`npm-scripts`](https://docs.npmjs.com/misc/scripts) or [`npx`](https://npm.im/npx).
 
-<h3 id="api-key">Get your Engine API key</h3>
+### Get your Engine API key
 
 To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. If you already have a service, get your API key by visiting your service's settings page. Once you have your API key, add it to your `.env` file like so:
 
@@ -48,7 +48,7 @@ The Apollo CLI will be looking for your `.env` file because it uses your Engine 
 
 > **Note:** Make sure your `.env` file is in the root of your project so the Apollo CLI knows where to find it. You can also export `ENGINE_API_KEY` as an environment variable.
 
-<h3 id="apollo-config">Create an `apollo.config.js` file</h3>
+### Create an `apollo.config.js` file
 
 The commands executed through the Apollo CLI will be looking for your Apollo config to inform their behavior. To set up schema registration, you'll need to configure a source that the CLI can fetch your schema from like so:
 
@@ -66,7 +66,7 @@ module.exports = {
 
 The [Apollo config documentation](/docs/references/apollo-config.html#service-config) has more details and advanced configuration options for the `apollo.config.js` format.
 
-<h2 id="push">Registering a schema</h2>
+## Registering a schema
 
 New versions of your schema are registered to Apollo by running the `apollo service:push` command from within your repository.
 
@@ -90,7 +90,7 @@ To get the full value out of Apollo, your graph's schema history should be as ac
 
 Here is a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
 
-```yaml line=13,29-31
+```yaml{13,29-31}
 version: 2
 
 jobs:
@@ -124,13 +124,13 @@ jobs:
           fi
 ```
 
-<h2 id="history">Viewing schema change history</h2>
+## Viewing schema change history
 
 Changes made to your graph's schema over time can be viewed in [Engine](https://engine.apollographql.com) by browsing to the History page for your graph. Each time you push a new version of your schema, it will appear in your graph's history along with a list of the changes introduced in that version.
 
 <img src="../images/schema-history.png" width="100%" alt="Schema history page in the Engine UI">
 
-<h2 id="schema-tags">Managing environments</h2>
+## Managing environments
 
 Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to _tags_).
 
@@ -138,7 +138,7 @@ Apollo supports tracking multiple _variants_ for every graph. A variant is just 
 
 To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#registry-tag) to send data with a `--tag` flag and [configure your Apollo Server](#metrics-tag) with a `schemaTag` option.
 
-<h3 id="registry-tag">Registering schemas to a variant</h3>
+### Registering schemas to a variant
 
 To register your schema to a specific _variant_, simply add the `--tag=<VARIANT>` flag to your push command:
 
@@ -148,26 +148,26 @@ apollo service:push --tag=beta
 
 > **Note:** All schema pushes without a specified tag are registered under the default graph variant, `current`.
 
-<h3 id="metrics-tag">Associating metrics with a variant</h3>
+### Associating metrics with a variant
 
 There are a few ways to associate metrics reported to [Engine](https://engine.apollographql.com) with a specific variant:
 
 1. The best way to associate metrics with a variant of your graph is to start your server with an environment variable named `ENGINE_SCHEMA_TAG` that contains the name of your variant. This will link metrics sent to Engine with the value of that environment variable.
 1. Alternatively, add the `schemaTag` option to your Apollo Server configuration (works for Apollo Server 2.2+):
 
-```js line=5
+```js
 const server = new ApolloServer({
   ...
   engine: {
     apiKey: "<ENGINE_API_KEY>",
-    schemaTag: "beta"
+    schemaTag: "beta" // highlight-line
   }
 });
 ```
 
 > **Note:** It's important that metrics are associated with the same tag as `service:push` if you want to track isolated data across different variants like production and staging.
 
-<h2 id="benefits">Tools that use the schema registry</h2>
+## Tools that use the schema registry
 
 Keeping your schema up-to-date in Apollo's registry will ensure that you get the best experience from Apollo's tools that connect to the registry:
 

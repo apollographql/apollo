@@ -125,7 +125,7 @@ In the future, the subscription support will have its request pipeline unified w
 
 To disable subscriptions support on Apollo Server 2.x, a `subscriptions: false` setting should be included on the instantiation of Apollo Server, as follows:
 
-```js line=5-6
+```js{5-6}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -150,7 +150,7 @@ npm install apollo-server-plugin-operation-registry
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
-```js line=8-12
+```js{8-12}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -178,10 +178,10 @@ ENGINE_API_KEY=<ENGINE_API_KEY> npm start
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
 
-```js line=3
+```js
 const server = new ApolloServer({
   // ...
-  engine: '<ENGINE_API_KEY>'
+  engine: '<ENGINE_API_KEY>' // highlight-line
   // ...
 });
 ```
@@ -222,7 +222,7 @@ To selectively enable operation safe-listing, the `forbidUnregisteredOperations`
 
 For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
 
-```js line=12-27
+```js{12-27}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -259,14 +259,14 @@ const server = new ApolloServer({
 
 We recommend testing the behavior of the plugin, as well as your `forbidUnregisteredOperations` function, before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in lieu of actually forbidding anything.
 
-```js line=7
+```js
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       forbidUnregisteredOperations: true,
-      dryRun: true
+      dryRun: true // highlight-line
     });
   ],
 });
@@ -294,14 +294,14 @@ This can occur if the schema hasn't been published since the operation registry 
 
 The first step in debugging the operation registry behavior is to enable debugging. This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
-```js line=7
+```js
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       // ... other, existing options ...
-      debug: true,
+      debug: true, // highlight-line
     });
   ],
 });

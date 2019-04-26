@@ -9,21 +9,21 @@ One of our fundamental beliefs is that our Apollo workflows should hook into and
 1. [**Slack**](#slack) &mdash; Get a daily summary of key information from your server, including the overall request rate, error rate, and performance latency. Set up notifications for noteworthy events in your service, like increases in errors or particularly slow response times for important queries.
 1. [**Datadog**](#datadog) &mdash; Forward the key metrics and performance data available from Engine to Datadog as well.
 
-<h2 id="github">GitHub</h2>
+## GitHub
 
 Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/docs/platform/schema-validation.html) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
 
 ![GitHub Status View](../img/schema-validation/github-check.png)
 
-<h3 id="install-github">Install the GitHub application</h3>
+### Install the GitHub application
 
 Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Engine integration on the GitHub profile or organization that you want to set up checks for.
 
-<h3 id="check-schema-on-ci">Run validation on each commit</h3>
+### Run validation on each commit
 
 Next, make sure your CI has a step to run the schema validation command. This is accomplished by adding the `apollo schema:check` command directly as a step in your CI. For CircleCI it could look something like this:
 
-```yaml line=13,29,33-36
+```yaml{13,29,33-36}
 version: 2
 
 jobs:
@@ -68,14 +68,14 @@ The `apollo schema:check` command checks for differences in your schema between 
 
 Because you installed the Engine app on GitHub, the check you've added will show up as a line in your GitHub checks list. If there are changes in your schema you'll be able to review them by clicking the "Details" link. By enabling schema validation in your continuous integration workflow (eg. CircleCI, etc.), you're alerting developers of any potential problems directly in their pull requests, thereby giving them critical feedback where it's most useful.
 
-<h2 id="slack">Slack</h2>
+## Slack
 
 Our Apollo Slack integration brings your server's performance metrics and analytics data from Apollo Engine directly to your team's Slack workspace so you can be notified of potential issues proactively. The integration does two main things:
 
 1. Send a [**daily snapshot**](#slack-reports) of the request rate, error rate, and performance latency of your graph.
 1. Send [**notifications**](#slack-notifications) that are triggered on thresholds like error percentage and performance latency.
 
-<h3 id="setup-slack">Configure the integration</h3>
+### Configure the integration
 
 The Apollo Slack integration is set up and configured through the Engine UI. If you do not yet have account, [**follow this guide**](/docs/apollo-server/features/metrics.html#Apollo-Engine) to get started connecting your server to Engine.
 
@@ -89,7 +89,7 @@ Once you've configured your Slack channel you'll be able to turn on daily report
 
 ![The Integrations tab in Engine](../img/integrations/integrations-tab.png)
 
-<h3 id="slack-reports">Daily reports</h3>
+### Daily reports
 
 Daily reports from Engine are sent out around 9am in whichever timezone you configure them to be in. You turn them on in the "Integrations" tab as shown above. The reports have a set format that gives a birds-eye view of what your GraphQL API delivered in the previous day:
 
@@ -103,7 +103,7 @@ We've constructed the report provided to give you an actionable summary of what'
 2.  **p95 service time:** This shows you how long queries are taking to execute. We selected p95 since it’s the best overall representation of how your users are experiencing your app. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is usually directly connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
 3.  **Error percentage:** This will show you how many of your GraphQL requests end up with an error result. Spikes in errors might be the result of some underlying backend malfunctioning. You can also see which of your operations are most error-prone.
 
-<h3 id="slack-notifications">Notifications</h3>
+### Notifications
 
 In Engine you can configure notifications that are triggered on the performance data of your graph, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
 
@@ -117,7 +117,7 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 ![Slack Alert](../img/integrations/slack-notification.png)
 
-<h2 id="datadog">Datadog</h2>
+## Datadog
 
 The Apollo Datadog integration allows you to forward all the performance metrics and analytics data that's available to you in Engine to Datadog as well. This is particularly convenient for teams already relying on Datadog for their monitoring, and of the best perks is that Datadog has advanced filtering features that alerts can be set on, and teams can set those alerts based on their GraphQL metrics data from Engine through Datadog.
 

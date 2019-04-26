@@ -5,7 +5,7 @@ description: Turn on metrics reporting to get performance and schema usage insig
 
 GraphQL offers a number of interesting insights in the realm of server performance and usage monitoring. Because the structure of GraphQL queries requires clients to request exactly the fields they need, simple instrumentation allows us to elicit exactly which fields in the schema are being used at any given time. This helps us understand how much usage different parts of our data model get at a far more granular level than we could achieve out of the box with non-GraphQL APIs.
 
-<h4>Tracing query execution</h4>
+#### Tracing query execution
 
 A "trace" corresponds to exactly one [GraphQL operation](https://www.apollographql.com/docs/resources/graphql-glossary.html#operation) and represents a breakdown of timing and error information for each individual field resolved as part of that operation.
 
@@ -13,12 +13,12 @@ By recording which resolvers executed in our server and their traces, we can bui
 
 We've specifically built an interface to view this information into [Apollo Engine](https://engine.apollographql.com/) and any GraphQL server can report metrics to Engine by sending data in the `apollo-tracing` format to our metrics ingress. Read on to learn how to set this up in your environment.
 
-<h2 id="apollo-server">Apollo Server</h2>
+## Apollo Server
 
 Apollo Server has had the ability to report its performance usage metrics to Engine built-in. To set it up, get an API key from [Engine](https://engine.apollographql.com/) by logging in and creating a graph. Then set your API key in the `ENGINE_API_KEY` environment variable or pass it into your Apollo Server constructor like so:
 
-```js line=6-8
-const { ApolloServer } = require('apollo-server');
+```js{6-8}
+const { ApolloServer } = require("apollo-server");
 
 const server = new ApolloServer({
   typeDefs,
@@ -35,7 +35,7 @@ server.listen().then(({ url }) => {
 
 For advanced configuration options to set up logging, error filtering, and client-aware metrics reporting take a look at our [server documentation](https://www.apollographql.com/docs/apollo-server/features/metrics.html).
 
-<h2 id="other-servers">Other servers</h2>
+## Other servers
 
 There are 2 ways to send metrics data from your server to Engine:
 
@@ -55,7 +55,7 @@ There are four steps to creating a reporting agent for any server:
 3. Emitting batches of Traces to the reporting endpoint
 4. Providing plugins for more advanced reporting functionality
 
-<h3 id="tracing-format">1. Tracing Format</h3>
+### 1. Tracing Format
 
 The first step of creating a metrics reporting agent will be to hook into the GraphQL execution pipeline to create the metrics and translate them into the proper data format.
 
@@ -69,13 +69,13 @@ As a good starting point, we recommend implementing an extension to the GraphQL 
 
 An example of a FullTracesReport message, represented as JSON, can be found below\*
 
-<h3 id="query-signature">2. Operation Signing</h3>
+### 2. Operation Signing
 
 In order to correctly group GraphQL operations, it's important to define a method for "signing" a query. Because GraphQL queries can be expressed in a variety of ways, this is a harder problem than it may
 appear to be at first thought. For instance, even though all of the following queries request the same
 information, it's ambiguous whether they should be treated equally.
 
-```gql
+```graphql
 query AuthorForPost($foo: String!) {
   post(id: $foo) {
     author
@@ -111,7 +111,7 @@ Even though this concept lacks definition, it's important to decide on how queri
 
 The TypeScript reference implementation uses a default signature method and allows for that signature method to also be overridden by the user. The [implementation of the default](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts) drops unused fragments and/or operations, hides String literals, ignores aliases, sorts the tree deterministically, and ignores whitespace differences. We recommend using the same default signature method for consistency across different server runtimes.
 
-<h3 id="sending-metrics">3. Sending Metrics</h3>
+### 3. Sending Metrics
 
 Once a metrics report (i.e. batch of traces) is prepared, it will need to be sent to an ingress for aggregation and sampling. Currently, this is all performed in Apollo's cloud services. The endpoint for this aggregation and sampling is at `https://engine-report.apollodata.com/api/ingress/traces`, which supports the protobuf format mentioned above via a `POST` request. The reporting endpoint accepts a gzipped body as well. To see the full reference implementation, see the `sendReport()` method in the [TypeScript reference agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L210).
 
@@ -121,7 +121,7 @@ We recommend implementing retries with backoff on 5xx responses and network erro
 
 > NOTE: In the future, we plan to release a local aggregation and sampling agent that could be used to lessen the bandwidth requirements on reporting agents.
 
-<h3 id="advanced-features">4. [Optional] Advanced Reporting Features</h3>
+### 4. [Optional] Advanced Reporting Features
 
 The reference TypeScript implementation also includes several more advanced features which may be worth porting to new implementations. All of these features are implemented in the agent itself and are documented in the interface description for the EngineReportingOptions of [the agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L51).
 
@@ -129,7 +129,7 @@ For example, the option to send reports immediately may be particularly useful t
 
 Another important feature is the ability to limit information sent, particularly to avoid reporting [personal data](https://en.wikipedia.org/wiki/Personal_data). Because the most common place for personal data to appear is in variables and headers, the TypeScript agent offers options for `privateVariables` and `privateHeaders`.
 
-<h3 id="traces-report-example">Example FullTracesReport, represented as JSON</h3>
+### Example FullTracesReport, represented as JSON
 
 ```json
 {

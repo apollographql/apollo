@@ -11,7 +11,7 @@ Apollo makes connecting these services to your graph simple with our data source
 
 In the next sections, we'll build data sources for a REST API and a SQL database and connect them to Apollo Server. Don't worry if you're not familiar with either of those technologies, you won't need to understand them deeply in order to follow the examples. 😀
 
-<h2 id="rest-api">Connect a REST API</h2>
+## Connect a REST API
 
 First, let's connect the [Space-X v2 REST API](https://github.com/r-spacex/SpaceX-API) to our graph. To get started, install the `apollo-datasource-rest` package:
 
@@ -40,7 +40,7 @@ module.exports = LaunchAPI;
 
 The Apollo `RESTDataSource` also sets up an in-memory cache that caches responses from our REST resources with no additional setup. We call this **partial query caching**. What's great about this cache is that you can reuse existing caching logic that your REST API exposes. If you're curious to learn more about partial query caching with Apollo data sources, please check out [our blog post](https://blog.apollographql.com/easy-and-performant-graphql-over-rest-e02796993b2b).
 
-<h3 id="fetching">Write data fetching methods</h3>
+### Write data fetching methods
 
 The next step is to add methods to the `LaunchAPI` data source that correspond to the queries our graph API needs to fetch. According to our schema, we'll need a method to get all of the launches. Let's add a `getAllLaunches` method to our `LaunchAPI` class now:
 
@@ -118,11 +118,11 @@ The `getLaunchById` method takes in a flight number and returns the data for a p
 
 Now that we've connected our REST API successfully, let's connect our database!
 
-<h2 id="database">Connect a database</h2>
+## Connect a database
 
 Our REST API is read-only, so we need to connect our graph API to a database for saving and fetching user data. This tutorial uses SQLite for our SQL database, and Sequelize for our ORM. Our `package.json` already included these packages, thus they were installed in the first part of this tutorial with `npm install`. Also, since this section contains some SQL-specific code that isn't necessary to understanding Apollo data sources, we've already built a `UserAPI` data source for you in `src/datasources/user.js`. Please navigate to that file so we can explain the overall concepts.
 
-<h3 id="custom-data-source">Build a custom data source</h3>
+### Build a custom data source
 
 Apollo doesn't have support for a SQL data source yet (although we'd love to help guide you if you're interested in contributing), so we will need to create a custom data source for our database by extending the generic Apollo data source class. You can create your own with the `apollo-datasource` package.
 
@@ -140,7 +140,7 @@ Let's go over some of the methods we created in `src/datasources/user.js` to fet
 - `getLaunchIdsByUser()`: Returns all booked launches for the logged in user
 - `isBookedOnLaunch({ launchId })`: Determines whether the logged in user booked a certain launch
 
-<h2 id="apollo-server">Add data sources to Apollo Server</h2>
+## Add data sources to Apollo Server
 
 Now that we've built our `LaunchAPI` data source to connect our REST API and our `UserAPI` data source to connect our SQL database, we need to add them to our graph API.
 
@@ -148,7 +148,7 @@ Adding our data sources is simple, just create a `dataSources` property on your 
 
 _src/index.js_
 
-```js line=3,5,6,8,12-15
+```js{3,5,6,8,12-15}
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');

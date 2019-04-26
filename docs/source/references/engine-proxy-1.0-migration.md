@@ -6,7 +6,7 @@ title: Upgrade to apollo-engine 1.0
 
 Version 1.0 of the npm `apollo-engine` package replaces the `Engine` API with a streamlined `ApolloEngine` API. It's straightforward to upgrade your app to the 1.0 API.
 
-<h2 id="node-migration">Migrating from `Engine` to `ApolloEngine`</h2>
+## Migrating from `Engine` to `ApolloEngine`
 
 A typical use of the pre-1.0 `Engine` API with an Express server looked like:
 
@@ -73,8 +73,7 @@ Notable differences:
 
 For full details including an API reference, see [the Node setup guide](./setup-node.html).
 
-
-<h3 id="behind-the-scenes">Behind the scenes</h3>
+### Behind the scenes
 
 The old API was based on "double proxying". If your web server was supposed to serve on port 4000, you would tell Express (or your other web framework) to listen on port 4000. The `Engine` class would start an instance of the Engine Proxy running on an ephemeral port (say, 4321). You would add a special middleware to your framework which redirects GraphQL requests to `127.0.0.1:4321`. The Engine Proxy would then make GraphQL requests back to your Node server on port 4000.  The middleware used a special header to differentiate between the initial request from an external client and the nearly-identical internal request from Engine. So GraphQL requests are routed `client -> Node -> Engine Proxy -> Node` and non-GraphQL requests are routed `client -> Node`.
 
@@ -89,7 +88,7 @@ This resolves all of the problems listed above. Because there's no "middleware" 
 This does mean that *all* of the HTTP traffic on your server is now routed through the Engine Proxy, whereas before non-GraphQL traffic avoided that hop. The Engine Proxy uses the industry-standard Go reverse proxy library to transparently proxy non-GraphQL HTTP and Websocket traffic, so you should observe no major difference.  If you do find any problems from running non-GraphQL traffic through the Engine Proxy, please [let us know](https://engine.apollographql.com/login?overlay=SupportRequestNoAccount), or consider running your GraphQL server separately from other servers.
 
 
-<h2 id="docker-migration" title="Upgrading the Docker container">Upgrading the Docker container to v1 and a new way to run the proxy</h2>
+## Upgrading the Docker container to v1 and a new way to run the proxy
 
 While most pre-v1 Apollo Engine users use the `Engine` API from the `apollo-engine` npm module to run Engine against Node origins, we also provide the Engine Proxy in a Docker container. This is primarily intended for use with non-Node GraphQL servers.
 
@@ -102,7 +101,7 @@ The Docker container is mostly unchanged in v1.  Here's what's new:
 - If you configure a frontend endpoint as `/graphql`, requests to `/graphql/` should be served also. (This previously worked if you were using the `Engine` double proxy mode but not with the Docker container.)
 
 
-<h2 id="caching">Automatic cache store configuration</h2>
+## Automatic cache store configuration
 
 Prior to Engine v1, the features that require an in-memory or memcached cache store ([public and private full-query response cache](./caching.html), [automatic persisted queries](./auto-persisted-queries.html), and the session token authorization cache) required you to manually configure a cache store and enable them.
 

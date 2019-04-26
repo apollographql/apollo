@@ -19,7 +19,7 @@ Apollo Server 2.2.3+ will look for specific the request headers, `apollographql-
 
 With Apollo Client 2.4.6+, simply passing the `name` and `version` options in your `ApolloClient` constructor will automatically add these headers to every request. Setting up client identity reporting is as simple as adding configuration to Apollo Client:
 
-```js line=8-9
+```js{8-9}
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 
@@ -62,10 +62,10 @@ Similarly to deprecation, adding fields to your graph often means that clients w
 
 The requester is responsible for setting HTTP headers on its requests in a way the server will understand. As noted in "setup", Apollo Client and Server will handle this automatically. For advanced cases, rather than setting the `name` and `version` on `ApolloClient`, `headers` can be set on the `HttpLink` directly.
 
-```js line=8-16
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
+```js{8-16}
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { ApolloLink } from "apollo-link";
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -85,8 +85,8 @@ to a request. To send client-tagged metrics to Apollo, pass a
 `generateClientInfo` function into the `ApolloServer` constructor. The
 following example checks the headers and provides a fallback:
 
-```js line=8-22
-const { ApolloServer } = require('apollo-server');
+```js{8-22}
+const { ApolloServer } = require("apollo-server");
 
 const server = new ApolloServer({
   typeDefs,

@@ -9,7 +9,7 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 
 > **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
 
-<h2 id="schema-validation">How it works</h2>
+## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
 
@@ -22,7 +22,7 @@ Here's how it works:
 1. Engine returns the schema diff and indicates any breaking changes found.
 1. The CLI prints the output of this check with a link to view more details in the Engine UI.
 
-<h3 id="algorithm">Breaking change detection</h3>
+### Breaking change detection
 
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
 
@@ -178,7 +178,7 @@ A failed `apollo service:check` command will exit with a non-0 exit code and fai
 
 Since breaking changes are detected using live traffic, your service will _need active metrics_ for the change algorithm to detect failures. If there are no metrics associated with your service, _all changes will be labeled as a `PASS` as opposed to a `FAIL`_.
 
-<h2 id="setup">Set up schema validation</h2>
+## Set up schema validation
 
 To set up schema validation, you wlil need to be both actively sending traces and registering schemas to Apollo:
 
@@ -203,13 +203,13 @@ The command can be placed in any continuous integration pipeline. To surface res
 
 > **Note:** The Apollo CLI will be looking in your Apollo config for a location from which to fetch your local schema and using your ENGINE_API_KEY to authenticate its requests with the Engine service.
 
-<h3 id="service-check-on-ci">Run validation on each commit</h3>
+### Run validation on each commit
 
 We highly recommended that you add validation to your continuous integration workflow (e.g. Jenkins, CircleCI, etc.). In doing so, you can detect potential problems automatically and display the results of checks directly on pull requests.
 
 Here's a example of how to add a schema validation check to CircleCI:
 
-```yaml line=29
+```yaml{26}
 version: 2
 
 jobs:
@@ -240,7 +240,7 @@ jobs:
 
 > **Note:** If you're using GitHub status checks, we recommend ignoring the exit code of the `apollo service:check` command so your continuous integration can complete without failing early. This can be done by appending `|| echo 'validation failed'` to the command call.
 
-<h3 id="github">GitHub integration</h3>
+### GitHub integration
 
 <div style="text-align:center">
 
@@ -270,7 +270,7 @@ The output of `apollo service:check --markdown` looks like this:
 🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
 ```
 
-<h3 id="multiple-environments">Multiple environments</h3>
+### Multiple environments
 
 Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to tags).
 
@@ -282,7 +282,7 @@ Variants mostly commonly represent environments and can also indicate branches o
 
 </div>
 
-<h2 id="cli-advanced">Adjusting validation parameters</h2>
+## Adjusting validation parameters
 
 Depending on the requirements of your application, you may want to configure the timeframe to validate operations against. You can do so by providing a `validationPeriod` flag to the CLI. The timeframe will always end at "now", and go back in time by the amount specified.
 

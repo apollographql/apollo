@@ -7,7 +7,7 @@ Welcome! We're excited that you've decided to learn Apollo. This fullstack tutor
 
 We want you to feel confident that you have the knowledge you need to build a production-ready app with Apollo, so we're forgoing hello world in favor of a real world example complete with authentication, pagination, testing, and more. Ready? Let's dive right in!
 
-<h2 id="what-is-apollo">What is Apollo?</h2>
+## What is Apollo?
 
 Apollo is a complete platform for implementing a graph over your data. It includes two runtime libraries, **Apollo Server** and **Apollo Client**, for building and querying your graph's API. It also features developer tooling that integrates with your existing workflow and gives you full visibility into the performance and security of your graph.
 
@@ -19,7 +19,7 @@ Why do you need a graph? Today, one of the most difficult parts of building an a
 
 **[GraphQL](https://www.graphql.org/)** is the specification that we'll be using to communicate between our graph API and client. The spec itself is language-agnostic and unopinionated, so we're choosing to implement GraphQL with the Apollo platform.
 
-<h2 id="tutorial-app">What we'll build</h2>
+## What we'll build
 
 In this tutorial, we'll build an interactive app for reserving your spot on an upcoming Space-X launch. You can think of it as an Airbnb for space travel! All of the data is real, thanks to the [SpaceX-API](https://github.com/r-spacex/SpaceX-API).
 
@@ -33,11 +33,11 @@ The app has five screens: a login screen, a list of launches, a launch detail, a
 
 We want this to model a real world Apollo app as much as possible, so we're covering essential topics like authentication, pagination, state management, testing, and deployment.
 
-<h2 id="prerequisites">Prerequisites</h2>
+## Prerequisites
 
 The tutorial assumes that you're comfortable with JavaScript/ES6, you've fetched data from an API before, and you have basic familiarity with React. If you need to brush up on your React skills, we recommend going through the [official tutorial](https://reactjs.org/tutorial/tutorial.html). Building your frontend with React is not a requirement for using Apollo, although it is the most popular way developers integrate with Apollo Client. Even if you use another view layer like Angular or Vue, you will still be able to pick up on the concepts covered in the client section and apply them to your view layer of choice.
 
-<h3 id="system-requirements">System requirements</h3>
+### System requirements
 
 Before we begin, make sure you have:
 
@@ -47,7 +47,7 @@ Before we begin, make sure you have:
 
 While it's not a requirement, we recommend using [VSCode](https://code.visualstudio.com/) as your editor so you can take advantage of all the awesome features the Apollo VSCode extension enables. We're hoping to support other editors in the future.
 
-<h2 id="dev-environment">Set up your development environment</h2>
+## Set up your development environment
 
 Now the fun begins! First, you'll need to install our developer tools:
 
@@ -65,9 +65,9 @@ There are two folders: one for the starting point (`start`) and one for the fina
 
 <!--
 TODO: Add in this section after Apollo VSCode works for server development
-<h3 id="vscode">Configure Apollo VSCode</h3> -->
+### Configure Apollo VSCode -->
 
-<h3 id="help">Where can I get help?</h3>
+### Where can I get help?
 
 We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Spectrum](https://spectrum.chat/apollo) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
 

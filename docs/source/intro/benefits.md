@@ -7,15 +7,15 @@ Managing data in modern applications can present a number of challenges. Develop
 
 Adopting GraphQL in your organization will ease these pain points considerably. Read on to learn how GraphQL's declarative approach to data fetching will simplify data transformation and speed up your API. You'll also learn how the Apollo platform enables faster development cycles thanks to its advanced ecosystem of tooling and excellent developer experience.
 
-<h2 id="dev-experience">Developer experience</h2>
+## Developer experience
 
 Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Engine. Let's learn how!
 
-<h3 id="explore-api">Explore your API</h3>
+### Explore your API
 
 GraphQL's strongly typed query language enables developers to take advantage of incredible tooling for exploring GraphQL APIs. Thanks to GraphQL's introspection system, developers can query a GraphQL schema for information about what queries and types it supports. Introspection unlocks some really cool features, such as automatic documentation, autocomplete, and more.
 
-<h4 id="graphql-playground">GraphQL Playground</h4>
+#### GraphQL Playground
 
 [GraphQL Playground](https://github.com/prismagraphql/graphql-playground) by Prisma is an excellent IDE featuring automatically generated docs for your schema and query execution with autocomplete. At a glance, you can see all the data available in your GraphQL API without diving into the backend code or knowing what source it came from.
 
@@ -23,13 +23,13 @@ GraphQL's strongly typed query language enables developers to take advantage of 
 
 Apollo Server 2+ sets up GraphQL Playground out of the box, so you can start exploring your schema and executing queries immediately.
 
-<h4 id="dev-tools">Apollo DevTools</h4>
+#### Apollo DevTools
 
 Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Client cache, track active queries, and view mutations. You also have access to GraphiQL within Apollo DevTools which is convenient for testing queries as you're working on front-end code with Apollo Client.
 
 ![Apollo DevTools](../assets/dev-tools.png)
 
-<h3 id="simplify-frontend">Simplify front-end code</h3>
+### Simplify front-end code
 
 If you've worked with REST and a state management library like Redux, you're probably used to writing action creators, reducers, normalizing your data, and integrating middleware to make a single network request. With Apollo Client, you no longer have to worry about any of these concerns! Apollo Client sets up everything you need for a production-ready app so you can focus on writing queries instead of thousands of lines of state management code.
 
@@ -43,7 +43,7 @@ const client = new ApolloClient({
 
 Teams who have switched to Apollo Client have reported [deleting thousands of lines of state management code](https://blog.apollographql.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a) and lots of complexity from their application. Since Apollo Client supports managing both local and remote data, you can use the Apollo cache as a single source of truth for all global state in your application.
 
-<h3 id="modern-tooling">Modern tooling</h3>
+### Modern tooling
 
 Developing your GraphQL API with the Apollo platform gives teams access to modern tooling that helps them uncover bugs quickly, gain visibility into their API, and develop challenging features such as caching with confidence.
 
@@ -51,7 +51,7 @@ Developing your GraphQL API with the Apollo platform gives teams access to moder
 
 ![Apollo Engine](../assets/engine.png)
 
-<h2 id="declarative-data">Declarative data fetching</h2>
+## Declarative data fetching
 
 One of the main advantages of adopting GraphQL is its declarative approach to data fetching. With GraphQL, there's no need to call multiple endpoints from the client or aggregate the data manually like you have to with traditional REST data fetching. Instead, you specify exactly the data you need and GraphQL gives you exactly what you asked for.
 
@@ -103,11 +103,11 @@ Apollo Client takes care of the request cycle from start to finish, including tr
 
 You’ll find that when you switch to Apollo Client, you’ll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. To learn more about how Apollo Client enables advanced features like optimistic UI, refetching, and pagination with less code, check out our [documentation for Apollo Client](/docs/react/).
 
-<h2 id="performance">Improved performance</h2>
+## Improved performance
 
 In many cases, layering a GraphQL API over your existing REST endpoints can improve your app's performance, especially on devices with slow network connections. While you should always measure to determine how integrating GraphQL will affect your application, it's generally accepted that GraphQL improves performance by helping avoid round trips to the server and reducing payload size.
 
-<h3 id="smaller-payload">Smaller payloads</h3>
+### Smaller payloads
 
 Since the response back from the server contains only the properties you specify in your query, GraphQL can significantly reduce payload size compared to a REST endpoint. Let's take a look at our dogs query from earlier in the article:
 
@@ -130,7 +130,7 @@ const GET_DOGS = gql`
 
 The response back from the server will be a list of dog objects with `id`, `breed`, `image`, and `activities` properties. It doesn't matter if the underlying REST endpoints we call in our resolvers return back objects with 100 properties! All of those extraneous properties will be filtered out before the response is sent back to the client.
 
-<h3 id="round-trip">Avoid round trips</h3>
+### Avoid round trips
 
 Since each GraphQL request returns only one response, switching to GraphQL can help you avoid costly round trips from the client to your server. With REST, each resource represents a round trip, which can quickly add up. If you're fetching items in a list, you'll have to complete a round trip for every resource multiplied by the number of items, causing slow load times, especially on mobile devices.
 
@@ -142,7 +142,7 @@ GET /api/dogs/activities
 
 With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request.
 
-<h3 id="production">Ready for production</h3>
+### Ready for production
 
 While the GraphQL specification was first made public by Facebook in 2015, GraphQL has been a key component of their mobile application deployment since 2012.
 

@@ -7,13 +7,13 @@ A common challenge that developers experience as they build products is how quic
 
 This guide details some practices around enhancing network performance which will help bring data closer to your clients.
 
-<h2 id="automatic-persisted-queries">Automatic Persisted Queries</h2>
+## Automatic Persisted Queries
 
 The size of individual GraphQL query strings can be a major pain point. Apollo Server implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#get).
 
 With Apollo Persisted Queries, the ID is a deterministic hash of the input query, so we don't need a complex build step to share the ID between clients and servers. If a server doesn't know about a given hash, the client can expand the query for it; Apollo Server caches that mapping.
 
-<h3 id="setup">Setup</h3>
+### Setup
 
 To get started with APQ, add the [Automatic Persisted Queries Link](https://github.com/apollographql/apollo-link-persisted-queries) to the client codebase with `npm install apollo-link-persisted-queries`. Next incorporate the APQ link with Apollo Client's link chain before the HTTP link:
 
@@ -51,7 +51,7 @@ const server = new ApolloServer({
 });
 ```
 
-<h3 id="verify">Verify</h3>
+### Verify
 
 Apollo Server's persisted queries configuration can be tested from the command-line. The following examples assume Apollo Server is running at `localhost:4000/`.
 This example persists a dummy query of `{__typename}`, using its sha256 hash: `ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38`.
@@ -81,11 +81,11 @@ curl -g 'http://localhost:4000/?extensions={"persistedQuery":{"version":1,"sha25
 
    Expect a response of `{"data": {"__typename": "Query"}}"`, as the query string is loaded from the cache.
 
-<h3 id="get">Using GET requests with APQ to enable CDNs</h3>
+### Using GET requests with APQ to enable CDNs
 
 A great application for APQ is running Apollo Server behind a CDN. Many CDNs only cache GET requests, but many GraphQL queries are too long to fit comfortably in a cacheable GET request.  When the APQ link is created with `createPersistedQueryLink({useGETForHashedQueries: true})`, Apollo Client automatically sends the short hashed queries as GET requests allowing a CDN to serve those request. For full-length queries and for all mutations, Apollo Client will continue to use POST requests.
 
-<h3 id="how-it-works">How it works</h3>
+### How it works
 
 The mechanism is based on a lightweight protocol extension between Apollo Client and Apollo Server. It works as follows:
 
@@ -98,13 +98,13 @@ The mechanism is based on a lightweight protocol extension between Apollo Client
 
   <img src="../images/persistedQueries.newPath.png" width="80%" style="margin: 5%;" alt="New Query Path">
 
-<h2 id="cdn">CDN Integration</h2>
+## CDN Integration
 
 Content Delivery Networks (CDNs) such as [fly.io](https://fly.io), [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) allow content caching close to clients, delivering data with low latency from a nearby server. Apollo Server makes it straightforward to use CDNs with GraphQL queries to cache full responses while still executing more dynamic queries.
 
 To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](#automatic-persisted-queried) to ensure that GraphQL requests are in a format that a CDN can understand.
 
-<h3 id="cache-hints" title="1. Add cache hints">Step 1: Add cache hints to the GraphQL schema</h3>
+### Step 1: Add cache hints to the GraphQL schema
 
 Add cache hints as [directives](./directives.html) to GraphQL schema so that Apollo Server knows which fields and types are cacheable and for how long. For example, this schema indicates that all fields that return an `Author` should be cached for 60 seconds, and that the `posts` field should itself be cached for 180 seconds:
 
@@ -130,7 +130,7 @@ const server = new ApolloServer({
 
 After this step, Apollo Server will serve the HTTP `Cache-Control` header on fully cacheable responses, so that any CDN in front of Apollo Server will know which responses can be cached and for how long! A "fully cacheable" response contains only data with non-zero `maxAge`; the header will refer to the minimum `maxAge` value across the whole response, and it will be `public` unless some of the data is tagged `scope: PRIVATE`. To observe this header, use any browser's network tab in its dev tools.
 
-<h3 id="enable-apq" title="2. Enable persisted queries">Step 2: Enable automatic persisted queries</h3>
+### Step 2: Enable automatic persisted queries
 
 Often, GraphQL requests are big POST requests and most CDNs will only cache GET requests. Additionally, GET requests generally work best when the URL has a bounded size. Enabling automatic persisted queries means that short hashes are sent over the wire instead of full queries, and Apollo Client can be configured to use GET requests for those hashed queries.
 
@@ -164,7 +164,7 @@ Make sure to include `useGETForHashedQueries: true`. Note that the client will s
 
 If configured correctly, browser's dev tools should verify that queries are now sent as GET requests, and receive appropriate `Cache-Control` response headers.
 
-<h3 id="setup-cdn" title="3. Set up a CDN">Step 3: Set up a CDN!</h3>
+### Step 3: Set up a CDN!
 
 How exactly this works depends on exactly which CDN you chose. Configure your CDN to send requests to Apollo Server. Some CDNs may need to be specially configured to honor origin Cache-Control headers; for example, here is [Akamai's documentation on that setting](https://learn.akamai.com/en-us/webhelp/ion/oca/GUID-57C31126-F745-4FFB-AA92-6A5AAC36A8DA.html). If all is well, cacheable queries should now be saved by the CDN!
 

@@ -5,7 +5,7 @@ description: Create a blueprint for your graph's data
 
 The first step on our journey toward building our graph API is constructing its **schema**. You can think of a schema as a blueprint for all of the data you can access in your graph. Throughout this section, you'll learn how to build and explore your graph's schema with Apollo.
 
-<h2 id="setup">Set up Apollo Server</h2>
+## Set up Apollo Server
 
 Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
 
@@ -30,7 +30,7 @@ To build our graph API, we need to import the `ApolloServer` class from `apollo-
 
 Before we can start the server, we need to write our schema first.
 
-<h2 id="write-schema">Write your graph's schema</h2>
+## Write your graph's schema
 
 Every graph API is centered around its schema. You can think of a schema as a blueprint that describes all of your data's types and their relationships. A schema also defines what data we can fetch through queries and what data we can update through mutations. It is strongly typed, which unlocks powerful developer tooling.
 
@@ -56,7 +56,7 @@ const typeDefs = gql``;
 module.exports = typeDefs;
 ```
 
-<h3 id="query">Query type</h3>
+### Query type
 
 We'll start with the **Query type**, which is the entry point into our schema that describes what data we can fetch.
 
@@ -77,7 +77,7 @@ First, we define a `launches` query to fetch all upcoming rocket launches. This 
 
 How do we define what properties are exposed by `Launch` and `User`? For these types, we need to define a GraphQL object type.
 
-<h3 id="object">Object & scalar types</h3>
+### Object & scalar types
 
 Let's define what the structure of `Launch` looks like by creating an **object type**:
 
@@ -127,7 +127,7 @@ You'll notice that the field `missionPatch` takes an argument of `size`. GraphQL
 
 There are some other less common types you might also encounter when building your graph's schema. For a full list, you can reference this handy [cheat sheet](https://devhints.io/graphql#schema).
 
-<h3 id="mutation">Mutation type</h3>
+### Mutation type
 
 Now, let's define the **Mutation type**. The `Mutation` type is the entry point into our graph for modifying data. Just like the `Query` type, the `Mutation` type is a special object type.
 
@@ -159,7 +159,7 @@ type TripUpdateResponse {
 
 Our mutation response type contains a success status, a corresponding message, and the launch that we updated. It's always good practice to return the data that you're updating in order for the Apollo Client cache to update automatically.
 
-<h2 id="apollo-server-run">Run your server</h2>
+## Run your server
 
 Now that we have scoped out our app's schema, let's run the server by calling `server.listen()`.
 
@@ -178,7 +178,7 @@ server.listen().then(({ url }) => {
 
 In your terminal, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
 
-<h3 id="apollo-server-explore">Explore your schema</h3>
+### Explore your schema
 
 By default, Apollo Server supports [GraphQL Playground](/docs/apollo-server/features/graphql-playground.html). The Playground is an interactive, in-browser GraphQL IDE for exploring your schema and testing your queries. Apollo Server automatically serves GraphQL Playground in development only.
 

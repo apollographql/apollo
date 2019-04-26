@@ -18,7 +18,7 @@ are:
   <img src="../img/platform-diagram.png" alt="Graph layer">
 </div>
 
-<h2 id="open-source">Core open source components</h2>
+## Core open source components
 
 - **Apollo Server** is a JavaScript GraphQL server for defining a
   _schema_ and a set of _resolvers_ that implement each part of that
@@ -45,7 +45,7 @@ are:
 - **Apollo CLI** is a simple command line client that provides
   access to Apollo cloud services.
 
-<h2 id="cloud-services">Cloud services</h2>
+## Cloud services
 
 - **Schema registry** &mdash; a registry for GraphQL schemas that acts
   as a central source of truth for a schema, enriched with additional
@@ -66,18 +66,18 @@ are:
   and important metadata such as client identity and which version
   of the schema was queried.
 
-<h2 id="gateway">Gateway</h2>
+## Gateway
 
 - **Apollo Gateway** &mdash; a configuration of Apollo Server and additional plugins
   that functions as a GraphQL gateway. The gateway composes separately deployed "micro-schemas" that reference each other into a single master schema, which looks to a client just like any regular GraphQL schema. To answer queries, the gateway builds a query plan, fetches data from each upstream GraphQL service, and assembles it all back together into a single result.
 
-<h2 id="workflows">Workflows</h2>
+## Workflows
 
 On top of these components, Apollo implements some useful workflows for
 managing a GraphQL API. Each of these workflows makes use of several
 different parts of the platform, working together. Some examples are:
 
-<h3 id="schema-validation">Schema change validation</h3>
+### Schema change validation
 
 Apollo includes a facility for checking the compatibility of a given
 schema against a set of previously-observed operations. This uses the
@@ -88,7 +88,7 @@ cause an incompatibility error. The compatibility check runs statically,
 taking advantage of the schema's type definitions, so it doesn't require
 a running server.
 
-<h3 id="safelisting">Safelisting</h3>
+### Safelisting
 
 Apollo provides an end-to-end mechanism for _safelisting_ known clients
 and queries, a recommended best practice that limits production use of a
