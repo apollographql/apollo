@@ -226,6 +226,39 @@ Like most tools, schema validation is best used when it is integrated directly i
 
 Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Engine integration on the appropriate GitHub profile or organization.
 
+# Validating schema changes - enterprise
+
+## Using `service:check` with GitHub enterprise
+
+### ...intro...
+
+The CLI supported the `--markdown` flag to output a summary of the schema validation step output in markdown that can be sent directly as a GitHub comment.
+
+The output will look like either of the following:
+
+```md
+🔄 Validated your local schema against schema tag `staging` on service `engine`.
+🔢 Compared **0 schema changes** against **100 operations** seen over the **last 24 hours**.
+✅ Found **no breaking changes**.
+
+🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
+```
+
+```md
+### Apollo Service Check
+
+🔄 Validated your local schema against schema tag `staging` on service `engine`.
+🔢 Compared **18 schema changes** against **100 operations** seen over the **last 24 hours**.
+❌ Found **7 breaking changes** that would affect **3 operations** across **2 clients**
+
+🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
+```
+
+### TODO
+
+- [ ] Maybe link to how this can be used with `curl` to post a comment to GitHub?
+- [ ] Do we want to overwrite past comments?
+
 <h3 id="multiple-environments">Multiple environments</h3>
 
 Product cycles move fast, and it’s common for schemas to be slightly different across environments as changes make their way through your system. To accommodate for this, schemas can be registered under specific schema tags and checks can be performed against specific schema tags.
