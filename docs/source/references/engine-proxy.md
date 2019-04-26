@@ -12,7 +12,7 @@ The Apollo Engine proxy is a small process that can be run in front of your Grap
 1. Proving a **full query caching** layer, which is controlled using the [`cacheControl`](https://github.com/apollographql/apollo-cache-control) directive and configured to be either in-memory or shared through Memcache.
 1. Automatically **persisting queries** through a caching layer that can map query IDs to full query strings, allowing clients to send just query IDs over the wire.
 
-The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), [persisted queries](https://www.apollographql.com/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries), and [full query caching](https://github.com/apollographql/apollo-server/blob/release-2.5.0/docs/source/features/caching.md) (starting at Apollo Server 2.5) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead of running the proxy.
+The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics.html), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources.html), [persisted queries](/docs/apollo-server/features/apq), and [full query caching](https://github.com/apollographql/apollo-server/blob/release-2.5.0/docs/source/features/caching.md) (starting at Apollo Server 2.5) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead of running the proxy.
 
 That said, the proxy is still a good option for getting set up with Engine in a few **specific** circumstances:
 1. You are not using Apollo Server, your server has an [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) plugin, and you want to get **performance metrics** insights.
@@ -321,7 +321,7 @@ Automatically persisting your queries is a performance technique in which you se
 
 An added benefit of using APQs with GraphQL is that it's an easy mechanism to transform your GraphQL POST requests into GET requests, allowing you to easily leverage any CDN infrastructure you may already have in place.
 
-> **Note:** Apollo Server 2 reduces the setup necessary to use automatic persisted queries, and these instructions are only necessary when using the Apollo Engine Proxy.  To find out more visit the [Apollo Server](/docs/apollo-server/whats-new.html#Automatic-Persisted-Queries) docs.
+> **Note:** Apollo Server 2 reduces the setup necessary to use automatic persisted queries, and these instructions are only necessary when using the Apollo Engine Proxy.  To find out more visit the [Apollo Server](/docs/apollo-server/features/apq) docs.
 
 The query registry that maps query hashes to query strings is stored in a user-configurable cache and read by the Engine proxy. This can either be an in-memory store (configured by default to be 50MB) within each Engine proxy instance, or an external, configurable [memcached](https://memcached.org/) store.
 
@@ -661,7 +661,7 @@ When returning a GraphQL response which is eligible for the full-query cache (ie
 
 Many high-traffic web services use content delivery networks (CDNs) such as [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) to cache their content as close to their clients as possible.
 
-> Apollo Server 2 supports CDN integration out of the box and doesn't require the Engine Proxy. To learn how, read through the [guide on CDN integration](/docs/apollo-server/whats-new.html#CDN-integration). For other server implementations, the Engine Proxy makes it straightforward to use CDNs with GraphQL queries whose responses can be cached while still passing more dynamic queries through to your GraphQL server.
+> Apollo Server 2 supports CDN integration out of the box and doesn't require the Engine Proxy. To learn how, read through the [guide on CDN integration](/docs/apollo-server/features/apq#cdn). For other server implementations, the Engine Proxy makes it straightforward to use CDNs with GraphQL queries whose responses can be cached while still passing more dynamic queries through to your GraphQL server.
 
 To use the Engine proxy behind a CDN, you need to be able to tell the CDN which GraphQL responses it's allowed to cache and you need to make sure that your GraphQL requests arrive in a format that CDNs cache. Engine Proxy supports this by combining its [caching](#caching) and [automatic persisted queries](#automatic-persisted-queries) featues. This section explains the basic steps for setting up these features to work with CDNs; for more details on how to configure these features, see their respective sections.
 
