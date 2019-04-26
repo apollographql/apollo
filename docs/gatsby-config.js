@@ -9,6 +9,7 @@ module.exports = {
         contentDir: 'docs/source',
         basePath: '/docs',
         githubRepo: 'apollographql/apollo',
+        spectrumPath: 'apollo-platform',
         sidebarCategories: {
           null: [
             'index',

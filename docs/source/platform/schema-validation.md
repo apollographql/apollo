@@ -7,7 +7,7 @@ As GraphQL scales within an organization, it's important in schema evolution to 
 
 As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
 
-> **Note:** Schema validation is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/). If you already have an Engine account, upgrade to a Team plan [here](https://engine.apollographql.com/trypro).
+> **Note:** Schema validation is an Apollo Platform feature available on the [_Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). To get started with the Apollo Platform, begin with [the documentation](https://www.apollographql.com/docs/). If you already have an Engine account, upgrade to a [Team plan](https://engine.apollographql.com/upgrade).
 
 <h2 id="schema-validation">How it works</h2>
 
