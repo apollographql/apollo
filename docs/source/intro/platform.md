@@ -14,9 +14,7 @@ services and your applications. It's a combination of open source
 components, commercial extensions, and cloud services. The major pieces
 are:
 
-<div style="text-align:center">
-  <img src="../img/platform-diagram.png" alt="Graph layer">
-</div>
+![Graph layer](../img/platform-diagram.png)
 
 ## Core open source components
 
