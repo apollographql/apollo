@@ -30,6 +30,8 @@ This might sound confusing at first, but it will start to make more sense once w
 
 First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
 
+_src/index.js_
+
 ```js line=4,13
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
