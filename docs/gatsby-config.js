@@ -34,10 +34,7 @@ module.exports = {
             'platform/integrations'
           ],
           Resources: [
-            // {
-            //   title: 'Principled GraphQL',
-            //   href: 'https://www.principledgraphql.com'
-            // },
+            '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
             'resources/faq'
           ],
