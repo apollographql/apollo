@@ -34,7 +34,7 @@ Operations defined within client applications are automatically extracted and up
 
   To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service.  For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
 
-Please contact the Apollo sales team if any of these limitations are necessary.
+Please contact the Apollo sales team if any of these limitations prevent adoption of the operation registry.
 
 ### Installation steps
 
