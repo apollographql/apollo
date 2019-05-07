@@ -7,11 +7,13 @@ Welcome! 👋 We're excited you're here to learn about Apollo.
 
 The Apollo GraphQL platform is an implementation of GraphQL that helps you manage data from the cloud to your UI. It's incrementally adoptable and can be layered over your existing services, including REST APIs and databases. Apollo includes two open-source libraries for the client and server, in addition to developer tooling that provides everything you need to run a graph API in production with confidence.
 
-import {ButtonWrapper, Button, HollowButton} from 'gatsby-theme-apollo-docs';
+import {ButtonWrapper, Button, HollowButton, ExpansionPanel} from 'gatsby-theme-apollo-docs';
 
 <ButtonWrapper>
-  <Button href="/docs/tutorial/introduction.html">Try it out!</Button>
-  <HollowButton href="/docs/intro/platform.html">Learn more</HollowButton>
+  <Button to="/tutorial/introduction">Try it out!</Button>
+  <HollowButton to="/intro/platform">Learn more</HollowButton>
 </ButtonWrapper>
+
+<ExpansionPanel />
 
 ![Graph layer](./img/platform.jpg)
