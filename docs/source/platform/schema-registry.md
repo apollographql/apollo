@@ -15,9 +15,9 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 
 To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project by:
 
-1. [Installing the Apollo CLI](#install-cli)
-1. [Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`](#api-key)
-1. [Creating an `apollo.config.js` file at the root of your project and adding the right configuration](#apollo-config)
+1. [Installing the Apollo CLI](#install-the-apollo-cli)
+1. [Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`](#get-your-engine-api-key)
+1. [Creating an `apollo.config.js` file at the root of your project and adding the right configuration](#create-an-apolloconfigjs-file)
 
 #### CLI commands
 
@@ -136,7 +136,7 @@ Product cycles move fast and it's common for schemas to be slightly different ac
 
 Apollo supports tracking multiple _variants_ for every graph. A variant is just like a regular data graph. It has its own history of schemas, its own metadata store of metrics, and its own operation registry. Variants can be used to track ideas like staging environments, canaries, and deploys of experimental features destined for the production graph.
 
-To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#registry-tag) to send data with a `--tag` flag and [configure your Apollo Server](#metrics-tag) with a `schemaTag` option.
+To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#register-a-schema-to-a-variant) to send data with a `--tag` flag and [configure your Apollo Server](#associating-metrics-with-a-variant) with a `schemaTag` option.
 
 ### Registering schemas to a variant
 
@@ -172,5 +172,5 @@ const server = new ApolloServer({
 Keeping your schema up-to-date in Apollo's registry will ensure that you get the best experience from Apollo's tools that connect to the registry:
 
 - The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) provides built-in linting on queries by validating against the schema in your registry. It also annotates fields with their descriptions and with performance indicators collected in Apollo's trace warehouse.
-- The [schema validation](./schema-validation.html) workflow protects your team from accidentally making breaking schema changes. It creates a diff between your local schema and the last schema pushed to the registry, and validates this diff against live traffic seen on your endpoint to warn you about problematic changes.
+- The [schema validation](/platform/schema-validation/) workflow protects your team from accidentally making breaking schema changes. It creates a diff between your local schema and the last schema pushed to the registry, and validates this diff against live traffic seen on your endpoint to warn you about problematic changes.
 - Your schema's full history and current usage can be seen in [Apollo Engine](https://engine.apollographql.com). The History page tracks changes made over time, and the Explorer page shows which clients and which queries are using each field in your schema.

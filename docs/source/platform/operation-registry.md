@@ -22,7 +22,7 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 - Apollo Server 2.2.x (or newer).
-  - To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
+  - To get started with Apollo Server, visit [its documentation](https://www.apollographql.com/docs/apollo-server/).
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 - An Apollo Engine API key.
   - To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
@@ -57,7 +57,7 @@ npm install apollo --save-dev
 
 **2. Push your schema to the Apollo schema registry:**
 
-> If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
+> If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/platform/schema-registry/).
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
@@ -218,7 +218,7 @@ In some cases, deployments may want to selectively enable the behavior of `forbi
 
 To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
-> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
 
 For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
 
@@ -253,7 +253,7 @@ const server = new ApolloServer({
 });
 ```
 
-> _Note:_ The `forbidUnregisteredOperations` callback must be synchronous. If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
+> _Note:_ The `forbidUnregisteredOperations` callback must be synchronous. If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
 
 ## Testing the plugin
 

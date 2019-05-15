@@ -1,9 +1,16 @@
 {
   "scripts": {
-    "start": "gatsby develop"
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "links:internal": "blc http://localhost:9000 -ero",
+    "links:external": "blc http://localhost:9000 -iro"
   },
   "dependencies": {
     "gatsby": "^2.4.2",
-    "gatsby-theme-apollo-docs": "^1.0.0-alpha.40"
+    "gatsby-theme-apollo-docs": "^1.0.0-alpha.42"
+  },
+  "devDependencies": {
+    "broken-link-checker": "^0.7.8"
   }
 }

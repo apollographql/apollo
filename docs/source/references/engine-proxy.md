@@ -3,7 +3,7 @@ title: Apollo Engine proxy (deprecated)
 description: Configuring and running the Engine proxy
 ---
 
-> DEPRECATED: The engine proxy is not maintained, and to integrate with the Apollo platform's metrics, we recommend using Apollo Server's native reporting functionality. To integrate a non-Node server, take a look at our guide [here](./setup-analytics#other-servers).
+> DEPRECATED: The engine proxy is not maintained, and to integrate with the Apollo platform's metrics, we recommend using Apollo Server's native reporting functionality. To integrate a non-Node server, take a look at our guide [here](/references/setup-analytics/#other-servers).
 
 ## Background
 

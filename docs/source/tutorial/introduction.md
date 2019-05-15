@@ -61,7 +61,7 @@ Next, in your terminal, clone [this repository](https://github.com/apollographql
 git clone https://github.com/apollographql/fullstack-tutorial/
 ```
 
-There are two folders: one for the starting point (`start`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](./client.html).
+There are two folders: one for the starting point (`start`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](/tutorial/client).
 
 <!--
 TODO: Add in this section after Apollo VSCode works for server development

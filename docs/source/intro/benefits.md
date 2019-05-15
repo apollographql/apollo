@@ -101,7 +101,7 @@ const Feed = () => (
 
 Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you. There’s no middleware to set up or boilerplate to write before making your first request, nor do you need to worry about transforming and caching the response. All you have to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪
 
-You’ll find that when you switch to Apollo Client, you’ll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. To learn more about how Apollo Client enables advanced features like optimistic UI, refetching, and pagination with less code, check out our [documentation for Apollo Client](/docs/react/).
+You’ll find that when you switch to Apollo Client, you’ll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. To learn more about how Apollo Client enables advanced features like optimistic UI, refetching, and pagination with less code, check out our [documentation for Apollo Client](https://www.apollographql.com/docs/react/).
 
 ## Improved performance
 
@@ -140,7 +140,7 @@ GET /api/dogs/images
 GET /api/dogs/activities
 ```
 
-With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request.
+With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](https://www.apollographql.com/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request.
 
 ### Ready for production
 

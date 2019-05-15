@@ -93,7 +93,7 @@ type Launch {
 }
 ```
 
-The `Launch` type has **fields** that correspond to object and scalar types. A **scalar type** is a primitive type like `ID`, `String`, `Boolean`, or `Int`. You can think of scalars as the leaves of your graph that all fields resolve to. GraphQL has many scalars built in, and you can also define [custom scalars](/docs/apollo-server/features/scalars-enums.html) like `Date`.
+The `Launch` type has **fields** that correspond to object and scalar types. A **scalar type** is a primitive type like `ID`, `String`, `Boolean`, or `Int`. You can think of scalars as the leaves of your graph that all fields resolve to. GraphQL has many scalars built in, and you can also define [custom scalars](https://www.apollographql.com/docs/apollo-server/features/scalars-enums/) like `Date`.
 
 The `Mission` and `Rocket` types represent other object types. Let's define the fields on `Mission`, `Rocket`, and `User`:
 
@@ -180,7 +180,7 @@ In your terminal, run `npm start` to start your server! 🎉 Apollo Server will 
 
 ### Explore your schema
 
-By default, Apollo Server supports [GraphQL Playground](/docs/apollo-server/features/graphql-playground.html). The Playground is an interactive, in-browser GraphQL IDE for exploring your schema and testing your queries. Apollo Server automatically serves GraphQL Playground in development only.
+By default, Apollo Server supports [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/). The Playground is an interactive, in-browser GraphQL IDE for exploring your schema and testing your queries. Apollo Server automatically serves GraphQL Playground in development only.
 
 The GraphQL Playground provides the ability to introspect your schema. **Introspection** is a technique used to provide detailed information about a graph's schema. To see this in action, check out the right hand side of GraphQL Playground and click on the `schema` button.
 

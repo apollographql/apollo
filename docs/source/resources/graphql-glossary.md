@@ -7,11 +7,11 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 
 ## Apollo
 
-An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).
+An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).
 
 ## Automatic Persisted Queries (APQ)
 
-A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/guides/performance.html#automatic-persisted-queries).
+A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/apollo-server/whats-new#automatic-persisted-queries).
 
 ## Argument
 
@@ -51,11 +51,11 @@ An alternative name given to the result of a field to avoid conflicts during dat
 
 ## Data Source
 
-A new pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources.html) provide the best experience for fetching and caching data from REST endpoints.
+A new pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources/) provide the best experience for fetching and caching data from REST endpoints.
 
 ## Deferred query
 
-A query that has certain fields tagged with the [`@defer` directive](https://www.apollographql.com/docs/react/features/defer-support.html), so that fields that take a long time to resolve do not need to slow down the entire query.
+A query that has certain fields tagged with the [`@defer` directive](https://www.apollographql.com/docs/react/features/defer-support/), so that fields that take a long time to resolve do not need to slow down the entire query.
 
 ```graphql
 query NewsFeed {
@@ -72,7 +72,7 @@ query NewsFeed {
 
 ## Directive
 
-A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`, and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives.html). Directives can be used for features such as authentication, incremental data loading, etc.
+A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`, and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives/). Directives can be used for features such as authentication, incremental data loading, etc.
 
 ```graphql
 type User @auth {
@@ -343,7 +343,7 @@ type Query {
 
 ## Schema first development
 
-A [development approach](https://www.apollographql.com/docs/fundamentals/tips.html#schema) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
+A [development approach](/intro/platform/#workflows) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
 
 ## Schema registry
 
@@ -355,7 +355,7 @@ Refers to the need to evolve a schema over time. As a schema evolves, there is a
 
 ## Schema stitching
 
-The process of merging [different schemas into one GraphQL schema](./docs/graphql-tools/schema-stitching.html). These schemas can be local, remote, or from third-party services. In a microservice-style deployment model, where your data exists across multiple APIs, schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.
+The process of merging [different schemas into one GraphQL schema](https://www.apollographql.com/docs/graphql-tools/schema-stitching/). These schemas can be local, remote, or from third-party services. In a microservice-style deployment model, where your data exists across multiple APIs, schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.
 
 ## Subscription
 

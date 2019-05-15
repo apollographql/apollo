@@ -25,13 +25,13 @@ module.exports = {
 
 There are a few different ways you can link your client to a schema:
 
-1. Use the Apollo [schema registry](/docs/platform/schema-registry.html)
+1. Use the Apollo [schema registry](/platform/schema-registry/)
 1. With a remote endpoint (from a running server)
 1. With a local schema file
 
 #### _Option 1_: Use the Apollo schema registry
 
-To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](/docs/platform/schema-registry.html).
+To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](/platform/schema-registry/).
 
 With Engine set up, you can point your client directly to your graph's schema by putting your graph's Engine ID in your Apollo config, like so:
 
@@ -43,7 +43,7 @@ module.exports = {
 };
 ```
 
-> **Note:** you must have a [registered schema](/docs/platform/schema-registry.html#publish) for features like VS Code intellisense, which requires knowledge of your schema, to work properly.
+> **Note:** you must have a [registered schema](/platform/schema-registry/#registering-a-schema) for features like VS Code intellisense, which requires knowledge of your schema, to work properly.
 
 If you're tracking different versions of your schema in the registry using schema variants, you can link your client to a specific variant like so:
 

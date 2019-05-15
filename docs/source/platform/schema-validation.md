@@ -182,13 +182,13 @@ Since breaking changes are detected using live traffic, your service will _need 
 
 To set up schema validation, you wlil need to be both actively sending traces and registering schemas to Apollo:
 
-1. [Set up trace reporting to Apollo Engine](/docs/references/setup-analytics)
-1. [Set up schema registration in your continuous delivery pipeline](/docs/platform/schema-registry.html)
+1. [Set up trace reporting to Apollo Engine](/references/setup-analytics/)
+1. [Set up schema registration in your continuous delivery pipeline](/platform/schema-registry/)
 
 Then, you will need to configure your project for the `apollo service:check` command:
 
-1. [Set up a `.env` file with your `ENGINE_API_KEY`](/docs/platform/schema-registry.html#Get-your-Engine-API-key)
-1. [Set up an `apollo.config.js` file with a `service` configured](/docs/platform/schema-registry.html#Create-an-apollo-config-js-file)
+1. [Set up a `.env` file with your `ENGINE_API_KEY`](/platform/schema-registry/#get-your-engine-api-key)
+1. [Set up an `apollo.config.js` file with a `service` configured](/platform/schema-registry/#create-an-apolloconfigjs-file)
 
 > **Note:** If you have set up one of Apollo's workflows previously, your project may already have its `.env` file and `apollo.config.js` file configured.
 
