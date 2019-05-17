@@ -250,27 +250,13 @@ Like most tools, schema validation is best used when it is integrated directly i
 
 To install the Apollo Engine integration on GitHub, go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine), click the `Configure` button, and select the appropriate GitHub profile or organization.
 
-<!-- ### Posting a comment to your PRs
+### Posting a comment to your PRs
 
-There's a lot of value that comes from having directly
+Surfacing the results of validation directly on your PRs can be a useful workflow tool. For teams using GitHub Enterprise, Bitbucket, and other tools that we don't have integrations for, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. This will surface schema diffs and breaking changes directly in your PR, saving you the time of combing through your CI logs to check wether or not validation has passed.
 
-# Validating schema changes - enterprise
+The CLI supports passing a `--markdown` flag to `apollo service:check`, which outputs the results of schema validation in a markdown format specifically. This markdown can be piped directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
-## Using `service:check` with GitHub enterprise
-
-### ...intro...
-
-The CLI supported the `--markdown` flag to output a summary of the schema validation step output in markdown that can be sent directly as a GitHub comment.
-
-The output will look like either of the following:
-
-```md
-🔄 Validated your local schema against schema tag `staging` on service `engine`.
-🔢 Compared **0 schema changes** against **100 operations** seen over the **last 24 hours**.
-✅ Found **no breaking changes**.
-
-🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
-```
+The output of `apollo service:check --markdown` looks like this:
 
 ```md
 ### Apollo Service Check
@@ -281,11 +267,6 @@ The output will look like either of the following:
 
 🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
 ```
-
-### TODO
-
-- [ ] Maybe link to how this can be used with `curl` to post a comment to GitHub?
-- [ ] Do we want to overwrite past comments? -->
 
 <h3 id="multiple-environments">Multiple environments</h3>
 
