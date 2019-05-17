@@ -173,4 +173,6 @@ server.listen().then(({ url }) => {
 
 First, we import our `createStore` function to set up our database, as well as our data sources: `LaunchAPI` and `UserAPI`. Then, we create our database by calling `createStore`. Finally, we add the `dataSources` function to our `ApolloServer` to connect `LaunchAPI` and `UserAPI` to our graph. We also pass in our database we created to the `UserAPI` data source.
 
+If you use `this.context` in your datasource, it's critical to create a new instance in the `dataSources` function and to not share a single instance. Otherwise, `initialize` may be called during the execution of asynchronous code for a specific user, and replace the  `this.context` by the context of another user.
+
 Now that we've hooked up our data sources to Apollo Server, it's time to move on to the next section and learn how to call our data sources from within our resolvers.
