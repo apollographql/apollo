@@ -1,7 +1,13 @@
 ---
 title: Validating schema changes
-description: Check if proposed schema changes are safe or breaking by comparing against live server traffic
+description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
+
+Making schema changes is a natural part of evolving your API over time. GraphQL is flexible, and there are certain change types, like removing a field, that could be potentially breaking to clients in the field
+
+As GraphQL schemas evolve over time, it's important to make sure that changes to the schema never break actively running clients and queries by accident.
+
+As GraphQL scales within and organization and your schema evolves, it's important to validate that changes
 
 As GraphQL scales within an organization, it’s important in schema evolution to keep current queries and clients in mind and to avoid breaking changes. Some organizations take the approach of _never_ making schema changes that might be breaking, which leads to an ever-growing schema and reduced api accessibility. In reality, removing fields and updating return types is safe when done with tools that guarantee no change will ever break an active query.
 
@@ -252,7 +258,7 @@ To install the Apollo Engine integration on GitHub, go to [https://github.com/ap
 
 ### Posting a comment to your PRs
 
-Surfacing the results of validation directly on your PRs can be a useful workflow tool. For teams using GitHub Enterprise, Bitbucket, and other tools that we don't have integrations for, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. This will surface schema diffs and breaking changes directly in your PR, saving you the time of combing through your CI logs to check wether or not validation has passed.
+For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of combing through your CI logs to check wether or not validation has passed.
 
 The CLI supports passing a `--markdown` flag to `apollo service:check`, which outputs the results of schema validation in a markdown format specifically. This markdown can be piped directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
