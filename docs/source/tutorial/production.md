@@ -69,7 +69,7 @@ We're committed to helping you succeed in building and running an Apollo graph A
 To deploy our app to Now, run the `now` command from the `server` directory of the app. The command may prompt you to login if you haven't already.
 
 ```bash
-$ npx now
+$ npx now --platform-version 1
 ```
 
 The `now` command immediately deploys our graph API to the cloud and returns the hosted URL. Make sure you either copy the URL or run `npx now ls` in your terminal to retrieve the URL, since we'll need it in the following section when we build our client.
