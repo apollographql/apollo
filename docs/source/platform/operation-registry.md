@@ -22,15 +22,23 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 - Apollo Server 2.2.x (or newer).
-  - Subscriptions should be disabled when using the operation registry. For more information, see the instructions below. Please contact the Apollo sales team if this support is necessary.
   - To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 - An Apollo Engine API key.
   - To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
+  
+### Limitations
+
+- Subscriptions within Apollo Server should be disabled.  For more information, see the instructions below.
+- Only the default schema tag (`current`) is supported.
+
+  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service.  For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
+
+Please contact the Apollo sales team if you require a solution to any of these limitations.
 
 ### Installation steps
 
-> Make sure you've met the requirements for _Prerequisites_ above.
+> Make sure you've met the requirements for _Prerequisites_ above and understand the current _Limitations_.
 
 These installation steps require access to both the client and server codebases to perform the following tasks:
 
