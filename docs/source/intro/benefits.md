@@ -21,7 +21,7 @@ GraphQL's strongly typed query language enables developers to take advantage of 
 
 ![GraphQL Playground](../assets/graphql-playground.png)
 
-Apollo Server 2.0 sets up GraphQL Playground out of the box, so you can start exploring your schema and executing queries immediately.
+Apollo Server 2+ sets up GraphQL Playground out of the box, so you can start exploring your schema and executing queries immediately.
 
 <h4 id="dev-tools">Apollo DevTools</h4>
 
@@ -34,10 +34,10 @@ Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Cli
 If you've worked with REST and a state management library like Redux, you're probably used to writing action creators, reducers, normalizing your data, and integrating middleware to make a single network request. With Apollo Client, you no longer have to worry about any of these concerns! Apollo Client sets up everything you need for a production-ready app so you can focus on writing queries instead of thousands of lines of state management code.
 
 ```js
-import ApolloClient from "apollo-boost";
+import ApolloClient from 'apollo-boost';
 
 const client = new ApolloClient({
-  uri: "https://dog-graphql-api.glitch.me/graphql"
+  uri: 'https://dog-graphql-api.glitch.me/graphql'
 });
 ```
 
@@ -90,10 +90,10 @@ How do we use this query in our app? Apollo Client builds off of GraphQL's decla
 const Feed = () => (
   <Query query={GET_DOGS}>
     {({ loading, error, data }) => {
-      if (error) return <Error />
+      if (error) return <Error />;
       if (loading || !data) return <Fetching />;
 
-      return <DogList dogs={data.dogs} />
+      return <DogList dogs={data.dogs} />;
     }}
   </Query>
 );
@@ -140,16 +140,15 @@ GET /api/dogs/images
 GET /api/dogs/activities
 ```
 
-With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request. 
+With GraphQL, each query represents a single round trip from the client to server. If you'd like to reduce round trips even further, you can implement [query batching](/docs/react/advanced/network-layer#query-batching) to batch multiple queries into a single request.
 
 <h3 id="production">Ready for production</h3>
 
 While the GraphQL specification was first made public by Facebook in 2015, GraphQL has been a key component of their mobile application deployment since 2012.
 
-At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques, and now use it to power critical infrastructure.  Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings, and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
+At Apollo, we found GraphQL to be an excellent solution to many of the problems we encountered with existing techniques, and now use it to power critical infrastructure. Over the years, we’ve worked with the open-source community along with customers and partners of all sizes to continually bring new innovations to the open-source Apollo offerings, and we're proud that those offerings are suitable for everything from startups to large-scale deployments.
 
 In addition to our own experience, we have received extensive feedback, contributions and support from enterprise customers who are actively using Apollo GraphQL in production. A few of our most public and notable case-studies are:
-
 
 - [**The New York Times**](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c): Learn how The New York Times switched from Relay to Apollo & implemented features in their app such as SSR and persisted queries.
 - [**Airbnb**](https://medium.com/airbnb-engineering/reconciling-graphql-and-thrift-at-airbnb-a97e8d290712): Airbnb is betting big on the Apollo platform to power the data layer for their microservices.

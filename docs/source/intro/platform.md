@@ -20,56 +20,56 @@ are:
 
 <h2 id="open-source">Core open source components</h2>
 
- * **Apollo Server** is a JavaScript GraphQL server for defining a
-   *schema* and a set of *resolvers* that implement each part of that
-   schema. Typically  Apollo Server is extensible: plugins can hook in to each stage of the
-   request pipeline and server's own lifecycle, making it possible to
-   implement custom behaviors in add-on packages. Apollo Server supports
-   AWS Lambda and other serverless environments.
+- **Apollo Server** is a JavaScript GraphQL server for defining a
+  _schema_ and a set of _resolvers_ that implement each part of that
+  schema. Typically Apollo Server is extensible: plugins can hook in to each stage of the
+  request pipeline and server's own lifecycle, making it possible to
+  implement custom behaviors in add-on packages. Apollo Server supports
+  AWS Lambda and other serverless environments.
 
- * **Apollo Client** is a sophisticated GraphQL client that
-   manages data and state in an application. Among other benefits, it
-   enables a declarative programming style that lets developers define
-   queries as part of UI components; the client manages all the hairy
-   details of binding query results to the UI, managing consistency,
-   caching, and so on. Apollo Client also supports an
-   exceptionally elegant approach to state management by *extending* the
-   GraphQL schema inside the client with additional structure. Apollo Client
-   includes integrations for React, React Native, Vue, Angular, and
-   other view layers.
+- **Apollo Client** is a sophisticated GraphQL client that
+  manages data and state in an application. Among other benefits, it
+  enables a declarative programming style that lets developers define
+  queries as part of UI components; the client manages all the hairy
+  details of binding query results to the UI, managing consistency,
+  caching, and so on. Apollo Client also supports an
+  exceptionally elegant approach to state management by _extending_ the
+  GraphQL schema inside the client with additional structure. Apollo Client
+  includes integrations for React, React Native, Vue, Angular, and
+  other view layers.
 
- * **iOS and Android** clients, originally contributed by the community,
- make it possible to query a GraphQL API from native iOS and
- Android applications.
+- **iOS and Android** clients, originally contributed by the community,
+  make it possible to query a GraphQL API from native iOS and
+  Android applications.
 
- * **Apollo CLI** &mdash; a simple command line client that provides
-   access to Apollo cloud services.
+- **Apollo CLI** is a simple command line client that provides
+  access to Apollo cloud services.
 
 <h2 id="cloud-services">Cloud services</h2>
 
- * **Schema registry** &mdash; a registry for GraphQL schemas that acts
-   as a central source of truth for a schema, enriched with additional
-   metadata like field-level usage statistics.
+- **Schema registry** &mdash; a registry for GraphQL schemas that acts
+  as a central source of truth for a schema, enriched with additional
+  metadata like field-level usage statistics.
 
- * **Client registry** &mdash; a registry to track each known consumer
-   of a schema, which can include both pre-registered and ad-hoc clients.
+- **Client registry** &mdash; a registry to track each known consumer
+  of a schema, which can include both pre-registered and ad-hoc clients.
 
- * **Operation registry** &mdash; a registry of all the known operations
-   against the schema, which similarly can include both pre-registered
-   and ad-hoc operations.
+- **Operation registry** &mdash; a registry of all the known operations
+  against the schema, which similarly can include both pre-registered
+  and ad-hoc operations.
 
- * **Trace warehouse** &mdash; a data pipeline and storage layer that
-   captures structured information about each GraphQL operation
-   processed by an Apollo Server (or any other server that implements
-   the Apollo trace API), including the specific set of fields accessed,
-   the tree of resolver calls that were made with timing data for each,
-   and important metadata such as client's identity and which version
-   of the schema was queried.
+- **Trace warehouse** &mdash; a data pipeline and storage layer that
+  captures structured information about each GraphQL operation
+  processed by an Apollo Server (or any other server that implements
+  the Apollo trace API), including the specific set of fields accessed,
+  the tree of resolver calls that were made with timing data for each,
+  and important metadata such as client identity and which version
+  of the schema was queried.
 
 <h2 id="gateway">Gateway</h2>
 
- * **Apollo Gateway** &mdash; A configuration of Apollo Server and additional plugins
-   that functions as a GraphQL gateway. The gateway composes separately deployed "micro-schemas" that reference each other into a single master schema, which looks to a client just like any regular GraphQL schema. To answer queries, the gateway builds a query plan, fetches data from each upstream GraphQL service, and assembles it all back together into a single result.
+- **Apollo Gateway** &mdash; a configuration of Apollo Server and additional plugins
+  that functions as a GraphQL gateway. The gateway composes separately deployed "micro-schemas" that reference each other into a single master schema, which looks to a client just like any regular GraphQL schema. To answer queries, the gateway builds a query plan, fetches data from each upstream GraphQL service, and assembles it all back together into a single result.
 
 <h2 id="workflows">Workflows</h2>
 
@@ -90,7 +90,7 @@ a running server.
 
 <h3 id="safelisting">Safelisting</h3>
 
-Apollo provides an end-to-end mechanism for *safelisting* known clients
+Apollo provides an end-to-end mechanism for _safelisting_ known clients
 and queries, a recommended best practice that limits production use of a
 GraphQL API to specific pre-arranged operations. There are two parts
 here. First, the Apollo CLI extracts all the queries from a client
