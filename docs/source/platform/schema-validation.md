@@ -3,38 +3,34 @@ title: Validating schema changes
 description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
 
-Making schema changes is a natural part of evolving your API over time. GraphQL is flexible, and there are certain change types, like removing a field, that could be potentially breaking to clients in the field
+There are many types of schema changes that can be potentially braeking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
 
-As GraphQL schemas evolve over time, it's important to make sure that changes to the schema never break actively running clients and queries by accident.
+Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
-As GraphQL scales within and organization and your schema evolves, it's important to validate that changes
-
-As GraphQL scales within an organization, it’s important in schema evolution to keep current queries and clients in mind and to avoid breaking changes. Some organizations take the approach of _never_ making schema changes that might be breaking, which leads to an ever-growing schema and reduced api accessibility. In reality, removing fields and updating return types is safe when done with tools that guarantee no change will ever break an active query.
-
-As such, schema change validation is one of the cornerstones of the [Apollo Platform](/docs/intro/platform.html) and we've built a set of tools to make the workflow possible.
-
-> **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/). To get started, sign up for [Engine](https://engine.apollographql.com) and upgrade to a [Team plan](https://engine.apollographql.com/upgrade).
+> **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
 
 <h2 id="schema-validation">How it works</h2>
 
-Schema validation is an Apollo CLI command that is configured and run within your server's repository. When you run `apollo service:check`, the command fetches the necessary data from Engine's schema registry and trace warehouse to perform validation. Engine computes a schema diff and then compare each change in the diff against the live usage data from your server to determine if any of the changes are "breaking changes" for any of your clients or queries.
+Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
 
 Here's how it works:
 
 1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
 1. Engine creates a diff between the local schema and the most recently published schema in the registry.
-1. Engine fetches a list of all operations sent to your service in the last day (time window is [configurable](#cli-advanced)).
+1. Engine fetches a list of all operations sent to your graph in the last day (time window is [configurable](#cli-advanced)).
 1. Engine walks through the schema diff change-by-change and compares against the operation list to see if the changes will affect the behavior of any operations.
 1. Engine returns the schema diff and indicates any breaking changes found.
 1. The CLI prints the output of this check with a link to view more details in the Engine UI.
 
 <h3 id="algorithm">Breaking change detection</h3>
 
-The following sections describe the rules that Engine uses to determine when a change type will fail the `apollo service:check` command and return a non-0 exit code. These failing changes, if deployed without special consideration, could cause clients to experience unexpected behavior from your API.
+Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
+
+If schema validation detects that a proposed schema has a potentially breaking change, the `apollo service:check` command will return a non-0 exit code. Apollo schema validation will detect breaking changes according to the following rules:
 
 #### Removals
 
-Each of these change types removes a schema element. If an element is being actively used by an operation and is removed from your schema, your GraphQL layer will start returning errors to the dependent operations.
+Each of these change types removes a schema element. If an element of your graph is being actively used by an operation and it is removed, your GraphQL layer will start returning errors to the dependent operations.
 
 <ul>
   <li id="FIELD_REMOVED">
@@ -62,7 +58,7 @@ Each of these change types removes a schema element. If an element is being acti
 
 #### Required arguments
 
-Each of these changes adds a required input to a schema element. If an operation is actively using an element and doesn't update itself to add the new required input argument, the GraphQL layer will start returning an error to the operation.
+Each of these changes adds a required input to a schema element. If an operation is actively using an element of your graph and doesn't update itself to add the new required input argument, the GraphQL layer will start returning an error to the operation.
 
 <ul>
   <li id="REQUIRED_ARG_ADDED">
@@ -75,7 +71,7 @@ Each of these changes adds a required input to a schema element. If an operation
 
 #### In-place updates
 
-Each of these changes updates an existing schema element. If an operation is activley using an element and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
+Each of these changes updates an existing schema element. If an operation is activley using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
 
 > **Note:** In some cases, these changes are compatible with the client at runtime, such as a type rename or an object to interface conversion with the same fields. Schema validation still marks these breaking changes because validation does not have enough information to ensure safety and these changes deserve extra scrutiny, such as their impact on type generation.
 
@@ -96,7 +92,7 @@ Each of these changes updates an existing schema element. If an operation is act
 
 #### Type extensions
 
-These changes add a type to an existing union or interface. If an operation is actively using an element of the union or interface, it could receive and unexpected result when updated depending on the fragment spreads requested.
+These changes add a type to an existing union or interface in your graph. If an operation is actively using an element of the union or interface, it could receive and unexpected result when updated depending on the fragment spreads requested.
 
 <ul>
   <li id="TYPE_ADDED_TO_UNION">
@@ -109,7 +105,7 @@ These changes add a type to an existing union or interface. If an operation is a
 
 #### Default arguments
 
-These changes update the default value for an argument. If an operation does not specify a value for this argument and relies on the value, the operation can experience unexpected results when the schema is updated, which can lead to modified client behavior.
+These changes update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation could experience unexpected results when the schema is updated if it was relying on the original default value.
 
 <ul>
   <li id="ARG_DEFAULT_VALUE_CHANGE">
@@ -119,7 +115,7 @@ These changes update the default value for an argument. If an operation does not
 
 #### Non-breaking changes
 
-These changes can be returned by the `service:check` command and are compatible with existing clients by default. They will not affect the behavior of clients if deployed.
+These are change types detected ny the `apollo service:check` command, but they are "safe" and will always be compatible with all exisitng client usage of the graph. They will not affect the behavior of any clients if deployed.
 
 <ul>
   <li>Optional arguments</li>
@@ -176,23 +172,23 @@ Each change to the schema will be labeled with `PASS` or `FAIL` and a URL with f
 
 <img src="../img/schema-validation/service-check-page.png" width="100%" alt="Service check page in the Engine UI">
 
-> **Note:** If you have [set up your validation checks on your GitHub PRs](#github), the "Details" link in your checks will also take you to the generated details URL.
+> **Note:** If you have [installed schema validation checks on your GitHub PRs](#github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
-A failed `apollo service:check` command will exit with a non-0 exit code and fail CI checks! There are many cases where it is safe to make a potentially breaking change, as long as the change is made intentionally with an understanding of its impact.
+A failed `apollo service:check` command will exit with a non-0 exit code and fail CI checks. There are many cases where it is safe to make a potentially breaking change, as long as the change is made intentionally with an understanding of its impact.
 
-Since breaking changes are detected using live traffic, **your service will need active metrics** for the change algorithm to detect failures. If there are no metrics associated with your service, _all_ changes will be labeled as a `PASS` as opposed to a `FAIL`.
+Since breaking changes are detected using live traffic, your service will _need active metrics_ for the change algorithm to detect failures. If there are no metrics associated with your service, _all changes will be labeled as a `PASS` as opposed to a `FAIL`_.
 
 <h2 id="setup">Set up schema validation</h2>
 
-To get started with schema validation, you wlil first need to be actively sending traces and registering schemas to Apollo's system:
+To set up schema validation, you wlil need to be both actively sending traces and registering schemas to Apollo:
 
-1. [Set up trace reporting to Apollo Engine](/docs/references/setup-analytics).
-1. [Set up schema registration in your continuous delivery pipeline](/docs/platform/schema-registry.html).
+1. [Set up trace reporting to Apollo Engine](/docs/references/setup-analytics)
+1. [Set up schema registration in your continuous delivery pipeline](/docs/platform/schema-registry.html)
 
-Next, you will need to configure your project for the `apollo service:check` command:
+Then, you will need to configure your project for the `apollo service:check` command:
 
-1. [Set up a `.env` file with your `ENGINE_API_KEY`](/docs/platform/schema-registry.html#Get-your-Engine-API-key).
-1. [Set up an `apollo.config.js` file with a `service` configured](/docs/platform/schema-registry.html#Create-an-apollo-config-js-file).
+1. [Set up a `.env` file with your `ENGINE_API_KEY`](/docs/platform/schema-registry.html#Get-your-Engine-API-key)
+1. [Set up an `apollo.config.js` file with a `service` configured](/docs/platform/schema-registry.html#Create-an-apollo-config-js-file)
 
 > **Note:** If you have set up one of Apollo's workflows previously, your project may already have its `.env` file and `apollo.config.js` file configured.
 
@@ -203,7 +199,7 @@ $ npm install apollo
 $ npx apollo service:check
 ```
 
-The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The check command validates against traffic from the past day by default, but this time window can be [configured](#cli-advanced) to be a longer range.
+The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The time window of live traffic that the check command validates against can be [configured](#cli-advanced) to any range within your data retention window.
 
 > **Note:** The Apollo CLI will be looking in your Apollo config for a location from which to fetch your local schema and using your ENGINE_API_KEY to authenticate its requests with the Engine service.
 
@@ -276,9 +272,9 @@ The output of `apollo service:check --markdown` looks like this:
 
 <h3 id="multiple-environments">Multiple environments</h3>
 
-Product cycles move fast, and it’s common for schemas to be slightly different across environments as changes make their way through your system. To accommodate for this, schemas can be registered under specific schema tags and checks can be performed against specific schema tags.
+Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to tags).
 
-Tags mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag` flag to `apollo service:check` specifies which schema to compare against, such as `prod` or `staging`. It's common to run checks against multiple different schema tags during continuous integration to ensure that all important deployments are accounted for. Checking multiple tags will result in check statuses similar to:
+Variants mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag=<VARIANT>` flag to `apollo service:check` specifies which schema variant to compara against, such as `prod` or `staging`. It's common to run checks against multple different graph variants in the same continuous integration pipeline to ensure that all important deployments are accounted for. Running `service:check` against multiple variants will result in status checks similar to:
 
 <div style="text-align:center">
 
@@ -294,15 +290,16 @@ Depending on the requirements of your application, you may want to configure the
 apollo service:check --validationPeriod=P2W
 ```
 
-> Valid durations are represented in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations). It can also be provided as a number in seconds, i.e. 86400 for a single day.
+> **Note:** Valid durations are represented in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations). It can also be provided as a number in seconds, i.e. 86400 for a single day.
 
 Two other parameters for customizing the results of `service:check` are threshold values. For example, you may wish to drop support for an old version of an app in order to remove some deprecated fields. Using these parameters, you can decide what amount of breakage is acceptable before shipping any breaking changes.
 
 - `queryCountThreshold` - This flag will only validate the schema against operations that have been executed at least the specified number of times within the provided duration.
 - `queryCountThresholdPercentage` - Similar to `queryCountThreshold`, but expressed as a percentage of all operation volume.
-  > Note: these flags are compatible with each other. In the case that both are provided, an operation must meet or exceed both thresholds.
 
-If you have requests for other filtering or threshold mechanisms, we'd love to hear them! Please feel free to submit a [feature request](https://github.com/apollographql/apollo-tooling/issues/new?template=feature-request.md) or PR to the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repo.
+> **Note:** these flags are compatible with each other. In the case that both are provided, an operation must meet or exceed both thresholds.
+
+Here's an example of how to run a `service:check` with custom thresholds set:
 
 ```bash
 npx apollo service:check \
@@ -313,3 +310,5 @@ npx apollo service:check \
 # Only validate against operations that account for at least 3% of total operation volume
 --queryCountThresholdPercentage=3
 ```
+
+If you have any requests for other filtering or threshold mechanisms, please get in touch with us on the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repository.
