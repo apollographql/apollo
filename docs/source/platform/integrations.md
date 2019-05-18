@@ -5,13 +5,13 @@ description: Integrate Apollo tools with the existing parts of your workflow
 
 One of our fundamental beliefs is that our Apollo workflows should hook into and enhance the workflows you're already using. As such, we've built a number of integrations into third-party services that are common in the developer world:
 
-1. [**GitHub**](#github) –– Ensure the safe evolution of your GraphQL schema by adding schema change validation directly to your continuous integration and GitHub checks.
-1. [**Slack**](#slack) –– Get a daily summary of key information from your server, including the overall request rate, error rate, and performance latency. Set up notifications for noteworthy events in your service, like increases in errors or particularly slow response times for important queries.
-1. [**Datadog**](#datadog) –– Forward the key metrics and performance data available in the Engine UI to Datadog as well.
+1. [**GitHub**](#github) &mdash; Ensure the safe evolution of your graph by adding schema change validation directly to your continuous integration and GitHub checks.
+1. [**Slack**](#slack) &mdash; Get a daily summary of key information from your server, including the overall request rate, error rate, and performance latency. Set up notifications for noteworthy events in your service, like increases in errors or particularly slow response times for important queries.
+1. [**Datadog**](#datadog) &mdash; Forward the key metrics and performance data available from Engine to Datadog as well.
 
 <h2 id="github">GitHub</h2>
 
-Building tools to help you safely collaborate on the evolution of your GraphQL schema is one of our biggest focuses at Apollo. To make [schema change validation](/docs/platform/schema-validation.html) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
+Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/docs/platform/schema-validation.html) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
 
 ![GitHub Status View](../img/schema-validation/github-check.png)
 
@@ -62,7 +62,7 @@ jobs:
           fi
 ```
 
-  > **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/docs/platform/schema-registry.html#setup) setup for other options.
+> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/docs/platform/schema-registry.html#setup) setup for other options.
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Engine. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 
@@ -72,7 +72,7 @@ Because you installed the Engine app on GitHub, the check you've added will show
 
 Our Apollo Slack integration brings your server's performance metrics and analytics data from Apollo Engine directly to your team's Slack workspace so you can be notified of potential issues proactively. The integration does two main things:
 
-1. Send a [**daily snapshot**](#slack-reports) of the request rate, error rate, and performance latency of your GraphQL service.
+1. Send a [**daily snapshot**](#slack-reports) of the request rate, error rate, and performance latency of your graph.
 1. Send [**notifications**](#slack-notifications) that are triggered on thresholds like error percentage and performance latency.
 
 <h3 id="setup-slack">Configure the integration</h3>
@@ -105,7 +105,7 @@ We've constructed the report provided to give you an actionable summary of what'
 
 <h3 id="slack-notifications">Notifications</h3>
 
-In the Engine UI you can configure notifications that are triggered on the performance data of your service, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
+In Engine you can configure notifications that are triggered on the performance data of your graph, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
 
 - **Request rate:**  requests per minute
 - **Request duration:** p50/p95/p99 service time
@@ -119,7 +119,7 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 <h2 id="datadog">Datadog</h2>
 
-The Apollo Datadog integration allows you to forward all the performance metrics and analytics data that's available to you in the Engine UI to Datadog as well. This is particularly convenient for teams already relying on Datadog for their monitoring, and of the best perks is that Datadog has advanced filtering features that alerts can be set on, and teams can set those alerts based on their GraphQL metrics data from Engine through Datadog.
+The Apollo Datadog integration allows you to forward all the performance metrics and analytics data that's available to you in Engine to Datadog as well. This is particularly convenient for teams already relying on Datadog for their monitoring, and of the best perks is that Datadog has advanced filtering features that alerts can be set on, and teams can set those alerts based on their GraphQL metrics data from Engine through Datadog.
 
 The Datadog metrics forwarded by Engine are:
 
@@ -135,9 +135,9 @@ The Datadog metrics forwarded by Engine are:
   - `apollo.engine.operations.latency.avg`
 
 All of Engine's new Datadog metrics are tagged with the GraphQL operation name, as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
-All of the metrics are also tagged with the Engine service ID, `service:<service-id>`, so multiple Apollo Engine services can send data to the same Datadog account.
+All of the metrics are also tagged with the Engine graph ID, `service:<graph-id>`, so multiple graphs from Engine can send data to the same Datadog account.
 
-Engine sends metrics to Datadog in 60 second intervals. Data is forwarded with a 60 second delay to allow for reports from Engine proxies to be collected, even in the case of temporary network failures.
+Engine sends metrics to Datadog in 60 second intervals. Data is forwarded with a 60 second delay to allow for reports to be collected, even in the case of temporary network failures.
 
 If you're reporting metrics to Engine through the Engine proxy, Datadog will merge you statistics across multiple instances of the proxy (per-host metrics are not available). Just like in the Engine UI, each operation inside a query batch is counted individually.
 
@@ -164,9 +164,9 @@ Once you've turned on the integration in Datadog, visit the "Integrations" tab i
 
 Once you have Datadog forwarding set up, you will start seeing Engine metrics forwarded to your Datadog account within a few minutes. Navigate to the [Datadog metric explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=avg&exp_row_type=metric) to see data from your GraphQL service flowing in.
 
-Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the service ID (`service:<service-id>`) it is reporting for and the operation name (`operation:<query-name>`), both of which are normalized by Datadog naming requirements (letters are all lower-case and illegal symbols are converted to underscores). This tagging makes it easier to see data at whatever level of granularity you might want.
+Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph ID (`service:<graph-id>`) it is reporting for and the operation name (`operation:<query-name>`), both of which are normalized by Datadog naming requirements (letters are all lower-case and illegal symbols are converted to underscores). This tagging makes it easier to see data at whatever level of granularity you might want.
 
-If you want to aggregate across all operations or zoom in to a particular operation, it's simply a tag-filtering. Similarly, if you want to compare metrics across staging and production services, it should be as simple as generating one graph per service.
+If you want to aggregate across all operations or zoom in to a particular operation, it's simply a tag-filtering. Similarly, if you want to compare metrics across staging and production environment, it should be as simple as generating one graph per environment.
 
 **Example**: Suppose you want to see the 95th percentile averaged across all operations for a staging and a production service.
 
