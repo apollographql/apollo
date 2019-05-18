@@ -7,7 +7,7 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 
 <h2 id="Apollo">Apollo</h2>
 
-An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling across the stack ([Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).
+An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).
 
 <h2 id="automatic-persisted-queries">Automatic Persisted Queries (APQ) </h2>
 
@@ -214,7 +214,7 @@ const cache = new InMemoryCache({
       default:
         return defaultDataIdFromObject(object); // fall back to default handling
     }
-  },
+  }
 });
 ```
 
@@ -231,6 +231,7 @@ type User {
 `User` is an Object type in the example above.
 
 <h2 id="operation">Operation</h2>
+
 A single query, mutation, or subscription that can be interpreted by a GraphQL execution engine.
 
 <h2 id="operation-name">Operation name</h2>
@@ -349,7 +350,7 @@ A central source of truth for your schema in Apollo Engine. It enables schema re
 
 <h2 id="schema-versioning">Schema versioning</h2>
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in the [versioning guide](https://www.apollographql.com/docs/guides/versioning.html).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](https://www.apollographql.com/docs/platform/schema-validation#versioning).
 
 <h2 id="schema-stitching">Schema stitching</h2>
 
@@ -411,4 +412,4 @@ In `react-apollo` it would be passed like this:
 
 <h2 id="whole-response-caching">Whole response caching</h2>
 
-A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Check out the [Apollo performance guide](../guides/performance.html).
+A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Read more about GraphQL query caching in our [guide for caching with Apollo Server](https://www.apollographql.com/docs/apollo-server/features/caching).
