@@ -3,7 +3,7 @@ title: Validating schema changes
 description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
 
-There are many types of schema changes that can be potentially braeking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
+There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
 
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
