@@ -3,24 +3,17 @@ title: Apollo Engine guide
 description: Account management, data privacy, GDPR compliance, and other information about Apollo Engine
 ---
 
-[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on two types of data input from servers: publishing schema introspections and sending traces of request execution. From those two data inputs we can provide rich schema usage insights, schema history management, schema change validation, query usage insights, and more.
+[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on a few types of data input from servers: publishing schema introspections, publishing operations from clients, and sending traces of request execution. From those data inputs we can provide rich schema usage insights, schema history management, schema change validation, operation safelisting, query usage insights, and more.
 
-Engine's core schema management features are all available in an unlimited capacity for free, and always will be. Engine's advanced features, like resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
+Engine's core schema management features are all available in an unlimited capacity for free, and always will be. Engine's advanced features, like operation safelisting, schema change validation, resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
 
 More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
-<!-- You can get started with Engine using any GraphQL server by visiting our setup guide [here](/docs/references/setup-analytics.html). -->
 
 ![The Apollo Engine Architecture](../img/apollo-engine/engine-architecture.png)
 
-<!--
-######################################################################
-Accounts
-######################################################################
--->
-
 <h2 id="accounts">Accounts</h2>
 
-Engine accounts are authenticated using GitHub by default. We alternatively offer single sign-on (SAML or OIDC) to our [Enterprise](https://www.apollographql.com/plans/) customers.
+Engine accounts are authenticated using GitHub by default. We also offer single sign-on (SAML or OIDC) to our [Enterprise](https://www.apollographql.com/plans/) customers.
 
 <h3 id="team-collaboration">Team collaboration</h3>
 
@@ -36,7 +29,8 @@ If you’d like to work with additional team members and you are the admin of a 
 
 If you’re looking for a GitHub organization that you’re a member of and don’t see it in Engine, it’s likely that Engine does not have read access for that organization.
 
-If you want to add or remove an organization from Engine, you should manage those settings on GitHub. There, you will be able to Grant or Revoke access to Engine for organizations you can administer. For organizations you do not administer, you can Request access to Engine and the administrators will receive a request by E-mail.
+If you want to add or remove an organization from Engine, you should manage those settings on GitHub. There, you will be able to Grant or Revoke access to Engine for organizations you can administer. For organizations you do not administer, you can
+"Request" access to Engine and the administrators will receive a request by E-mail.
 
 <h3 id="github-permissions">GitHub permissions</h3>
 
@@ -50,35 +44,29 @@ Services
 ######################################################################
 -->
 
-<h2 id="services">Services</h2>
+<h2 id="services">Graphs</h2>
 
-A service in Engine represents a "project" or "application". When you create a new service, we provide an API key used to send performance metrics and schema versions to our cloud service. This information is then accessible through the Engine interface.
+A _graph_ (formerly called _service_) in Engine represents a _project_ or _application_. When you create a new graph, we provide an API key used to send performance metrics and schema versions to our cloud service. This information is then accessible through the Engine interface.
 
-<h3 id="creating-services">Creating a service</h3>
+<h3 id="creating-services">Creating a graph</h3>
 
-To create a service, you will need to select an account for that service to belong to. All members of the account will be able to see the service’s data and settings options. You can transfer services between any of your Engine accounts. To transfer a service, visit its Settings page and change the “Endpoint owner” to whichever account you’d like.
+To create a graph, you will need to select an account for that graph to belong to. All members of the account will be able to see the graph's data and settings options. You can transfer graphs between any of your Engine accounts by visiting its Settings page and change the “owner” to whichever account you’d like.
 
-Services in Engine have globally unique IDs. We recommend that you prefix your service ID with the name of your company or organization.
+Graphs in Engine have globally unique IDs. We recommend that you prefix your ID with the name of your company or organization to avoid naming collisions with other graphs in the system.
 
 <h3 id="environments">Managing environments</h3>
 
-Each service in Engine should represent a single application, and environments within your application should be tracked using [schema tags](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual environments within the service.
+Each graph in Engine should represent a single application, and environments within your application should be tracked using [_variants_](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual variants within Engine.
 
 #### API keys
 
-API keys can be added and removed from a service at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
+API keys can be added and removed from a graph at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
 
-You can manage your API keys on your service's settings page. It's recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
-
-<!--
-######################################################################
-Data privacy
-######################################################################
--->
+You can manage your API keys on your graph's settings page. It is recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
 
 <h2 id="data-privacy">Data privacy</h2>
 
-All data that is sent to Engine from your server can be configured and turned off to meet your data privacy needs. This section will walk through what information Engine sees about your GraphQL service’s request, what Engine’s default behavior to handle request data is, and how you can configure Engine to the level of data privacy your team needs.
+All data that is sent to Engine from your server can be configured and turned off to meet your data privacy needs. This section will walk through what information Engine sees about your GraphQL graph's requests, what Engine’s default behavior to handle request data is, and how you can configure Engine to the level of data privacy your team needs.
 
 <h3 id="architecture">Architecture</h3>
 
@@ -89,13 +77,13 @@ Engine is primarily a cloud service that ingests and stores performance metrics 
 
 #### Apollo Server 2
 
-If you’ve set up Engine metrics forwarding using Apollo Server 2, Apollo Server will automatically start tracing the execution your requests and forwarding that information to the Engine service. Engine uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data will become available for you to explore in the Engine interface.
+If you’ve set up Engine metrics forwarding using Apollo Server 2, Apollo Server will automatically start tracing the execution your requests and forwarding that information to Engine. Engine uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data will become available for you to explore in the Engine interface.
 
 Apollo Server will never forward the responses of your requests to Engine, but it will forward the shape of your request, the time it took each resolver to execute for that request, and the variables and headers of the request (configurable, see below).
 
 #### Engine Proxy (deprecated)
 
-This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through. Apollo Server 1 users and other Node users also have the option to run the Engine proxy as a sidecar next to their Node server.
+This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through.
 
 As your clients make requests to your server, the proxy reads response extension data to make caching decisions and aggregates tracing and error information into reports that it sends to the Engine ingress.
 
@@ -107,7 +95,7 @@ This section describes which parts of your GraphQL HTTP requests are seen and co
 
 #### Query operation string
 
-Both Apollo Server 2 and the Engine proxy report the full operation string of your request to the Engine cloud service. Because of this, you should be careful to put any sensitive data like passwords and personal data in the GraphQL variables object rather than in the operation string itself.
+Both Apollo Server 2 and the Engine proxy report the full operation string of your request to the Engine cloud service. Because of this, you should be careful to put any sensitive data like passwords and personal data in the GraphQL variables object rather than in the operation string itself.
 
 #### Variables
 
@@ -145,7 +133,7 @@ Let’s walk through Engine’s default behavior for reporting on fields in a ty
 
 Neither Apollo Server 2 nor the Engine proxy will ever send the contents of this to the Engine cloud service. The responses from your GraphQL service stay on-prem.
 
-If you've configured whole query caching through the Engine proxy and Engine determines that a response it sees is cacheable, then the response will be stored in your [Engine cache](./caching.html#config.stores) (either in-memory in your proxy or as an external memcached you configure).
+If you've configured whole query caching through the Engine proxy and Engine determines that a response it sees is cacheable, then the response will be stored in your [cache](https://www.apollographql.com/docs/apollo-server/features/caching#saving-full-responses-to-a-cache) (either in-memory in your proxy or as an external memcached you configure).
 
 #### `response.errors`
 
@@ -153,8 +141,9 @@ If either Apollo Server 2 or the Engine proxy sees a response with an `"errors"`
 
 You can disable reporting errors to the out-of-band Engine cloud service like so:
 
-- **Apollo Server 2** – enable the [`maskErrorDetails` option](/docs/apollo-server/api/apollo-server#EngineReportingOptions) to remove the messages and other details from error traces sent to Apollo's cloud service.
-- **Engine proxy** – use the [`noTraceErrors` option](./proxy-config.html#Reporting) to disable sending error traces to the Engine cloud service.
+- **Apollo Server 2** &mdash; enable the [`maskErrorDetails` option](/docs/apollo-server/api/apollo-server#EngineReportingOptions) to remove the messages and other details from error traces sent to Apollo's cloud service.
+- **Apollo Server 2** &mdash; specify a [`rewriteError` function](https://www.apollographql.com/docs/apollo-server/features/errors#for-apollo-engine-reporting) that filters or transforms your errors before they are sent to Apollo's cloud service. This can be used to strip sensitive data from errors or filter "safe" errors from Engine's reporting.
+- **Engine proxy** &mdash; use the [`noTraceErrors` option](./proxy-config.html#Reporting) to disable sending error traces to the Engine cloud service.
 
 #### Disable Reporting (Engine proxy)
 
