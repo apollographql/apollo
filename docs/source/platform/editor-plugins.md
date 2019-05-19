@@ -1,5 +1,5 @@
 ---
-title: Connect Apollo to your editor
+title: Connecting Apollo to your editor
 description: How to get the most out of your editor with Apollo
 ---
 
