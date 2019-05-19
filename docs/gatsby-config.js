@@ -11,11 +11,7 @@ module.exports = {
         githubRepo: 'apollographql/apollo',
         spectrumPath: 'apollo-platform',
         sidebarCategories: {
-          null: [
-            'index',
-            'intro/platform',
-            'intro/benefits'
-          ],
+          null: ['index', 'intro/platform', 'intro/benefits'],
           Tutorial: [
             'tutorial/introduction',
             'tutorial/schema',
@@ -25,7 +21,7 @@ module.exports = {
             'tutorial/client',
             'tutorial/queries',
             'tutorial/mutations',
-            'tutorial/local-state',
+            'tutorial/local-state'
             // 'tutorial/whats-next'
           ],
           Platform: [
@@ -34,8 +30,7 @@ module.exports = {
             'platform/client-awareness',
             'platform/operation-registry',
             'platform/editor-plugins',
-            'platform/tracing',
-            'platform/errors',
+            'platform/performance',
             'platform/integrations'
           ],
           Resources: [
@@ -48,7 +43,7 @@ module.exports = {
           ],
           References: [
             'references/apollo-config',
-	    'references/setup-analytics',
+            'references/setup-analytics',
             'references/apollo-engine',
             'references/engine-proxy',
             'references/engine-proxy-release-notes'
