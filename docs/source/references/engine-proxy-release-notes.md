@@ -24,13 +24,13 @@ Because this is a minor release, if you are using Engine via the Docker containe
 <h3 id="v1.0.6" title="v1.0.6">1.0.6 - 2018-04-06</h3>
 
 * New `reporting.noTraceErrors` option to disable sending error traces to Apollo servers. Use this if your error messages may contain [personal data](https://en.wikipedia.org/wiki/Personal_data). If you are interested in a more fine-grained way to configure this, contact <a href="https://engine.apollographql.com/support">Apollo support</a>.
-* Fix problems running `ApolloEngine` when a corporate HTTP proxy is configured with an environment variable such as `$HTTP_PROXY`. (Specifically, make the default [`innerHost` option to `engine.listen`](../setup-node.html#api-engine.listen) actually be `127.0.0.1` as documented rather than the unspecified interface; the previously implemented default was unintentional as well as the cause of the corporate proxy bug.)
+* Fix problems running `ApolloEngine` when a corporate HTTP proxy is configured with an environment variable such as `$HTTP_PROXY`. (Specifically, make the default `innerHost` option to `engine.listen` actually be `127.0.0.1` as documented rather than the unspecified interface; the previously implemented default was unintentional as well as the cause of the corporate proxy bug.)
 
 <h3 id="v1.0.5" title="v1.0.5">1.0.5 - 2018-04-05</h3>
 
 This release include a variety of changes related to caching.
 
-* The Engine Proxy now observes the `Vary` header in HTTP responses. See the new [documentation of cache header support](../proxy/guides.html#caching) for more details.
+* The Engine Proxy now observes the `Vary` header in HTTP responses. See the new [documentation of cache header support](/references/engine-proxy/#caching) for more details.
 * The Engine Proxy now explicitly requests that "persisted query not found" responses are not cached by CDNs or browsers. (Typically these responses are followed by the client informing Engine of the full matching query, so caching the not-found response was effectively cache poisoning.)
 * The Engine Proxy now includes `Cache-Control` headers on responses served from its cache, not just on responses it stores to its cache.
 * The Engine Proxy no longer uses a generic HTTP heuristic to generate a max age limit for responses with the HTTP header `Last-Modified` but no other HTTP-level max age specification. This was added accidentally in v1.0.4 and is not necessary given that we only cache data that explicitly requests it in the GraphQL extension.
@@ -58,14 +58,14 @@ This version only has JS changes: the Docker container release is identical to 1
 
 <h3 id="v1.0.2" title="v1.0.2">1.0.2 - 2018-03-14</h3>
 
-* Add `overrideGraphqlResponseHeaders` frontend configuration option. This option lets you set HTTP headers to be sent with all GraphQL HTTP responses. For now, this is required to avoid CORS errors if you use [persisted queries](./auto-persisted-queries.html) from clients from a different origin from your GraphQL (Engine) frontend.
+* Add `overrideGraphqlResponseHeaders` frontend configuration option. This option lets you set HTTP headers to be sent with all GraphQL HTTP responses. For now, this is required to avoid CORS errors if you use [persisted queries](https://www.apollographql.com/docs/apollo-server/features/apq) from clients from a different origin from your GraphQL (Engine) frontend.
 * Fix bug where certain malformed GraphQL requests were reported to Engine as having taken multiple millennia.
 * Improve support for `application/graphql` requests. We still recommend sending your requests as JSON, which is supported by more servers and supports variables, operation name, and client-to-server extension, but we now deal better with `application/graphql` requests if you send them.
 * Improve error handling when your GraphQL origin sends Engine an unsupported Content-Type.
 
 <h3 id="v1.0.1" title="v1.0.1">1.0.1 - 2018-03-07</h3>
 
-v1 of `apollo-engine` has a redesigned streamlined Node API called `ApolloEngine`. See [the 1.0 migration guide](./1.0-migration.html) for details on how to upgrade.  In addition to a simplified API and higher performance, the new API adds support for the Restify and Hapi v16 web frameworks, and it is easy to integrate with any Node web framework that works with `http.Server`.
+v1 of `apollo-engine` has a redesigned streamlined Node API called `ApolloEngine`. See [the 1.0 migration guide](/references/engine-proxy-1.0-migration/) for details on how to upgrade.  In addition to a simplified API and higher performance, the new API adds support for the Restify and Hapi v16 web frameworks, and it is easy to integrate with any Node web framework that works with `http.Server`.
 
 If you aren't integrating with a Node GraphQL server but still find Node programs easier to run than Docker Containers, the `apollo-engine` npm module has a new API called `ApolloEngineLauncher` that allows you to run the Engine Proxy with arbitrary configuration without hooking into a Node GraphQL server.
 
@@ -129,7 +129,7 @@ No additional configuration is required to start using this feature.
 
 * Fixed a bug where the `Host` header was not forwarded to origin servers. If the `Host` header is present, it will also be sent in the `X-Forwarded-Host` header. Both of these header values can be overridden via the field mentioned below.
 * Added the ability for users to override which headers are sent to their GraphQL origin. Users can do this by specifying the `overrideRequestHeaders` field in `origin.http` in the Engine config object. By default Engine will forward all header values it receives to the origin server. This field is only for users that want to override the default behavior.
-  * For example, to override the `Host` header which may need to be done when deploying Engine inside of a PaaS (such as Heroku) follow instructions [here](../setup-virtual.html).
+  * For example, to override the `Host` header which may need to be done when deploying Engine inside of a PaaS (such as Heroku) follow instructions [here](/references/engine-proxy/#option-4-running-the-proxy-through-a-platform-as-a-service-eg-heroku).
 
 ### 2018.01-43-g1747440e6 - 2018-01-29
 

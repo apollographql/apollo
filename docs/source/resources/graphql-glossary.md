@@ -128,7 +128,7 @@ type Author {
 
 ## Fragment
 
-A selection set that can be reused in multiple query operations. A [GraphQL fragment](https://www.apollographql.com/docs/react/advanced/fragments.html) is a shared piece of query logic.
+A selection set that can be reused in multiple query operations. A [GraphQL fragment](https://www.apollographql.com/docs/react/advanced/fragments/) is a shared piece of query logic.
 
 ```graphql
 fragment UserData on User {
@@ -160,7 +160,7 @@ const typeDefs = gql`
 
 ## GraphQL Playground
 
-An in-browser IDE for GraphQL development and workflow. Added benefits exist such as theme change, automatic schema reloading, HTTP headers configuration, query history and GraphQL subscription support. In addition, it comes [out-of-the-box in Apollo Server 2](https://www.apollographql.com/docs/apollo-server/features/graphql-playground.html).
+An in-browser IDE for GraphQL development and workflow. Added benefits exist such as theme change, automatic schema reloading, HTTP headers configuration, query history and GraphQL subscription support. In addition, it comes [out-of-the-box in Apollo Server 2](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
 
 ## GraphQL Service
 
@@ -199,7 +199,7 @@ mutation AddTodo($type: String!) {
 
 ## Normalization
 
-A technique for transforming the response of a query operation before saving it to the store by [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching.html#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.
+A technique for transforming the response of a query operation before saving it to the store by [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching/#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.
 
 ```js
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
@@ -258,7 +258,7 @@ query getHuman {
 
 ## Partial query caching
 
-A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources.html) caching.
+A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources/) caching.
 
 ## Query
 
@@ -291,7 +291,7 @@ export const queryComponent = ({ breed }) => (
 
 ## Query whitelisting
 
-A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](../guides/performance.html#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.
+A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](/old/performance/#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.
 
 ## Resolver
 
@@ -351,7 +351,7 @@ A central source of truth for your schema in Apollo Engine. It enables schema re
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](https://www.apollographql.com/docs/platform/schema-validation#versioning).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/platform/schema-validation/#versioning).
 
 ## Schema stitching
 
@@ -359,7 +359,7 @@ The process of merging [different schemas into one GraphQL schema](https://www.a
 
 ## Subscription
 
-A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions.html) is defined in a schema along with queries and mutations.
+A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions/) is defined in a schema along with queries and mutations.
 
 ```graphql
 type Subscription {
@@ -376,7 +376,7 @@ subscription onCommentAdded($repoFullName: String!){
 
 ## Scalar Type
 
-A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a [custom scalar](https://www.apollographql.com/docs/graphql-tools/scalars.html#custom-scalars) type such as **Date** can be specified in a GraphQL service implementation.
+A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a [custom scalar](https://www.apollographql.com/docs/graphql-tools/scalars/#custom-scalars) type such as **Date** can be specified in a GraphQL service implementation.
 
 ## Type System
 
@@ -413,4 +413,4 @@ In `react-apollo` it would be passed like this:
 
 ## Whole response caching
 
-A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Read more about GraphQL query caching in our [guide for caching with Apollo Server](https://www.apollographql.com/docs/apollo-server/features/caching).
+A technique used to cache entire results of GraphQL queries. This process improves performance by preventing the fetching of the same results from the server if it has been obtained before. Read more about GraphQL query caching in our [guide for caching with Apollo Server](https://www.apollographql.com/docs/apollo-server/features/caching/).

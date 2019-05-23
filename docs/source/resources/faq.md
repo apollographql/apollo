@@ -15,7 +15,7 @@ GraphQL is a language for querying data. With GraphQL, your existing services de
 
 #### Why use GraphQL?
 
-GraphQL can make a difference in nearly every area of development: from improving developer experience with quality tooling to improving client performance by reducing bundle sizes. Read more about the benefits of GraphQL [here](../fundamentals/benefits.html).
+GraphQL can make a difference in nearly every area of development: from improving developer experience with quality tooling to improving client performance by reducing bundle sizes. Read more about the benefits of GraphQL [here](/intro/benefits/).
 
 #### Where can I learn GraphQL?
 
@@ -60,7 +60,7 @@ Other DataSources are under development, but even without the `DataSource` API, 
 
 #### How do I design the schema?
 
-Schemas should be designed with the needs of the client in mind. Rather than modeling queries and types after the underlying services, they should be designed to make querying as easy as possible. GraphQL's resolver structure makes it possible to allow this flexibility without many performance consequences. For more, read the [schema design guide](../guides/schema-design.html).
+Schemas should be designed with the needs of the client in mind. Rather than modeling queries and types after the underlying services, they should be designed to make querying as easy as possible. GraphQL's resolver structure makes it possible to allow this flexibility without many performance consequences. For more, read the [schema design guide](/tutorial/schema/).
 
 #### How do I discover and reproduce errors?
 
@@ -122,10 +122,10 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I test my client?
 
-`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](/docs/react/recipes/testing) guide to learn more.
+`react-apollo` comes with everything needed to test a client app that makes queries to a GraphQL schema. Read the [Testing React Components](https://www.apollographql.com/docs/react/recipes/testing/) guide to learn more.
 
 #### How can I safely make changes to the schema?
 
-Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](../guides/versioning.html) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
+Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](/platform/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](https://www.npmjs.com/package/apollo) with Apollo Engine provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.

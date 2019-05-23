@@ -72,8 +72,8 @@ Because you installed the Engine app on GitHub, the check you've added will show
 
 Our Apollo Slack integration brings your server's performance metrics and analytics data from Apollo Engine directly to your team's Slack workspace so you can be notified of potential issues proactively. The integration does two main things:
 
-1. Send a [**daily snapshot**](#slack-reports) of the request rate, error rate, and performance latency of your graph.
-1. Send [**notifications**](#slack-notifications) that are triggered on thresholds like error percentage and performance latency.
+1. Send a [**daily snapshot**](#daily-reports) of the request rate, error rate, and performance latency of your graph.
+1. Send [**notifications**](#notifications) that are triggered on thresholds like error percentage and performance latency.
 
 ### Configure the integration
 

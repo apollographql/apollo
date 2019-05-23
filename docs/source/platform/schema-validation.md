@@ -17,7 +17,7 @@ Here's how it works:
 
 1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
 1. Engine creates a diff between the local schema and the most recently published schema in the registry.
-1. Engine fetches a list of all operations sent to your graph in the last day (time window is [configurable](#cli-advanced)).
+1. Engine fetches a list of all operations sent to your graph in the last day (time window is [configurable](#adjusting-validation-parameters)).
 1. Engine walks through the schema diff change-by-change and compares against the operation list to see if the changes will affect the behavior of any operations.
 1. Engine returns the schema diff and indicates any breaking changes found.
 1. The CLI prints the output of this check with a link to view more details in the Engine UI.
@@ -142,8 +142,7 @@ These are change types detected ny the `apollo service:check` command, but they 
 
 ### Validation response
 
-Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository
-that is configured to be an Apollo project.
+Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project.
 
 Running `apollo service:check` will output the diff of all schema changes found and highlight changes determined to be breaking. Here's an example:
 
@@ -199,7 +198,7 @@ $ npm install apollo
 $ npx apollo service:check
 ```
 
-The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github). The time window of live traffic that the check command validates against can be [configured](#cli-advanced) to any range within your data retention window.
+The command can be placed in any continuous integration pipeline. To surface results, `apollo` emits an exit code and [integrates with GitHub statuses](#github-integration). The time window of live traffic that the check command validates against can be [configured](#adjusting-validation-parameters) to any range within your data retention window.
 
 > **Note:** The Apollo CLI will be looking in your Apollo config for a location from which to fetch your local schema and using your ENGINE_API_KEY to authenticate its requests with the Engine service.
 

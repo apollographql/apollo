@@ -61,8 +61,8 @@ engine.listen({
 Notable differences:
 
 - The API is now called `ApolloEngine` rather than `Engine`. (We changed the name so that people still using `new Engine` get shown a link to this page!)
-- The [engine configuration](./proxy-config.html) is the main argument to `new ApolloEngine` rather than nested inside an `engineConfig` option. The "engine configuration" is the configuration presented to the underlying Engine Proxy binary; other options affect the Node code rather than the inner process.  We moved all the options that configure the Node code to the `listen` call so that it's easy to differentiate between "configuring the Proxy's behavior" and "configuring how we talk to the Proxy binary".
-- You don't need to tell Engine to `start()`, nor do you need to connect it to your web framework's middleware at a carefully chosen location. Instead, you replace your web framework's `app.listen()` call with an `engine.listen` call.  See [the Node setup guide](./setup-node.html#not-express) for how to connect Engine to a web framework other than Express.
+- The [engine configuration](/references/proxy-config/) is the main argument to `new ApolloEngine` rather than nested inside an `engineConfig` option. The "engine configuration" is the configuration presented to the underlying Engine Proxy binary; other options affect the Node code rather than the inner process.  We moved all the options that configure the Node code to the `listen` call so that it's easy to differentiate between "configuring the Proxy's behavior" and "configuring how we talk to the Proxy binary".
+- You don't need to tell Engine to `start()`, nor do you need to connect it to your web framework's middleware at a carefully chosen location. Instead, you replace your web framework's `app.listen()` call with an `engine.listen` call.  See [the Node setup guide](/references/engine-proxy/#option-2-running-a-standalone-proxy-using-node) for how to connect Engine to a web framework other than Express.
 - Engine now supports the Restify web framework and version 17 of the Hapi web framework. It is also relatively straightforward to use it with any web framework that works with Node's `http.Server` class.
 - You don't need to specify your GraphQL server's port twice (once in the `graphqlPort` option to `new Engine` and once to `app.listen`). You just specify it once to `engine.listen`.
 - The `endpoint` option to `new Engine()` is now the `graphqlPaths` option to `engine.listen()`, and it takes an array of paths instead of just one. You still don't need to specify it if your GraphQL server is mounted at `/graphql`.
@@ -71,7 +71,7 @@ Notable differences:
 - The `startupTimeout`, `proxyStdoutStream`, and `proxyStderrStream` options to `new Engine()` are now nested inside the `launcherOptions` option to `engine.listen()`.
 - The `dumpTraffic` option to `new Engine()` no longer exists.
 
-For full details including an API reference, see [the Node setup guide](./setup-node.html).
+For full details including an API reference, see [the Node setup guide](/references/engine-proxy/#option-2-running-a-standalone-proxy-using-node).
 
 ### Behind the scenes
 
@@ -83,7 +83,7 @@ We did offer a "single proxy" mode that avoided some of the above problems, but 
 
 The new API gets rid of double proxying entirely. When you run `engine.listen({port: 4000, expressApp: app})`, the new `ApolloEngine` class starts an instance of your app running on an ephemeral port (say, 4321). It then starts the Engine Proxy itself on port 4000, proxying all requests to `127.0.0.1:4321`. All requests are consistently routed `client -> Engine Proxy -> Node`.
 
-This resolves all of the problems listed above. Because there's no "middleware" involved, the Engine Proxy is always inserted at the right place in the network: in front of your app. You can't accidentally add the middleware too late. Your app only sees one request per client request, or zero if [Engine caching](./caching.html) is doing its job! There's only one layer of local proxying rather than two. Finally, because most web frameworks have very simple similar-looking `listen` functions, adding support for new web frameworks is easy (which is why v1 adds support for Restify and arbitrary `http.Server`-based frameworks).
+This resolves all of the problems listed above. Because there's no "middleware" involved, the Engine Proxy is always inserted at the right place in the network: in front of your app. You can't accidentally add the middleware too late. Your app only sees one request per client request, or zero if [Engine caching](/references/engine-proxy/#caching) is doing its job! There's only one layer of local proxying rather than two. Finally, because most web frameworks have very simple similar-looking `listen` functions, adding support for new web frameworks is easy (which is why v1 adds support for Restify and arbitrary `http.Server`-based frameworks).
 
 This does mean that *all* of the HTTP traffic on your server is now routed through the Engine Proxy, whereas before non-GraphQL traffic avoided that hop. The Engine Proxy uses the industry-standard Go reverse proxy library to transparently proxy non-GraphQL HTTP and Websocket traffic, so you should observe no major difference.  If you do find any problems from running non-GraphQL traffic through the Engine Proxy, please [let us know](https://engine.apollographql.com/login?overlay=SupportRequestNoAccount), or consider running your GraphQL server separately from other servers.
 
@@ -103,7 +103,7 @@ The Docker container is mostly unchanged in v1.  Here's what's new:
 
 ## Automatic cache store configuration
 
-Prior to Engine v1, the features that require an in-memory or memcached cache store ([public and private full-query response cache](./caching.html), [automatic persisted queries](./auto-persisted-queries.html), and the session token authorization cache) required you to manually configure a cache store and enable them.
+Prior to Engine v1, the features that require an in-memory or memcached cache store ([public and private full-query response cache](/references/engine-proxy/#caching), [automatic persisted queries](https://www.apollographql.com/docs/apollo-server/features/apq), and the session token authorization cache) required you to manually configure a cache store and enable them.
 
 As of Engine v1, these features are on unless specifically disabled, and by default they use a 50MB in-memory cache.
 

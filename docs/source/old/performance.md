@@ -9,7 +9,7 @@ This guide details some practices around enhancing network performance which wil
 
 ## Automatic Persisted Queries
 
-The size of individual GraphQL query strings can be a major pain point. Apollo Server implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#get).
+The size of individual GraphQL query strings can be a major pain point. Apollo Server implements Automatic Persisted Queries (APQ), a technique that greatly improves network performance for GraphQL with zero build-time configuration. A persisted query is a ID or hash that can be sent to the server instead of the entire GraphQL query string. This smaller signature reduces bandwidth utilization and speeds up client loading times. Persisted queries are especially nice paired with GET requests, enabling the browser cache and [integration with a CDN](#cdn-integration).
 
 With Apollo Persisted Queries, the ID is a deterministic hash of the input query, so we don't need a complex build step to share the ID between clients and servers. If a server doesn't know about a given hash, the client can expand the query for it; Apollo Server caches that mapping.
 
@@ -102,11 +102,11 @@ The mechanism is based on a lightweight protocol extension between Apollo Client
 
 Content Delivery Networks (CDNs) such as [fly.io](https://fly.io), [Cloudflare](https://www.cloudflare.com/), [Akamai](https://www.akamai.com/) or [Fastly](https://www.fastly.com/) allow content caching close to clients, delivering data with low latency from a nearby server. Apollo Server makes it straightforward to use CDNs with GraphQL queries to cache full responses while still executing more dynamic queries.
 
-To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](#automatic-persisted-queried) to ensure that GraphQL requests are in a format that a CDN can understand.
+To use Apollo Server behind a CDN, we define which GraphQL responses the CDN is allowed to cache. On the client, we set up [automatic persisted queries](#automatic-persisted-queries) to ensure that GraphQL requests are in a format that a CDN can understand.
 
 ### Step 1: Add cache hints to the GraphQL schema
 
-Add cache hints as [directives](./directives.html) to GraphQL schema so that Apollo Server knows which fields and types are cacheable and for how long. For example, this schema indicates that all fields that return an `Author` should be cached for 60 seconds, and that the `posts` field should itself be cached for 180 seconds:
+Add cache hints as [directives](https://www.apollographql.com/docs/apollo-server/features/caching#defining-cache-hints) to GraphQL schema so that Apollo Server knows which fields and types are cacheable and for how long. For example, this schema indicates that all fields that return an `Author` should be cached for 60 seconds, and that the `posts` field should itself be cached for 180 seconds:
 
 ```graphql
 type Author @cacheControl(maxAge: 60) {
