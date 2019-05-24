@@ -23,7 +23,10 @@ _src/index.js_
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 
-const server = new ApolloServer({ typeDefs });
+const server = new ApolloServer({
+  typeDefs,
+  playground: { version: '1.7.25' }
+});
 ```
 
 To build our graph API, we need to import the `ApolloServer` class from `apollo-server`. We also need to import our schema from `src/schema.js`. Next, let's create a new instance of `ApolloServer` and pass our schema to the `typeDefs` property on the configuration object.
