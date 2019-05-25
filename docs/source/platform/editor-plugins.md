@@ -18,7 +18,7 @@ The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apol
 - Validate field and argument usage in operations
 - [Navigate projects more easily](#navigating-projects) with jump-to and peek-at definitions
 - Manage [client-only](#client-only-schemas) schemas
-- [Switch schema tags](#schema-tag-switching) to work with schemas running on different environments
+- [Switch schema tags](#schema-variant-switching) to work with schemas running on different environments
 
 ## Getting started
 
@@ -74,7 +74,7 @@ module.exports = {
 };
 ```
 
-Linking to the local schema won't provide all features such as switching schema tags and performance metrics. See [the Apollo config docs](https://www.apollographql.com/docs/references/apollo-config) for more details on configuration options.
+Linking to the local schema won't provide all features such as switching schema tags and performance metrics. See [the Apollo config docs][] for more details on configuration options.
 
 ### Client-only schemas
 
@@ -144,11 +144,13 @@ Navigating large codebases can be difficult, but the Apollo GraphQL extension ma
 
 ### Schema variant switching
 
-Apollo supports publishing multiple versions ([variants](http://localhost:8000/platform/schema-registry#schema-tags)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between schema variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
+Apollo supports publishing multiple versions ([variants](/platform/schema-registry/#registering-schemas-to-a-variant)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between schema variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
 
 ## Troubleshooting
 
-The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file. Please see [the Apollo config docs](https://www.apollographql.com/docs/references/apollo-config) for more configuration guidance.
+The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file. Please see [the Apollo config docs][] for more configuration guidance.
+
+[the Apollo config docs]: /references/apollo-config/
 
 Other errors may be caused from an old version of a published schema. To reload a schema, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Reload Schema" option.
 

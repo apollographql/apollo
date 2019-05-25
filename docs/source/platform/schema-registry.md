@@ -64,7 +64,7 @@ module.exports = {
 };
 ```
 
-The [Apollo config documentation](/docs/references/apollo-config.html#service-config) has more details and advanced configuration options for the `apollo.config.js` format.
+The [Apollo config documentation](/references/apollo-config/#clientservice) has more details and advanced configuration options for the `apollo.config.js` format.
 
 ## Registering a schema
 
@@ -136,7 +136,7 @@ Product cycles move fast and it's common for schemas to be slightly different ac
 
 Apollo supports tracking multiple _variants_ for every graph. A variant is just like a regular data graph. It has its own history of schemas, its own metadata store of metrics, and its own operation registry. Variants can be used to track ideas like staging environments, canaries, and deploys of experimental features destined for the production graph.
 
-To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#register-a-schema-to-a-variant) to send data with a `--tag` flag and [configure your Apollo Server](#associating-metrics-with-a-variant) with a `schemaTag` option.
+To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#registering-schemas-to-a-variant) to send data with a `--tag` flag and [configure your Apollo Server](#associating-metrics-with-a-variant) with a `schemaTag` option.
 
 ### Registering schemas to a variant
 

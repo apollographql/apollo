@@ -351,7 +351,7 @@ A central source of truth for your schema in Apollo Engine. It enables schema re
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/platform/schema-validation/#versioning).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
 
 ## Schema stitching
 

@@ -171,7 +171,7 @@ Each change to the schema will be labeled with `PASS` or `FAIL` and a URL with f
 
 <img src="../img/schema-validation/service-check-page.png" width="100%" alt="Service check page in the Engine UI">
 
-> **Note:** If you have [installed schema validation checks on your GitHub PRs](#github), the "Details" link in your GitHub checks will take you to the same details link in this output.
+> **Note:** If you have [installed schema validation checks on your GitHub PRs](#github-integration), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
 A failed `apollo service:check` command will exit with a non-0 exit code and fail CI checks. There are many cases where it is safe to make a potentially breaking change, as long as the change is made intentionally with an understanding of its impact.
 
