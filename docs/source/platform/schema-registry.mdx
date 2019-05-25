@@ -13,11 +13,11 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 
 ## Using the Schema Registry
 
-To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project by:
+To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project.
 
-1. [Installing the Apollo CLI](#install-the-apollo-cli)
-1. [Creating a `.env` file in the root of your project with an `ENGINE_API_KEY`](#get-your-engine-api-key)
-1. [Creating an `apollo.config.js` file at the root of your project and adding the right configuration](#create-an-apolloconfigjs-file)
+import ProjectConfigPanel from 'gatsby-theme-apollo-docs/mdx/project-config-panel.mdx';
+
+<ProjectConfigPanel />
 
 #### CLI commands
 
@@ -25,46 +25,6 @@ Once you have that set up, you'll be ready to start connecting to the schema reg
 
 - `apollo service:push`&mdash; push a new schema to the registry.
 - `apollo service:check`&mdash; calculate a local schema diff and compare the changes against live traffic to validate if the changes are _safe_ or if they will _break_ live running queries.
-
-### Install the Apollo CLI
-
-To install the [`apollo` CLI](https://npm.im/apollo), ensure that `node` and `npm` are both installed, then run:
-
-```bash
-npm install --global apollo
-```
-
-> **Note:** This guide will utilize the global installation method, but the `apollo` command can also be installed in a project's `devDependencies` and used via [`npm-scripts`](https://docs.npmjs.com/misc/scripts) or [`npx`](https://npm.im/npx).
-
-### Get your Engine API key
-
-To get an API key, you will need to [log in to Engine](https://engine.apollographql.com) and create a new service by clicking the "Add Service" button. If you already have a service, get your API key by visiting your service's settings page. Once you have your API key, add it to your `.env` file like so:
-
-```
-ENGINE_API_KEY=service:foobar:d1rzyrmanmrZXxTTQLxghX
-```
-
-The Apollo CLI will be looking for your `.env` file because it uses your Engine API key to authenticate with the schema registry when it pushes your schema.
-
-> **Note:** Make sure your `.env` file is in the root of your project so the Apollo CLI knows where to find it. You can also export `ENGINE_API_KEY` as an environment variable.
-
-### Create an `apollo.config.js` file
-
-The commands executed through the Apollo CLI will be looking for your Apollo config to inform their behavior. To set up schema registration, you'll need to configure a source that the CLI can fetch your schema from like so:
-
-```js
-module.exports = {
-  service: {
-    endpoint: {
-      url: "http://localhost:4000"
-    }
-    // OR
-    localSchemaFile: './path/to/schema.graphql'
-  }
-};
-```
-
-The [Apollo config documentation](/references/apollo-config/#clientservice) has more details and advanced configuration options for the `apollo.config.js` format.
 
 ## Registering a schema
 
@@ -128,7 +88,7 @@ jobs:
 
 Changes made to your graph's schema over time can be viewed in [Engine](https://engine.apollographql.com) by browsing to the History page for your graph. Each time you push a new version of your schema, it will appear in your graph's history along with a list of the changes introduced in that version.
 
-<img src="../images/schema-history.png" width="100%" alt="Schema history page in the Engine UI">
+![Schema history page in the Engine UI](../images/schema-history.png)
 
 ## Managing environments
 
