@@ -26,13 +26,13 @@ Operations defined within client applications are automatically extracted and up
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 - An Apollo Engine API key.
   - To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
-  
+
 ### Limitations
 
-- Subscriptions within Apollo Server should be disabled.  For more information, see the instructions below.
+- Subscriptions within Apollo Server should be disabled. For more information, see the instructions below.
 - Only the default schema tag (`current`) is supported.
 
-  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service.  For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
+  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service. For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
 
 Please contact the Apollo sales team if you require a solution to any of these limitations.
 
@@ -89,7 +89,7 @@ Now we'll use `apollo client:push` to locate operations within the client codeba
 
 The `apollo client:push` command:
 
-- Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`).
+- Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`) and `clientVersion`.
 - Supports JavaScript, TypeScript and `.graphql` files.
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 - By default, includes the `__typename` fields which are added by Apollo Client at runtime.
@@ -97,18 +97,23 @@ The `apollo client:push` command:
 To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Engine API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
 ```
-npx apollo client:push              \
-    --key <ENGINE_API_KEY>               \
-    --clientName <CLIENT_IDENTIFIER>     \
+npx apollo client:push \
+    --key <ENGINE_API_KEY> \
+    --clientName <CLIENT_IDENTIFIER> \
+    --clientVersion <CLIENT_VERSION> \
     --includes="src/**/*.{ts,js,graphql}"
 ```
 
-When successful, the output from this command should look similar to the following:
+> _Note:_ Operations that are stored in the registry are legal for _all_ clients. The client name and client version are collected as metadata to make debugging easier and provide more insights.
+
+When succesfull, the output from this command should look similar to the following:
 
 ```
 ✔ Loading Apollo project
 ✔ Pushing client to Engine service <service>
 ```
+
+Currently, once an operation is registered it will remain registered indefinitely. For production operation registration, it's recommended that operations be registered from a deployment pipeline step rather than manually.
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
