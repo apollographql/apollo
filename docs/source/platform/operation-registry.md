@@ -17,8 +17,6 @@ The Apollo Operation Registry allows organizations to:
 
 Operations defined within client applications are automatically extracted and uploaded to Apollo Engine using the Apollo CLI. Apollo Server fetches a manifest of these operations from Apollo Engine and forbids execution of operations which were not registered from the client bundle.
 
-All operations that are registered will be permanently stored. Future operation uploads to Apollo Engine will not invalidate operations previously registered. You can even upload operations from legacy applications to ensure their service will not be affected by operation safelisting.
-
 ## Getting started
 
 ### Prerequisites
@@ -91,7 +89,7 @@ Now we'll use `apollo client:push` to locate operations within the client codeba
 
 The `apollo client:push` command:
 
-- Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`).
+- Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`) and `clientVersion`.
 - Supports JavaScript, TypeScript and `.graphql` files.
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 - By default, includes the `__typename` fields which are added by Apollo Client at runtime.
@@ -99,13 +97,14 @@ The `apollo client:push` command:
 To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Engine API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
 ```
-npx apollo client:push              \
-    --key <ENGINE_API_KEY>               \
-    --clientName <CLIENT_IDENTIFIER>     \
+npx apollo client:push \
+    --key <ENGINE_API_KEY> \
+    --clientName <CLIENT_IDENTIFIER> \
+    --clientVersion <CLIENT_VERSION> \
     --includes="src/**/*.{ts,js,graphql}"
 ```
 
-Note that you can use `clientName`, `clientTag`, and `clientVersion`. These fields are retained for analysis, not for validation. All operations that are stored in the operation registry are legal for _all_ clients.
+> _Note:_ Operations that are stored in the registry are legal for _all_ clients. The client name and client version are collected as metadata to make debugging easier and provide more insights.
 
 When succesfull, the output from this command should look similar to the following:
 
@@ -113,6 +112,8 @@ When succesfull, the output from this command should look similar to the followi
 ✔ Loading Apollo project
 ✔ Pushing client to Engine service <service>
 ```
+
+Currently, once an operation is registered it will remain registered indefinitely. For production operation registration, it's recommended that operations be registered from a deployment pipeline step rather than manually.
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
