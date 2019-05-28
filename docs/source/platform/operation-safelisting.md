@@ -38,20 +38,18 @@ Please [contact the Apollo sales team](https://www.apollographql.com/contact-sal
 
 Setting up operation registration and safelisting is a full-stack process, so you will need to have access to the client code containing the operations you want to register, and to the server within which you want to enforce the safelist.
 
-These installation steps require access to both the client and server codebases to perform the following tasks:
-
 - The **Apollo CLI** is used to search the client codebase for GraphQL operations and upload them to Apollo Engine.
 - **Apollo Server** is then configured with a plugin which fetches the manifest from Apollo Engine and enforces safelisting using that manifest.
 
 The following steps will walk through the steps necessary for both the client and server codebases.
 
-1. [Install the `apollo` CLI](#install-cli)
-1. [Push your schema to the Apollo schema registry](#register-schema)
-1. [Register operations from your client bundle](#register-operations)
-1. [Disable subscription support on Apollo Server](#disable-subscriptions)
-1. [Add the operation registry plugin to Apollo Server](#operation-registry-plugin)
-1. [Start Apollo Server with Apollo Engine enabled](#apollo-server-with-engine)
-1. [Verify](#verify)
+1. [Install the Apollo CLI](#install-cli)
+2. [Push your schema to the Apollo schema registry](#register-schema)
+3. [Register operations from your client bundle](#register-operations)
+4. [Disable subscription support on Apollo Server](#disable-subscriptions)
+5. [Add the operation registry plugin to Apollo Server](#operation-registry-plugin)
+6. [Start Apollo Server with Apollo Engine enabled](#apollo-server-with-engine)
+7. [Verify](#verify)
 
 <h3 id="install-cli">1. Install the `apollo` command line tool</h3>
 
@@ -220,11 +218,11 @@ Finally, to confirm that the server will allow permitted operations, try running
 
 In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
 
-To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+To selectively enable operation safelisting, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
 > In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
 
-For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
+For example, to enforce the operation registry safelisting while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
 
 ```js{12-27}
 const server = new ApolloServer({
@@ -249,7 +247,7 @@ const server = new ApolloServer({
           return false;
         }
 
-        // Enforce operation safe-listing on all other users.
+        // Enforce operation safelisting on all other users.
         return true;
       }
     })
