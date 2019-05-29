@@ -7,7 +7,6 @@ module.exports = {
         root: __dirname,
         subtitle: 'Platform',
         description: 'How to use the Apollo GraphQL platform',
-        contentDir: 'docs/source',
         githubRepo: 'apollographql/apollo',
         spectrumPath: 'apollo-platform',
         sidebarCategories: {
