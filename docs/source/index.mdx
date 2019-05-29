@@ -9,13 +9,17 @@ The Apollo GraphQL platform is an implementation of GraphQL that helps you manag
 
 import {
   ButtonWrapper,
-  Button,
-  HollowButton
+  Button
 } from 'gatsby-theme-apollo-docs';
 
 <ButtonWrapper>
   <Button to="/tutorial/introduction">Try it out!</Button>
-  <HollowButton to="/intro/platform">Learn more</HollowButton>
+  <Button
+    variant="hollow"
+    to="/intro/platform"
+  >
+    Learn more
+  </Button>
 </ButtonWrapper>
 
 ![Graph layer](./img/platform.jpg)
