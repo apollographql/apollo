@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: '/docs',
   __experimentalThemes: [
     {
       resolve: 'gatsby-theme-apollo-docs',
@@ -6,8 +7,6 @@ module.exports = {
         root: __dirname,
         subtitle: 'Platform',
         description: 'How to use the Apollo GraphQL platform',
-        contentDir: 'docs/source',
-        basePath: '/docs',
         githubRepo: 'apollographql/apollo',
         spectrumPath: 'apollo-platform',
         sidebarCategories: {
@@ -34,16 +33,13 @@ module.exports = {
             'platform/integrations'
           ],
           Resources: [
-            {
-              title: 'Principled GraphQL',
-              href: 'https://www.principledgraphql.com'
-            },
+            '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
             'resources/faq'
           ],
           References: [
             'references/apollo-config',
-            'references/setup-analytics',
+	          'references/setup-analytics',
             'references/apollo-engine',
             'references/engine-proxy',
             'references/engine-proxy-release-notes'

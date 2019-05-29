@@ -22,7 +22,7 @@ Operations defined within client applications are automatically extracted and up
 ### Prerequisites
 
 - Apollo Server 2.2.x (or newer).
-  - To get started with Apollo Server, visit [its documentation](/docs/apollo-server/).
+  - To get started with Apollo Server, visit [its documentation](https://www.apollographql.com/docs/apollo-server/).
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
 - An Apollo Engine API key.
   - To obtain an API key, visit [Apollo Engine](https://engine.apollographql.com) and create a service.
@@ -57,7 +57,7 @@ npm install apollo --save-dev
 
 **2. Push your schema to the Apollo schema registry:**
 
-> If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema-registry.html).
+> If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/platform/schema-registry/).
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
@@ -125,7 +125,7 @@ In the future, the subscription support will have its request pipeline unified w
 
 To disable subscriptions support on Apollo Server 2.x, a `subscriptions: false` setting should be included on the instantiation of Apollo Server, as follows:
 
-```js line=5-6
+```js{5-6}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -150,7 +150,7 @@ npm install apollo-server-plugin-operation-registry
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
 
-```js line=8-12
+```js{8-12}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -178,10 +178,10 @@ ENGINE_API_KEY=<ENGINE_API_KEY> npm start
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
 
-```js line=3
+```js
 const server = new ApolloServer({
   // ...
-  engine: '<ENGINE_API_KEY>'
+  engine: '<ENGINE_API_KEY>' // highlight-line
   // ...
 });
 ```
@@ -218,11 +218,11 @@ In some cases, deployments may want to selectively enable the behavior of `forbi
 
 To selectively enable operation safe-listing, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
-> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
+> In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
 
 For example, to enforce the operation registry safe-listing while skipping enforcement for any request in which the `Let-me-pass` header was present with a value of `Pretty please?`, the following configuration could be used:
 
-```js line=12-27
+```js{12-27}
 const server = new ApolloServer({
   // Existing configuration
   typeDefs,
@@ -253,20 +253,20 @@ const server = new ApolloServer({
 });
 ```
 
-> _Note:_ The `forbidUnregisteredOperations` callback must be synchronous. If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server.html#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
+> _Note:_ The `forbidUnregisteredOperations` callback must be synchronous. If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
 
 ## Testing the plugin
 
 We recommend testing the behavior of the plugin, as well as your `forbidUnregisteredOperations` function, before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in lieu of actually forbidding anything.
 
-```js line=7
+```js
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       forbidUnregisteredOperations: true,
-      dryRun: true
+      dryRun: true // highlight-line
     });
   ],
 });
@@ -294,14 +294,14 @@ This can occur if the schema hasn't been published since the operation registry 
 
 The first step in debugging the operation registry behavior is to enable debugging. This can be done by enabling the `debug` setting on the plugin within the Apollo Server constructor options:
 
-```js line=7
+```js
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       // ... other, existing options ...
-      debug: true,
+      debug: true, // highlight-line
     });
   ],
 });
