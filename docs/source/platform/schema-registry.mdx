@@ -3,6 +3,8 @@ title: Tracking your GraphQL schema
 description: A central hub for your GraphQL API
 ---
 
+import ProjectConfigPanel from 'gatsby-theme-apollo-docs/mdx/project-config-panel.mdx';
+
 Apollo includes a schema registry that serves as a [central hub](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) for tracking your GraphQL schema. Adopting a shared schema registry for your project has many benefits:
 
 - Unlike introspection, which provides a snapshot of a particular server's current schema, the registry serves as a global source of truth for the schema. In small projects this frees you from always needing a running server to access the schema. At scale, it avoids issues related to running multiple servers that may not always be in sync (eg, rolling updates).
@@ -14,8 +16,6 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 ## Using the Schema Registry
 
 To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project.
-
-import ProjectConfigPanel from 'gatsby-theme-apollo-docs/mdx/project-config-panel.mdx';
 
 <ProjectConfigPanel />
 
