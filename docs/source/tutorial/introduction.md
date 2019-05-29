@@ -41,8 +41,8 @@ The tutorial assumes that you're comfortable with JavaScript/ES6, you've fetched
 
 Before we begin, make sure you have:
 
-- [Node.js](https://nodejs.org/) v6.9.0 or greater
-- [npm](https://www.npmjs.com/) 3.10.8 or greater
+- [Node.js](https://nodejs.org/) v7.6.0 or greater
+- [npm](https://www.npmjs.com/) v4.1.2 or greater
 - [git](https://git-scm.com/) v2.14.1 or greater
 
 While it's not a requirement, we recommend using [VSCode](https://code.visualstudio.com/) as your editor so you can take advantage of all the awesome features the Apollo VSCode extension enables. We're hoping to support other editors in the future.
