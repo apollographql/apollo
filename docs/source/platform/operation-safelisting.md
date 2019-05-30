@@ -43,15 +43,15 @@ Setting up operation registration and safelisting is a full-stack process, so yo
 
 The following steps will walk through the steps necessary for both the client and server codebases.
 
-1. [Install the Apollo CLI](#install-cli)
-2. [Push your schema to the Apollo schema registry](#register-schema)
-3. [Register operations from your client bundle](#register-operations)
-4. [Disable subscription support on Apollo Server](#disable-subscriptions)
-5. [Add the operation registry plugin to Apollo Server](#operation-registry-plugin)
-6. [Start Apollo Server with Apollo Engine enabled](#apollo-server-with-engine)
-7. [Verify](#verify)
+1. [Install the Apollo CLI](#1-install-the-apollo-command-line-tool)
+2. [Push your schema to the Apollo schema registry](#2-push-your-schema-to-the-apollo-schema-registry)
+3. [Register operations from your client bundle](#3-register-operations-from-your-client-bundle)
+4. [Disable subscription support on Apollo Server](#4-disable-subscription-support-on-apollo-server)
+5. [Add the operation registry plugin to Apollo Server](#5-add-the-operation-registry-plugin-to-apollo-server)
+6. [Start Apollo Server with Apollo Engine enabled](#6-start-apollo-server-with-apollo-engine-enabled)
+7. [Verify](#7-verification)
 
-<h3 id="install-cli">1. Install the `apollo` command line tool</h3>
+### 1. Install the `apollo` command line tool
 
 Install the `apollo` command line tool as a development dependency of your client application:
 
@@ -59,7 +59,7 @@ Install the `apollo` command line tool as a development dependency of your clien
 npm install apollo --save-dev
 ```
 
-<h3 id="register-schema">2. Push your schema to the Apollo schema registry</h3>
+### 2. Push your schema to the Apollo schema registry
 
 > **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/platform/schema-registry/).
 
@@ -87,7 +87,7 @@ abc123  <service>     current
 
 > If you encounter any errors, refer to the _**Troubleshooting**_ section below.
 
-<h3 id="register-operations">3. Register operations from your client bundle</h3>
+### 3. Register operations from your client bundle
 
 Now we'll use `apollo client:push` to locate operations within the client codebase and upload a manifest of those operations to Apollo operation registry. Once Apollo Server has been configured to respect the operation registry, only operations which have been included in the manifest will be permitted.
 
@@ -121,7 +121,7 @@ Currently, once an operation is registered it will remain registered indefinitel
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-<h3 id="disable-subscriptions">4. Disable subscription support on Apollo Server</h3>
+### 4. Disable subscription support on Apollo Server
 
 Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline. Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
 
@@ -140,7 +140,7 @@ const server = new ApolloServer({
 });
 ```
 
-<h3 id="operation-registry-plugin">5. Add the operation registry plugin to Apollo Server</h3>
+### 5. Add the operation registry plugin to Apollo Server
 
 Enable demand control by adding the operation registry to Apollo Server. To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Engine.
 
@@ -168,7 +168,7 @@ const server = new ApolloServer({
 });
 ```
 
-<h3 id="apollo-server-with-engine">6. Start Apollo Server with Apollo Engine enabled</h3>
+### 6. Start Apollo Server with Apollo Engine enabled
 
 If the server was already configured to use Apollo Engine, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
@@ -190,7 +190,7 @@ const server = new ApolloServer({
 
 > **Note:** For security, it's recommended to pass the Engine API key as an environment variable so it will not be checked into version control (VCS).
 
-<h3 id="verify">7. Verification</h3>
+### 7. Verification
 
 With the operation registry enabled, _only_ operations which have been registered will be permitted.
 
