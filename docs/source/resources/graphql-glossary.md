@@ -55,7 +55,7 @@ A new pattern for fetching data from a particular service, with built-in support
 
 ## Deferred query
 
-A query that has certain fields tagged with the [`@defer` directive](https://www.apollographql.com/docs/react/features/defer-support/), so that fields that take a long time to resolve do not need to slow down the entire query.
+A query that has certain fields tagged with the `@defer` directive, so that fields that take a long time to resolve do not need to slow down the entire query.
 
 ```graphql
 query NewsFeed {
