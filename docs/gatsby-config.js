@@ -27,7 +27,7 @@ module.exports = {
             'platform/schema-registry',
             'platform/schema-validation',
             'platform/client-awareness',
-            'platform/operation-registry',
+            'platform/operation-safelisting',
             'platform/editor-plugins',
             'platform/performance',
             'platform/integrations'
