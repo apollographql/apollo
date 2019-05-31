@@ -7,6 +7,7 @@
 
 # This lived here for a short period of time.
 /docs/resources/apollo-config.html /docs/platform/apollo-config.html
+/docs/platform/setup-analytics.html /docs/references/setup-analytics.html
 
 # Redirect Removed Guides to Client & Server Docs
 /docs/guides/schema-design.html /docs/apollo-server/essentials/schema.html
@@ -14,6 +15,8 @@
 /docs/guides/state-management.html /docs/react/essentials/local-state.html
 /docs/guides/access-control.html /docs/apollo-server/features/authentication.html
 
+/docs/platform/tracing.html /docs/platform/performance.html
+/docs/platform/errors.html /docs/platform/performance.html
 
 # File uploads no longer have a home, but the blog post is the same content.
 /docs/guides/file-uploads.html https://blog.apollographql.com/file-uploads-with-apollo-server-2-0-5db2f3f60675

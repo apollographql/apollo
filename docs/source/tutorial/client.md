@@ -9,7 +9,7 @@ The next half of this tutorial exclusively focuses on connecting a graph API to 
 
 While Apollo Client works with any view layer, it's most commonly used with React. In this section, you'll learn how to connect the graph API you just built in the previous half of this tutorial to a React app. Even if you're more comfortable with Vue or Angular, you should still be able to follow many of the examples since the concepts are the same. Along the way, you'll also learn how to build essential features like authentication and pagination, as well as tips for optimizing your workflow.
 
-<h2 id="dev-environment">Set up your development environment</h2>
+## Set up your development environment
 
 For this half of the tutorial, we will be working in the `client/` folder of the project. You should have the project already from the server portioned, but if you don't, make sure to clone [the tutorial](https://github.com/apollographql/fullstack-tutorial/). From the root of the project, run:
 
@@ -19,11 +19,11 @@ cd start/client && npm install
 
 Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
 
-- `apollo-client@alpha`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
+- `apollo-client`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
 - `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
 - `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
 
-<h3 id="vscode">Configure Apollo VSCode</h3>
+### Configure Apollo VSCode
 
 While Apollo VSCode is not required to successfully complete the tutorial, setting it up unlocks a lot of helpful features such as autocomplete for operations, jump to fragment definitions, and more.
 
@@ -54,7 +54,7 @@ module.exports = {
 
 Great, we're all set up! Let's dive into building our first client.
 
-<h2 id="apollo-client-setup">Create an Apollo Client</h2>
+## Create an Apollo Client
 
 Now that we have installed the necessary packages, let's create an `ApolloClient` instance.
 
@@ -73,16 +73,16 @@ const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'http://localhost:4000/'
 })
+
 const client = new ApolloClient({
   cache,
   link
 })
-
 ```
 
 In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.
 
-<h2 id="first-query">Make your first query</h2>
+## Make your first query
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
@@ -90,13 +90,15 @@ With a `client.query()` call, we can query our graph's API. Add the following li
 
 _src/index.js_
 
-```js line=1
-import gql from "graphql-tag";
+```js
+import gql from "graphql-tag"; // highlight-line
 ```
-And add this code to the bottom of `index.js`: 
+
+And add this code to the bottom of `index.js`:
 
 _src/index.js_
-```
+
+```js
 // ... above is the instantiation of the client object.
 client
   .query({
@@ -118,9 +120,9 @@ Open up your console and run `npm start`. This will compile your client app. Onc
 
 Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to the UI.
 
-Go ahead and delete the `client.query()` call you just made. Now, we'll connect our client to React.
+Go ahead and delete the `client.query()` call you just made and the `gql` import statement. Now, we'll connect our client to React.
 
-<h2 id="react-apollo">Connect your client to React</h2>
+## Connect your client to React
 
 Connecting Apollo Client to our React app with `react-apollo` allows us to easily bind GraphQL operations to our UI.
 
@@ -130,13 +132,19 @@ Open `src/index.js` and add the following lines of code:
 
 _src/index.js_
 
-```js lines=1,4,6
+```jsx{1,4,6}
 import { ApolloProvider } from 'react-apollo';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Pages from './pages';
+
+// previous variable declarations
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Pages />
-  </ApolloProvider>, document.getElementById('root'));
+  </ApolloProvider>, document.getElementById('root')
+);
 ```
 
 Now, we're ready to start building our first `Query` components in the next section.
