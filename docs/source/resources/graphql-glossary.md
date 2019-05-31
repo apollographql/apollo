@@ -11,7 +11,7 @@ An open-source implementation of GraphQL that helps you manage data between the 
 
 ## Automatic Persisted Queries (APQ)
 
-A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/apollo-server/whats-new#automatic-persisted-queries).
+A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/apollo-server/features/apq/).
 
 ## Argument
 
