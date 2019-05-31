@@ -11,7 +11,7 @@ We recommend managing local state in the Apollo cache instead of bringing in ano
 
 Managing local data with Apollo Client is very similar to how you've already managed remote data in this tutorial. You'll write a client schema and resolvers for your local data. You'll also learn to query it with GraphQL just by specifying the `@client` directive. Let's dive in!
 
-<h2 id="local-schema">Write a local schema</h2>
+### Write a local schema
 
 Just like how a schema is the first step toward defining our data model on the server, writing a local schema is the first step we take on the client.
 
@@ -44,7 +44,7 @@ To build a client schema, we **extend** the types of our server schema and wrap 
 
 We can also add local fields to server data by extending types from our server. Here, we're adding the `isInCart` local field to the `Launch` type we receive back from our graph API.
 
-<h2 id="store-initialization">Initialize the store</h2>
+## Initialize the store
 
 Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
 
@@ -52,7 +52,7 @@ Jump back to `src/index.js` and notice we had already added a `cache.writeData` 
 
 _src/index.js_
 
-```js line=1,11-12,15-20
+```js{1,11-12,15-20}
 import { resolvers, typeDefs } from './resolvers';
 
 const client = new ApolloClient({
@@ -77,7 +77,7 @@ cache.writeData({
 
 Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
 
-<h2 id="local-query">Query local data</h2>
+## Query local data
 
 Querying local data from the Apollo cache is almost the same as querying remote data from a graph API. The only difference is that you add a `@client` directive to a local field to tell Apollo Client to pull it from the cache.
 
@@ -85,7 +85,7 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 
 _src/index.js_
 
-```js line=8,17-19
+```jsx{8,17-19}
 import { Query, ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -135,7 +135,7 @@ Next, we render our `Query` component and bind it to our `GetCartItems` query:
 
 _src/pages/cart.js_
 
-```js
+```jsx
 export default function Cart() {
   return (
     <Query query={GET_CART_ITEMS}>
@@ -165,7 +165,7 @@ export default function Cart() {
 
 It's important to note that you can mix local queries with remote queries in a single GraphQL document. Now that you're a pro at querying local data with GraphQL, let's learn how to add local fields to server data.
 
-<h3 id="virtual-fields">Adding virtual fields to server data</h3>
+### Adding virtual fields to server data
 
 One of the unique advantages of managing your local data with Apollo Client is that you can add **virtual fields** to data you receive back from your graph API. These fields only exist on the client and are useful for decorating server data with local state. In our example, we're going to add an `isInCart` virtual field to our `Launch` type.
 
@@ -204,7 +204,7 @@ Now, you're ready to query your virtual field on the launch detail page! Similar
 
 _src/pages/launch.js_
 
-```js line=4
+```js{4}
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
@@ -220,17 +220,17 @@ export const GET_LAUNCH_DETAILS = gql`
 `;
 ```
 
-<h2 id="local-mutation">Update local data</h2>
+## Update local data
 
 Up until now, we've focused on querying local data from the Apollo cache. Apollo Client also lets you update local data in the cache with either **direct cache writes** or **client resolvers**. Direct writes are typically used to write simple booleans or strings to the cache whereas client resolvers are for more complicated writes such as adding or removing data from a list.
 
-<h3 id="direct-writes">Direct cache writes</h3>
+### Direct cache writes
 
 Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `Mutation` component. Let's look at a similar example, where we copy the code below to create a logout button:
 
 _src/containers/logout-button.js_
 
-```js line=14
+```jsx
 import React from 'react';
 import styled from 'react-emotion';
 import { ApolloConsumer } from 'react-apollo';
@@ -244,7 +244,7 @@ export default function LogoutButton() {
       {client => (
         <StyledButton
           onClick={() => {
-            client.writeData({ data: { isLoggedIn: false } });
+            client.writeData({ data: { isLoggedIn: false } }); // highlight-line
             localStorage.clear();
           }}
         >
@@ -269,7 +269,7 @@ We can also perform direct writes within the `update` function of a `Mutation` c
 
 _src/containers/book-trips.js_
 
-```js line=30-32
+```jsx{30-32}
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -319,7 +319,7 @@ export default function BookTrips({ cartItems }) {
 
 In this example, we're directly calling `cache.writeData` to reset the state of the `cartItems` after the `BookTrips` mutation is sent to the server. This direct write is performed inside of the update function, which is passed our Apollo Client instance.
 
-<h3 id="resolvers">Local resolvers</h3>
+### Local resolvers
 
 We're not done yet! What if we wanted to perform a more complicated local data update such as adding or removing items from a list? For this situation, we'll use a local resolver. Local resolvers have the same function signature as remote resolvers (`(parent, args, context, info) => data`). The only difference is that the Apollo cache is already added to the context for you. Inside your resolver, you'll use the cache to read and write data.
 
@@ -366,7 +366,7 @@ Now that our local mutation is complete, let's build out the rest of the `Action
 
 _src/containers/action-button.js_
 
-```js
+```jsx
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';

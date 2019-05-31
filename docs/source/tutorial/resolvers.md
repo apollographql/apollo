@@ -7,7 +7,7 @@ Time to accomplish: _15 Minutes_
 
 Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/or to fetch and/or update data.
 
-<h2 id="resolver-api">What is a resolver?</h2>
+## What is a resolver?
 
 **Resolvers** provide the instructions for turning a GraphQL operation (a query, mutation, or subscription) into data. They either return the same type of data we specify in our schema or a promise for that data.
 
@@ -26,15 +26,16 @@ Remember the `LaunchAPI` and `UserAPI` data sources we created in the previous s
 
 This might sound confusing at first, but it will start to make more sense once we dive into practical examples. Let's get started!
 
-<h3 id="apollo-server">Connecting resolvers to Apollo Server</h3>
+### Connecting resolvers to Apollo Server
 
 First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
 
-```js line=4,13
+_src/index.js_
+```js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
-const resolvers = require('./resolvers');
+const resolvers = require('./resolvers'); // highlight-line
 
 const LaunchAPI = require('./datasources/launch');
 const UserAPI = require('./datasources/user');
@@ -43,7 +44,7 @@ const store = createStore();
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers, // highlight-line
   dataSources: () => ({
     launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store })
@@ -57,7 +58,7 @@ server.listen().then(({ url }) => {
 
 Apollo Server will automatically add the `launchAPI` and `userAPI` to our resolvers' context so we can easily call them.
 
-<h2 id="query">Write Query resolvers</h2>
+## Write Query resolvers
 
 First, let's start by writing our resolvers for the `launches`, `launch`, and `me` fields on our `Query` type. We structure our resolvers into a map where the keys correspond to the types and fields in our schema. If you ever get stuck remembering which fields are on a type, you can always check your graph API's schema.
 
@@ -81,7 +82,7 @@ The code above shows the resolver functions for the `Query` type fields: `launch
 
 Our resolvers are simple and concise because the logic is embedded in the `LaunchAPI` and `UserAPI` data sources. We recommend keeping your resolvers thin as a best practice, which allows you to safely refactor without worrying about breaking your API.
 
-<h3 id="query-playground">Run queries in the playground</h3>
+### Run queries in the playground
 
 Apollo Server sets up GraphQL Playground so that you can run queries and explore your schema with ease. Go ahead and start your server by running `npm start` and open up the playground in a browser window at `http://localhost:4000/`.
 
@@ -132,7 +133,7 @@ query GetLaunchById($id: ID!) {
 
 You can paste `{ "id": 60 }` into the Query Variables section below before running your query. Feel free to experiment with running more queries before moving on to the next section.
 
-<h3 id="pagination">Paginated queries</h3>
+### Paginated queries
 
 Running the `launches` query returned a large data set of launches, which can slow down our app. How can we ensure we're not fetching too much data at once?
 
@@ -142,7 +143,7 @@ We'll use cursor-based pagination for our graph API. Open up the `src/schema.js`
 
 _src/schema.js_
 
-```js
+```graphql
 type Query {
   launches( # replace the current launches query with this one.
     """
@@ -179,7 +180,7 @@ Let's import `paginateResults` and replace the `launches` resolver function in t
 
 _src/resolvers.js_
 
-```js line=1,5-26
+```js{1,5-26}
 const { paginateResults } = require('./utils');
 
 module.exports = {
@@ -231,7 +232,7 @@ query GetLaunches {
 
 Thanks to our pagination implementation, you should only see three launches returned back from our API.
 
-<h2 id="types">Write resolvers on types</h2>
+## Write resolvers on types
 
 It's important to note that you can write resolvers for any types in your schema, not just queries and mutations. This is what makes GraphQL so flexible.
 
@@ -250,6 +251,14 @@ Mission: {
       : mission.missionPatchLarge;
   },
 },
+```
+
+_src/schema.js_
+```js
+  type Mutation {
+    # ... with rest of schema
+    missionPatch(mission: String, size: PatchSize): PatchSize
+  }
 ```
 
 The first argument passed into our resolver is the parent, which refers to the mission object. The second argument is the size we pass to our `missionPatch` field, which we use to determine which property on the mission object we want our field to resolve to.
@@ -282,7 +291,7 @@ User: {
 
 You may be wondering where we're getting the user from in order to fetch their booked launches. This is a great observation - we still need to authenticate our user! Let's learn how to authenticate users and attach their user information to the context in the next section before we move onto `Mutation` resolvers.
 
-<h2 id="authentication">Authenticate users</h2>
+## Authenticate users
 
 Access control is a feature that almost every app will have to handle at some point. In this tutorial, we're going to focus on teaching you the essential concepts of authenticating users instead of focusing on a specific implementation.
 
@@ -296,7 +305,7 @@ Let's open up `src/index.js` and update the `context` function on `ApolloServer`
 
 _src/index.js_
 
-```js line=1,4,8,10
+```js{1,4,8,10}
 const isEmail = require('isemail');
 
 const server = new ApolloServer({
@@ -320,7 +329,7 @@ Just like in the steps outlined above, we're checking the authorization headers 
 
 How do we create the token passed to the `authorization` headers? Let's move on to the next section, so we can write our resolver for the `login` mutation.
 
-<h2 id="mutation">Write Mutation resolvers</h2>
+## Write Mutation resolvers
 
 Writing `Mutation` resolvers is similar to the resolvers we've already written. First, let's write the `login` resolver to complete our authentication flow. Add the code below to your resolver map underneath the `Query` resolvers:
 
@@ -381,7 +390,7 @@ Mutation: {
 
 Both `bookTrips` and `cancelTrips` must return the properties specified on our `TripUpdateResponse` type from our schema, which contains a success indicator, a status message, and an array of launches that we've either booked or cancelled. The `bookTrips` mutation can get tricky because we have to account for a partial success where some launches could be booked and some could fail. Right now, we're simply indicating a partial success in the `message` field to keep it simple.
 
-<h3 id="mutation-playground">Run mutations in the playground</h3>
+### Run mutations in the playground
 
 It's time for the fun part - running our mutations in the playground! Go back to the playground in your browser and reload the schema with the little return arrow at the top on the right of the address line.
 
@@ -417,4 +426,4 @@ Next, paste our authorization header into the HTTP Headers box at the bottom:
 }
 ```
 
-Then, run the mutation. You should see a success message, along with the ids of the mutations we just booked. Testing mutations manually in the playground is a good way to explore our API, but in a real-world application, we should run automated tests so we can safely refactor our code. In the next section, you'll learn all about testing your graph.
+Then, run the mutation. You should see a success message, along with the ids of the mutations we just booked. Testing mutations manually in the playground is a good way to explore our API, but in a real-world application, we should run automated tests so we can safely refactor our code. In the next section, you'll actually learn about running your graph in production instead of testing your graph.
