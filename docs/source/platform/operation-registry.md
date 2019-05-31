@@ -28,9 +28,6 @@ Operations defined within client applications can be extracted and uploaded to A
 ### Limitations
 
 - Subscriptions within Apollo Server should be disabled. For more information, see the instructions below.
-- Only the default schema tag (`current`) is supported.
-
-  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service. For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
 
 Please [contact the Apollo sales team](https://www.apollographql.com/contact-sales/) if you require a solution to any of these limitations.
 
@@ -163,6 +160,23 @@ const server = new ApolloServer({
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       forbidUnregisteredOperations: true
+    })
+  ]
+});
+```
+
+####5.1 Optionally, set the schema tag
+
+The plugin will automatically pickup the value of the environment variable `ENGINE_SCHEMA_TAG` and use that as the schema tag.  
+
+To override this behaviour, configure the `schemaTag` field.  
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'overrideTag' // highlight-line
     })
   ]
 });
