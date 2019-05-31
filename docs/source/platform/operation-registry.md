@@ -1,5 +1,5 @@
 ---
-title: Operation safelisting
+title: Securing your graph
 description: How to secure your graph by enforcing a safelist of registered operations
 ---
 
