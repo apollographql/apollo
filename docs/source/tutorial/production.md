@@ -63,15 +63,3 @@ Publishing your schema to Apollo Engine unlocks many features necessary for runn
 We also want to be transparent that the features we just described, such as viewing specific execution traces and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VSCode makes them more intelligent over time.
 
 We're committed to helping you succeed in building and running an Apollo graph API. This is why features such as publishing and downloading schemas from the registry, our open source offerings like Apollo Client and Apollo Server, and certain developer tools like Apollo VSCode and Apollo DevTools will always be free forever.
-
-## Deploy your graph API
-
-To deploy our app to Now, run the `now` command from the `server` directory of the app. The command may prompt you to login if you haven't already.
-
-```bash
-$ npx now
-```
-
-The `now` command immediately deploys our graph API to the cloud and returns the hosted URL. Make sure you either copy the URL or run `npx now ls` in your terminal to retrieve the URL, since we'll need it in the following section when we build our client.
-
-Congrats on deploying your first Apollo graph API! 🚀 Let's move on to the second half of the tutorial where we connect the API we just built to a React app.
