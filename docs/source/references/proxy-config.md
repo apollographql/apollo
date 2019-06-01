@@ -249,7 +249,7 @@ Configuration for forwarding GraphQL queries to an HTTP endpoint.
 <a name="mdg.engine.config.proto.Config.Origin.Lambda"/>
 
 ## Origin.Lambda
-Configuration for proccessing GraphQL queries in an AWS Lambda function.
+Configuration for processing GraphQL queries in an AWS Lambda function.
 
 
 <dl>
@@ -267,7 +267,7 @@ Configuration for proccessing GraphQL queries in an AWS Lambda function.
 <a name="mdg.engine.config.proto.Config.PersistedQueries"/>
 
 ## PersistedQueries
-PersistedQueries defines behaviour of the persistent query cache.
+PersistedQueries defines behavior of the persistent query cache.
 
 
 <dl>
@@ -283,7 +283,7 @@ PersistedQueries defines behaviour of the persistent query cache.
 <a name="mdg.engine.config.proto.Config.QueryResponseCache"/>
 
 ## QueryResponseCache
-QueryResponseCache defines the behaviour of the query response cache.
+QueryResponseCache defines the behavior of the query response cache.
 
 
 <dl>

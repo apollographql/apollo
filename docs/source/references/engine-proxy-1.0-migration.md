@@ -109,4 +109,4 @@ As of Engine v1, these features are on unless specifically disabled, and by defa
 
 Specifically, the public full-query response cache and automatic persisted query cache are on by default; the private full-query response cache is on if `sessionAuth` is configured; and the session token authorization cache is on if `tokenAuthUrl` is configured.
 
-To disable any of these features, just set the corresponding cache name field in the Engine configuration (ie, the argument to `new ApolloEngine`) to `'disabled'`.
+To disable any of these features, just set the corresponding cache name field in the Engine configuration (i.e., the argument to `new ApolloEngine`) to `'disabled'`.

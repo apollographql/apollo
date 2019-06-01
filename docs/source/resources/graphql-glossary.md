@@ -289,9 +289,9 @@ export const queryComponent = ({ breed }) => (
 );
 ```
 
-## Query whitelisting
+## Query safelisting
 
-A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](/old/performance/#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.
+A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](/old/performance/#automatic-persisted-queries) is a feature of Apollo Server 2 that enables query safelisting and persisted queries.
 
 ## Resolver
 

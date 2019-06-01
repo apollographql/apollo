@@ -10,7 +10,7 @@ description: Configuring and running the Engine proxy
 The Apollo Engine proxy is a small process that can be run in front of your GraphQL server. Its primary functions are:
 
 1. Sending **performance metrics** data from your server, which extends its responses with [`apollo-tracing`](https://github.com/apollographql/apollo-tracing) information, to the Engine cloud service.
-1. Proving a **full query caching** layer, which is controlled using the [`cacheControl`](https://github.com/apollographql/apollo-cache-control) directive and configured to be either in-memory or shared through Memcache.
+1. Proving a **full query caching** layer, which is controlled using the [`cacheControl`](https://github.com/apollographql/apollo-cache-control) directive and configured to be either in-memory or shared through Memcached.
 1. Automatically **persisting queries** through a caching layer that can map query IDs to full query strings, allowing clients to send just query IDs over the wire.
 
 The proxy has been **deprecated since Apollo Server 2** was released. Apollo Server 2+ has [metrics reporting](https://www.apollographql.com/docs/apollo-server/features/metrics), [data source caching](https://www.apollographql.com/docs/apollo-server/features/data-sources), [persisted queries](https://www.apollographql.com/docs/apollo-server/features/apq), and [full query caching](https://github.com/apollographql/apollo-server/blob/release-2.5.0/docs/source/features/caching.md) (starting at Apollo Server 2.5) as built-in features, and using it allows you to forego running the proxy. The newest features in Apollo Engine are not supported in the Engine proxy and we recommend that all Node users use Apollo Server 2+ instead of running the proxy.
@@ -32,7 +32,7 @@ To get started with using Engine through the Engine proxy, you will need to:
 
 To get the performance metrics value out of Engine, you'll need to install a package in your server that adds the `apollo-tracing` GraphQL extension. If you want to set up response caching, you'll also need to install a package that adds the `apollo-cache-control` extension.
 
-> **Note:** If you're installing the Engine proxy _just_ to set up automatic persisited queries, you can skip ahead to the [next section](#get-your-api-key).
+> **Note:** If you're installing the Engine proxy _just_ to set up automatic persisted queries, you can skip ahead to the [next section](#get-your-api-key).
 
 The `apollo-tracing` and `apollo-cache-control` extensions are open specifications that can be implemented by any GraphQL server, and the following is a list of implementations:
 
@@ -68,8 +68,8 @@ Apollo distributes the Engine proxy in two forms: as an **npm package** and as a
 1. [Run the proxy with Apollo Server](#option-1-running-the-proxy-with-apollo-server)
 1. [Run a standalone proxy using Node](#option-2-running-a-standalone-proxy-using-node)
 1. [Run a standalone proxy using Docker](#option-3-running-a-standalone-proxy-with-docker)
-1. [Run the proxy through a Platform as a Service (eg. Heroku)](#option-4-running-the-proxy-through-a-platform-as-a-service-eg-heroku)
-1. [Run the proxy in a serverless environment (eg. Lambda)](#option-5-running-the-proxy-in-a-serverless-environment-eg-lambda)
+1. [Run the proxy through a Platform as a Service (e.g.. Heroku)](#option-4-running-the-proxy-through-a-platform-as-a-service-eg-heroku)
+1. [Run the proxy in a serverless environment (e.g.. Lambda)](#option-5-running-the-proxy-in-a-serverless-environment-eg-lambda)
 
 #### Option 1: Running the proxy with Apollo Server
 
@@ -225,7 +225,7 @@ The Proxy should start up and accept connections at http://localhost:3000 and fo
 
 You can find the complete documentation for Engine configuration options on the [full API docs](/references/proxy-config/) page, and some commonly-used fields worth knowing about are described in the [`new ApolloEngineLauncher()` docs](/references/proxy-config/#top-level-options).
 
-#### Option 4: Running the proxy through a Platform as a Service (eg. Heroku)
+#### Option 4: Running the proxy through a Platform as a Service (e.g.. Heroku)
 
 It may be most convenient for you to run and host the Engine proxy outside your app's deployment altogether. If that is the case, automatically running the proxy on a Platform as a Service like Heroku might be the easiest option for you.
 
@@ -258,7 +258,7 @@ We have an example repository with a guide for [running the Engine proxy on Hero
 
 It does not matter where you choose to deploy and manage your Engine proxy. We've built this guide for Heroku because they have an easy deployment mechanism for Docker containers, but we run our own Engine proxy on Amazon's [EC2 Container Service](https://aws.amazon.com/ecs/).
 
-#### Option 5: Running the proxy in a serverless environment (eg. Lambda)
+#### Option 5: Running the proxy in a serverless environment (e.g.. Lambda)
 
 Last but not least, you may be wondering how to use Engine if you run your application in a serverless environment like Lamdba. If so, this is the guide for you!
 
@@ -270,7 +270,7 @@ The only available option for running the Engine proxy with cloud functions is t
 
 1. [Run a standalone proxy using Node](#option-2-running-a-standalone-proxy-using-node)
 1. [Run a standalone proxy using Docker](#option-3-running-a-standalone-proxy-with-docker)
-1. [Run the proxy through a Platform as a Service (eg. Heroku)](#option-4-running-the-proxy-through-a-platform-as-a-service-eg-heroku)
+1. [Run the proxy through a Platform as a Service (e.g.. Heroku)](#option-4-running-the-proxy-through-a-platform-as-a-service-eg-heroku)
 
 The proxy needs to be run separately from your function because it's responsible for capturing, aggregating, and sending to Engine the trace data from each Lamdba instance GraphQL response.
 
@@ -298,7 +298,7 @@ The main difference between setting up the proxy to work with cloud functions ve
 }
 ```
 
-> **Note:** This example is for AWS Lambda specifically, for which we have a special `origins` type. Other cloud functions are supported with the standard HTTP invocation, and for non-AWS cloud functions see [the standalone docs](#option-3-running-a-standalone-proxy-with-docker) for instructions on settup up the Engine proxy as a standalone API gateway to your cloud function. For full configuration details see [proxy config](/references/proxy-config/).
+> **Note:** This example is for AWS Lambda specifically, for which we have a special `origins` type. Other cloud functions are supported with the standard HTTP invocation, and for non-AWS cloud functions see [the standalone docs](#option-3-running-a-standalone-proxy-with-docker) for instructions on setup up the Engine proxy as a standalone API gateway to your cloud function. For full configuration details see [proxy config](/references/proxy-config/).
 
 The Engine proxy will invoke the Lambda function as if it was called from Amazon's [API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-set-up-simple-proxy.html#api-gateway-simple-proxy-for-lambda-input-format), and the function should return a value suitable for [API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-set-up-simple-proxy.html#api-gateway-simple-proxy-for-lambda-output-format).
 
@@ -340,7 +340,7 @@ frontends: [{
 <!-- * Verify APQ is working properly using the [verification procedure] (// TODO(dman): get link to new article). -->
 <!-- * Read [how it works] (// TODO(dman): get link to new article) for additional details. -->
 
-If everything is set up correctly, you should see your client sending hashes insteady of query strings over the network, but receiving data as if it had sent a normal query.
+If everything is set up correctly, you should see your client sending hashes instead of query strings over the network, but receiving data as if it had sent a normal query.
 
 ### Caching
 
@@ -358,7 +358,7 @@ There are just a few steps to enable response caching in Engine proxy, and one o
 1. [Annotate your schema and/or resolvers with cache control hints.](#2-add-cache-hints-to-your-responses)
 1. [_Optional:_ Configure cache options in your Engine Proxy configuration.](#3-optional-configure-cache-options)
 
-#### 1. Add `cacheControl` extensions to your sevrer
+#### 1. Add `cacheControl` extensions to your server
 
 If you're using Apollo Server for your Node GraphQL server, the only server code change required is to add `cacheControl: true` to the options passed to your Apollo Server configuration.
 
@@ -386,7 +386,7 @@ We're working with the community to add support for Apollo Cache Control to non-
 
 #### 2. Add cache hints to your responses
 
-Next we'll add some cache hints to our GarphQL responses. There are two ways to do this -- either dynamically in your resolvers or statically on your schema types and fields. Each `cacheControl` hint has two parameters:
+Next we'll add some cache hints to our GraphQL responses. There are two ways to do this -- either dynamically in your resolvers or statically on your schema types and fields. Each `cacheControl` hint has two parameters:
 
 - The `maxAge` parameter defines the number of seconds that Engine Proxy should serve the cached response.
 - The `scope` parameter declares that a unique response should be cached for every user (`PRIVATE`) or a single response should be cached for all users (`PUBLIC`/default).
@@ -553,7 +553,7 @@ Setting `defaultMaxAge` requires `apollo-server-*` 1.3.4 or newer.
 
 #### 3. Optional: Configure cache options
 
-As long as you're using a version of the Engine proxy that's greater than `1.0`, you won't have to configure anything to use public response caching. The proxy comes with a default 50MB in-memory cache. To enable private response caching or to configure details of how caching works, there are a few fields in the Engine configuration (ie, argument to `new ApolloServer`) that are relevant.
+As long as you're using a version of the Engine proxy that's greater than `1.0`, you won't have to configure anything to use public response caching. The proxy comes with a default 50MB in-memory cache. To enable private response caching or to configure details of how caching works, there are a few fields in the Engine configuration (i.e., argument to `new ApolloServer`) that are relevant.
 
 Here is an example of changing the Engine config for caching `scope: PUBLIC` responses to use memcached instead of an in-memory cache.
 Since no `privateFullQueryStore` is provided, `scope: PRIVATE` responses will not be cached.
@@ -617,7 +617,7 @@ Engine supports two types of stores:
   This provides a shared location for multiple copies of Engine Proxy to achieve the same cache hit rate.
   This location is also not wiped across Engine Proxy restarts.
 
-  Memcache store configuration requires an array of addresses called `url`, for the memcached servers. (This name is misleading: the values are `host:port` without any URL scheme like `http://`.) All addresses must contain both host and port, even if using the default memcached port. The AWS Elasticache discovery protocol is not currently supported.
+  Memcached store configuration requires an array of addresses called `url`, for the memcached servers. (This name is misleading: the values are `host:port` without any URL scheme like `http://`.) All addresses must contain both host and port, even if using the default memcached port. The AWS Elasticache discovery protocol is not currently supported.
   `keyPrefix` may also be specified, to allow multiple environments to share a memcached server (i.e. dev/staging/production).
 
 We suggest developers start with an in-memory store, then upgrade to Memcached if the added deployment complexity is worth it for production.
@@ -659,7 +659,7 @@ Engine will never decide to cache responses in its response cache unless you tel
 
 **HTTP headers set by Engine**
 
-When returning a GraphQL response which is eligible for the full-query cache (ie, all of the data has a non-zero `maxAge` set in the `cacheControl` GraphQL extension), Engine sets the `Cache-Control` header with a `max-age` directive equal to the minimum `maxAge` of all data in the response. If any of the data in the response has a `scope: PRIVATE` hint, the `Cache-Control` header will include the `private` directive; otherwise it will include the `public` directive. This header completely replaces any `Cache-Control` and `Expires` headers provided by your GraphQL server.
+When returning a GraphQL response which is eligible for the full-query cache (i.e., all of the data has a non-zero `maxAge` set in the `cacheControl` GraphQL extension), Engine sets the `Cache-Control` header with a `max-age` directive equal to the minimum `maxAge` of all data in the response. If any of the data in the response has a `scope: PRIVATE` hint, the `Cache-Control` header will include the `private` directive; otherwise it will include the `public` directive. This header completely replaces any `Cache-Control` and `Expires` headers provided by your GraphQL server.
 
 ### CDN integration
 
@@ -667,9 +667,9 @@ Many high-traffic web services use content delivery networks (CDNs) such as [Clo
 
 > Apollo Server 2 supports CDN integration out of the box and doesn't require the Engine Proxy. To learn how, read through the [guide on CDN integration](https://www.apollographql.com/docs/apollo-server/features/apq#cdn). For other server implementations, the Engine Proxy makes it straightforward to use CDNs with GraphQL queries whose responses can be cached while still passing more dynamic queries through to your GraphQL server.
 
-To use the Engine proxy behind a CDN, you need to be able to tell the CDN which GraphQL responses it's allowed to cache and you need to make sure that your GraphQL requests arrive in a format that CDNs cache. Engine Proxy supports this by combining its [caching](#caching) and [automatic persisted queries](#automatic-persisted-queries-apq) featues. This section explains the basic steps for setting up these features to work with CDNs; for more details on how to configure these features, see their respective sections.
+To use the Engine proxy behind a CDN, you need to be able to tell the CDN which GraphQL responses it's allowed to cache and you need to make sure that your GraphQL requests arrive in a format that CDNs cache. Engine Proxy supports this by combining its [caching](#caching) and [automatic persisted queries](#automatic-persisted-queries-apq) features. This section explains the basic steps for setting up these features to work with CDNs; for more details on how to configure these features, see their respective sections.
 
-#### 1. Set up caching using Apollo Cache Contol
+#### 1. Set up caching using Apollo Cache Control
 
 You'll need to follow the guide in the [caching](#caching) section to set up your server to extend its requests with cache hint extensions.
 
@@ -677,7 +677,7 @@ Once you have your server sending responses with cache hints in the `response.ex
 
 #### 2. Set up automatic persisted queries
 
-At this point, GraphQL requetss are still POST requests. Most CDNs will only cache GET requests, and GET requests generally work best if the URL is of a bounded size. To work with this, enable Apollo Engine Proxy's Automatic Persisted Queries (APQ) support. This allows clients to send short hashes instead of full queries, and you can configure it to use GET requests for those queries.
+At this point, GraphQL requests are still POST requests. Most CDNs will only cache GET requests, and GET requests generally work best if the URL is of a bounded size. To work with this, enable Apollo Engine Proxy's Automatic Persisted Queries (APQ) support. This allows clients to send short hashes instead of full queries, and you can configure it to use GET requests for those queries.
 
 To do this, follow the steps in the [guide above](#automatic-persisted-queries-apq). After completing the steps in that section of the guide, you should be able to observe queries being sent as `GET` requests with the appropriate `Cache-Control` response headers using your browser's developer tools.
 
@@ -797,7 +797,7 @@ Check that your server is one of the supported GraphQL servers listed [here](htt
 
 If it is, please make sure you're running the [currently tested version](https://github.com/apollographql/apollo-engine-js/blob/master/package.json) of Apollo Server and your Node HTTP server package (Express, Connect, Hapi, Koa, etc), and the latest released versions of the Engine and Apollo packages.
 
-You can enter the following into the commandline to see the latest package version, or look in `package.json`.
+You can enter the following into the command line to see the latest package version, or look in `package.json`.
 
 ```
 $ npm view apollo-engine version

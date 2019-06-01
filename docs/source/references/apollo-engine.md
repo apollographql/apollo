@@ -36,7 +36,7 @@ If you want to add or remove an organization from Engine, you should manage thos
 
 GitHub’s OAuth service is used for read-only information about organizations and users. Engine does not need access rights to your source code or to any other sensitive data in its login system.
 
-If your Engine account is owned by a GitHub organization, then Engine will allow all members of that organization to access the account. As you add or remove team members from your Github org, Engine will know about that and accordingly update the authorization for those users.
+If your Engine account is owned by a GitHub organization, then Engine will allow all members of that organization to access the account. As you add or remove team members from your GitHub org, Engine will know about that and accordingly update the authorization for those users.
 
 ## Graphs
 
@@ -54,9 +54,9 @@ Each graph in Engine should represent a single application, and environments wit
 
 #### API keys
 
-API keys can be added and removed from a graph at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
+API keys can be added and removed from a graph at any time. They are used to both send data to Engine (e.g.. server reporting configuration) and fetch information from Engine (e.g.. vs code extension configuration).
 
-You can manage your API keys on your graph's settings page. It is recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
+You can manage your API keys on your graph's settings page. It is recommended that you use one API key per function (e.g.. one key per data source) to have more granular control over how your Engine data is sent and accessed.
 
 ## Data privacy
 

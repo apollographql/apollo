@@ -21,7 +21,7 @@ module.exports = {
 
 ### `client.service`
 
-**Required** –– the CLI and VS Code extension rely on knowledge of your schema to show you "intellisense" (eg. autocomplete on fields, metrics annotations, query validation).
+**Required** –– the CLI and VS Code extension rely on knowledge of your schema to show you "intellisense" (e.g.. autocomplete on fields, metrics annotations, query validation).
 
 There are a few different ways you can link your client to a schema:
 

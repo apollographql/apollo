@@ -7,7 +7,7 @@ import ProjectConfigPanel from 'gatsby-theme-apollo-docs/mdx/project-config-pane
 
 Apollo includes a schema registry that serves as a [central hub](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) for tracking your GraphQL schema. Adopting a shared schema registry for your project has many benefits:
 
-- Unlike introspection, which provides a snapshot of a particular server's current schema, the registry serves as a global source of truth for the schema. In small projects this frees you from always needing a running server to access the schema. At scale, it avoids issues related to running multiple servers that may not always be in sync (eg, rolling updates).
+- Unlike introspection, which provides a snapshot of a particular server's current schema, the registry serves as a global source of truth for the schema. In small projects this frees you from always needing a running server to access the schema. At scale, it avoids issues related to running multiple servers that may not always be in sync (e.g., rolling updates).
 - Much like a source control system, Apollo's schema registry tracks a full history of a schema and how it changed over time. This is valuable for understanding and collaborating on a GraphQL API, especially as your team grows.
 - Having a registry allows you to disable introspection in production – a recommended best practice for good security.
 - Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) can automatically fetch your schema from the registry and provide intellisense like field descriptions and deprecations directly in your editor.
@@ -21,7 +21,7 @@ To get started using the schema registry, you'll need to make sure your reposito
 
 #### CLI commands
 
-Once you have that set up, you'll be ready to start connecting to the schema regsitry using the CLI:
+Once you have that set up, you'll be ready to start connecting to the schema registry using the CLI:
 
 - `apollo service:push`&mdash; push a new schema to the registry.
 - `apollo service:check`&mdash; calculate a local schema diff and compare the changes against live traffic to validate if the changes are _safe_ or if they will _break_ live running queries.

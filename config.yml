@@ -1,0 +1,17 @@
+version: 2
+
+jobs:
+  Linting:
+    docker: [{ image: 'circleci/node:12' }]
+    steps:
+      - run:
+        name: Install npm@12.
+        command: sudo npm install -g npm@12
+      - checkout
+      - run: cd docs && npm install && npm run spell-check:ci
+
+workflows:
+  version: 2
+  Build and Test:
+    jobs:
+      - Linting

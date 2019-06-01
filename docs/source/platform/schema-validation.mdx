@@ -71,7 +71,7 @@ Each of these changes adds a required input to a schema element. If an operation
 
 #### In-place updates
 
-Each of these changes updates an existing schema element. If an operation is activley using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
+Each of these changes updates an existing schema element. If an operation is actively using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
 
 > **Note:** In some cases, these changes are compatible with the client at runtime, such as a type rename or an object to interface conversion with the same fields. Schema validation still marks these breaking changes because validation does not have enough information to ensure safety and these changes deserve extra scrutiny, such as their impact on type generation.
 
@@ -115,7 +115,7 @@ These changes update the default value for an argument. If an operation is using
 
 #### Non-breaking changes
 
-These are change types detected ny the `apollo service:check` command, but they are "safe" and will always be compatible with all exisitng client usage of the graph. They will not affect the behavior of any clients if deployed.
+These are change types detected by the `apollo service:check` command, but they are "safe" and will always be compatible with all existing client usage of the graph. They will not affect the behavior of any clients if deployed.
 
 <ul>
   <li>Optional arguments</li>
@@ -179,7 +179,7 @@ Since breaking changes are detected using live traffic, your service will _need 
 
 ## Set up schema validation
 
-To set up schema validation, you wlil need to be both actively sending traces and registering schemas to Apollo:
+To set up schema validation, you will need to be both actively sending traces and registering schemas to Apollo:
 
 1. [Set up trace reporting to Apollo Engine](/references/setup-analytics/)
 1. [Set up schema registration in your continuous delivery pipeline](/platform/schema-registry/)
@@ -250,7 +250,7 @@ To install the Apollo Engine integration on GitHub, go to [https://github.com/ap
 
 ### Posting a comment to your PRs
 
-For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
+For teams using GitHub Enterprise, BitBucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
 
 The CLI supports passing a `--markdown` flag to `apollo service:check`, which outputs the results of schema validation in a markdown format specifically. This markdown can be piped directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
@@ -270,7 +270,7 @@ The output of `apollo service:check --markdown` looks like this:
 
 Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to tags).
 
-Variants mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag=<VARIANT>` flag to `apollo service:check` specifies which schema variant to compara against, such as `prod` or `staging`. It's common to run checks against multple different graph variants in the same continuous integration pipeline to ensure that all important deployments are accounted for. Running `service:check` against multiple variants will result in status checks similar to:
+Variants mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag=<VARIANT>` flag to `apollo service:check` specifies which schema variant to compare against, such as `prod` or `staging`. It's common to run checks against multiple different graph variants in the same continuous integration pipeline to ensure that all important deployments are accounted for. Running `service:check` against multiple variants will result in status checks similar to:
 
 <div style="text-align:center">
 

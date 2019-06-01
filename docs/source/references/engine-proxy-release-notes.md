@@ -74,7 +74,7 @@ Features that used to depend on a caching store definition now are on by default
 * The private full-query response cache is enabled by default if `sessionAuth` is configured. Only responses annotated with the `cache-control` extension are cached.
 * Automatic persisted queries are on by default.
 * If `sessionAuth` is configured with a `tokenAuthUrl`, verifications are cached by default.
-If you don't like these defaults, you can set each store name field to `"disabled"` to turn off the relevant feature. If you want to change the default cache size in bytes, add `stores: [{inMemory: {cacheSize: 123456}}]` to your Engine config (ie, the argument to `new ApolloEngine()`). If you want to change the default cache to memcached, add `stores: [{memcache: {url: ["localhost:1234"]}}]` to your Engine config.
+If you don't like these defaults, you can set each store name field to `"disabled"` to turn off the relevant feature. If you want to change the default cache size in bytes, add `stores: [{inMemory: {cacheSize: 123456}}]` to your Engine config (i.e., the argument to `new ApolloEngine()`). If you want to change the default cache to memcached, add `stores: [{memcache: {url: ["localhost:1234"]}}]` to your Engine config.
 
 Starting with v1, the Docker container releases use the same version numbers as the `apollo-engine` npm releases. The following changes are mostly relevant to users of the Docker container:
 * It's valid to specify zero frontends. Engine Proxy will default to one with all default values.
@@ -231,7 +231,7 @@ No additional configuration is required to start using this feature.
   By default, query batches are fractured by the proxy and individual queries are sent to origins, in parallel.
   If your origin supports batching and you'd like to pass entire batches through, set `"supportsBatch": true` within the `origins` section of the configuration.
 
-* *BREAKING*: Changed behaviour when the proxy receives a non-GraphQL response from an origin server.
+* *BREAKING*: Changed behavior when the proxy receives a non-GraphQL response from an origin server.
   Previously the proxy would serve the non-GraphQL response, now it returns a valid GraphQL error indicating that the origin failed to respond.
 
 * Added support for the `includeInResponse` query extension. This allows clients to request GraphQL response extensions be forwarded through the proxy.

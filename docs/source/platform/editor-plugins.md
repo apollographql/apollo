@@ -80,7 +80,7 @@ Linking to the local schema won't provide all features such as switching schema 
 
 One of the best features of the VS Code extension is the automatic merging of remote schemas and local ones when using integrated state management with Apollo Client. This happens automatically whenever schema definitions are found within a client project. By default, the VS Code extension will look for all files under `./src` to find both the operations and schema definitions for building a complete schema for the application.
 
-Client side schema definitions can be spread throughout the client app project and will be merged together to create one single schema. The default behavior can be controlled by adding specifictions to the `apollo.config.js`:
+Client side schema definitions can be spread throughout the client app project and will be merged together to create one single schema. The default behavior can be controlled by adding specifications to the `apollo.config.js`:
 
 ```js
 module.exports = {
@@ -128,7 +128,7 @@ GraphQL's flexibility can make it difficult to predict the cost of an operation.
 
 To turn on tracing for your GraphQL server, please visit our [guide](/references/setup-analytics/).
 
-The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Engine. As operations are typed, any fields that take longer than 1ms to respond will be annoated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
+The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Engine. As operations are typed, any fields that take longer than 1ms to respond will be annotated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
 
 <img src="../images/editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
 

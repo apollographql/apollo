@@ -11,7 +11,7 @@ An Apollo GraphQL API can be deployed to any cloud service, such as Heroku, AWS 
 
 ## Publish your schema to Engine
 
-Before we deploy our app, we need to publish our schema to the Apollo Engine cloud service in order to power developer tooling like VSCode and keep track of schema changes. Just like npm is a registry for JavaScript packages, Apollo Engine contains a schema registry that makes it simple to pull the most recent schema from the cloud.
+Before we deploy our app, we need to publish our schema to the Apollo Engine cloud service in order to power developer tooling like VS Code and keep track of schema changes. Just like npm is a registry for JavaScript packages, Apollo Engine contains a schema registry that makes it simple to pull the most recent schema from the cloud.
 
 In a production application, you should set up this publishing script as part of your CI workflow. For now, we will run a script in our terminal that uses the Apollo CLI to publish our schema to Engine.
 
@@ -43,7 +43,7 @@ npx apollo service:push --endpoint=http://localhost:4000
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
 
-This command publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Engine](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Engine in order to power the Apollo VSCode extension.
+This command publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Engine](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Engine in order to power the Apollo VS Code extension.
 
 For subsequent publishes, we may first want to check for any breaking changes in our new schema against the old version. In a terminal window, run:
 
@@ -60,6 +60,6 @@ Publishing your schema to Apollo Engine unlocks many features necessary for runn
 - **Performance analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution
 - **Client awareness:** Report client identity (name and version) to your server for insights on client activity.
 
-We also want to be transparent that the features we just described, such as viewing specific execution traces and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VSCode makes them more intelligent over time.
+We also want to be transparent that the features we just described, such as viewing specific execution traces and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VS Code makes them more intelligent over time.
 
-We're committed to helping you succeed in building and running an Apollo graph API. This is why features such as publishing and downloading schemas from the registry, our open source offerings like Apollo Client and Apollo Server, and certain developer tools like Apollo VSCode and Apollo DevTools will always be free forever.
+We're committed to helping you succeed in building and running an Apollo graph API. This is why features such as publishing and downloading schemas from the registry, our open source offerings like Apollo Client and Apollo Server, and certain developer tools like Apollo VS Code and Apollo DevTools will always be free forever.

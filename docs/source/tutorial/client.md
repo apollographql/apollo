@@ -23,9 +23,9 @@ Now, our dependencies are installed. Here are the packages we will be using to b
 - `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
 - `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
 
-### Configure Apollo VSCode
+### Configure Apollo VS Code
 
-While Apollo VSCode is not required to successfully complete the tutorial, setting it up unlocks a lot of helpful features such as autocomplete for operations, jump to fragment definitions, and more.
+While Apollo VS Code is not required to successfully complete the tutorial, setting it up unlocks a lot of helpful features such as autocomplete for operations, jump to fragment definitions, and more.
 
 First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Engine API key that you already created in step #4 to the file:
 
@@ -39,9 +39,9 @@ The entry should basically look something like this:
 ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
+Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VS Code uses this API key to pull down your schema from the registry.
 
-Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
+Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VS Code extension and CLI. Paste the snippet below into the file:
 
 ```js
 module.exports = {
