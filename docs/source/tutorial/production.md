@@ -3,11 +3,9 @@ title: '4. Run your graph in production'
 description: Learn about deployment and essential developer tooling
 ---
 
-Time to accomplish: _15 Minutes_
+Time to accomplish: _10 Minutes_
 
-Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
-
-An Apollo GraphQL API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. In this tutorial, we'll deploy our graph API to [Zeit Now](https://zeit.co/now). You will need to create a [Now account](https://zeit.co/signup) in order to follow these steps. If you haven't already created an [Apollo Engine](https://engine.apollographql.com/) account, you will need to sign up for one.
+Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries.
 
 ## Publish your schema to Engine
 
