@@ -1,6 +1,6 @@
 ---
-title: Operation registry
-description: How to secure your graph with operation safelisting
+title: Securing your graph
+description: How to secure your graph by enforcing a safelist of registered operations
 ---
 
 ## Overview
