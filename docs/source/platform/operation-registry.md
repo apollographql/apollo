@@ -118,6 +118,10 @@ Currently, once an operation is registered it will remain registered indefinitel
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
+####3.1 Optionally, set the schema tag  
+
+To specify the schema tag to register operations on, pass an additional `--tag <TAG>` argument (`npx apollo client:push --tag <TAG>`).
+
 ### 4. Disable subscription support on Apollo Server
 
 Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline. Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
