@@ -171,9 +171,7 @@ const server = new ApolloServer({
 
 ####5.1 Optionally, set the schema tag
 
-The plugin will automatically pickup the value of the environment variable `ENGINE_SCHEMA_TAG` and use that as the schema tag.  
-
-To override this behaviour, configure the `schemaTag` field.  
+Configure the `schemaTag` field to specify which tag to pull operation manifests from.  
 
 ```js
 const server = new ApolloServer({
