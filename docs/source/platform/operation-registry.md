@@ -290,6 +290,35 @@ const server = new ApolloServer({
 });
 ```
 
+## Migrating from 0.1
+
+#### On servers that safelist operations
+
+- Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`
+
+#### To target graph variants other than "current"
+
+- Upgrade the `apollo` CLI package to 2.13.0
+
+- Ensure that a schema has been published to the specified graph variant.
+  This can be done by running `apollo service:push --tag <TAG>`
+
+- Ensure that operations have been registered to the specified graph variant.
+  This can be done by running `apollo client:push --tag <TAG>`
+
+- Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'prod' // highlight-line
+    })
+  ]
+});
+```
+
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
