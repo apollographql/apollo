@@ -319,6 +319,21 @@ const server = new ApolloServer({
 });
 ```
 
+- It might be advisable to do an initial test run with `debug` and `dryRun` both on
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'prod'
+      debug: true, // highlight-line
+      dryRun: true, // highlight-line
+    })
+  ]
+});
+```
+
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
