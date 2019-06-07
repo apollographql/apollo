@@ -28,9 +28,6 @@ Operations defined within client applications can be extracted and uploaded to A
 ### Limitations
 
 - Subscriptions within Apollo Server should be disabled. For more information, see the instructions below.
-- Only the default schema tag (`current`) is supported.
-
-  To use the operation registry with schema tags, the schema which necessitates demand control should also be registered to the default (`current`) tag for the same service. For example, if a service is using a `prod` schema tag and publishing the schema with `apollo service:push --tag=prod`, the same schema should also be pushed to the default tag with `apollo service:push --tag=current`.
 
 Please [contact the Apollo sales team](https://www.apollographql.com/contact-sales/) if you require a solution to any of these limitations.
 
@@ -121,6 +118,10 @@ Currently, once an operation is registered it will remain registered indefinitel
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
+####3.1 Optionally, set the schema tag  
+
+To specify the schema tag to register operations on, pass an additional `--tag <TAG>` argument (`npx apollo client:push --tag <TAG>`).
+
 ### 4. Disable subscription support on Apollo Server
 
 Subscription support is enabled by default in Apollo Server 2.x and provided by a separate server which does not utilize Apollo Server 2.x's primary request pipeline. Therefore, the operation registry plugin (and any plugin) is unable to be invoked during a request which comes into the subscription server and enforcement of operation safelisting is not possible. **For proper enforcement of operation safelisting, subscriptions should be disabled.**
@@ -163,6 +164,21 @@ const server = new ApolloServer({
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       forbidUnregisteredOperations: true
+    })
+  ]
+});
+```
+
+####5.1 Optionally, set the schema tag
+
+Configure the `schemaTag` field to specify which tag to pull operation manifests from.  
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'overrideTag' // highlight-line
     })
   ]
 });
