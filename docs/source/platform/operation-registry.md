@@ -294,9 +294,9 @@ const server = new ApolloServer({
 
 #### On servers that safelist operations
 
-- Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1` (there are no breaking changes)
+- Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`. There are no breaking changes, so the upgrade can be made without additional work.  
 
-#### To target graph variants other than "current" (default, no tag)
+#### To target graph variants other than "current"(default, no tag)
 
 - Upgrade the `apollo` CLI package to 2.13.0
 
