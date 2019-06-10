@@ -319,7 +319,7 @@ const server = new ApolloServer({
 });
 ```
 
-- It might be advisable to do an initial test run with `debug` and `dryRun` both on
+- "An initial test run with `debug` and `dryRun` enabled is suggested.
 
 ```js
 const server = new ApolloServer({
