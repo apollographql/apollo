@@ -290,7 +290,7 @@ const server = new ApolloServer({
 });
 ```
 
-## Migrating from 0.1
+## Migrating from 0.1-alpha.4
 
 #### On servers that safelist operations
 
