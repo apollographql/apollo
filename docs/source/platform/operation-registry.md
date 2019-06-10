@@ -234,7 +234,7 @@ Finally, to confirm that the server will allow permitted operations, try running
 
 In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
 
-To selectively enable operation safelisting, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+To selectively enable operation safelisting, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
 > In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
 
@@ -287,6 +287,50 @@ const server = new ApolloServer({
       dryRun: true // highlight-line
     });
   ],
+});
+```
+
+## Migrating from 0.1-alpha.4
+
+#### On servers that safelist operations
+
+- Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`. There are no breaking changes, so the upgrade can be made without additional work.  
+
+#### To target graph variants other than "current"(default, no tag)
+
+- Upgrade the `apollo` CLI package to 2.13.0
+
+- Ensure that a schema has been published to the specified graph variant.
+  This can be done by running `apollo service:push --tag <TAG>`
+
+- Ensure that operations have been registered to the specified graph variant.
+  This can be done by running `apollo client:push --tag <TAG>`
+
+- Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'prod' // highlight-line
+    })
+  ]
+});
+```
+
+- "An initial test run with `debug` and `dryRun` enabled is suggested.
+
+```js
+const server = new ApolloServer({
+  // Existing configuration
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: 'prod'
+      debug: true, // highlight-line
+      dryRun: true, // highlight-line
+    })
+  ]
 });
 ```
 
