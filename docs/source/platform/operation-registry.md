@@ -296,7 +296,7 @@ const server = new ApolloServer({
 
 - Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1` (there are no breaking changes)
 
-#### To target graph variants other than "current"
+#### To target graph variants other than "current" (default, no tag)
 
 - Upgrade the `apollo` CLI package to 2.13.0
 
