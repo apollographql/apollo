@@ -118,7 +118,7 @@ Currently, once an operation is registered it will remain registered indefinitel
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-####3.1 Optionally, set the schema tag  
+####3.1 Optionally, set the schema tag
 
 To specify the schema tag to register operations on, pass an additional `--tag <TAG>` argument (`npx apollo client:push --tag <TAG>`).
 
@@ -171,14 +171,14 @@ const server = new ApolloServer({
 
 ####5.1 Optionally, set the schema tag
 
-Configure the `schemaTag` field to specify which tag to pull operation manifests from.  
+Configure the `schemaTag` field to specify which tag to pull operation manifests from.
 
 ```js
 const server = new ApolloServer({
   // Existing configuration
   plugins: [
     require("apollo-server-plugin-operation-registry")({
-      schemaTag: 'overrideTag' // highlight-line
+      schemaTag: "overrideTag" // highlight-line
     })
   ]
 });
@@ -234,7 +234,7 @@ Finally, to confirm that the server will allow permitted operations, try running
 
 In some cases, deployments may want to selectively enable the behavior of `forbidUnregisteredOperations` depending on environmental conditions (e.g. based on headers).
 
-To selectively enable operation safelisting, the `forbidUnregisteredOperations` setting supports a [predicate function](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
+To selectively enable operation safelisting, the `forbidUnregisteredOperations` setting supports a [predicate function](<https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)>) which receives the request context and can return `true` or `false` to indicate whether enforcement is enabled or disabled respectively.
 
 > In the example below, the `context` is the shared request context which can be modified per-request by plugins or using the [`context`](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) function on the `ApolloServer` constructor. The `headers` are the HTTP headers of the request which are accessed in the same way as the [Fetch API `Headers` interface](https://developer.mozilla.org/en-US/docs/Web/API/Headers) (e.g. `get(...)`, `has(...)`, etc.).
 
@@ -290,50 +290,6 @@ const server = new ApolloServer({
 });
 ```
 
-## Migrating from 0.1-alpha.4
-
-#### On servers that safelist operations
-
-- Upgrade `apollo-server` to `2.6.2` and `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`. There are no breaking changes, so the upgrade can be made without additional work.  
-
-#### To target graph variants other than "current"(default, no tag)
-
-- Upgrade the `apollo` CLI package to 2.13.0
-
-- Ensure that a schema has been published to the specified graph variant.
-  This can be done by running `apollo service:push --tag <TAG>`
-
-- Ensure that operations have been registered to the specified graph variant.
-  This can be done by running `apollo client:push --tag <TAG>`
-
-- Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant
-
-```js
-const server = new ApolloServer({
-  // Existing configuration
-  plugins: [
-    require("apollo-server-plugin-operation-registry")({
-      schemaTag: 'prod' // highlight-line
-    })
-  ]
-});
-```
-
-- "An initial test run with `debug` and `dryRun` enabled is suggested.
-
-```js
-const server = new ApolloServer({
-  // Existing configuration
-  plugins: [
-    require("apollo-server-plugin-operation-registry")({
-      schemaTag: 'prod'
-      debug: true, // highlight-line
-      dryRun: true, // highlight-line
-    })
-  ]
-});
-```
-
 ## Troubleshooting
 
 #### The server indicates `Access denied.` (or `AccessDenied`) when fetching the manifest
@@ -386,3 +342,126 @@ By clicking on the URL listed in the `Checking for manifest changes at` message,
 If a problem occurs during the `apollo service:push` command, make sure that the running Apollo Server can be accessed from the machine where the command is being executed.
 
 Additionally, make sure that introspection is enabled on the server since introspection details are used to obtain and publish the schema.
+
+## Migrating from `0.1-alpha.4` to `0.2.0-alpha.1`
+
+### Summary of changes
+
+The operation registry has been upgraded to improve observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location), registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
+
+These update are designed to be transparent with a smooth upgrade path. To
+facilitate the upgrade, all versions of `apollo client:push` double-write to the new
+and old storage locations and the registry plugin reads from the new location
+and uses the old location as a fallback.
+
+> Note: Upgrading the apollo cli requires some extra caution if a variant/tag is defined in the `apollo.config.js` in order to ensure the proper variant/tag during push
+
+### Upgrade path
+
+While this upgrade should not require additional work, we recommend running
+the new plugin with `dryRun` and `debug` enabled. To report metrics and use
+the new storage location, upgrade:
+
+- `apollo-server` or `apollo-server-<variant>` to `2.6.3`
+- `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`.
+
+If operations have not been registered since June 6th, the plugin will
+fallback on the old location. With `debug` enabled, the plugin will log which
+manifest is used and the operations added.
+
+#### To target variants/tags other than "current"(default, no tag)
+
+Operations are now registered against a variant/tag and retrieved from the
+manifest specific to a variant/tag. When a variant/tag is set, the operation
+will be validated against the latest schema published under that variant/tag
+and placed in that variant/tag's manifest
+
+To register operations under a specific variant/tag:
+
+- **client**: Upgrade the `apollo` CLI package to 2.13.0 (by default the variant/tag will be set to the value in the [apollo config](https://www.apollographql.com/docs/references/apollo-config/#option-1-use-the-apollo-schema-registry))
+- **server**: Ensure that a schema has been published to the specified graph variant/tag.
+  This can be done by running `apollo service:push --tag <TAG>`
+- **client**: Ensure that operations have been registered to the specified graph variant/tag.
+  This can be done by running `apollo client:push --tag <TAG>` or modifying the service in the `apollo.config.js`
+- **server**: Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
+
+```js
+const server = new ApolloServer({
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      schemaTag: "prod" // highlight-line
+
+      // suggested before enforcing the safelist
+      debug: true,
+      dryRun: true,
+    })
+  ]
+});
+```
+
+> Note: in order to copy the operations from one tag to another, please contact the Apollo team through Intercom or your shared Slack channel
+
+### Change details
+
+#### Manifest storage location
+
+In the previous version of the operation registry, the operation manifest was
+secured by the schema hash, which provided the shared secret between the
+Apollo cloud and apollo-server. The side-effect of this model was coupling
+operation registration and schema uploads, since a manifest needed to be
+created for each schema publish with a new hash. Concretely the GCS url was:
+
+`/(hash of service id)/(schema hash)/manifest.json`
+
+The new model removes this coupling by using the Apollo api key as the shared
+secret. In order to enable independent secret rotation, the api key is used
+to reference a storage secret that then references the manifests
+
+`/(service id)/(hash of api key)/storage-secret.json` <br>
+`/(service id)/(storage secret)/(tag)/manifest.v2.json`
+
+These changes should be transparent, since the new version of the operation
+registry plugin, `0.2.0-alpha.1`, will attempt to use the new scheme and then
+fallback on the old. All apollo cli versions write to the new
+and old manifest locations without additional configuration.
+
+#### Operation registration observability
+
+To improve the client side registration, `apollo client:push` now includes
+the file name and location for operations added and connects the error
+message with the operation that fails.
+
+##### Success
+
+<img src="../img/operation-registry/client-push-success.png" width="80%" style="margin: 5%" alt="apollo client:push successful push">
+
+##### Validation errors
+
+<img src="../img/operation-registry/client-push-failure.png" width="80%" style="margin: 5%" alt="apollo client:push failure">
+
+#### Metrics and usage statistics
+
+The new registry plugin will report usage metrics to Apollo, which are
+displayed in the client details in the clients tab and operation filter in
+the metric tab
+
+##### Clients page
+
+The clients page will show the unregistered operation reported by client
+
+<img src="../img/operation-registry/clients-page.png" width="80%" style="margin: 5%" alt="The clients page showing unregistered operations">
+
+##### Metrics page
+
+The filter on the metrics page will provide the option to show unregistered operations only
+
+<img src="../img/operation-registry/metrics-filter.png" width="50%" style="margin: 5%" alt="The metrics filter showing the option to select unregistered operations">
+
+#### Variant/tag awareness
+
+Operations are now registered against a variant/tag and retrieved from the
+manifest specific to a variant/tag. When a variant/tag is set, the operation
+will be validated against the latest schema published under that variant/tag
+and placed in that variant/tag's manifest. This variant/tag specific manifest
+can be consumed by the operation registry plugin by setting the `schemaTag`
+option.
