@@ -405,7 +405,12 @@ const server = new ApolloServer({
 });
 ```
 
-> Note: If you want to copy all previously registered operations to a new variant/tag, please contact the Apollo team
+> We know it can be challenging to communicate with all consumers of your
+> data > graph to publish their operations to a new variant/tag. Reach out to
+> the Apollo team > if you want to move to a variant/tag-based registry, and
+> we'll be happy to migrate > all operations registered to the current
+> variant/tag to the variant/tag of your choosing to > make that process
+> easier.
 
 ### Change details
 
