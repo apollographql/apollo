@@ -354,7 +354,7 @@ facilitate the upgrade, all versions of `apollo client:push` double-write to the
 and old storage locations and the registry plugin reads from the new location
 and uses the old location as a fallback.
 
-> Note: Upgrading the apollo cli requires some extra caution if a variant/tag is defined in the `apollo.config.js` in order to ensure the proper variant/tag during push
+> Note: Upgrading the apollo cli to `>2.13` requires some extra caution if a variant/tag is defined in the `apollo.config.js` in order to ensure the proper variant/tag during push
 
 ### Upgrade path
 
@@ -365,18 +365,24 @@ the new storage location, upgrade:
 - `apollo-server` or `apollo-server-<variant>` to `2.6.3`
 - `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`.
 
-If operations have not been registered since June 6th, the plugin will
+If operations have not been registered since June 6th, 2019, the plugin will
 fallback on the old location. With `debug` enabled, the plugin will log which
 manifest is used and the operations added.
 
-#### To target variants/tags other than "current"(default, no tag)
+#### Target variants/tags other than `current`(default, no variant/tag)
 
 Operations are now registered against a variant/tag and retrieved from the
-manifest specific to a variant/tag. When a variant/tag is set, the operation
-will be validated against the latest schema published under that variant/tag
-and placed in that variant/tag's manifest
+manifest specific to a variant/tag. This does not change the default behavior
+of the Apollo platform, which universally uses the variant/tag `current` when
+unspecified. Variants/tags represent different environments, such as
+`staging`, `test` or `prod`, so they do not share data. This means that
+operations must be re-registered when using or transitioning to a new
+variant/tag.
 
-To register operations under a specific variant/tag:
+When a variant/tag is set in `apollo client:push`, the operation
+will be validated against the latest schema published under that variant/tag
+and placed in that variant/tag's manifest. To register operations under a
+specific variant/tag, follow these steps:
 
 - **client**: Upgrade the `apollo` CLI package to 2.13.0 (by default the variant/tag will be set to the value in the [apollo config](https://www.apollographql.com/docs/references/apollo-config/#option-1-use-the-apollo-schema-registry))
 - **server**: Ensure that a schema has been published to the specified graph variant/tag.
@@ -389,17 +395,17 @@ To register operations under a specific variant/tag:
 const server = new ApolloServer({
   plugins: [
     require("apollo-server-plugin-operation-registry")({
-      schemaTag: "prod" // highlight-line
+      schemaTag: "prod", // highlight-line
 
       // suggested before enforcing the safelist
       debug: true,
-      dryRun: true,
+      dryRun: true
     })
   ]
 });
 ```
 
-> Note: in order to copy the operations from one tag to another, please contact the Apollo team through Intercom or your shared Slack channel
+> Note: If you want to copy all previously registered operations to a new variant/tag, please contact the Apollo team
 
 ### Change details
 
@@ -417,7 +423,7 @@ The new model removes this coupling by using the Apollo api key as the shared
 secret. In order to enable independent secret rotation, the api key is used
 to reference a storage secret that then references the manifests
 
-`/(service id)/(hash of api key)/storage-secret.json` <br>
+`/(service id)/storage-secret/(hash of api key).json` <br>
 `/(service id)/(storage secret)/(tag)/manifest.v2.json`
 
 These changes should be transparent, since the new version of the operation
@@ -433,9 +439,15 @@ message with the operation that fails.
 
 ##### Success
 
+A successful registration will show the operations that are newly registered:
+
 <img src="../img/operation-registry/client-push-success.png" width="80%" style="margin: 5%" alt="apollo client:push successful push">
 
+> Note: If all operations have already been registered, then `apollo client:push` will explain that all operations are registered and not print any specific details
+
 ##### Validation errors
+
+A failed registration will include the validation failure next to the operation:
 
 <img src="../img/operation-registry/client-push-failure.png" width="80%" style="margin: 5%" alt="apollo client:push failure">
 
