@@ -433,8 +433,13 @@ to reference a storage secret that then references the manifests
 
 These changes should be transparent, since the new version of the operation
 registry plugin, `0.2.0-alpha.1`, will attempt to use the new scheme and then
-fallback on the old. All apollo cli versions write to the new
-and old manifest locations without additional configuration.
+fallback on the old.All apollo cli versions write to the new and old manifest
+locations without additional configuration.
+
+Be aware that the the variant/tag specific manifest will
+only be created after a `client:push`, so the plugin may fallback on the old
+manifest, which contains the operations for `current`, when `schemaTag` is
+specified in the operation registry plugin.
 
 #### Operation registration observability
 
@@ -482,3 +487,8 @@ will be validated against the latest schema published under that variant/tag
 and placed in that variant/tag's manifest. This variant/tag specific manifest
 can be consumed by the operation registry plugin by setting the `schemaTag`
 option.
+
+Since the operation registry double-writes operations and has a fallback
+mechanism for transparent upgrades on `current`, be sure to follow
+[these steps](#target-variantstags-other-than-currentdefault-no-varianttag)
+and run the operation registry plugin with `debug` enabled.
