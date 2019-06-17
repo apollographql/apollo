@@ -257,7 +257,7 @@ _src/schema.js_
 ```js
   type Mutation {
     # ... with rest of schema
-    missionPatch(mission: String, size: PatchSize): PatchSize
+    missionPatch(mission: String, size: PatchSize): String
   }
 ```
 
