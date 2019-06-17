@@ -164,7 +164,7 @@ An in-browser IDE for GraphQL development and workflow. Added benefits exist suc
 
 ## GraphQL Service
 
-The server that contains a GraphQL schema and the ability to run it. Services have runtime information, and through features of the Apollo Platform they can send metrics and maintain a history of the schemas that have been run on that service in the past.
+The server that contains a GraphQL schema and the ability to run it. Services have runtime information, and through features of the Apollo platform they can send metrics and maintain a history of the schemas that have been run on that service in the past.
 
 ## GraphiQL
 
@@ -343,7 +343,7 @@ type Query {
 
 ## Schema first development
 
-A [development approach](/intro/platform/#workflows) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
+A [development approach](/intro/workflows/#workflows) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
 
 ## Schema registry
 
@@ -351,7 +351,7 @@ A central source of truth for your schema in Apollo Engine. It enables schema re
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/workflows/schema-validation/#set-up-schema-validation).
 
 ## Schema stitching
 

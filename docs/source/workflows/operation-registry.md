@@ -5,11 +5,11 @@ description: How to secure your graph by enforcing a safelist of registered oper
 
 ## Overview
 
-> **Note:** Operation safelisting is an Apollo Platform feature that is only available to subscribers of the [_Apollo Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). Visit [this guide](https://www.apollographql.com/docs/intro/platform.html) to learn more about the Apollo Platform.
+> **Note:** Operation safelisting is an Apollo platform feature that is only available to subscribers of the [_Apollo Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). Visit [this guide](https://www.apollographql.com/docs/intro/platform.html) to learn more about the Apollo platform.
 
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
-The Apollo Platform comes with an **operation registry** and **safelisting** mechanism built into it, which allows organizations to:
+The Apollo platform comes with an **operation registry** and **safelisting** mechanism built into it, which allows organizations to:
 
 - Provide demand control for their production GraphQL APIs.
 - Permit the exact operations necessary for their client applications.
@@ -58,7 +58,7 @@ npm install apollo --save-dev
 
 ### 2. Push your schema to the Apollo schema registry
 
-> **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/platform/schema-registry/).
+> **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/workflows/schema-registry/).
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 

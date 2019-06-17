@@ -11,7 +11,7 @@ One of our fundamental beliefs is that our Apollo workflows should hook into and
 
 ## GitHub
 
-Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/platform/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
+Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/workflows/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
 
 ![GitHub Status View](../img/schema-validation/github-check.png)
 
@@ -62,7 +62,7 @@ jobs:
           fi
 ```
 
-> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/platform/schema-registry/#using-the-schema-registry) setup for other options.
+> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/workflows/schema-registry/#using-the-schema-registry) setup for other options.
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Engine. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 

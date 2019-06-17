@@ -7,7 +7,7 @@ There are many types of schema changes that can be potentially breaking to clien
 
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
-> **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
+> **Note:** Schema validation is an Apollo platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
 
 ## How it works
 
@@ -182,7 +182,7 @@ Since breaking changes are detected using live traffic, your service will _need 
 To set up schema validation, you wlil need to be both actively sending traces and registering schemas to Apollo:
 
 1. [Set up trace reporting to Apollo Engine](/references/setup-analytics/)
-1. [Set up schema registration in your continuous delivery pipeline](/platform/schema-registry/)
+1. [Set up schema registration in your continuous delivery pipeline](/workflows/schema-registry/)
 
 Then, you will need to configure your project for the `apollo service:check` command:
 

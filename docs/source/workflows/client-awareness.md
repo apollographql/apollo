@@ -42,7 +42,7 @@ support to your server language of choice.
 
 Filtering queries by client enables isolation of issues that affect a portion
 of all clients. In the opposite sense, if a client becomes problematic, such as
-requesting expensive fields or using deprecated fields, the Apollo Platform
+requesting expensive fields or using deprecated fields, the Apollo platform
 enables tracking down the faulty client to start solving the issue with the
 owner. When changing, replacing, or deprecating a field in the API, the client
 metadata enables quickly identifying the client-side changes that need to

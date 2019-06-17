@@ -50,7 +50,7 @@ Graphs in Engine have globally unique IDs. We recommend that you prefix your ID 
 
 ### Managing environments
 
-Each graph in Engine should represent a single application, and environments within your application should be tracked using [_variants_](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual variants within Engine.
+Each graph in Engine should represent a single application, and environments within your application should be tracked using [_variants_](https://www.apollographql.com/docs/workflows/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual variants within Engine.
 
 #### API keys
 

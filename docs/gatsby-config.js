@@ -23,7 +23,7 @@ module.exports = {
             'tutorial/local-state'
             // 'tutorial/whats-next'
           ],
-          Platform: [
+          Workflows: [
             'platform/schema-registry',
             'platform/schema-validation',
             'platform/client-awareness',
