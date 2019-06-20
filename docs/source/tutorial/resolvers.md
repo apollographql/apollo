@@ -70,10 +70,10 @@ _src/resolvers.js_
 module.exports = {
   Query: {
     launches: (_, __, { dataSources }) =>
-      dataSources.launchAPI.getAllLaunches(),
+      dataSources.LaunchAPI.getAllLaunches(),
     launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+      dataSources.LaunchAPI.getLaunchById({ launchId: id }),
+    me: (_, __, { dataSources }) => dataSources.UserAPI.findOrCreateUser()
   }
 };
 ```
