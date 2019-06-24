@@ -347,23 +347,23 @@ Additionally, make sure that introspection is enabled on the server since intros
 
 ### Summary of changes
 
-The operation registry has been upgraded to improve observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location), registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
+The new release operation registry improves observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location) based on a schema variant/tag rather than schema hash, registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
 
-These update are designed to be transparent with a smooth upgrade path. To
-facilitate the upgrade, all versions of `apollo client:push` double-write to the new
-and old storage locations and the registry plugin reads from the new location
-and uses the old location as a fallback.
+These updates are designed to be transparent with a [smooth upgrade path](#upgrade-path). Since the operation manifest location has changed, all versions of `apollo client:push` double-write to the new and old storage locations, enabling seamless upgrade. Additionally the server's registry plugin can be upgraded immediately, because the plugin reads from the new location and uses the old location as a fallback, meaning the safelist will always be populated.
 
-> Note: Upgrading the apollo cli to `>2.13` requires some extra caution if a variant/tag is defined in the `apollo.config.js` in order to ensure the proper variant/tag during push
+> Note: upgrading the apollo cli to `>2.13` requires some extra caution if a variant/tag is defined in the `apollo.config.js` in order to [ensure the proper variant/tag during `apollo client:push`](#target-variantstags-other-than-currentdefault-no-varianttag). The changes are completely backwards compatible when using the Apollo platform without variants/tags.
 
 ### Upgrade path
 
-While this upgrade should not require additional work, we recommend running
-the new plugin with `dryRun` and `debug` enabled. To report metrics and use
-the new storage location, upgrade:
+While this upgrade does not require additional work, we recommend running
+the new plugin with `dryRun` and `debug` enabled before enforcing the safelist. To report metrics and use the new storage location, upgrade:
 
-- `apollo-server` or `apollo-server-<variant>` to `2.6.3`
+- `apollo-server` or `apollo-server-<variant>` to `>2.6.3`
 - `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`.
+
+In one line, run:
+
+`npm install apollo-server apollo-server-plugin-operation-registry`
 
 If operations have not been registered since June 6th, 2019, the plugin will
 fallback on the old location. With `debug` enabled, the plugin will log which
