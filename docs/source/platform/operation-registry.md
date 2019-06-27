@@ -289,6 +289,7 @@ const server = new ApolloServer({
   ],
 });
 ```
+> Note: by setting `forbidUnregisteredOperations: true`, metrics will be reported to the Apollo Trace Warehouse indicating that operations are forbidden, even though they've been permitted. Behavior of the plugin will remain the same if the `forbidUnregisteredOperations` option is left unset, though operations will not be reported as forbidden.
 
 ## Troubleshooting
 
