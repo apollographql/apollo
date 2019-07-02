@@ -1,0 +1,12 @@
+---
+title: Federation in the Apollo Platform
+description: Use all of the features of the Apollo Platform with a federated GraphQL architecture
+---
+
+If you're running your GraphQL infrastructure using GraphQL services that comply with the [federation spec](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/), there are a variety of things you'll want to consider when using the Apollo GraphQL platform. The key difference between running GraphQL with a monolithic server instead of running multiple services orchestrated by a [gateway](https://www.apollographql.com/docs/apollo-server/federation/implementing/#running-a-gateway) is that your GraphQL schema is dynamically defined by [partial schemas](<LINK_TO_GLOSSARY>), which compose to form an overall schema for your graph. Since the GraphQL schema is the central hub of the data in your graph, it's important to **track each implementing service's partial schemas** in order to ensure that they are able to compose into a valid schema, and also to [validate](<LINK_TO_SCHEMA_VALIDATION>) that the changes any service makes do not affect the [operations made by clients](LINK_TO_METRICS).
+
+... Some overview stuff
+
+## Inspecting your Graph
+
+// TODO: Document service:list command and the services list UI to explain how to inspect your current graph
