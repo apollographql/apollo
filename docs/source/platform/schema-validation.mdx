@@ -9,11 +9,15 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 
 > **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
 
+
 ## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
+If your graph is composed using federation, you can also use the `apollo service:check` command to validate individual service changes by providing a service name.
 
 Here's how it works:
+
+// [TODO: Make this a toggle, where you can see the federation and the non-federation version of how it works].
 
 1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
 1. Engine creates a diff between the local schema and the most recently published schema in the registry.
