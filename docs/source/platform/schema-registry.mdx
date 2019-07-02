@@ -13,6 +13,8 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 - Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) can automatically fetch your schema from the registry and provide intellisense like field descriptions and deprecations directly in your editor.
 - Apollo's registry lets you track related _variants_ of a schema, like staging or alpha versions. It's helpful to have these schema definitions handy without having to juggle running servers that implement them.
 
+> Using Federation? [Skip ahead](<FIXME>) to learn how to register partial schemas with the schema registry
+
 ## Using the Schema Registry
 
 To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project.
@@ -43,6 +45,12 @@ id      schema        tag
 ──────  ────────────  ───────
 190330  example-4218  current
 ```
+
+## Registering a schema with Federation
+
+If you're running a distributed GraphQL infrastructure, where GraphQL microservices [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.
+
+... // TODO
 
 ### Hooking into CI
 
