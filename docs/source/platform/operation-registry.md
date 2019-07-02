@@ -17,6 +17,8 @@ The Apollo Platform comes with an **operation registry** and **safelisting** mec
 
 Operations defined within client applications can be extracted and uploaded to Apollo Engine using the Apollo CLI. Apollo Server then fetches a manifest of these operations from Apollo Engine and forbids the execution of any operations that were not in that manifest.
 
+> Running Federation using the Gateway? Since Apollo Gateway runs atop Apollo Server, everything here should still work as-is!
+
 ### Prerequisites
 
 - [Apollo Server 2.2.x](https://www.apollographql.com/docs/apollo-server/) (or newer).
