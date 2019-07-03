@@ -2,11 +2,31 @@
 title: Federation in the Apollo Platform
 description: Use all of the features of the Apollo Platform with a federated GraphQL architecture
 ---
+[//]: # (Description: Introductory content, discussing the overall model of the federation platform, why you would want to register partial schemas, and framing the concept of thinking about running federation as a coordination and collaboration problem to motivate the tools we've built)
+[//]: # (Assignee: Chang)
+[//]: # (Reviewer: Caydie, James)
 
 If you're running your GraphQL infrastructure using GraphQL services that comply with the [federation spec](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/), there are a variety of things you'll want to consider when using the Apollo GraphQL platform. The key difference between running GraphQL with a monolithic server instead of running multiple services orchestrated by a [gateway](https://www.apollographql.com/docs/apollo-server/federation/implementing/#running-a-gateway) is that your GraphQL schema is dynamically defined by [partial schemas](<LINK_TO_GLOSSARY>), which compose to form an overall schema for your graph. Since the GraphQL schema is the central hub of the data in your graph, it's important to **track each implementing service's partial schemas** in order to ensure that they are able to compose into a valid schema, and also to [validate](<LINK_TO_SCHEMA_VALIDATION>) that the changes any service makes do not affect the [operations made by clients](LINK_TO_METRICS).
 
-... Some overview stuff
+... More overview stuff
 
 ## Inspecting your Graph
+> Using the `apollo service:list` command or the UI to understand your graph
 
-// TODO: Document service:list command and the services list UI to explain how to inspect your current graph
+[//]: # (Description: How to see the current services in your graph. This section might be expanded later to discuss showing history, composition results, etc. This section should include some screenshots)
+[//]: # (Assignee: Maya)
+[//]: # (Reviewer: Justin)
+
+## Registering your graph
+> Using the `apollo service:push` and `apollo service:check` command to track changes to your graph
+
+[//]: # (Description: An overview of how and when to use `apollo service:push` and `apollo service:check` in your CI/CD workflow, linking out to the specifics of usage in the specific docs (#502 and #503). Ideally this section includes some screenshots of the workflows in practice.)
+[//]: # (Assignee: James)
+[//]: # (Reviewer: Adam Z)
+
+## Running with managed federation
+> Taking control of how service changes bubble up to the Apollo Gateway
+
+[//]: # (Description: An overview of the concept of managed federation, linking out to the details on gateway defaults w/ an API key and the specfics on setting up the lifecycle options. Ideally this section has a diagram of managed federation lifecycle.)
+[//]: # (Assignee: Adam Z)
+[//]: # (Reviewer: Trevor)
