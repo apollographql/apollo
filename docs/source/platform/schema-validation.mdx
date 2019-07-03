@@ -3,9 +3,15 @@ title: Validating schema changes
 description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
 
+[//]: # (Description: Changes to this page that explain, in parallel with the monolithic version, how schema validation works with federation, highlighting that there's an extra step in the `apollo service:check` command which will build the composed schema to run traffic validation against. Ideally, this change could be done as a toggle either for each section or for the entire page where the extra details and steps are added for federation. If the toggle is difficult, then we should simply have a pattern that we use, like using a different color or an italicized font for the parts of the process that are federation-specific)
+[//]: # (Assignee: Caydie)
+[//]: # (Reviewer: Jake)
+
 There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
 
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
+
+// TODO modify this top-level description for how schema validation for federation is done at the **service** level
 
 > **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
 
@@ -17,7 +23,7 @@ If your graph is composed using federation, you can also use the `apollo service
 
 Here's how it works:
 
-// [TODO: Make this a toggle, where you can see the federation and the non-federation version of how it works].
+// [TODO: Hopefully make this a toggle, where you can see the federation and the non-federation version of how it works].
 
 1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
 1. Engine creates a diff between the local schema and the most recently published schema in the registry.
@@ -27,6 +33,8 @@ Here's how it works:
 1. The CLI prints the output of this check with a link to view more details in the Engine UI.
 
 ### Breaking change detection
+
+// [TODO: Add a federation-specific paragraph about composition errors]
 
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
 
@@ -145,6 +153,12 @@ These are change types detected ny the `apollo service:check` command, but they 
 </ul>
 
 ### Validation response
+
+[//]: # (Description: Additions and changes to this section to show how the response changes with federation, using the same "extra stuff" approach as is decided on for the above)
+[//]: # (Assignee: Justin)
+[//]: # (Reviewer: Caydie)
+
+// [TODO: Add a federation-specific section on additional details that come up and change the screenshot of the UI to include service name].
 
 Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project.
 
