@@ -3,6 +3,12 @@ title: Securing your graph
 description: How to secure your graph by enforcing a safelist of registered operations
 ---
 
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from "gatsby-theme-apollo-docs/mdx/components/expansion-panel";
+
 ## Overview
 
 > **Note:** Operation safelisting is an Apollo Platform feature that is only available to subscribers of the [_Apollo Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). Visit [this guide](https://www.apollographql.com/docs/intro/platform.html) to learn more about the Apollo Platform.
@@ -16,8 +22,6 @@ The Apollo Platform comes with an **operation registry** and **safelisting** mec
 - Eliminate the risk of unexpected, and possibly costly, operations being executed against their graph.
 
 Operations defined within client applications can be extracted and uploaded to Apollo Engine using the Apollo CLI. Apollo Server then fetches a manifest of these operations from Apollo Engine and forbids the execution of any operations that were not in that manifest.
-
-> Running Federation using the Gateway? Since Apollo Gateway runs atop Apollo Server, everything here should still work as-is!
 
 ### Prerequisites
 
@@ -150,7 +154,9 @@ Enable demand control by adding the operation registry to Apollo Server. To enab
 First, add the appropriate plugin to the Apollo Server's `package.json`:
 
 ```
+
 npm install apollo-server-plugin-operation-registry
+
 ```
 
 Next, the plugin must be enabled. This requires adding the appropriate module to the `plugins` parameter to the Apollo Server options:
@@ -170,6 +176,46 @@ const server = new ApolloServer({
   ]
 });
 ```
+
+<ExpansionPanel title="Running Federation using the Gateway? Since Apollo Gateway runs atop Apollo Server, everything here should still work as-is!">
+
+The full setup:
+
+```js{21-25}
+const { ApolloServer } = require('apollo-server');
+const { ApolloGateway } = require("@apollo/gateway");
+
+const gateway = new ApolloGateway({
+  serviceList: [
+    { name: 'accounts', url: 'http://localhost:4001' },
+    // more services
+  ],
+});
+
+(async () => {
+  const { schema, executor } = await gateway.load();
+
+  const server = new ApolloServer({
+    // Existing configuration
+    schema,
+    executor,
+    subscriptions: false
+    // ...
+    // New configuration
+    plugins: [
+      require("apollo-server-plugin-operation-registry")({
+        forbidUnregisteredOperations: true
+      })
+    ]
+  });
+
+  server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
+})();
+```
+
+</ExpansionPanel>
 
 ####5.1 Optionally, set the schema tag
 
@@ -430,7 +476,7 @@ The new model removes this coupling by using the Apollo api key as the shared
 secret. In order to enable independent secret rotation, the api key is used
 to reference a storage secret that then references the manifests
 
-`/(service id)/storage-secret/(hash of api key).json` <br>
+`/(service id)/storage-secret/(hash of api key).json` <br/>
 `/(service id)/(storage secret)/(tag)/manifest.v2.json`
 
 These changes should be transparent, since the new version of the operation
@@ -453,7 +499,12 @@ message with the operation that fails.
 
 A successful registration will show the operations that are newly registered:
 
-<img src="../img/operation-registry/client-push-success.png" width="80%" style="margin: 5%" alt="apollo client:push successful push">
+<img
+  src="../img/operation-registry/client-push-success.png"
+  width="80%"
+  style="margin: 5%"
+  alt="apollo client:push successful push"
+/>
 
 > Note: If all operations have already been registered, then `apollo client:push` will explain that all operations are registered and not print any specific details
 
@@ -461,7 +512,12 @@ A successful registration will show the operations that are newly registered:
 
 A failed registration will include the validation failure next to the operation:
 
-<img src="../img/operation-registry/client-push-failure.png" width="80%" style="margin: 5%" alt="apollo client:push failure">
+<img
+  src="../img/operation-registry/client-push-failure.png"
+  width="80%"
+  style="margin: 5%"
+  alt="apollo client:push failure"
+/>
 
 #### Metrics and usage statistics
 
@@ -473,13 +529,23 @@ the metric tab
 
 The clients page will show the unregistered operation reported by client
 
-<img src="../img/operation-registry/clients-page.png" width="80%" style="margin: 5%" alt="The clients page showing unregistered operations">
+<img
+  src="../img/operation-registry/clients-page.png"
+  width="80%"
+  style="margin: 5%"
+  alt="The clients page showing unregistered operations"
+/>
 
 ##### Metrics page
 
 The filter on the metrics page will provide the option to show unregistered operations only
 
-<img src="../img/operation-registry/metrics-filter.png" width="50%" style="margin: 5%" alt="The metrics filter showing the option to select unregistered operations">
+<img
+  src="../img/operation-registry/metrics-filter.png"
+  width="50%"
+  style="margin: 5%"
+  alt="The metrics filter showing the option to select unregistered operations"
+/>
 
 #### Variant/tag awareness
 
