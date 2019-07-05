@@ -3,11 +3,7 @@ title: Securing your graph
 description: How to secure your graph by enforcing a safelist of registered operations
 ---
 
-import {
-  ExpansionPanel,
-  ExpansionPanelList,
-  ExpansionPanelListItem
-} from "gatsby-theme-apollo-docs/mdx/components/expansion-panel";
+import { ExpansionPanel } from "gatsby-theme-apollo-docs";
 
 ## Overview
 
@@ -177,7 +173,7 @@ const server = new ApolloServer({
 });
 ```
 
-<ExpansionPanel title="Running Federation using the Gateway? Since Apollo Gateway runs atop Apollo Server, everything here should still work as-is!">
+<ExpansionPanel title="Running Federation using the Apollo Gateway? These same steps should work!">
 
 The full setup:
 
