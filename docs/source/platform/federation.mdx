@@ -13,6 +13,33 @@ If you're running your GraphQL infrastructure using GraphQL services that comply
 ## Inspecting your Graph
 > Using the `apollo service:list` command or the UI to understand your graph
 
+To understand the implementing services that make up your graph, you can use both the Apollo command line interface as well as the Apollo Platform.
+
+Use `apollo service:list` in the command line to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated.
+
+Here's what running `apollo service:list` will look like:
+
+```
+~$ apollo service:list
+  ✔ Loading Apollo Project
+  ✔ Fetching list of services for graph service-list-federation-demo
+
+name       URL                            last updated
+─────────  ─────────────────────────────  ────────────────────────
+Accounts   http://localhost:4001/graphql  3 July 2019 (2 days ago)
+Inventory  http://localhost:4004/graphql  3 July 2019 (2 days ago)
+Products   http://localhost:4003/graphql  3 July 2019 (2 days ago)
+Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
+
+View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
+```
+
+Navigate to the Services tab in the Apollo Platform to see an interactive list of information about the implementing services in your graph.
+
+<div style="text-align:center">
+    <img src="../images/ServicesListPlatform.png" alt="Service List">
+</div>
+
 [//]: # (Description: How to see the current services in your graph. This section might be expanded later to discuss showing history, composition results, etc. This section should include some screenshots)
 [//]: # (Assignee: Maya)
 [//]: # (Reviewer: Justin)
