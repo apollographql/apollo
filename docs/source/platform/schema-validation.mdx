@@ -7,7 +7,7 @@ description: Check if schema changes are safe or breaking by comparing against l
 [//]: # (Assignee: Caydie)
 [//]: # (Reviewer: Jake)
 
-There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
+There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple organizations or teams are working on different parts of the same graph, these kinds of breaking changes are especially critical to monitor. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
 
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
@@ -19,7 +19,7 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 ## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
-If your graph is composed using federation, you can also use the `apollo service:check` command to validate individual service changes by providing a service name.
+If your graph is composed using federation, you can also use the `apollo service:check` command to validate individual service changes by providing a service name. However, unlike running service check on a non-federated service, Engine first needs to run composition on the proposed partial schema with the current list of implementing services and their partial schemas. Composition must pass before validation can continue.
 
 Here's how it works:
 
@@ -32,9 +32,22 @@ Here's how it works:
 1. Engine returns the schema diff and indicates any breaking changes found.
 1. The CLI prints the output of this check with a link to view more details in the Engine UI.
 
+Here's how it works for federation:
+
+1. You _also_ run `apollo service:check` but instead you provide a service name like so: `apollo service:check --federated --serviceName=example --endpoint=http://localhost:4000/graphql`
+ The proposed partial schema for that provided service is then sent to Engine's schema registry where it will attempt to compose the partial schema with the current schema.
+1. If composition fails then we do not continue with validation and terminate early.
+1. If composition succeeds Engine then creates a diff between the local partial schema and the most recently published schema in the registry.
+1. Engine walks through the partial schema diff change-by-change and compares against the operation list see if the changes will affect the behavior of any operations.
+1. Engine returns the schema diff and indicates any breaking changes found.
+1. The CLI prints the output of this check with a link to view more details in the Engine UI. 
+
 ### Breaking change detection
 
 // [TODO: Add a federation-specific paragraph about composition errors]
+
+Since federation involves merging the partial schema you're running service check against with the current schema, it's possible to run into compposition errors. For example, if you try to run validation on a partial schema with conflicting type names as the current schema then this will definitely result in a composition error. 
+At the moment composition warnings are also grouped together with composition errors. Composition warnings might involve referencing another service's deprecated field.
 
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
 
