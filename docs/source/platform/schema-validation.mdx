@@ -7,7 +7,7 @@ description: Check if schema changes are safe or breaking by comparing against l
 [//]: # (Assignee: Caydie)
 [//]: # (Reviewer: Jake)
 
-There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple organizations or teams are working on different parts of the same graph, these kinds of breaking changes are especially critical to monitor. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
+There are many types of schema changes that can be potentially breaking to clients. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple organizations or teams are working on different parts of the same graph, these kinds of breaking changes are especially critical. Making these types of changes can be safe as long as you have the right tools in place.
 
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
@@ -16,15 +16,15 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 ## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
-If your graph is composed using federation, you can also use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. However, unlike running service check on a non-federated service, Engine first needs to run composition on the proposed partial schema with the current list of implementing services and their partial schemas. Composition must pass before validation can continue.
+With a federated graph, you will use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
-But wait... What exactly is composition? 🤔 In order to have different implementing services contribute to the same graph, there needs to be a way to combine each implementing service's partial schemas into one large data graph. Engine's composition algorithm does exactly this.
+What exactly is composition? Composition is just Engine's algorith to combine each implementing service's partial schema into one data graph.
 
 Here's how schema validation works for federated and non-federated services:
 
-1. You run `apollo service:check` locally or in CI. For federated services run the same command but add `--serviceName=ExampleService --endpoint=http://loocalhost:4000/graphql` to the end. The proposed schema/partial schema (if using federation) is sent to Engine's schema registry.
-1. If you're using federation, Engine's schema registry will attempt to compose the partial schema with the current schema. If composition fails then we do not continue with validation and exit early.
-1. Engine creates a diff between the local schema and the most recently published schema in the registry. For federation this step happens after composition passes.
+1. Run `apollo service:check` locally or in CI. For federated services, add `--serviceName=ExampleService --endpoint=http://loocalhost:4000/graphql`. The proposed schema, or partial schema if using federation, is then sent to Engine's schema registry.
+1. If using federation, Engine's schema registry will attempt to compose the partial schema with the current schema. If composition fails, then we do not continue with validation.
+1. Engine creates a diff between the local schema and the most recently published schema in the registry.
 1. Engine fetches a list of all operations sent to your graph in the last day (time window is [configurable](#adjusting-validation-parameters)).
 1. Engine walks through the schema diff change-by-change and compares against the operation list to see if the changes will affect the behavior of any operations.
 1. Engine returns the schema diff and indicates any breaking changes found.
@@ -32,8 +32,7 @@ Here's how schema validation works for federated and non-federated services:
 
 ### Breaking change detection
 
-Since federation involves merging the partial schema you're running service check against with the current schema, it's possible to run into compposition errors. For example, if you try to run validation on a partial schema with conflicting type names as the current schema then this will definitely result in a composition error. 
-
+The first breaking change Engine can capture is a federated service being unable to compose with the rest of a federated graph. Types of composition failures are documented [here]().
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
 
 If schema validation detects that a proposed schema has a potentially breaking change, the `apollo service:check` command will return a non-0 exit code. Apollo schema validation will detect breaking changes according to the following rules:
