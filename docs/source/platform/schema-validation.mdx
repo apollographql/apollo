@@ -32,8 +32,6 @@ Here's how schema validation works for federated and non-federated services:
 
 ### Breaking change detection
 
-// [TODO: Add a federation-specific paragraph about composition errors]
-
 Since federation involves merging the partial schema you're running service check against with the current schema, it's possible to run into compposition errors. For example, if you try to run validation on a partial schema with conflicting type names as the current schema then this will definitely result in a composition error. 
 
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
