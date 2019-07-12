@@ -155,14 +155,12 @@ These are change types detected ny the `apollo service:check` command, but they 
 [//]: # (Assignee: Justin)
 [//]: # (Reviewer: Caydie)
 
-// [TODO: Add a federation-specific section on additional details that come up and change the screenshot of the UI to include service name].
-
-Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project.
+Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project. With federation, just add the `--serviceName` flag at the end of the command.
 
 Running `apollo service:check` will output the diff of all schema changes found and highlight changes determined to be breaking. Here's an example:
 
 ```console
-$ npx apollo service:check --tag=prod
+$ npx apollo service:check --tag=prod --serviceName=ExampleService
   ✔ Loading Apollo Project
   ✔ Validated local schema against tag prod on service engine
   ✔ Compared 8 schema changes against 110 operations over the last 24 hours
