@@ -16,9 +16,8 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 ## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
-With a federated graph, you will use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
-What exactly is composition? Composition is just Engine's algorithm to combine each implementing service's partial schema into one data graph.
+With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
 Here's how schema validation works for federated and non-federated services:
 
