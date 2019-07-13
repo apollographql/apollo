@@ -14,6 +14,25 @@ The key difference between running GraphQL with a monolithic server instead of r
 
 The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability. Since the GraphQL schema is the central hub of the data in your graph, it's important to [validate](<LINK_TO_SCHEMA_VALIDATION>) that any changes to a particular service's partial schema won't cause breakages in other parts of your graph, or affect existing [operations made by clients](LINK_TO_METRICS), so you can scale your data graph with confidence.
 
+## Registering your graph
+
+If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.  
+
+To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName` and `--endpoint` tags. The CLI will know where to fetch your local partial schema based on this endpoint. Note that running `apollo service:push` on any implementing service also registers the overall schema of the graph and writes files to GCS.
+
+As an example, running service push on a local “Accounts” implementing service might look like:  
+
+```
+~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
+id      schema                        tag
+──────  ────────────────────────────  ───────
+190331  service-list-federation-demo  current
+```
+
+Pushing an implementing service to Apollo will update the [Services tab](https://www.apollographql.com/docs/platform/federation#inspecting-your-graph/).
+
 ## Inspecting your Graph
 > Using the `apollo service:list` command or the UI to understand your graph
 
@@ -48,26 +67,6 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
 [//]: # (Description: How to see the current services in your graph. This section might be expanded later to discuss showing history, composition results, etc. This section should include some screenshots)
 [//]: # (Assignee: Maya)
 [//]: # (Reviewer: Justin)
-
-## Registering your graph
-
-If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.  
-
-To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName` and `--endpoint` tags. The CLI will know where to fetch your local partial schema based on this endpoint. Note that running `apollo service:push` on any implementing service also registers the overall schema of the graph and writes files to GCS.
-
-As an example, running service push on a local “Accounts” implementing service might look like:  
-
-```
-~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
-  ✔ Loading Apollo Project
-  ✔ Uploading service to Engine
-id      schema                        tag
-──────  ────────────────────────────  ───────
-190331  service-list-federation-demo  current
-```
-
-Pushing an implementing service to Apollo will update the [Services tab](https://www.apollographql.com/docs/platform/federation#inspecting-your-graph/).
-
 
 ## Validating changes to your graph
 
