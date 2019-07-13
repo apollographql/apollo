@@ -3,10 +3,6 @@ title: Tracking your GraphQL schema
 description: A central hub for your GraphQL API
 ---
 
-[//]: # (Description: This doc should be updated to make it clear that if you're running your graph using federation, you should be registering your **services** and if you're running your graph as a monolith, you should register your overall schema. There is an opportunity here to consider that everyone could register even monoliths as graphs with a single implementing service, though my gut feeling is that might be more confusing as a start to most people who won't need to think about federation. Basically, the people who come to this doc without federation should be easily able to ignore the federation-specific stuff, and the people who come to this doc for federation needs should be able to find the "new" information easily. We should make sure to use the same pattern, whether it be a toggle or italics or whatever, from the schema validation docs in #503.)
-[//]: # (Assignee: Jake)
-[//]: # (Reviewer: Chang, Caydie)
-
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/mdx/project-config-panel.mdx';
 
 Apollo includes a schema registry that serves as a [central hub](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) for tracking your GraphQL schema. Adopting a shared schema registry for your project has many benefits:
@@ -16,11 +12,8 @@ Apollo includes a schema registry that serves as a [central hub](https://princip
 - Having a registry allows you to disable introspection in production – a recommended best practice for good security.
 - Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) can automatically fetch your schema from the registry and provide intellisense like field descriptions and deprecations directly in your editor.
 - Apollo's registry lets you track related _variants_ of a schema, like staging or alpha versions. It's helpful to have these schema definitions handy without having to juggle running servers that implement them.
-- For a [federated](https://www.apollographql.com/docs/apollo-server/federation/introduction/) graph, Apollo supports registering individual services that make up your graph and associating them with partial schemas. This separates ownership across implementing services and allows you to track the composition of your graph. See below for details on registering a schema with a federation. 
 
 ## Using the Schema Registry
-
-// TODO: [Wherever the setup is for `apollo.config.js`, the assignee should link to it here and update the content there with any changes necessary]
 
 To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project.
 
@@ -50,27 +43,6 @@ id      schema        tag
 ──────  ────────────  ───────
 190330  example-4218  current
 ```
-
-## Registering a schema with Federation
-
-If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.
-
-To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName` and `--endpoint` tags. The CLI will know where to fetch your local partial schema based on this endpoint. Note that running `apollo service:push` on any implementing service also registers the overall schema of the graph and writes files to GCS.
-
-As an example, running service push on a local “Accounts” implementing service might look like: 
-
-```
-~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
-  ✔ Loading Apollo Project
-  ✔ Uploading service to Engine
-
-
-id      schema                        tag
-──────  ────────────────────────────  ───────
-190331  service-list-federation-demo  current
-```
-
-Pushing an implementing service to Apollo will update the [Services tab](https://www.apollographql.com/docs/platform/federation/#inspecting-your-graph/).
 
 ### Hooking into CI
 
@@ -116,13 +88,9 @@ jobs:
 
 Changes made to your graph's schema over time can be viewed in [Engine](https://engine.apollographql.com) by browsing to the History page for your graph. Each time you push a new version of your schema, it will appear in your graph's history along with a list of the changes introduced in that version.
 
-> Note: Currently, you can only see the history of your graph's composed schema, not of partial schemas.
-
 ![Schema history page in the Engine UI](../images/schema-history.png)
 
 ## Managing environments
-
-// [TODO: Question -- should we update these to use a `--variant` option instead? Does that work?]
 
 Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to _tags_).
 

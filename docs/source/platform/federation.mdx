@@ -51,6 +51,24 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
 
 ## Registering your graph
 
+If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.  
+
+To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName` and `--endpoint` tags. The CLI will know where to fetch your local partial schema based on this endpoint. Note that running `apollo service:push` on any implementing service also registers the overall schema of the graph and writes files to GCS.
+
+As an example, running service push on a local “Accounts” implementing service might look like:  
+
+```
+~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
+id      schema                        tag
+──────  ────────────────────────────  ───────
+190331  service-list-federation-demo  current
+```
+
+Pushing an implementing service to Apollo will update the [Services tab](https://www.apollographql.com/docs/platform/federation/#inspecting-your-graph/).
+
+
 ## Validating changes to your graph
 
 [//]: # (explain how schema validation works with federation, highlighting that there's an extra step in the `apollo service:check` command which will build the composed schema to run traffic validation against. Ideally, this change could be done as a toggle either for each section or for the entire page where the extra details and steps are added for federation. If the toggle is difficult, then we should simply have a pattern that we use, like using a different color or an italicized font for the parts of the process that are federation-specific)
