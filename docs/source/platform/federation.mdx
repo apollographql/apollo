@@ -94,6 +94,10 @@ With a federated graph, use the `apollo service:check` command to validate indiv
 [//]: # (Assignee: Adam Z)
 [//]: # (Reviewer: Trevor)
 
+In small scale cases it can be sufficient to define the list of services comprising a federated graph directly within the gateway, and manually update the list and restart the server as services are modified and created. However for larger scale projects it is helpful to be able to remotely manage the gateway, such that new services may be added, or existing services modified, all with zero downtime.
+
+For these use cases, a gateway can be configured to pull a remotely hosted service list from the [Schema Registry](https://www.apollographql.com/docs/platform/schema-registry/) on `Apollo Dashboard`. This is `Managed Federation`, and it is a key component of building a robust federated graph that can be concurrently developed by teams of any size.
+
 # Running Federation in Production
 > With a focus on reliability and robustness
 
@@ -146,15 +150,6 @@ For instance, in order to have a canary deployment, you might maintain two produ
   ```
 
 Because you can [tag metrics with variants](https://www.apollographql.com/docs/platform/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
-
-## Managed Federation
-[//]: # (Description: This section should discuss the basic idea of managed federation without getting into specific and talk vaguely of the problem of service rollout and looking for a balance of automation and observability, workflow, etc.)
-[//]: # (Assignee: Jackson)
-[//]: # (Reviewer: Adam)
-
-In small scale cases it can be sufficient to define the list of services comprising a federated graph directly within the gateway, and manually update the list and restart the server as services are modified and created. However for larger scale projects it is helpful to be able to remotely manage the gateway, such that new services may be added, or existing services modified, all with zero downtime.
-
-For these use cases, a gateway can be configured to pull a remotely hosted service list from the [Schema Registry](https://www.apollographql.com/docs/platform/schema-registry/) on `Apollo Dashboard`. This is `Managed Federation`, and it is a key component of building a robust federated graph that can be concurrently developed by teams of any size.
 
 ### Controlling rollout
 
