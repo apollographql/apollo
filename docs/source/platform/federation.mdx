@@ -156,10 +156,6 @@ In small scale cases it can be sufficient to define the list of services compris
 
 For these use cases, a gateway can be configured to pull a remotely hosted service list from the [Schema Registry](https://www.apollographql.com/docs/platform/schema-registry/) on `Apollo Dashboard`. This is `Managed Federation`, and it is a key component of building a robust federated graph that can be concurrently developed by teams of any size.
 
-### Overview
-
-// TODO: Document the overview of managing federation workflow, happy path
-
 ### Controlling rollout
 
 To begin, ensure all component services are up and running, and the working directory has a `.env` file containing the appropriate `ENGINE_API_KEY` for your federated service. Then, upload each service to the gateway through `Apollo CLI`:
