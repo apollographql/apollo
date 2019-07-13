@@ -216,7 +216,13 @@ In the event a network failure prevents an `Apollo Server` gateway from contacti
 
 #### Inspecting Query Plans
 
-When the gateway receives a new query, it generates a query plan that defines the sequence of requests the gateway will send to the necessary downstream services. Inspecting a query plan can be a helpful tool in understanding the gateway and exploring how directives like [`@requires`](/federation/advanced-features/#computed-fields) and [`@provides`](/federation/advanced-features/#using-denormalized-data) can help optimize query plans. To make it easy to access query plans, the `@apollo/gateway` package includes a build of GraphQL Playground that adds a query plan inspector.
+<!-- 
+add links to advanced-features for 
+- [`@requires`](/federation/advanced-features/#computed-fields)`
+-`[`@provides`](/federation/advanced-features/#using-denormalized-data)`
+ -->
+
+When the gateway receives a new query, it generates a query plan that defines the sequence of requests the gateway will send to the necessary downstream services. Inspecting a query plan can be a helpful tool in understanding the gateway and exploring how directives like `@requires` and `@provides` can help optimize query plans. To make it easy to access query plans, the `@apollo/gateway` package includes a build of GraphQL Playground that adds a query plan inspector.
 
 
 ![playground](../images/playground.png)
