@@ -3,6 +3,8 @@ title: Validating schema changes
 description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
 
+There are many types of schema changes that can be potentially breaking to clients, like removing a field, if made without special consideration. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In reality, making these types of changes to a schema can be very safe as long as you have tools in place to ensure that no queries are broken in the process.
+
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
 > **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
@@ -11,10 +13,9 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
 
-Here's how schema validation works for federated and non-federated services:
+Here's how it works:
 
-1. Run `apollo service:check` locally or in CI. For federated services, add `--serviceName=ExampleService --endpoint=http://loocalhost:4000/graphql`. The proposed schema, or partial schema if using federation, is then sent to Engine's schema registry.
-1. If using federation, Engine's schema registry will attempt to compose the partial schema with the current schema. If composition fails, then we do not continue with validation.
+1. You run `apollo service:check` locally or in CI. The proposed schema is sent to Engine's schema registry.
 1. Engine creates a diff between the local schema and the most recently published schema in the registry.
 1. Engine fetches a list of all operations sent to your graph in the last day (time window is [configurable](#adjusting-validation-parameters)).
 1. Engine walks through the schema diff change-by-change and compares against the operation list to see if the changes will affect the behavior of any operations.
@@ -23,7 +24,6 @@ Here's how schema validation works for federated and non-federated services:
 
 ### Breaking change detection
 
-The first breaking change Engine can capture is a federated service being unable to compose with the rest of a federated graph. Types of composition failures are documented [here]().
 Not all schema changes are potentially breaking. Some changes, like adding a field, will always be safe and never cause unexpected behavior for active clients. Other changes, like removing a field or changing a return type, can potentially affect the behavior of clients making queries that use those fields. These are what we consider potentially breaking changes.
 
 If schema validation detects that a proposed schema has a potentially breaking change, the `apollo service:check` command will return a non-0 exit code. Apollo schema validation will detect breaking changes according to the following rules:
@@ -142,11 +142,7 @@ These are change types detected ny the `apollo service:check` command, but they 
 
 ### Validation response
 
-[//]: # (Description: Additions and changes to this section to show how the response changes with federation, using the same "extra stuff" approach as is decided on for the above)
-[//]: # (Assignee: Justin)
-[//]: # (Reviewer: Caydie)
-
-Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project. With federation, just add the `--serviceName` flag at the end of the command.
+Running a schema validation check is as simple as running `apollo service:check` on the command line from within a service repository that is configured to be an Apollo project.
 
 Running `apollo service:check` will output the diff of all schema changes found and highlight changes determined to be breaking. Here's an example:
 
@@ -254,7 +250,7 @@ To install the Apollo Engine integration on GitHub, go to [https://github.com/ap
 
 ### Posting a comment to your PRs
 
-For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
+For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
 
 The CLI supports passing a `--markdown` flag to `apollo service:check`, which outputs the results of schema validation in a markdown format specifically. This markdown can be piped directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
