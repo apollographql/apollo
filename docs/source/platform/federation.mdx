@@ -1,5 +1,5 @@
 ---
-title: Federation on the Apollo Platform
+title: Federation
 description: Leverage the Apollo Platform to reliably run Federation in production
 ---
 [//]: # (Description: Introductory content, discussing the overall model of the federation platform, why you would want to register partial schemas, and framing the concept of thinking about running federation as a coordination and collaboration problem to motivate the tools we've built)
@@ -16,11 +16,11 @@ The Apollo GraphQL platform provides tools to help ensure that this increase in 
 
 ## Registering your graph
 
-If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.  
+If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.
 
 To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName` and `--endpoint` tags. The CLI will know where to fetch your local partial schema based on this endpoint. Note that running `apollo service:push` on any implementing service also registers the overall schema of the graph and writes files to GCS.
 
-As an example, running service push on a local “Accounts” implementing service might look like:  
+As an example, running service push on a local “Accounts” implementing service might look like:
 
 ```
 ~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
@@ -74,9 +74,9 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
 [//]: # (Assignee: Caydie)
 [//]: # (Reviewer: Jake)
 
-There are many types of schema changes that can be potentially breaking to clients. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple teams are working on different parts of the same graph, these kinds of breaking changes are especially critical. Making these types of changes can be safe as long as you have the right tools in place.   
+There are many types of schema changes that can be potentially breaking to clients. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple teams are working on different parts of the same graph, these kinds of breaking changes are especially critical. Making these types of changes can be safe as long as you have the right tools in place.
 
-With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.  
+With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
 
 > Using the `apollo service:push` and `apollo service:check` command to track changes to your graph
@@ -133,7 +133,7 @@ With [managed federation](https://www.apollographql.com/docs/apollo-server/feder
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry](https://www.apollographql.com/docs/platform/schema-registry), one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
 
-1. Check changes in "foo" against `prod` and `prod-canary`:  
+1. Check changes in "foo" against `prod` and `prod-canary`:
    ```
    apollo service:check --tag=prod --serviceName=foo && apollo service:check --tag=prod-canary --serviceName=foo
    ```
@@ -204,8 +204,8 @@ In the event a network failure prevents an `Apollo Server` gateway from contacti
 
 ### Inspecting Query Plans
 
-<!-- 
-add links to advanced-features for 
+<!--
+add links to advanced-features for
 - [`@requires`](/federation/advanced-features/#computed-fields)`
 -`[`@provides`](/federation/advanced-features/#using-denormalized-data)`
  -->
