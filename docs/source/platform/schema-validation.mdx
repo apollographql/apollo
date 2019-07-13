@@ -3,12 +3,6 @@ title: Validating schema changes
 description: Check if schema changes are safe or breaking by comparing against live server traffic
 ---
 
-[//]: # (Description: Changes to this page that explain, in parallel with the monolithic version, how schema validation works with federation, highlighting that there's an extra step in the `apollo service:check` command which will build the composed schema to run traffic validation against. Ideally, this change could be done as a toggle either for each section or for the entire page where the extra details and steps are added for federation. If the toggle is difficult, then we should simply have a pattern that we use, like using a different color or an italicized font for the parts of the process that are federation-specific)
-[//]: # (Assignee: Caydie)
-[//]: # (Reviewer: Jake)
-
-There are many types of schema changes that can be potentially breaking to clients. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple organizations or teams are working on different parts of the same graph, these kinds of breaking changes are especially critical. Making these types of changes can be safe as long as you have the right tools in place.
-
 Apollo provides a tool to protect for exactly this scenario called **schema validation**.
 
 > **Note:** Schema validation is an Apollo Platform feature available on the [Team and Enterprise plans](https://www.apollographql.com/plans/) of [Apollo Engine](https://engine.apollographql.com).
@@ -16,8 +10,6 @@ Apollo provides a tool to protect for exactly this scenario called **schema vali
 ## How it works
 
 Schema validation is run through the Apollo CLI by executing the `apollo service:check` command. Apollo will generate a diff between your local schema and your most recently registered schema, then validate that the changes are safe by checking if any queries actively running against your graph will be affected.
-
-With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
 Here's how schema validation works for federated and non-federated services:
 
@@ -159,7 +151,7 @@ Running a schema validation check is as simple as running `apollo service:check`
 Running `apollo service:check` will output the diff of all schema changes found and highlight changes determined to be breaking. Here's an example:
 
 ```console
-$ npx apollo service:check --tag=prod --serviceName=ExampleService
+$ npx apollo service:check --tag=prod
   ✔ Loading Apollo Project
   ✔ Validated local schema against tag prod on service engine
   ✔ Compared 8 schema changes against 110 operations over the last 24 hours
