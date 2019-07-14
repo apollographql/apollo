@@ -144,7 +144,7 @@ Let's go over some of the methods we created in `src/datasources/user.js` to fet
 
 Now that we've built our `LaunchAPI` data source to connect our REST API and our `UserAPI` data source to connect our SQL database, we need to add them to our graph API.
 
-Adding our data sources is simple, just create a `dataSources` property on your `ApolloServer` that corresponds to a function that returns an object with your instantiated data sources. Let's see what that looks like by navigating to `src/index.js` and adding the code below:
+Adding our data sources is simple. Just create a `dataSources` property on your `ApolloServer` that corresponds to a function that returns an object with your instantiated data sources. Let's see what that looks like by navigating to `src/index.js` and adding the code below:
 
 _src/index.js_
 
