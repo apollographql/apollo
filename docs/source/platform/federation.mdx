@@ -1,20 +1,28 @@
 ---
 title: Federation
-description: Leverage the Apollo Platform to reliably run Federation in production
+description: Leveraging the Apollo Graph Manager for Federation
 ---
 [//]: # (Description: Introductory content, discussing the overall model of the federation platform, why you would want to register partial schemas, and framing the concept of thinking about running federation as a coordination and collaboration problem to motivate the tools we've built)
 [//]: # (Assignee: Chang)
 [//]: # (Reviewer: Caydie, James)
 
+## The Apollo Graph Manager
+
+The goal of the Apollo Graph Manager is to provide a suite of tools to help teams coordinate over their data graph, using schemas as the media for that communication. With federation, the Graph Manager provides control and observability over the distributed architecture that supports your graph, including support for [federated traces](https://www.apollographql.com/docs/apollo-server/federation/tracing), [validation](/platform/schema-validation/) of gateway changes, and support for [managed deployments](/platform/federation/#managed-deployment).
+
+### At a glance
+
+The Graph Manager maintains both the [current state](https://www.apollographql.com/docs/platform/schema-registry/#using-the-schema-registry) of your graph as well as the [history](https://www.apollographql.com/docs/platform/schema-registry/#viewing-schema-change-history) of changes to that graph. When running GraphQL as a monolithic service with a static schema, the state of a data graph is well-represented by two components: operations and the schema. The schema represents what data is available in the graph, and operations, whether [registered](https://www.apollographql.com/docs/platform/operation-registry/#3-register-operations-from-your-client-bundle) or [collected dynamically](https://www.apollographql.com/docs/apollo-server/features/metrics/), represent the usage of that data graph.
+
+![Graph State](../img/federation/graph-current-state.png)
+
+The concept of a Federated Graph adds a single but important piece into the model for running and coordinating over a Graph: **One graph is composed of multiple implementing services**. This means that the state of the graph includes the set of services that implement it as well as _their_ states.
+
+The core concept of the Graph Manager in supporting federation is that each implementing service's partial schema should be tracked the same way as a monolithic data graph would be, and that the state of the Graph should be a reflection of the state of all of its dependencies.
+
 Organizations expose their data as a single graph in order to have a complete view of all of their organizational data along with well-defined and reusable patterns for data access, observability, security, caching, and other API-level considerations. However, even though exposing all of this data in a unified way has [huge benefits](/intro/benefits/), it comes with additional coordination across multiple teams, all of whom own a portion of the data graph. As an organization, ideally individual teams are able to work independently on GraphQL microservices without needing to coordinate changes with other teams. By the same token, you want to ensure that changes from each team are safe for the entirety of the graph and don't violate any assumptions or cause conflicts with other service teams.
 
-The goal of the Apollo Platform for Federation is to provide a suite of tools to help teams coordinate safe changes to their graph. Similarly, the Apollo Platform provides control and observability over the distributed architecture that supports your graph, including support for [federated traces](<LINK_TO_FEDERATED_METRICS_DOCS>), hooks into [gateway lifecycle](LINK_TO_GATEWAY_LIFECYCLE_DOCS), and support for [managed deployments](LINK_TO_MANAGED_DEPLOYMENT_DOCS).
-
-The key difference between running GraphQL with a monolithic server instead of running multiple services orchestrated by a [gateway](https://www.apollographql.com/docs/apollo-server/federation/implementing/#running-a-gateway) is that your GraphQL schema is dynamically defined by composing an overall schema from the [partial schemas](<LINK_TO_GLOSSARY>) of GraphQL services that comply with the [federation spec](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/). This empowers teams to own a portion of the graph, and move faster by allowing changes to be independently developed and deployed.
-
-The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability. Since the GraphQL schema is the central hub of the data in your graph, it's important to [validate](<LINK_TO_SCHEMA_VALIDATION>) that any changes to a particular service's partial schema won't cause breakages in other parts of your graph, or affect existing [operations made by clients](LINK_TO_METRICS), so you can scale your data graph with confidence.
-
-## Registering your graph
+## Registering your implementing services
 
 If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry.
 
@@ -23,7 +31,7 @@ To push a single implementing service to Apollo, run `apollo service:push` with 
 As an example, running service push on a local “Accounts” implementing service might look like:
 
 ```
-~$apollo service:push --serviceName="Accounts" --endpoint="http://localhost:4001/"
+~$apollo service:push --serviceName="Accounts" --serviceURL="http://accounts-graphql:4001/ --endpoint="http://localhost:4001/"
   ✔ Loading Apollo Project
   ✔ Uploading service to Engine
 id      schema                        tag
@@ -74,7 +82,9 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
 [//]: # (Assignee: Caydie)
 [//]: # (Reviewer: Jake)
 
-There are many types of schema changes that can be potentially breaking to clients. For safety, some organizations take the approach of _never_ making these types of changes, but this leads to an ever-growing schema and reduced API flexibility over time. In the case of federated services where multiple teams are working on different parts of the same graph, these kinds of breaking changes are especially critical. Making these types of changes can be safe as long as you have the right tools in place.
+Federation allows teams to work independently on implementing services without needing to coordinate over a gigantic and all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/). The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
+
+In particular, along with [validating overall schema changes against known operations](https://www.apollographql.com/docs/platform/schema-validation/), running `apollo service:check` for an implementing service will ensure that the overall Graph still composes to a valid schema, and will output any violated dependencies if present.
 
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
