@@ -20,9 +20,9 @@ The Graph Manager maintains both the [current state](https://www.apollographql.c
 
 The concept of a Federated Graph adds a single but important piece into the model for running and coordinating over a Graph: **One graph is composed of multiple implementing services**. This means that the state of the graph includes the set of services that implement it as well as _their_ states.
 
-The core concept of the Graph Manager in supporting federation is that each implementing service's partial schema should be tracked the same way as a monolithic data graph would be, and that the state of the Graph should be a reflection of the state of all of its dependencies.
+The core concept of the Graph Manager in supporting federation is that each implementing service's partial schema should be tracked the same way as a monolithic data graph would be. Additionally, the state of the graph should be a reflection of the state of all of its implementing services.
 
-## Registering your implementing services
+## Registering implementing services
 
 If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry. Running `apollo service:push` on any implementing service also registers the overall schema of the graph and updates the graph's [managed configuration](#managed-federation).
 
@@ -95,14 +95,13 @@ Because configuration changes can affect the query planner, it's highly recommen
 
 ### Using variants
 
-TODO: Pretty quick and small section, pointing out that you can use the `--tag` flag for variants and linking back to the section in the schema registry docs.
+The service registry supports registering services to graph variants by using the `--tag` flag. This will not only register your services to the graph variant, but will also register the resulting schema and managed configuration to the same variant. See the section on [managing environments](https://www.apollographql.com/docs/platform/schema-registry/#managing-environments) to learn more about use cases for variants. Also make sure to [tag metrics](https://www.apollographql.com/docs/platform/schema-registry/#associating-metrics-with-a-variant) with the same variant for usage validation in `service:check`.
 
 ### Removing a service from the registry
 
-TODO: Document how to run service:delete and what it looks like
-ALSO: We shouldn't need `--federated` here (@zionts to fix, nag if not fixed pls)
+Removing an implementing service from the graph works similarly to registering a service. Instead of `service:push` call `service:delete`, and you can also specify the graph variant.
 ```
-$ npx apollo@2.15.1-alpha.1 service:delete --serviceName kotlin --tag master --engine https://engine-staging-graphql.apollographql.com/api/graphql --federated
+$ apollo service:delete --serviceName=launches --tag=staging
   ✔ Loading Apollo Project
   ✔ Removing service from Engine
 ```
@@ -138,34 +137,25 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
     </img>
 </div>
 
-[//]: # (Description: How to see the current services in your graph. This section might be expanded later to discuss showing history, composition results, etc. This section should include some screenshots)
-[//]: # (Assignee: Maya)
-[//]: # (Reviewer: Justin)
-
 ## Validating changes to your graph
-
-[//]: # (explain how schema validation works with federation, highlighting that there's an extra step in the `apollo service:check` command which will build the composed schema to run traffic validation against. Ideally, this change could be done as a toggle either for each section or for the entire page where the extra details and steps are added for federation. If the toggle is difficult, then we should simply have a pattern that we use, like using a different color or an italicized font for the parts of the process that are federation-specific)
-[//]: # (Assignee: Caydie)
-[//]: # (Reviewer: Jake)
-
-
 > Using the `apollo service:check` command to validate changes to your graph
 
-Federation allows teams to work independently on implementing services without needing to coordinate over a gigantic and all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/). The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
+Federation allows teams to work independently on implementing services without needing to coordinate over an unwieldy, all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) and not breaking the ability for the graph to compose. The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
 
-In particular, along with [validating overall schema changes against known operations](https://www.apollographql.com/docs/platform/schema-validation/), running `apollo service:check` for an implementing service will ensure that the overall Graph still composes to a valid schema, and will output any violated dependencies if present.
+In particular, along with [validating overall schema changes against known operations](https://www.apollographql.com/docs/platform/schema-validation/), running `apollo service:check` for an implementing service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
 
 ### What happens
 
-When running `service:check` on a federated service, Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails then validation ends and the results will be returned to the user. Note that running `service:check` will not update the graph whether or not composition fails or passes.
+When running `service:check` on a federated service, Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `service:check` will never update the graph.
+
 ### How to do it
 
-With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. 
+With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
 
 ### Successful checks
 
 ```
-$ npx apollo@2.15.1-alpha.1 service:check --serviceName launches --endpoint http://localhost:4001/api/graphql --tag current
+$ npx apollo@2.15.1-alpha.1 service:check --serviceName=launches --endpoint=http://localhost:4001/api/graphql
   ✔ Loading Apollo Project
   ✔ Found 0 graph composition errors for service launches on graph space-explorer
   ✔ Validated composed schema against tag current on graph space-explorer
@@ -182,7 +172,7 @@ There are two types of failures that can occur during validation: failed usage c
 
 #### Failed composition
 ```
-$ ../apollo-tooling/packages/apollo/bin/run service:check --serviceName launches --endpoint http://localhost:4001/api/graphql --tag current
+$ apollo service:check --serviceName=launches --endpoint=http://localhost:4001/api/graphql
   ✔ Loading Apollo Project
   ✖ Found 1 graph composition errors for service launches on graph space-explorer
     → Federated service composition was unsuccessful. Please see the reasons below.
@@ -197,7 +187,7 @@ launches  Mutation.scheduleLaunch                                               
 
 #### Failed usage checks
 ```
-$ ../apollo-tooling/packages/apollo/bin/run service:check --serviceName registry --endpoint http://localhost:4001/api/graphql --engine https://engine-staging-graphql.apollographql.com/api/graphql --tag staging --frontend https://engine-staging.apollographql.com
+$ apollo service:check --serviceName=launches --endpoint=http://localhost:4001/api/graphql
   ✔ Loading Apollo Project
   ✔ Found 0 graph composition errors for service registry on graph space-explorer
   ✔ Validated composed schema against tag current on graph space-explorer
@@ -210,22 +200,31 @@ FAIL    FIELD_REMOVED  `Mutation.scheduleLaunch` was removed
 View full details at: https://engine.apollographql.com/service/space-explorer/check/941c4fa2-c716-4df4-9fc5-130b88c8ebca
 ```
 
-<!--
-[//]: # (Description: An overview of how and when to use `apollo service:push` and `apollo service:check` in your CI/CD workflow, linking out to the specifics of usage in the specific docs (#502 and #503). Ideally this section includes some screenshots of the workflows in practice.)
-[//]: # (Assignee: James)
-[//]: # (Reviewer: Adam Z)
--->
-
 ## Managed federation
 > Taking control of how service changes bubble up to the Apollo Gateway
 
-[//]: # (Description: An overview of the concept of managed federation, linking out to the details on gateway defaults w/ an API key and the specfics on setting up the lifecycle options. Ideally this section has a diagram of managed federation lifecycle.)
-[//]: # (Assignee: Adam Z)
-[//]: # (Reviewer: Trevor)
+While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the implementing services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
 
-In small scale cases it can be sufficient to define the list of services comprising a federated graph directly within the gateway, and manually update the list and restart the server as services are modified and created. However for larger scale projects it is helpful to be able to remotely manage the gateway, such that new services may be added, or existing services modified, all with zero downtime.
+For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-implementing-services). To use the managed configuration provisioned by the Graph Manager, construct your Apollo gateway like so:
 
-For these use cases, a gateway can be configured to pull a remotely hosted service list from the [Schema Registry][] on `Apollo Dashboard`. This is `Managed Federation`, and it is a key component of building a robust federated graph that can be concurrently developed by teams of any size.
+```
+TODO: ACTUALLY DOCUMENT THE CORRECT INSTANTIATION
+const { ApolloServer } = require('apollo-server');
+
+const gatewayServer = new ApolloServer({
+  gateway: true,
+  engine: {
+    schemaTag: "prod",
+    apiKey: "service:foo:46234jrlvjkns9d",
+  },
+});
+
+(async () => {
+  gatewayServer.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
+})();
+```
 
 ### The model
 
