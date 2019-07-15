@@ -262,7 +262,7 @@ To install the Apollo Engine integration on GitHub, go to [https://github.com/ap
 
 ### Posting a comment to your PRs
 
-For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
+For teams using GitHub Enterprise, Bitbucket, and other source control tools, we recommend setting up your CI to post a comment on your PRs with the results of schema validation. Surfacing schema diffs and breaking changes directly in your PR will speed up your review workflow by saving you the time of searching your CI logs to check why validation didn't pass.
 
 The CLI supports passing a `--markdown` flag to `apollo service:check`, which outputs the results of schema validation in a markdown format specifically. This markdown can be piped directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
