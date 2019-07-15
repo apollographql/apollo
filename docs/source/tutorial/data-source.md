@@ -31,7 +31,7 @@ const { RESTDataSource } = require('apollo-datasource-rest');
 class LaunchAPI extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://api.spacexdata.com/v2/';
+    this.baseURL = 'https://api.spacexdata.com/v3/';
   }
 }
 
@@ -103,8 +103,8 @@ _src/datasources/launch.js_
 
 ```js
 async getLaunchById({ launchId }) {
-  const response = await this.get('launches', { flight_number: launchId });
-  return this.launchReducer(response[0]);
+  const response = await this.get(`launches/${launchId}`);
+  return this.launchReducer(response);
 }
 
 getLaunchesByIds({ launchIds }) {
