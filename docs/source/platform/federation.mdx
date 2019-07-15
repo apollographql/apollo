@@ -12,10 +12,10 @@ While federation empowers teams to scale GraphQL much faster than before, it als
 Based on our experience helping companies scale GraphQL across their organizations, there are several steps teams need to take to successfully run a federated graph in production. We recommend running through these steps after you've already [implemented a federated graph](https://www.apollographql.com/docs/apollo-server/federation/implementing/):
 
 1. [Register all federated services](#registering-federated-services) with the Apollo graph manager.
-1. [Configure Apollo Server](#connecting-apollo-server-to-the-registry) to connect to the registry.
+1. [Configure Apollo Server](#connecting-apollo-server-to-the-graph-manager) as a gateway to connect to the graph manager.
 1. [Turn on metrics](#metrics-and-observability) for your federated graph.
 1. [Validate changes](#validating-changes-to-the-graph) to the graph against production traffic.
-1. [Integrate your federated graph](#integrate-with-your-deployment-pipeline) into your deployment pipeline.
+1. [Integrate your federated graph](#integrating-with-your-deployment-pipeline) into your deployment pipeline.
 
 For current Apollo platform users looking to migrate their monolithic API to a federated graph, follow our [platform migration guide](#platform-migration-guide).
 
@@ -100,7 +100,7 @@ Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
 View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
 ```
 
-## Connecting Apollo Server to the registry
+## Connecting Apollo Server to the graph manager
 
 While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the federated services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
 
@@ -187,7 +187,7 @@ The gateway for the 'space-explorer@current' graph was NOT updated with a new sc
 
 The reasoning behind this functionality is that the service registry should always be the source of truth for what is running in your infrastructure. Even if that means that composition is failing in your infrastructure, the service registry should reflect that. However, you still want your gateway to function as it has been before the service deployment. Additionally, this functionality can be used to make dependent changes, like smoothly migrating a field from one service to another or introducing a circular service dependency.
 
-## Integrate with your deployment pipeline
+## Integrating with your deployment pipeline
 
 As an engineer working on a federated service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following worflow:
 
