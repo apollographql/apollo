@@ -274,27 +274,13 @@ On the other side of the equation, sits the gateway. The gateway is constantly l
 
 ### Integrating with CI / CD
 
-### Reliability
+### Reliability and security
 
-When operating as a managed gateway, `Apollo Server` will poll the [Schema Registry][] for updates to the registered service list at 10 second intervals. When a service list update does occur, `Apollo Server` will create a new composed schema from the federated services, and begin to roll over to serving the new schema. Existing in-flight operations on the old schema will continue to be processed while serving the new schema. For this reason, it can be helpful to serve the new schemas from new endpoints, such that no downtime is incurred during rollover.
-
-[Schema Registry]: /platform/schema-registry/
-
-In the event a network failure prevents an `Apollo Server` gateway from contacting the Schema Registry, the gateway will continue to serve the last known schema while it attempts to reestablish a connection to the registry.
-
-<!--
-  Jackson: There is no way of falling back to local files/introspection currently, but I also don't think there should be, consider:
-  The usage model of managed gateways is:
-  1. Launch services
-  2. Post their schema's to registry
-  3. Update services with new schemas and URLs
-  4. GOTO 2
-  If a network failure occurs after several updates and the gateway falls back to a locally stored list, that list will almost certainly be outdated. On the other hand, if it falls back to the last known good configuration, it has a much higher chance of still being active.
--->
+The managed configuration for the Apollo gateway is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key used to gain access to the managed configuration files for the graph to which the API key belongs. In the event that managed configuration is inaccessible, due to an outage in Google's Cloud Storage service, the gateway will continue to serve the last-known configuration. In the event that that Apollo Graph Manager API is down, changes to managed configuration will be stalled, but the last-published managed configuration files will still be accessible via GCS.
 
 ### Using variants to control rollout
 
-With [managed federation](https://www.FIXME.com), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
+With [managed federation](#managed-federation), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry][], one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
 
@@ -323,12 +309,6 @@ There is a wealth of information around reliability in a distributed service-ori
 
 ## Best Practices
 
-<!--
-[//]: # (Description: This section should basically introduce that talking with people running gateways in production (and running it ourselves), we've collected some best practices to share)
-[//]: # (Assignee: Adam)
-[//]: # (Reviewer: Pierre, James)
--->
-
 In operating federation in production ourselves and working with a variety of teams deploying federation in their environments, we have collected some best practices to maintain reliability and control over a federated GraphQL layer at scale. If you're running federation in your infrastructure, we'd love to [hear from you](mailto:federation@apollographql.com) to help share any best practices you and your team may have learned from operating federation at scale.
 
 ### Treat the gateway as infrastructure
@@ -349,11 +329,7 @@ Like any distributed architecture, you should make sure that your federated Grap
 
 ### Enabling Federated Metrics
 
-[//]: # (Description: A brief, no-frills this is how you do it. Link back to the federated metrics doc)
-[//]: # (Assignee: Adam)
-[//]: # (Reviewer: Jesse)
-
-TODO: Instructions on how federated metrics should be instrumented, without explaining the whole model
+Apollo Server has support for reporting federated [tracing](/platform/performance) information from the gateway. In order to support the gateway with detailed timing and error information, implementing services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `ENGINE_API_KEY` is set in the environment for your gateway server and ensure that all implementing services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that implementing services do not have the `ENGINE_API_KEY` environment variable set. For more details about how federated tracing works, see [the docs](www.FIXME-link-to-apollo-server-docs.com).
 
 ### Inspecting Query Plans
 
