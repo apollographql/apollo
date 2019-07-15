@@ -6,6 +6,8 @@ description: Leveraging the Apollo Graph Manager for Federation
 [//]: # (Assignee: Chang)
 [//]: # (Reviewer: Caydie, James)
 
+Organizations expose their data as a single graph in order to have a complete view of all of their organizational data along with well-defined and reusable patterns for data access, observability, security, caching, and other API-level considerations. However, even though exposing all of this data in a unified way has [huge benefits](/intro/benefits/), it comes with additional coordination across multiple teams, all of whom own a portion of the data graph. As an organization, ideally individual teams are able to work independently on GraphQL microservices without needing to coordinate changes with other teams. By the same token, you want to ensure that changes from each team are safe for the entirety of the graph and don't violate any assumptions or cause conflicts with other service teams.
+
 ## The Apollo Graph Manager
 
 The goal of the Apollo Graph Manager is to provide a suite of tools to help teams coordinate over their data graph, using schemas as the media for that communication. With federation, the Graph Manager provides control and observability over the distributed architecture that supports your graph, including support for [federated traces](https://www.apollographql.com/docs/apollo-server/federation/tracing), [validation](/platform/schema-validation/) of gateway changes, and support for [managed deployments](https://www.FIXME.com).
@@ -19,8 +21,6 @@ The Graph Manager maintains both the [current state](https://www.apollographql.c
 The concept of a Federated Graph adds a single but important piece into the model for running and coordinating over a Graph: **One graph is composed of multiple implementing services**. This means that the state of the graph includes the set of services that implement it as well as _their_ states.
 
 The core concept of the Graph Manager in supporting federation is that each implementing service's partial schema should be tracked the same way as a monolithic data graph would be, and that the state of the Graph should be a reflection of the state of all of its dependencies.
-
-Organizations expose their data as a single graph in order to have a complete view of all of their organizational data along with well-defined and reusable patterns for data access, observability, security, caching, and other API-level considerations. However, even though exposing all of this data in a unified way has [huge benefits](/intro/benefits/), it comes with additional coordination across multiple teams, all of whom own a portion of the data graph. As an organization, ideally individual teams are able to work independently on GraphQL microservices without needing to coordinate changes with other teams. By the same token, you want to ensure that changes from each team are safe for the entirety of the graph and don't violate any assumptions or cause conflicts with other service teams.
 
 ## Registering your implementing services
 
