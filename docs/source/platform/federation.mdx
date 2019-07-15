@@ -8,7 +8,7 @@ description: Leveraging the Apollo Graph Manager for Federation
 
 ## The Apollo Graph Manager
 
-The goal of the Apollo Graph Manager is to provide a suite of tools to help teams coordinate over their data graph, using schemas as the media for that communication. With federation, the Graph Manager provides control and observability over the distributed architecture that supports your graph, including support for [federated traces](https://www.apollographql.com/docs/apollo-server/federation/tracing), [validation](/platform/schema-validation/) of gateway changes, and support for [managed deployments](/platform/federation/#managed-deployment).
+The goal of the Apollo Graph Manager is to provide a suite of tools to help teams coordinate over their data graph, using schemas as the media for that communication. With federation, the Graph Manager provides control and observability over the distributed architecture that supports your graph, including support for [federated traces](https://www.apollographql.com/docs/apollo-server/federation/tracing), [validation](/platform/schema-validation/) of gateway changes, and support for [managed deployments](https://www.FIXME.com).
 
 ### At a glance
 
@@ -139,7 +139,7 @@ The GraphQL services that implement your graph provide the functionality that th
 
 ### Use variants to control rollout
 
-With [managed federation](https://www.apollographql.com/docs/apollo-server/federation/production/#managed-federation), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
+With [managed federation](https://www.FIXME.com), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry][], one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
 
