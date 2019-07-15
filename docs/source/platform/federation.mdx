@@ -26,7 +26,7 @@ The core concept of the Graph Manager in supporting federation is that each impl
 
 If you're running a distributed GraphQL infrastructure, where implementing services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, there's functionality to register each service's partial schema and still get all of the benefits of the schema registry. Running `apollo service:push` on any implementing service also registers the overall schema of the graph and updates the graph's [managed configuration](#managed-federation).
 
-To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your local partial schema based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the implementing service can be reached by the gateway.
+To push a single implementing service to Apollo, run `apollo service:push` with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your local partial schema based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the implementing service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each implementing service.
 
 Make sure you have a `.env` file locally with your ENGINE_API_KEY defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 ```
@@ -37,7 +37,7 @@ As an example, running service push on a “launches” implementing service mig
 
 ```
 ~$ apollo service:push --serviceName="launches" \
-                      --serviceURL="http://accounts-graphql.svc.cluster.local:4001/" \
+                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
                       --endpoint="http://localhost:4001/"
   ✔ Loading Apollo Project
   ✔ Uploading service to Engine
@@ -63,7 +63,7 @@ An example output of this behavior looks like this:
 
 ```
 ~$ apollo service:push --serviceName="launches" \
-                      --serviceURL="http://accounts-graphql.svc.cluster.local:4001/" \
+                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
                       --endpoint="http://localhost:4001/"
   ✔ Loading Apollo Project
   ✔ Loading Apollo Project
@@ -205,60 +205,76 @@ View full details at: https://engine.apollographql.com/service/space-explorer/ch
 
 While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the implementing services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
 
-For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-implementing-services). To use the managed configuration provisioned by the Graph Manager, construct your Apollo gateway like so:
+For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-implementing-services). To use the managed configuration provisioned by the Graph Manager, define `ENGINE_API_KEY` in the environment, and construct the gateway and ApolloServer like so:
 
 ```
-TODO: ACTUALLY DOCUMENT THE CORRECT INSTANTIATION
 const { ApolloServer } = require('apollo-server');
+const { ApolloGateway } = require("@apollo/gateway");
 
-const gatewayServer = new ApolloServer({
-  gateway: true,
-  engine: {
-    schemaTag: "prod",
-    apiKey: "service:foo:46234jrlvjkns9d",
-  },
+// Managed configuration will be picked up using the API key
+const gateway = new ApolloGateway();
+
+// Pass the gateway to Apollo Server
+const server = new ApolloServer({ gateway });
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
 });
-
-(async () => {
-  gatewayServer.listen().then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
-  });
-})();
 ```
 
-### The model
+> NOTE: The managed configuration will default to using the `'current'` variant. To use a different variant, set the `ENGINE_GRAPH_VARIANT` environment variable.
 
-### Controlling rollout
+### Deployment workflow
 
-TODO: wtf are we doing with this section
+As an engineer working on an implementing service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to an implementing service, we recommend the following worflow:
 
-To begin, ensure all component services are up and running, and the working directory has a `.env` file containing the appropriate `ENGINE_API_KEY` for your federated service. Then, upload each service to the gateway through `Apollo CLI`:
+1. Run validation on every commit through CI using `apollo service:check`
+1. Merge in a backwards-compatible PR that has passed schema validation
+1. Deploy changes to the implementing service in your infrastructure
+1. Let all replicas finish deployed
+1. Call `apollo service:push` to update the implementing service
 
-```bash
-apollo service:push       \
-  --serviceURL={{url}}    \
-  --endpoint={{url}}      \
-  --serviceName={{name}}  \
-  --federated
 ```
+~$ apollo service:push --serviceName="launches" \
+                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
+                      --endpoint="http://localhost:4001/"
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
 
-> Each service needs a unique name, this is how you will identify the service for schema updates
+The 'registry' service for the 'space-explorer@current' graph was updated
 
-The given `endpoint` will be queried for the new schema which, if compatible with the rest of the schema, will be uploaded to `Apollo Graph Manager`. At this point, any gateways serving this graph will begin to roll over to the new schema.
+The gateway for the 'space-explorer@current' graph was updated with a new schema, composed from the updated 'launches' service
 
-You can later modify hosted service definitions by rerunning the `apollo service:push` command with the service's name and the new URL.
+id      graph             variant
+──────  ────────────────  ───────
+az329e  space-explorer    current
+```
 
 > What's the difference between `serviceURL` and `endpoint` parameters? The `endpoint` parameter controls the endpoint where the schema will be fetched from at composition, whereas `serviceURL` controls what URL the gateway will query at runtime. This is especially helpful if you have disabled introspection queries in your production services.
 
-// TODO: Document the integration with service:push, services under a graph, and gateway lifecycle management utilities
+It's important to make sure that any possible end-user effect from the changes to the graph have been identified, and it's similarly important to strive for backwards-compatible changes to limit those effects. The reason for waiting for the service to completely roll over before registering it is that if some services are still exposing the previous configuration, they might elicit failures for operations the gateway has planned with the new configuration.
+
+### Diving into service:push
+
+Every time that `apollo service:push` is called for a federated service, it not only registers the implementing service to the graph, but it also updates the managed configuration files that the gateway has access to. Because the graph is dynamically changing, it's possible for composition errors to occur for a `service:push` even after a `service:check` has succeeded if other implementing services changed in the interim. For this reason, updating an implementing service will re-trigger composition in the cloud, ensuring that the implementing services still compose to form a complete graph before provisioning the managed configuration. The workflow behind the scenes can be summed up as follows:
+
+1. The partial schema is uploaded to a secure location and indexed
+1. The implementing service is updated in the registry to point to the partial schema
+1. All implementing services are composed in the cloud to produce a new complete schema
+1. If composition fails, the command exits and emits errors
+1. If composition succeeds, the top-level managed configuration file is updated in-place to point to the updated set of implementing services
+
+On the other side of the equation, sits the gateway. The gateway is constantly listening for changes to the top-level managed configuration file. The location of the managed configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
+
+1. The gateway listens for updates to its managed configuration every 10 seconds
+1. On update, the gateway downloads configuration for each implementing service in parallel
+1. The gateway updates its query-planner to use the new configuration
+1. The gateway flushes its `queryPlan` cache to begin planning new queries with the new config
+1. In-flight requests finish being served and delivered to consumers as incoming operations are served as well
 
 ### Integrating with CI / CD
 
 ### Reliability
-
-[//]: # (Description: This section should document how the gateway polls GCS for updates, why it's a reliable model, what the defaults are, and any recommendations)
-[//]: # (Assignee: Jackson)
-[//]: # (Reviewer: Adam)
 
 When operating as a managed gateway, `Apollo Server` will poll the [Schema Registry][] for updates to the registered service list at 10 second intervals. When a service list update does occur, `Apollo Server` will create a new composed schema from the federated services, and begin to roll over to serving the new schema. Existing in-flight operations on the old schema will continue to be processed while serving the new schema. For this reason, it can be helpful to serve the new schemas from new endpoints, such that no downtime is incurred during rollover.
 
