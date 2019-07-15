@@ -87,7 +87,11 @@ The reasoning behind this functionality is that the service registry should alwa
 
 ### How the service registry integrates with managed federation
 
-TODO: Discussing how the gateway picks up changes from the registry
+Managed federation is the concept of allowing the gateway to update dynamically in response to service changes. In principle, it's important to separate the reliability of your graph from the reliability of your services. For that reason, we recommend running federation in production using a managed configuration, where the gateway picks up config changes not from introspection, but from a set of files owned by your graph describing its current state.
+
+On `service:push`, the service registry writes configuration files to a cloud file system, stored securely and accessible by your API key. These configuration files detail which implementing services are part of the graph, metadata about the implementing services, including the `serviceURL` specified in the `push` command, and the partial schema of that implementing service. By default, when the Apollo gateway is instantiated with an API key rather than a `serviceList`, it will poll for that managed config to pick up changes and smoothly roll over to the new service configuration, draining in-flight requests while beginning to generate query plans for incoming requests against the new config.
+
+Because configuration changes can affect the query planner, it's highly recommended to **only call `service:push` after all replicas of an implementing service have deployed**. For more information and details on managed federation, see [below](#managed-federation)!
 
 ### Using variants
 
