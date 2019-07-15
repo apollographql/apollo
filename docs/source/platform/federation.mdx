@@ -153,17 +153,58 @@ In particular, along with [validating overall schema changes against known opera
 
 ### What happens
 
+When running `service:check` on a federated service, Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails then validation ends and the results will be returned to the user. Note that running `service:check` will not update the graph whether or not composition fails or passes.
 ### How to do it
 
-With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
+With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. 
 
 ### Successful checks
 
+```
+$ npx apollo@2.15.1-alpha.1 service:check --serviceName launches --endpoint http://localhost:4001/api/graphql --tag current
+  ✔ Loading Apollo Project
+  ✔ Found 0 graph composition errors for service launches on graph space-explorer
+  ✔ Validated composed schema against tag current on graph space-explorer
+  ✔ Compared 2 schema changes against 56 operations over the last 548 days
+  ✔ Found 0 breaking changes and 2 compatible changes
+
+PASS    FIELD_ADDED  `Mutation.scheduleLaunch` was added
+
+View full details at: https://engine.apollographql.com/service/space-explorer/check/5f209250-000e-45f4-9d5c-ff022225f542
+```
+
 ### Failed checks
+There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes like removing a used field. Failed composition on the other hand are failures due to being unable to compose the graph. For example, a failed composition might be the result of missing a directive.
 
 #### Failed composition
+```
+$ ../apollo-tooling/packages/apollo/bin/run service:check --serviceName launches --endpoint http://localhost:4001/api/graphql --tag current
+  ✔ Loading Apollo Project
+  ✖ Found 1 graph composition errors for service launches on graph space-explorer
+    → Federated service composition was unsuccessful. Please see the reasons below.
+    Validating composed schema against tag current on graph space-explorer
+    Comparing schema changes
+    Reporting result
+
+Service   Field                                                                   Message
+────────  ──────────────────────────────────────────────────────────────────────  ───────────────────────────────────────────────────────
+launches  Mutation.scheduleLaunch                                                       requires the field `service` to be marked as @external.
+```
 
 #### Failed usage checks
+```
+$ ../apollo-tooling/packages/apollo/bin/run service:check --serviceName registry --endpoint http://localhost:4001/api/graphql --engine https://engine-staging-graphql.apollographql.com/api/graphql --tag staging --frontend https://engine-staging.apollographql.com
+  ✔ Loading Apollo Project
+  ✔ Found 0 graph composition errors for service registry on graph space-explorer
+  ✔ Validated composed schema against tag current on graph space-explorer
+  ✔ Compared 1 schema change against 55 operations over the last 548 days
+  ✖ Found 1 breaking change and 0 compatible changes
+    → breaking changes found
+
+FAIL    FIELD_REMOVED  `Mutation.scheduleLaunch` was removed
+
+View full details at: https://engine.apollographql.com/service/space-explorer/check/941c4fa2-c716-4df4-9fc5-130b88c8ebca
+```
 
 <!--
 [//]: # (Description: An overview of how and when to use `apollo service:push` and `apollo service:check` in your CI/CD workflow, linking out to the specifics of usage in the specific docs (#502 and #503). Ideally this section includes some screenshots of the workflows in practice.)
