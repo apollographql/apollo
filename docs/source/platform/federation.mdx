@@ -41,6 +41,24 @@ id      schema                        tag
 
 Pushing an implementing service to Apollo will update the [Services tab](#inspecting-your-graph).
 
+### How the service registry integrates with managed federation
+
+TODO: pointing out the high level concept of managed federation, and mentioning that the serviceURL is used for orchestrating traffic and that you would want to separate out reliability concerns by using a secondary source of truth (i.e. no introspection)
+
+### Using variants
+
+TODO: Pretty quick and small section, pointing out that you can use the `--tag` flag for variants and linking back to the section in the schema registry docs.
+
+### Removing a service from the registry
+
+TODO: Document how to run service:delete and what it looks like
+ALSO: We shouldn't need `--federated` here (@zionts to fix, nag if not fixed pls)
+```
+$ npx apollo@2.15.1-alpha.1 service:delete --serviceName kotlin --tag master --engine https://engine-staging-graphql.apollographql.com/api/graphql --federated
+  ✔ Loading Apollo Project
+  ✔ Removing service from Engine
+```
+
 ## Inspecting your Graph
 > Using the `apollo service:list` command or the UI to understand your graph
 
@@ -82,14 +100,26 @@ Navigate to the Services tab in the Apollo Platform to see an interactive list o
 [//]: # (Assignee: Caydie)
 [//]: # (Reviewer: Jake)
 
+
+> Using the `apollo service:check` command to validate changes to your graph
+
 Federation allows teams to work independently on implementing services without needing to coordinate over a gigantic and all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/). The Apollo GraphQL platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
 
 In particular, along with [validating overall schema changes against known operations](https://www.apollographql.com/docs/platform/schema-validation/), running `apollo service:check` for an implementing service will ensure that the overall Graph still composes to a valid schema, and will output any violated dependencies if present.
 
+### What happens
+
+### How to do it
+
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag. Engine will run composition on the proposed partial schema with the current list of implementing services and their partial schemas, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe.
 
+### Successful checks
 
-> Using the `apollo service:push` and `apollo service:check` command to track changes to your graph
+### Failed checks
+
+#### Failed composition
+
+#### Failed usage checks
 
 <!--
 [//]: # (Description: An overview of how and when to use `apollo service:push` and `apollo service:check` in your CI/CD workflow, linking out to the specifics of usage in the specific docs (#502 and #503). Ideally this section includes some screenshots of the workflows in practice.)
@@ -97,7 +127,7 @@ With a federated graph, use the `apollo service:check` command to validate indiv
 [//]: # (Reviewer: Adam Z)
 -->
 
-## Running with managed federation
+## Managed federation
 > Taking control of how service changes bubble up to the Apollo Gateway
 
 [//]: # (Description: An overview of the concept of managed federation, linking out to the details on gateway defaults w/ an API key and the specfics on setting up the lifecycle options. Ideally this section has a diagram of managed federation lifecycle.)
@@ -108,10 +138,82 @@ In small scale cases it can be sufficient to define the list of services compris
 
 For these use cases, a gateway can be configured to pull a remotely hosted service list from the [Schema Registry][] on `Apollo Dashboard`. This is `Managed Federation`, and it is a key component of building a robust federated graph that can be concurrently developed by teams of any size.
 
+### The model
+
+### Controlling rollout
+
+TODO: wtf are we doing with this section
+
+To begin, ensure all component services are up and running, and the working directory has a `.env` file containing the appropriate `ENGINE_API_KEY` for your federated service. Then, upload each service to the gateway through `Apollo CLI`:
+
+```bash
+apollo service:push       \
+  --serviceURL={{url}}    \
+  --endpoint={{url}}      \
+  --serviceName={{name}}  \
+  --federated
+```
+
+> Each service needs a unique name, this is how you will identify the service for schema updates
+
+The given `endpoint` will be queried for the new schema which, if compatible with the rest of the schema, will be uploaded to `Apollo Graph Manager`. At this point, any gateways serving this graph will begin to roll over to the new schema.
+
+You can later modify hosted service definitions by rerunning the `apollo service:push` command with the service's name and the new URL.
+
+> What's the difference between `serviceURL` and `endpoint` parameters? The `endpoint` parameter controls the endpoint where the schema will be fetched from at composition, whereas `serviceURL` controls what URL the gateway will query at runtime. This is especially helpful if you have disabled introspection queries in your production services.
+
+// TODO: Document the integration with service:push, services under a graph, and gateway lifecycle management utilities
+
+### Integrating with CI / CD
+
+### Reliability
+
+[//]: # (Description: This section should document how the gateway polls GCS for updates, why it's a reliable model, what the defaults are, and any recommendations)
+[//]: # (Assignee: Jackson)
+[//]: # (Reviewer: Adam)
+
+When operating as a managed gateway, `Apollo Server` will poll the [Schema Registry][] for updates to the registered service list at 10 second intervals. When a service list update does occur, `Apollo Server` will create a new composed schema from the federated services, and begin to roll over to serving the new schema. Existing in-flight operations on the old schema will continue to be processed while serving the new schema. For this reason, it can be helpful to serve the new schemas from new endpoints, such that no downtime is incurred during rollover.
+
+[Schema Registry]: /platform/schema-registry/
+
+In the event a network failure prevents an `Apollo Server` gateway from contacting the Schema Registry, the gateway will continue to serve the last known schema while it attempts to reestablish a connection to the registry.
+
+<!--
+  Jackson: There is no way of falling back to local files/introspection currently, but I also don't think there should be, consider:
+  The usage model of managed gateways is:
+  1. Launch services
+  2. Post their schema's to registry
+  3. Update services with new schemas and URLs
+  4. GOTO 2
+  If a network failure occurs after several updates and the gateway falls back to a locally stored list, that list will almost certainly be outdated. On the other hand, if it falls back to the last known good configuration, it has a much higher chance of still being active.
+-->
+
+### Using variants to control rollout
+
+With [managed federation](https://www.FIXME.com), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
+
+For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry][], one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
+
+1. Check changes in "foo" against `prod` and `prod-canary`:
+   ```
+   apollo service:check --tag=prod --serviceName=foo && apollo service:check --tag=prod-canary --serviceName=foo
+   ```
+1. Deploy changes to "foo" into your production environment (_Note: This will not roll out changes to the gateway yet_)
+1. Roll over the `prod-canary` graph, containing one gateway container, using
+   ```
+   apollo service:push --tag=prod-canary --serviceName=foo
+   ```
+   (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
+1. Wait for health checks to pass against the canary, watch dashboards, etc.
+1. After the canary is stable, roll out the changes to the rest of production using
+  ```
+  apollo service:push --tag=prod --serviceName=foo
+  ```
+
+Because you can [tag metrics with variants](/platform/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
+
 # Running Federation in Production
 > With a focus on reliability and robustness
-
-Like any distributed architecture, you should make sure that your federated GraphQL layer has proper observability, monitoring, and automation to ensure reliability and performance of both your gateway and the federated services underneath it. Serving your GraphQL API from a distributed architecture has many benefits, like productivity, isolation, and being able to match the right services with the right runtimes. Operating a distributed system also has more complexity and points of failure than operating a monolith, and with that complexity comes a need to heighten observability into the state of your system and control over its coordination.
 
 There is a wealth of information around reliability in a distributed service-oriented architecture, and those best practices still certainly apply here. For instance, you should ensure that the resource needs of your services are well-understood, that services and the gateway only roll over to a new version after passing health checks, and you should strive to make all services stateful when possible. This document is meant for teams with the need for a federated GraphQL layer, to provide details of nuance in how federation works, how the gateway responds to changes, and best practices in operating federation in production. If you're running with federation in production, we'd love to [hear from you](mailto:federation@apollographql.com) and accept any [contribution](https://github.com/apollographql/apollo-server/blob/master/docs/source/federation/production.md) to this documentation.
 
@@ -137,74 +239,9 @@ Because the gateway is the component of your GraphQL layer that sees and service
 
 The GraphQL services that implement your graph provide the functionality that the gateway needs in order to traffic requests. However, because a key principle of the data graph is to strive for [one graph](https://principledgraphql.com/integrity#1-one-graph), there is no need to allow clients to query the underlying services directly without going through the gateway. Additionally, by exposing implementing services to public traffic, it extends your security and reliablity surface area and makes your system more challenging to secure. While we recommend that the gateway keep its operation surface area locked down by relying on the [operation registry](/platform/operation-registry/), it's generally unwieldy to register operations to services, especially when the gateway may need to make dynamic operations to services using the [`_entities`](/platform/operation-registry/) field. Further, because of the power and flexibility of the `_entities` field, it may present a serious risk to expose it publicly. If, for some reason, you want to allow outside traffic to send operations to implementing services, we highly recommend keeping the `_entities` field restricted.
 
-### Use variants to control rollout
+## Observability
 
-With [managed federation](https://www.FIXME.com), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
-
-For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry][], one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
-
-1. Check changes in "foo" against `prod` and `prod-canary`:
-   ```
-   apollo service:check --tag=prod --serviceName=foo && apollo service:check --tag=prod-canary --serviceName=foo
-   ```
-1. Deploy changes to "foo" into your production environment (_Note: This will not roll out changes to the gateway yet_)
-1. Roll over the `prod-canary` graph, containing one gateway container, using
-   ```
-   apollo service:push --tag=prod-canary --serviceName=foo
-   ```
-   (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
-1. Wait for health checks to pass against the canary, watch dashboards, etc.
-1. After the canary is stable, roll out the changes to the rest of production using
-  ```
-  apollo service:push --tag=prod --serviceName=foo
-  ```
-
-Because you can [tag metrics with variants](/platform/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
-
-### Controlling rollout
-
-To begin, ensure all component services are up and running, and the working directory has a `.env` file containing the appropriate `ENGINE_API_KEY` for your federated service. Then, upload each service to the gateway through `Apollo CLI`:
-
-```bash
-apollo service:push       \
-  --serviceURL={{url}}    \
-  --endpoint={{url}}      \
-  --serviceName={{name}}  \
-  --federated
-```
-
-> Each service needs a unique name, this is how you will identify the service for schema updates
-
-The given `endpoint` will be queried for the new schema which, if compatible with the rest of the schema, will be uploaded to `Apollo Graph Manager`. At this point, any gateways serving this graph will begin to roll over to the new schema.
-
-You can later modify hosted service definitions by rerunning the `apollo service:push` command with the service's name and the new URL.
-
-> What's the difference between `serviceURL` and `endpoint` parameters? The `endpoint` parameter controls the endpoint where the schema will be fetched from at composition, whereas `serviceURL` controls what URL the gateway will query at runtime. This is especially helpful if you have disabled introspection queries in your production services.
-
-// TODO: Document the integration with service:push, services under a graph, and gateway lifecycle management utilities
-
-### Reliability
-
-[//]: # (Description: This section should document how the gateway polls GCS for updates, why it's a reliable model, what the defaults are, and any recommendations)
-[//]: # (Assignee: Jackson)
-[//]: # (Reviewer: Adam)
-
-When operating as a managed gateway, `Apollo Server` will poll the [Schema Registry][] for updates to the registered service list at 10 second intervals. When a service list update does occur, `Apollo Server` will create a new composed schema from the federated services, and begin to roll over to serving the new schema. Existing in-flight operations on the old schema will continue to be processed while serving the new schema. For this reason, it can be helpful to serve the new schemas from new endpoints, such that no downtime is incurred during rollover.
-
-[Schema Registry]: /platform/schema-registry/
-
-In the event a network failure prevents an `Apollo Server` gateway from contacting the Schema Registry, the gateway will continue to serve the last known schema while it attempts to reestablish a connection to the registry.
-
-<!--
-  Jackson: There is no way of falling back to local files/introspection currently, but I also don't think there should be, consider:
-  The usage model of managed gateways is:
-  1. Launch services
-  2. Post their schema's to registry
-  3. Update services with new schemas and URLs
-  4. GOTO 2
-  If a network failure occurs after several updates and the gateway falls back to a locally stored list, that list will almost certainly be outdated. On the other hand, if it falls back to the last known good configuration, it has a much higher chance of still being active.
--->
-
+Like any distributed architecture, you should make sure that your federated GraphQL layer has proper observability, monitoring, and automation to ensure reliability and performance of both your gateway and the federated services underneath it. Serving your GraphQL API from a distributed architecture has many benefits, like productivity, isolation, and being able to match the right services with the right runtimes. Operating a distributed system also has more complexity and points of failure than operating a monolith, and with that complexity comes a need to heighten observability into the state of your system and control over its coordination.
 
 ### Enabling Federated Metrics
 
@@ -212,7 +249,7 @@ In the event a network failure prevents an `Apollo Server` gateway from contacti
 [//]: # (Assignee: Adam)
 [//]: # (Reviewer: Jesse)
 
-// TODO: Instructions on how federated metrics should be instrumented, without explaining the whole model
+TODO: Instructions on how federated metrics should be instrumented, without explaining the whole model
 
 ### Inspecting Query Plans
 
