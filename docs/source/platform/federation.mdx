@@ -5,7 +5,7 @@ description: How to run, manage, and deploy a federated graph
 
 When organizations roll out GraphQL across multiple teams, coordinating and maintaining a single monolithic schema becomes difficult and error-prone. [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/) solves this problem by enabling teams to build a distributed graph composed of multiple services declaratively without fragile stitching code.
 
-While federation empowers teams to scale GraphQL much faster than before, it also introduces complexity that comes along with running a distributed system. Teams need federation-aware tooling in order to help them coordinate updating the graph whenever an underlying service changes. Apollo's **graph manager** is a turnkey solution to this problem that includes federated service checks, managed service deployments, and federation-aware analytics out of the box for teams on a paid plan.
+While federation empowers teams to scale GraphQL much faster than before, it also introduces complexity that comes along with running a distributed system. Teams need federation-aware tooling in order to help them coordinate updating the graph whenever an underlying service changes. Apollo's **graph manager** is a turnkey solution to this problem that includes federated service checks, managed service deployments, and federation-aware analytics out of the box. Federated tracing and service checks are only available for teams on a paid plan.
 
 ## What you'll learn
 
@@ -40,23 +40,23 @@ To push a single federated service to Apollo, run `apollo service:push` with the
 Make sure you have a `.env` file locally with your ENGINE_API_KEY defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 
 ```
-echo "ENGINE_API_KEY={{service:foo:asd9fjasdor8her}}">>.env
+echo "ENGINE_API_KEY=<your API key here>" >> .env
 ```
 
 As an example, running service push on a “launches” federated service might look like:
 
-```
+```bash
 ~$ apollo service:push --serviceName="launches" \
-                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
-                      --endpoint="http://localhost:4001/"
+                       --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
+                       --endpoint="http://localhost:4001/"
   ✔ Loading Apollo Project
   ✔ Uploading service to Engine
 
-The 'registry' service for the 'space-explorer@current' graph was updated
+The 'launches' service for the 'space-explorer@current' graph was updated
 
 The gateway for the 'space-explorer@current' graph was updated with a new schema, composed from the updated 'launches' service
 
-id      graph             variant
+id      graph             tag
 ──────  ────────────────  ───────
 az329e  space-explorer    current
 ```
@@ -74,6 +74,8 @@ $ apollo service:delete --serviceName=launches --tag=staging
   ✔ Loading Apollo Project
   ✔ Removing service from Engine
 ```
+
+> WARNING! This action cannot be reversed. Also, once deleted, service names cannot be reused within the same graph.
 
 ### Inspecting your graph
 
