@@ -17,7 +17,7 @@ In a production application, you should set up this publishing script as part of
 
 ### Get an Engine API key
 
-First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://engine.apollographql.com/), login, and click on New Service at the top. The prompt will instruct you to name your service. When you're finished, click Create Service. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
 
 Let's save our key as an environment variable. It's important to make sure we don't check our Engine API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Engine API key that you copied from the previous step to the file:
 
