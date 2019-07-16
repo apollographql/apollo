@@ -30,7 +30,8 @@ module.exports = {
             'platform/operation-registry',
             'platform/editor-plugins',
             'platform/performance',
-            'platform/integrations'
+            'platform/integrations',
+            'platform/federation'
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
