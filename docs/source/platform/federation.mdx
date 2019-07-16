@@ -192,7 +192,7 @@ As an engineer working on an implementing service, you might wonder how to guara
 1. Run validation on every commit through CI using `apollo service:check`
 1. Merge in a backwards-compatible PR that has passed schema validation
 1. Deploy changes to the implementing service in your infrastructure
-1. Let all replicas finish deployed
+1. Let all replicas finish deploying
 1. Call `apollo service:push` to update the implementing service
 
 ```
@@ -227,7 +227,7 @@ Every time that `apollo service:push` is called for a federated service, it not 
 
 On the other side of the equation, sits the gateway. The gateway is constantly listening for changes to the top-level managed configuration file. The location of the managed configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
 
-1. The gateway listens for updates to its managed configuration every 10 seconds
+1. The gateway listens for updates to its managed configuration
 1. On update, the gateway downloads configuration for each implementing service in parallel
 1. The gateway updates its query-planner to use the new configuration
 1. The gateway flushes its `queryPlan` cache to begin planning new queries with the new config
@@ -235,11 +235,11 @@ On the other side of the equation, sits the gateway. The gateway is constantly l
 
 ### Reliability and security
 
-The managed configuration for the Apollo gateway is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key used to gain access to the managed configuration files for the graph to which the API key belongs. In the event that managed configuration is inaccessible, due to an outage in Google's Cloud Storage service, the gateway will continue to serve the last-known configuration. In the event that that Apollo Graph Manager API is down, changes to managed configuration will be stalled, but the last-published managed configuration files will still be accessible via GCS.
+The managed configuration for the Apollo gateway is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key. In the event that managed configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway will continue to serve the last-known configuration. In the event that Apollo Graph Manager API is down, changes to managed configuration will be stalled but the last-published configuration files will still be accessible via GCS.
 
 ### Using variants to control rollout
 
-With [managed federation](#managed-federation), you have the ability to control which version of your graph a fleet of Gateways are running with. For the majority of deployments, rolling over all of your Gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like changing how query plans are generated or transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of Gateways running with different configurations.
+With [managed federation](#managed-federation), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [Schema Validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the [Schema Registry][], one called `prod` and one called `prod-canary`. Your deployment of a change to some implementing service named "foo" might look something like this:
 
@@ -252,7 +252,7 @@ For instance, in order to have a canary deployment, you might maintain two produ
    ```
    apollo service:push --tag=prod-canary --serviceName=foo
    ```
-   (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
+>Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out
 1. Wait for health checks to pass against the canary, watch dashboards, etc.
 1. After the canary is stable, roll out the changes to the rest of production using
 
