@@ -15,7 +15,7 @@ Here's an example of client identity reporting in Engine:
 
 ## Setup
 
-Apollo Server 2.2.3+ will look for specific the request headers, `apollographql-client-name` and `apollographql-client-version`, by default. If present, Apollo Server will extract them and make sure the data for that request is reported to Apollo's systems with the correct client and version tag.
+Apollo Server 2.2.3+ will look for specific request headers, `apollographql-client-name` and `apollographql-client-version`, by default. If present, Apollo Server will extract them and make sure the data for that request is reported to Apollo's systems with the correct client and version tag.
 
 With Apollo Client 2.4.6+, simply passing the `name` and `version` options in your `ApolloClient` constructor will automatically add these headers to every request. Setting up client identity reporting is as simple as adding configuration to Apollo Client:
 
