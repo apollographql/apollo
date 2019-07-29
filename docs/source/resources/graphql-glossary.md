@@ -256,6 +256,32 @@ query getHuman {
 
 `AddTodo` and `getHuman` are names for the mutation and query operation respectively.
 
+## Operation signature
+
+Representation of a GraphQL operation(query, mutation, or subscription). These operations can be directly executable or normalized to a more simplified form. Normalization transforms an operation deterministically to reduce the number of possible forms it could take. For example, many normalization algorithms sort the fields of the operation to remove field order from the possible representations of an operation. Other normalization algorithms replace in-line variables(literals) with empty, null, or zero values, sort fragments, remove whitespace, or remove aliases.
+
+The following example shows an operation before an after normalization, which hides literal, sorts fields, removes aliases, and maintains whitespace:
+
+```
+query getHuman {
+  human(id: 200) {
+    pounds: weight(unit: "pounds")
+    height
+  }
+}
+```
+
+The normalized operation signature:
+
+```
+query getHuman {
+  human(id: 0) {
+    height
+    weight(unit: "")
+  }
+}
+```
+
 ## Partial query caching
 
 A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources/) caching.
