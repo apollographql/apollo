@@ -862,4 +862,4 @@ Please include the following when submitting an issue to our support team:
 - Platform of GraphQL server
 - The query submitted and the full response
 
-Submit your issue to support at apollographql.com or you can join us in [Apollo's Spectrum community](https://spectru.chat/apollo).
+Submit your issue to support at apollographql.com or you can join us in [Apollo's Spectrum community](https://spectrum.chat/apollo).
