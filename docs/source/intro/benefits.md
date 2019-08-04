@@ -84,19 +84,17 @@ const GET_DOGS = gql`
 
 Here, we're describing the shape of the object we want to receive from the server. GraphQL takes care of combining and filtering the data while returning exactly what we ask for.
 
-How do we use this query in our app? Apollo Client builds off of GraphQL's declarative approach to data fetching. In a React app, all of the logic for retrieving your data, tracking loading and error states, and updating your UI is encapsulated in a single `Query` component. This encapsulation makes composing your data fetching components with your presentational components a breeze! Let’s see how to fetch GraphQL data with Apollo Client in a React app:
+How do we use this query in our app? Apollo Client builds off of GraphQL's declarative approach to data fetching. In a React app, all of the logic for retrieving your data, tracking loading and error states, and updating your UI is encapsulated in a single `useQuery` Hook. This encapsulation makes composing your data fetching components with your presentational components a breeze! Let’s see how to fetch GraphQL data with Apollo Client in a React app:
 
 ```jsx
-const Feed = () => (
-  <Query query={GET_DOGS}>
-    {({ loading, error, data }) => {
-      if (error) return <Error />;
-      if (loading || !data) return <Fetching />;
+function Feed() {
+  const { loading, error, data } = useQuery(GET_DOGS);
 
-      return <DogList dogs={data.dogs} />;
-    }}
-  </Query>
-);
+  if (error) return <Error />;
+  if (loading || !data) return <Fetching />;
+
+  return <DogList dogs={data.dogs} />;
+}
 ```
 
 Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you. There’s no middleware to set up or boilerplate to write before making your first request, nor do you need to worry about transforming and caching the response. All you have to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪
