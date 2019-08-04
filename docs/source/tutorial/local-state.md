@@ -85,8 +85,8 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 
 _src/index.js_
 
-```jsx{8,17-19}
-import { Query, ApolloProvider } from 'react-apollo';
+```jsx{8-12,15}
+import { ApolloProvider, Query } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import Pages from './pages';
@@ -99,18 +99,21 @@ const IS_LOGGED_IN = gql`
   }
 `;
 
+function IsLoggedIn() {
+  const { data } = useQuery(IS_LOGGED_IN);
+  return data.isLoggedIn ? <Pages /> : <Login />;
+}
+
 injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Query query={IS_LOGGED_IN}>
-      {({ data }) => (data.isLoggedIn ? <Pages /> : <Login />)}
-    </Query>
+    <IsLoggedIn />
   </ApolloProvider>,
   document.getElementById('root'),
 );
 ```
 
-First, we create our `IsUserLoggedIn` local query by adding the `@client` directive to the `isLoggedIn` field. Then, we render a `Query` component, pass our local query in, and specify a render prop function that renders either a login screen or the homepage depending if the user is logged in. Since cache reads are synchronous, we don't have to account for any loading state.
+First, we create our `IsUserLoggedIn` local query by adding the `@client` directive to the `isLoggedIn` field. Then, we render a component with `useQuery`, pass our local query in, and based on the response render either a login screen or the homepage depending if the user is logged in. Since cache reads are synchronous, we don't have to account for any loading state.
 
 Let's look at another example of a component that queries local state in `src/pages/cart.js`. Just like before, we create our query:
 
@@ -118,7 +121,7 @@ _src/pages/cart.js_
 
 ```js
 import React, { Fragment } from 'react';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { Header, Loading } from '../components';
@@ -131,34 +134,29 @@ export const GET_CART_ITEMS = gql`
 `;
 ```
 
-Next, we render our `Query` component and bind it to our `GetCartItems` query:
+Next, we call `useQuery` and bind it to our `GetCartItems` query:
 
 _src/pages/cart.js_
 
 ```jsx
 export default function Cart() {
+  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
   return (
-    <Query query={GET_CART_ITEMS}>
-      {({ data, loading, error }) => {
-        if (loading) return <Loading />;
-        if (error) return <p>ERROR: {error.message}</p>;
-        return (
-          <Fragment>
-            <Header>My Cart</Header>
-            {!data.cartItems || !data.cartItems.length ? (
-              <p data-testid="empty-message">No items in your cart</p>
-            ) : (
-              <Fragment>
-                {data.cartItems.map(launchId => (
-                  <CartItem key={launchId} launchId={launchId} />
-                ))}
-                <BookTrips cartItems={data.cartItems} />
-              </Fragment>
-            )}
-          </Fragment>
-        );
-      }}
-    </Query>
+    <Fragment>
+      <Header>My Cart</Header>
+      {!data.cartItems || !data.cartItems.length ? (
+        <p data-testid="empty-message">No items in your cart</p>
+      ) : (
+        <Fragment>
+          {data.cartItems.map(launchId => (
+            <CartItem key={launchId} launchId={launchId} />
+          ))}
+          <BookTrips cartItems={data.cartItems} />
+        </Fragment>
+      )}
+    </Fragment>
   );
 }
 ```
@@ -226,14 +224,14 @@ Up until now, we've focused on querying local data from the Apollo cache. Apollo
 
 ### Direct cache writes
 
-Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `Mutation` component. Let's look at a similar example, where we copy the code below to create a logout button:
+Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `useMutation` based component. Let's look at a similar example, where we copy the code below to create a logout button:
 
 _src/containers/logout-button.js_
 
 ```jsx
 import React from 'react';
 import styled from 'react-emotion';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer } from '@apollo/react-hooks';
 
 import { menuItemClassName } from '../components/menu-item';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
@@ -265,13 +263,13 @@ const StyledButton = styled('button')(menuItemClassName, {
 
 When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.
 
-We can also perform direct writes within the `update` function of a `Mutation` component. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.js`:
+We can also perform direct writes within the `update` function of the `useMutation` Hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.js`:
 
 _src/containers/book-trips.js_
 
-```jsx{30-32}
+```jsx{29-31}
 import React from 'react';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import Button from '../components/button';
@@ -291,29 +289,25 @@ const BOOK_TRIPS = gql`
 `;
 
 export default function BookTrips({ cartItems }) {
-  return (
-    <Mutation
-      mutation={BOOK_TRIPS}
-      variables={{ launchIds: cartItems }}
-      refetchQueries={cartItems.map(launchId => ({
+  const [bookTrips, { data, loading, error }] = useMutation(
+    BOOK_TRIPS,
+    {
+      refetchQueries: cartItems.map(launchId => ({
         query: GET_LAUNCH,
         variables: { launchId },
-      }))}
-      update={cache => {
+      })),
+      update(cache) {
         cache.writeData({ data: { cartItems: [] } });
-      }}
-    >
-      {(bookTrips, { data, loading, error }) =>
-        data && data.bookTrips && !data.bookTrips.success ? (
-          <p data-testid="message">{data.bookTrips.message}</p>
-        ) : (
-          <Button onClick={bookTrips} data-testid="book-button">
-            Book All
-          </Button>
-        )
       }
-    </Mutation>
-  );
+    }
+  )
+  return data && data.bookTrips && !data.bookTrips.success
+    ? <p data-testid="message">{data.bookTrips.message}</p>
+    : (
+      <Button onClick={bookTrips} data-testid="book-button">
+        Book All
+      </Button>
+    );
 }
 ```
 
@@ -368,7 +362,7 @@ _src/containers/action-button.js_
 
 ```jsx
 import React from 'react';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
@@ -388,43 +382,41 @@ const CANCEL_TRIP = gql`
 `;
 
 export default function ActionButton({ isBooked, id, isInCart }) {
-  return (
-    <Mutation
-      mutation={isBooked ? CANCEL_TRIP : TOGGLE_CART}
-      variables={{ launchId: id }}
-      refetchQueries={[
+  const [mutate, { loading, error }] = useMutation(
+    isBooked ? CANCEL_TRIP : TOGGLE_CART,
+    {
+      variables: { launchId: id },
+      refetchQueries: [
         {
           query: GET_LAUNCH_DETAILS,
           variables: { launchId: id },
         },
-      ]}
-    >
-      {(mutate, { loading, error }) => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>An error occurred</p>;
+      ]
+    }
+  );
 
-        return (
-          <div>
-            <Button
-              onClick={mutate}
-              isBooked={isBooked}
-              data-testid={'action-button'}
-            >
-              {isBooked
-                ? 'Cancel This Trip'
-                : isInCart
-                ? 'Remove from Cart'
-                : 'Add to Cart'}
-            </Button>
-          </div>
-        );
-      }}
-    </Mutation>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>An error occurred</p>;
+
+  return (
+    <div>
+      <Button
+        onClick={mutate}
+        isBooked={isBooked}
+        data-testid={'action-button'}
+      >
+        {isBooked
+          ? 'Cancel This Trip'
+          : isInCart
+          ? 'Remove from Cart'
+          : 'Add to Cart'}
+      </Button>
+    </div>
   );
 }
 ```
 
-In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `Mutation` component.
+In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` Hook.
 
 ---
 
