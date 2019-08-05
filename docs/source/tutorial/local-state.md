@@ -263,7 +263,7 @@ const StyledButton = styled('button')(menuItemClassName, {
 
 When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.
 
-We can also perform direct writes within the `update` function of the `useMutation` Hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.js`:
+We can also perform direct writes within the `update` function of the `useMutation` hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.js`:
 
 _src/containers/book-trips.js_
 
