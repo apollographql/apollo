@@ -5,7 +5,7 @@ description: Learn how to fetch data with the useQuery hook
 
  Time to accomplish: _15 Minutes_
 
-Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` Hook from `@apollo/react-hooks` to fetch more complex queries and execute features like pagination.
+Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/react-hooks` to fetch more complex queries and execute features like pagination.
 
 ## The useQuery hook
 
