@@ -1,6 +1,6 @@
 ---
 title: "6. Fetch data with queries"
-description: Learn how to fetch data with the useQuery Hook
+description: Learn how to fetch data with the useQuery hook
 ---
 
  Time to accomplish: _15 Minutes_
