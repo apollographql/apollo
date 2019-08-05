@@ -21,7 +21,7 @@ _src/pages/login.js_
 
 ```js
 import React from 'react';
-import { ApolloConsumer, useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { LoginForm, Loading } from '../components';
@@ -48,18 +48,19 @@ Our `useMutation` hook returns a mutate function (`login`) and the data object r
 
 To create a better experience for our users, we want to persist the login between sessions. In order to do that, we need to save our login token to `localStorage`. Let's learn how we can use the `onCompleted` handler of `useMutation` to persist our login:
 
-### Expose Apollo Client with ApolloConsumer
+### Expose Apollo Client with useApolloClient
 
-One of the main functions of React Apollo is that it puts your `ApolloClient` instance on React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `@apollo/react-hooks` helper components. The `ApolloConsumer` component can help us access the client.
+One of the main functions of React Apollo is that it puts your `ApolloClient` instance on React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `@apollo/react-hooks` helper components. The `useApolloClient` hook can help us access the client.
 
-`ApolloConsumer` takes a render prop function as a child that is called with the client instance. Let's wrap our `useMutation` based component with `ApolloConsumer` to expose the client. Next, we want to pass an `onCompleted` callback to `useMutation` that will be called once the mutation is complete with its return value. This callback is where we will save the login token to `localStorage`.
+Let's call `useApolloClient` to get the currently configured client instance. Next, we want to pass an `onCompleted` callback to `useMutation` that will be called once the mutation is complete with its return value. This callback is where we will save the login token to `localStorage`.
 
 In our `onCompleted` handler, we also call `client.writeData` to write local data to the Apollo cache indicating that the user is logged in. This is an example of a **direct write** that we'll explore further in the next section on local state management.
 
 _src/pages/login.js_
 
-```jsx{5-8,13-14,22}
+```jsx{2,6-9}
 export default function Login() {
+  const client = useApolloClient();
   const [login, { loading, error }] = useMutation(
     LOGIN_USER,
     {
@@ -70,18 +71,10 @@ export default function Login() {
     }
   );
 
-  return (
-    <ApolloConsumer>
-      {client => {
-        // this loading state will probably never show, but it's helpful to
-        // have for testing
-        if (loading) return <Loading />;
-        if (error) return <p>An error occurred</p>;
+  if (loading) return <Loading />;
+  if (error) return <p>An error occurred</p>;
 
-        return <LoginForm login={login} />;
-      }}
-    </ApolloConsumer>
-  );
+  return <LoginForm login={login} />;
 }
 ```
 

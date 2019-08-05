@@ -231,26 +231,23 @@ _src/containers/logout-button.js_
 ```jsx
 import React from 'react';
 import styled from 'react-emotion';
-import { ApolloConsumer } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { menuItemClassName } from '../components/menu-item';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
 
 export default function LogoutButton() {
+  const client = useApolloClient();
   return (
-    <ApolloConsumer>
-      {client => (
-        <StyledButton
-          onClick={() => {
-            client.writeData({ data: { isLoggedIn: false } }); // highlight-line
-            localStorage.clear();
-          }}
-        >
-          <ExitIcon />
-          Logout
-        </StyledButton>
-      )}
-    </ApolloConsumer>
+    <StyledButton
+      onClick={() => {
+        client.writeData({ data: { isLoggedIn: false } }); // highlight-line
+        localStorage.clear();
+      }}
+    >
+      <ExitIcon />
+      Logout
+    </StyledButton>
   );
 }
 
