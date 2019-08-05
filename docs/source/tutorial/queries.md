@@ -274,7 +274,7 @@ Great, now we've successfully refactored our queries to use fragments. Fragments
 
 ### Customizing the fetch policy
 
-Sometimes, it's useful to tell Apollo Client to bypass the cache altogether if you have some data that constantly needs to be refreshed. We can do this by customizing the `useQuery` Hook's `fetchPolicy`.
+Sometimes, it's useful to tell Apollo Client to bypass the cache altogether if you have some data that constantly needs to be refreshed. We can do this by customizing the `useQuery` hook's `fetchPolicy`.
 
 First, let's navigate to `src/pages/profile.js` and write our query:
 
