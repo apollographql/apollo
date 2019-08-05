@@ -9,7 +9,7 @@ With Apollo Client, updating data from a graph API is as simple as calling a fun
 
 ## What is the useMutation hook?
 
-The `useMutation` Hook is another important building block in an Apollo app. It leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to provide a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
+The `useMutation` hook is another important building block in an Apollo app. It leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to provide a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
 
 Updating data with a `useMutation` Hook from `@apollo/react-hooks` is very similar to fetching data with a `useQuery` Hook. The main difference is that the first value in the `useMutation` result tuple is a **mutate function** that actually triggers the mutation when it is called. The second value in the result tuple is a result object that contains loading and error state, as well as the return value from the mutation. Let's see an example:
 
