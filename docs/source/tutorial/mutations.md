@@ -33,7 +33,7 @@ const LOGIN_USER = gql`
 `;
 ```
 
-Just like before, we're using the `gql` function to wrap our GraphQL mutation so it can be parsed into an AST. We're also importing some components that we'll use in the next steps. Now, let's bind this mutation to our component by passing it to the `useMutation` Hook:
+Just like before, we're using the `gql` function to wrap our GraphQL mutation so it can be parsed into an AST. We're also importing some components that we'll use in the next steps. Now, let's bind this mutation to our component by passing it to the `useMutation` hook:
 
 _src/pages/login.js_
 
