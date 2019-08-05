@@ -7,7 +7,7 @@ Time to accomplish: _12 Minutes_
 
 With Apollo Client, updating data from a graph API is as simple as calling a function. Additionally, the Apollo Client cache is smart enough to automatically update in most cases. In this section, we'll learn how to use the `useMutation` Hook from React Apollo to login a user.
 
-## What is the useMutation Hook?
+## What is the useMutation hook?
 
 The `useMutation` Hook is another important building block in an Apollo app. It leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to provide a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
 
