@@ -1,6 +1,6 @@
 ---
 title: '7. Update data with mutations'
-description: Learn how to update data with the useMutation Hook
+description: Learn how to update data with the useMutation hook
 ---
 
 Time to accomplish: _12 Minutes_
