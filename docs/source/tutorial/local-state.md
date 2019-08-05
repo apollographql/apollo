@@ -416,7 +416,7 @@ export default function ActionButton({ isBooked, id, isInCart }) {
 }
 ```
 
-In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` Hook.
+In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` hook.
 
 ---
 
