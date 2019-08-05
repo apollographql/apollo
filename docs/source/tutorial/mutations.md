@@ -44,7 +44,7 @@ export default function Login() {
 }
 ```
 
-Our `useMutation` Hook returns a mutate function (`login`) and the data object returned from the mutation. Finally, we pass our login function to the `LoginForm` component.
+Our `useMutation` hook returns a mutate function (`login`) and the data object returned from the mutation that we destructure from the tuple. Finally, we pass our login function to the `LoginForm` component.
 
 To create a better experience for our users, we want to persist the login between sessions. In order to do that, we need to save our login token to `localStorage`. Let's learn how we can use the `onCompleted` handler of `useMutation` to persist our login:
 
