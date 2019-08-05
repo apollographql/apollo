@@ -78,7 +78,7 @@ export default function Launches() {
 }
 ```
 
-To render the list, we pass the `GET_LAUNCHES` query from the previous step into our `useQuery` Hook. Then, depending on the state of `loading`, `error`, and `data`, we either render a loading indicator, an error message, or a list of launches.
+To render the list, we pass the `GET_LAUNCHES` query from the previous step into our `useQuery` hook. Then, depending on the state of `loading`, `error`, and `data`, we either render a loading indicator, an error message, or a list of launches.
 
 We're not done yet! Right now, this query is only fetching the first 20 launches from the list. To fetch the full list of launches, we need to build a pagination feature that displays a `Load More` button for loading more items on the screen. Let's learn how!
 
