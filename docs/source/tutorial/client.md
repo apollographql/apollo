@@ -147,4 +147,4 @@ ReactDOM.render(
 );
 ```
 
-Now, we're ready to start building our first `useQuery` Hook based component in the next section.
+Now, we're ready to start building our first component with the `useQuery` hook in the next section.
