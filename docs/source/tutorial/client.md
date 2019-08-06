@@ -124,16 +124,16 @@ Go ahead and delete the `client.query()` call you just made and the `gql` import
 
 ## Connect your client to React
 
-Connecting Apollo Client to our React app with `react-apollo` allows us to easily bind GraphQL operations to our UI.
+Connecting Apollo Client to our React app with Apollo's hooks allows us to easily bind GraphQL operations to our UI.
 
-To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `react-apollo` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
+To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/react-hooks` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
 Open `src/index.js` and add the following lines of code:
 
 _src/index.js_
 
-```jsx{1,4,6}
-import { ApolloProvider } from 'react-apollo';
+```jsx
+import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Pages from './pages';
@@ -147,4 +147,4 @@ ReactDOM.render(
 );
 ```
 
-Now, we're ready to start building our first `Query` components in the next section.
+Now, we're ready to start building our first component with the `useQuery` hook in the next section.
