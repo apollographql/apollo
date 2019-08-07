@@ -241,7 +241,8 @@ For instance, in order to have a canary deployment, you might maintain two produ
 
 1. Check changes in "launches" against `prod` and `prod-canary`:
    ```
-   apollo service:check --tag=prod --serviceName=launches && apollo service:check --tag=prod-canary --serviceName=launches
+   apollo service:check --tag=prod --serviceName=launches
+   apollo service:check --tag=prod-canary --serviceName=launches
    ```
 1. Deploy changes to "launches" into your production environment. (_Note: This will not roll out changes to the gateway yet_)
 1. Roll over the `prod-canary` graph, containing one gateway container, using `apollo service:push --tag=prod-canary --serviceName=launches`. (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
