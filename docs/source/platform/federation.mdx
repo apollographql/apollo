@@ -24,7 +24,7 @@ Based on our experience helping companies scale GraphQL across their organizatio
 Federation introduces several new terms that are necessary for understanding the following steps in this article:
 
 - **Graph**: A single API composed of multiple federated services
-- **Federated services**: The underlying microservices that make up a graph. These services are standalone GraphQL servers that can be built in any language, since federation is spec-compliant GraphQL.
+- **Federated services**: The underlying microservices that make up a graph. These services are standalone GraphQL servers that can be built in any language, since [federation](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) is spec-compliant GraphQL.
 - **Capabilities**: The types a service extends and adds to the graph. A service's capabilities describe how a service interacts with other portions of the graph.
 
 When you put these concepts together, a **graph** is composed of **federated services** that expose their **capabilities** in order to interact with each other.
@@ -106,7 +106,9 @@ const { ApolloGateway } = require('@apollo/gateway');
 const gateway = new ApolloGateway();
 
 // Pass the gateway to Apollo Server
-const server = new ApolloServer({ gateway });
+const server = new ApolloServer({ gateway, subscriptions: false });
+
+> Note: Apollo gateway does not currently support subscriptions, but it's [on the roadmap](https://github.com/apollographql/apollo-server/issues/2360) for Apollo Server 3.x
 
 server.listen().then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
@@ -235,16 +237,16 @@ The managed configuration for the Apollo gateway is exposed through [Google Clou
 
 With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [schema validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
 
-For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "foo" might look something like this:
+For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 
-1. Check changes in "foo" against `prod` and `prod-canary`:
+1. Check changes in "launches" against `prod` and `prod-canary`:
    ```
-   apollo service:check --tag=prod --serviceName=foo && apollo service:check --tag=prod-canary --serviceName=foo
+   apollo service:check --tag=prod --serviceName=launches && apollo service:check --tag=prod-canary --serviceName=launches
    ```
-1. Deploy changes to "foo" into your production environment. (_Note: This will not roll out changes to the gateway yet_)
-1. Roll over the `prod-canary` graph, containing one gateway container, using `apollo service:push --tag=prod-canary --serviceName=foo`. (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
+1. Deploy changes to "launches" into your production environment. (_Note: This will not roll out changes to the gateway yet_)
+1. Roll over the `prod-canary` graph, containing one gateway container, using `apollo service:push --tag=prod-canary --serviceName=launches`. (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
 1. Wait for health checks to pass against the canary, watch dashboards, etc.
-1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --tag=prod --serviceName=foo`.
+1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --tag=prod --serviceName=launches`.
 
 Because you can [tag metrics with variants](/platform/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
 
