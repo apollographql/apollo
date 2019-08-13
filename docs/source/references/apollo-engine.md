@@ -1,46 +1,75 @@
 ---
-title: Apollo Engine guide
-description: Account management, data privacy, GDPR compliance, and other information about Apollo Engine
+title: Apollo Graph Manager overview
+description: Account management, data privacy, GDPR compliance, and more
 ---
 
-[Apollo Engine](https://engine.apollographql.com/) is our cloud service for schema management and performance metrics monitoring. Its foundation is built on a few types of data input from servers: publishing schema introspections, publishing operations from clients, and sending traces of request execution. From those data inputs we can provide rich schema usage insights, schema history management, schema change validation, operation safelisting, query usage insights, and more.
+[Apollo Graph Manager](https://engine.apollographql.com/) is a cloud service for managing
+and monitoring your data graph. Its foundation is built on a few types of data input from servers: publishing schema introspections, publishing operations from clients, and sending traces of request execution. From those data inputs we can provide rich schema usage insights, schema history management, schema change validation, operation safelisting, query usage insights, and more.
 
-Engine's core schema management features are all available in an unlimited capacity for free, and always will be. Engine's advanced features, like operation safelisting, schema change validation, resolver-level query tracing, longer data retention, and third-party integrations are available with subscriptions to the Apollo Team plan.
+Graph Manager's core [schema management features](/docs/platform/schema-registry/) are available in an unlimited capacity for free, and they always will be. Advanced features are available with a subscription to an Apollo Team or Enterprise plan. These features include:
 
-More information on pricing and billing can be found [here](https://www.apollographql.com/plans/).
+* [Operation safelisting](/docs/platform/operation-registry/)
+* [Schema change validation](/docs/platform/schema-validation/)
+* [Resolver-level query tracing](/docs/platform/performance/)
+* [Third-party integrations](/docs/platform/integrations/)
+* Longer data retention
 
-![The Apollo Engine Architecture](../img/apollo-engine/engine-architecture.png)
+[Learn more about pricing and billing](https://www.apollographql.com/plans/)
 
-## Accounts
+![The Apollo Graph Manager Architecture](../img/apollo-engine/engine-architecture.png)
 
-Engine accounts are authenticated using GitHub by default. We also offer single sign-on (SAML or OIDC) to our [Enterprise](https://www.apollographql.com/plans/) customers.
+## Creating an account
 
-### Team collaboration
+You create your Graph Manager account by authenticating with your GitHub account at [engine.apollographql.com](https://engine.apollographql.com). Your Graph Manager username is the same as your GitHub username.
 
-Engine accounts mirror your GitHub organizations. The first time you log in, we create a personal Engine account for you with the same name as your GitHub username.
+>Single sign-on (SSO) account management via SAML or OIDC is available for [Enterprise customers](https://www.apollographql.com/plans/).
 
-The Engine GitHub application asks for permission to read which GitHub organizations you’re in and their members and teams (but not code!). If you grant Engine permission to see an organization, we create an Engine account with the same name as that GitHub organization. All members of that organization on GitHub will be able to see the new account in Engine. This is how you create a shared team account in Engine.
+## Managing organizations
 
-When you sign in to Engine, you will have access to all the teams where you're a member of the organization on GitHub. You can use the organization account picker to switch between accounts. If another member of a GitHub organization you belong to has already signed up the GitHub organization for Engine access, you’ll have access to that existing account.
+All data in Graph Manager belongs to a particular **organization**.
 
-If you’d like to work with additional team members and you are the admin of a GitHub organization, simply add them to your GitHub organization. If you aren’t an admin, have an admin add you to their GitHub organization.
+### The personal organization
+When you create your
+Graph Manager account via GitHub, a **personal organization** is created for you with the
+same name as your GitHub username. Other users cannot join your personal organization.
+Feel free to use this organization to try out the features of Graph Manager.
 
-### Adding an organization
+### Team organizations
 
-If you’re looking for a GitHub organization that you’re a member of and don’t see it in Engine, it’s likely that Engine does not have read access for that organization.
+Graph Manager supports **team organizations** that mirror GitHub organizations. When you first log in to Graph Manager, it requests permission to view which GitHub organizations you belong to, along with the members and teams in those organizations (but **not** the code). When Graph Manager first receives permission to view a particular GitHub organization, it creates a Graph Manager organization with the same name.
 
-If you want to add or remove an organization from Engine, you should manage those settings on GitHub. There, you will be able to Grant or Revoke access to Engine for organizations you can administer. For organizations you do not administer, you can
-"Request" access to Engine and the administrators will receive a request by E-mail.
+Every member of a GitHub organization automatically has access to its corresponding Graph Manager organization (assuming they create a Graph Manager account).
 
-### GitHub permissions
+#### Adding and removing organization members
 
-GitHub’s OAuth service is used for read-only information about organizations and users. Engine does not need access rights to your source code or to any other sensitive data in its login system.
+To add or remove members from a Graph Manager organization, simply remove those
+same  members from the corresponding GitHub organization. Note that only the owner
+of a GitHub organization can remove members.
 
-If your Engine account is owned by a GitHub organization, then Engine will allow all members of that organization to access the account. As you add or remove team members from your Github org, Engine will know about that and accordingly update the authorization for those users.
+### Viewing your organizations
 
-## Graphs
+The [Graph Manager homepage](https://engine.apollographql.com) lists the organizations you belong to in the left-hand column.
+Click on a particular organization to view its associated data.
 
-A _graph_ (formerly called _service_) in Engine represents a _project_ or _application_. When you create a new graph, we provide an API key used to send performance metrics and schema versions to our cloud service. This information is then accessible through the Engine interface.
+If you’re a member of a GitHub organization and you don't see a corresponding organization in Graph Manager, it's probably because Graph Manager doesn't currently have read access for that organization.
+
+### Creating and removing Graph Manager organizations
+
+You can view and modify Graph Manager's current access to your GitHub
+organizations on [this GitHub page](https://github.com/settings/connections/applications/4c69c4c9eafb16eab1b5). Note that only owners of a GitHub organization can modify access.
+
+* To create a Graph Manager organization for a particular GitHub organization, simply
+grant Graph Manager access to the GitHub organization.
+* To remove a Graph Manager organization, simply revoke Graph Manager's access to
+the corresponding GitHub organization.
+
+### GitHub permissions and privacy
+
+Graph Manager uses GitHub’s OAuth service for read-only information about organizations and users. Graph Manager does not request access rights to your source code or to any other sensitive data.
+
+## Managing graphs
+
+A **graph** in Graph Manager represents a project or application. When you create a new graph, Graph Manager generates an API key that your data graph can use to send it performance metrics and schema versions. This information is then accessible through the Graph Manager interface.
 
 ### Creating a graph
 
