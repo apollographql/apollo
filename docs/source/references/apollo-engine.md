@@ -1,12 +1,12 @@
 ---
 title: Apollo Graph Manager overview
-description: Account management, data privacy, GDPR compliance, and more
+description: Account management, graph management, data privacy, and GDPR compliance
 ---
 
-[Apollo Graph Manager](https://engine.apollographql.com/) is a cloud service for managing
-and monitoring your data graph. Its foundation is built on a few types of data input from servers: publishing schema introspections, publishing operations from clients, and sending traces of request execution. From those data inputs we can provide rich schema usage insights, schema history management, schema change validation, operation safelisting, query usage insights, and more.
+Apollo Graph Manager (formerly Apollo Engine) is a cloud service for managing
+and monitoring your organization's data graph. In addition to serving as a [GraphQL schema registry](/docs/platform/schema-registry/), Graph Manager ingests operation metadata and execution trace data from your GraphQL server to provide valuable insights into schema and query usage.
 
-Graph Manager's core [schema management features](/docs/platform/schema-registry/) are available in an unlimited capacity for free, and they always will be. Advanced features are available with a subscription to an Apollo Team or Enterprise plan. These features include:
+Graph Manager's core schema management features are available in an unlimited capacity for free, and they always will be. Advanced features are available with a subscription to an Apollo Team or Enterprise plan. These features include:
 
 * [Operation safelisting](/docs/platform/operation-registry/)
 * [Schema change validation](/docs/platform/schema-validation/)
@@ -28,7 +28,8 @@ You create your Graph Manager account by authenticating with your GitHub account
 
 All data in Graph Manager belongs to a particular **organization**.
 
-### The personal organization
+### Your personal organization
+
 When you create your
 Graph Manager account via GitHub, a **personal organization** is created for you with the
 same name as your GitHub username. Other users cannot join your personal organization.
@@ -38,141 +39,210 @@ Feel free to use this organization to try out the features of Graph Manager.
 
 Graph Manager supports **team organizations** that mirror GitHub organizations. When you first log in to Graph Manager, it requests permission to view which GitHub organizations you belong to, along with the members and teams in those organizations (but **not** the code). When Graph Manager first receives permission to view a particular GitHub organization, it creates a Graph Manager organization with the same name.
 
-Every member of a GitHub organization automatically has access to its corresponding Graph Manager organization (assuming they create a Graph Manager account).
+Every member of a GitHub organization automatically has access to the corresponding Graph Manager organization (assuming they create a Graph Manager account).
+
+> **WARNING: Currently, all members of a Graph Manager organization have full permissions
+> for the organization, including the ability to delete graphs or transfer them
+> out of the organization.**
 
 #### Adding and removing organization members
 
-To add or remove members from a Graph Manager organization, simply remove those
+To add or remove members from a Graph Manager organization, simply add or remove those
 same  members from the corresponding GitHub organization. Note that only the owner
 of a GitHub organization can remove members.
 
 ### Viewing your organizations
 
 The [Graph Manager homepage](https://engine.apollographql.com) lists the organizations you belong to in the left-hand column.
-Click on a particular organization to view its associated data.
+Click on an organization to view its associated data.
 
 If you’re a member of a GitHub organization and you don't see a corresponding organization in Graph Manager, it's probably because Graph Manager doesn't currently have read access for that organization.
 
-### Creating and removing Graph Manager organizations
+### Creating and removing organizations
 
 You can view and modify Graph Manager's current access to your GitHub
 organizations on [this GitHub page](https://github.com/settings/connections/applications/4c69c4c9eafb16eab1b5). Note that only owners of a GitHub organization can modify access.
 
 * To create a Graph Manager organization for a particular GitHub organization, simply
 grant Graph Manager access to the GitHub organization.
+
 * To remove a Graph Manager organization, simply revoke Graph Manager's access to
 the corresponding GitHub organization.
 
 ### GitHub permissions and privacy
 
-Graph Manager uses GitHub’s OAuth service for read-only information about organizations and users. Graph Manager does not request access rights to your source code or to any other sensitive data.
+Graph Manager uses GitHub’s OAuth service to obtain read-only information about organizations and users. Graph Manager does not request access rights to your source code or to any other sensitive data.
 
 ## Managing graphs
 
-A **graph** in Graph Manager represents a project or application. When you create a new graph, Graph Manager generates an API key that your data graph can use to send it performance metrics and schema versions. This information is then accessible through the Graph Manager interface.
+A **graph** in Graph Manager represents the data graph for a single project or application. Every graph has its own associated GraphQL schema. 
 
 ### Creating a graph
 
-To create a graph, you will need to select an account for that graph to belong to. All members of the account will be able to see the graph's data and settings options. You can transfer graphs between any of your Engine accounts by visiting its Settings page and change the “owner” to whichever account you’d like.
+To create a graph in the Graph Manager interface, first select the Graph Manager organization
+that the graph will belong to. Then click **New Graph** in the upper right and
+proceed through the creation flow.
 
-Graphs in Engine have globally unique IDs. We recommend that you prefix your ID with the name of your company or organization to avoid naming collisions with other graphs in the system.
+Note that every graph in Graph Manager has a globally unique **graph ID**. We recommend that you prefix your graph IDs with the name of your company or organization to avoid naming collisions.
 
-### Managing environments
+### Viewing graph information
 
-Each graph in Engine should represent a single application, and environments within your application should be tracked using [_variants_](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags). All metrics that your server reports to Engine and all schema versions that you register should be tagged with their environment, and you'll be able to filter and look at the data for individual variants within Engine.
+After selecting an organization in Graph Manager, click on a particular graph
+to view its data and settings. All of a Graph Manager organization's members have
+access to the data and settings for every graph that belongs to that organization. 
 
-#### API keys
+### Transferring graph ownership
 
-API keys can be added and removed from a graph at any time. They are used to both send data to Engine (eg. server reporting configuration) and fetch information from Engine (eg. vs code extension configuration).
+You can transfer a graph to a different Graph Manager organization you belong to
+by visiting the graph's Settings page and changing the **graph owner**.
 
-You can manage your API keys on your graph's settings page. It is recommended that you use one API key per function (eg. one key per data source) to have more granular control over how your Engine data is sent and accessed.
+### Deleting a graph
 
-## Data privacy
+>**Deleting a graph cannot be undone!**
 
-All data that is sent to Engine from your server can be configured and turned off to meet your data privacy needs. This section will walk through what information Engine sees about your GraphQL graph's requests, what Engine’s default behavior to handle request data is, and how you can configure Engine to the level of data privacy your team needs.
+You can delete a graph from Graph Manager by visiting its Settings page and clicking
+**Delete**.
 
-### Architecture
+### Distinguishing between application environments
 
-Engine is primarily a cloud service that ingests and stores performance metrics data from your server. There are two ways to get data into Engine:
+Every graph in Graph Manager should correspond to a single application. However, a single
+application might run in multiple _environments_ (such as test, staging, and production).
 
-1. Use **Apollo Server 2** (Node servers) and configure performance metrics reporting by providing an Engine API key in your server configuration.
-2. Run the **Engine proxy** (deprecated) in front of your server and install an Apollo tracing package in your server.
+To distinguish between graph activity for different application environments, you can define [**variants**](https://www.apollographql.com/docs/platform/schema-registry.html#schema-tags) for a graph. Each variant has its own schema
+that can (but doesn't have to) differ from the default variant.
 
-#### Apollo Server 2
+When your server sends metrics to Graph Manager, it can associate an operation with
+a particular variant. Variants appear as separate items in your organization's graph list, allowing you to view analytics for 
+each application environment in isolation.
 
-If you’ve set up Engine metrics forwarding using Apollo Server 2, Apollo Server will automatically start tracing the execution your requests and forwarding that information to Engine. Engine uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data will become available for you to explore in the Engine interface.
+## Ingesting and fetching data
 
-Apollo Server will never forward the responses of your requests to Engine, but it will forward the shape of your request, the time it took each resolver to execute for that request, and the variables and headers of the request (configurable, see below).
+Graph Manager ingests and stores performance metrics data sent from your GraphQL server.
+Use one of the following methods to send data to Graph Manager:
 
-#### Engine Proxy (deprecated)
+* Use [Apollo Server](/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/docs/tutorial/production/#get-an-engine-api-key) in your server configuration.
 
-This configuration option is primarily used to forward metrics to the Engine ingress from non-Node servers. The proxy is installed and run in your own environment on-prem as a separately hosted process that you route your client requests through.
+* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](/references/setup-analytics/#engine-reporting-endpoint) (again,
+providing an API key with every request).
 
-As your clients make requests to your server, the proxy reads response extension data to make caching decisions and aggregates tracing and error information into reports that it sends to the Engine ingress.
+### API keys
 
-While the Engine proxy sees your client request data and service response data, it only collects and forwards data that goes into the reports you see in the Engine dashboards. All information sent by your on-premise proxy to the out-of-band Engine cloud service is configurable, and can be turned off through configuration options. Data is aggregated and sent approximately every 5 seconds.
+Any system that communicates with Graph Manager (whether to send metrics or fetch them)
+must use an **API key** to do so. You can add and remove API keys from your graph
+from its Settings page in the Graph Manager UI.
 
-### Data collection
+You should use a different API key for each system that communicates
+with Graph Manager. This provides you with more granular control over how Graph
+Manager data is sent and accessed.
 
-This section describes which parts of your GraphQL HTTP requests are seen and collected by Engine.
+## Data transfer and privacy
 
-#### Query operation string
+You can configure Apollo Server to automatically trace the execution of your requests and forward that information to Graph Manager. Graph Manager uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in the Graph Manager interface.
 
-Both Apollo Server 2 and the Engine proxy report the full operation string of your request to the Engine cloud service. Because of this, you should be careful to put any sensitive data like passwords and personal data in the GraphQL variables object rather than in the operation string itself.
+### What does Apollo Server send to Graph Manager?
 
-#### Variables
+ 
 
-Both Apollo Server 2 and the Engine proxy will report the query variables for each request to the Engine cloud service by default. This can be disabled in the following ways:
+**Apollo Server never forwards the `data` of an operation response to Graph Manager.** It _does_ forward:
 
-- **Apollo Server 2** – use the privateVariables option in your Apollo Server configuration for Engine.
-- **Engine proxy** – use the privateVariables option in your proxy configuration, or prevent all variables from being reported with noTraceVariables option.
+* Several fields _besides_ `data` from every operation response
 
-#### Authorization & Cookie HTTP Headers
+* The [query operation string](#query-operation-strings) for every executed operation
 
-Engine will **never** collect your application's `Authorization`, `Cookie`, or `Set-Cookie` headers and ignores these if received. Engine will collect all other headers from your request to show in the trace inspector unless turned off with these configurations:
+* The time it takes each resolver to execute for every operation
 
-- **Apollo Server 2** – use the [`privateHeaders` option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#EngineReportingOptions) in your Apollo Server configuration for Engine.
-- **Engine Proxy** – use the [`privateHeaders` option](/references/proxy-config/#reporting) in your proxy configuration.
+Additionally, you can configure Apollo Server to forward some or all of:
 
-If you perform authorization in another header (like `X-My-API-Key`), be sure to add this to `privateHeaders` configuration. Note that unlike headers in general, this configuration option **is** case-sensitive.
+* Every operation's [GraphQL variables](#graphql-variables) and [HTTP headers](#http-headers)
 
-### Response
+#### Operation response fields
 
-Let’s walk through Engine’s default behavior for reporting on fields in a typical GraphQL response:
+Let’s walk through Apollo Server's default behavior for reporting on fields in a typical GraphQL response:
 
 ```json
 // GraphQL Response
 {
-  "data": { ... },          // Never sent to the Engine cloud service
-  "errors": [ ... ],        // Sent to Engine, used to report on errors for operations and fields.
+  "data": { ... },          // NEVER sent to Graph Manager.
+  "errors": [ ... ],        // Sent to Graph Manager, used to report on errors for operations and fields.
   "extensions": {
-    "tracing": { ... },     // Sent to Engine, used to report on performance data for operations and fields.
-    "cacheControl": { ... } // Sent to Engine, used to determine cache policies and forward CDN cache headers.
+    "tracing": { ... },     // Sent to Graph Manager, used to report on performance data for operations and fields.
+    "cacheControl": { ... } // Sent to Graph Manager, used to determine cache policies and forward CDN cache headers.
   }
 }
 ```
 
 #### `response.data`
 
-Neither Apollo Server 2 nor the Engine proxy will ever send the contents of this to the Engine cloud service. The responses from your GraphQL service stay on-prem.
-
-If you've configured whole query caching through the Engine proxy and Engine determines that a response it sees is cacheable, then the response will be stored in your [cache](https://www.apollographql.com/docs/apollo-server/features/caching/#saving-full-responses-to-a-cache) (either in-memory in your proxy or as an external memcached you configure).
+As mentioned, Apollo Server **never** sends the contents of this field to Graph
+Manager. The responses from your GraphQL service stay on-prem.
 
 #### `response.errors`
 
-If either Apollo Server 2 or the Engine proxy sees a response with an `"errors"` field, they will read the `message` and `locations` fields if they exist and report them to the Engine cloud service.
+By default, if Apollo Server sees a response that includes an `errors` field, it reports the values
+of the error's `message` and `locations` fields (if any) to Graph Manager.
 
-You can disable reporting errors to the out-of-band Engine cloud service like so:
+You can use the [`rewriteError` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to filter or transform errors before they're stored in
+Graph Manager. Use this to strip sensitive data from errors or filter "safe" errors from Graph Manager reports.
 
-- **Apollo Server 2** &mdash; enable the [`maskErrorDetails` option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#EngineReportingOptions) to remove the messages and other details from error traces sent to Apollo's cloud service.
-- **Apollo Server 2** &mdash; specify a [`rewriteError` function](https://www.apollographql.com/docs/apollo-server/features/errors/#for-apollo-engine-reporting) that filters or transforms your errors before they are sent to Apollo's cloud service. This can be used to strip sensitive data from errors or filter "safe" errors from Engine's reporting.
-- **Engine proxy** &mdash; use the [`noTraceErrors` option](/references/proxy-config/#reporting) to disable sending error traces to the Engine cloud service.
+#### Query operation strings
 
-#### Disable Reporting (Engine proxy)
+Apollo Server reports the string representation of each
+query operation to Graph Manager. Consequently, **do not include sensitive data (such
+as passwords or personally identifiable information) in operation strings**. Instead, include this information in [GraphQL variables](#graphql-variables), which you can send selectively.
 
-We've added the option to disable reporting of proxy stats and response traces to the Engine cloud service so that integration tests can run without polluting production data.
+#### GraphQL variables
 
-To disable all reporting, use the [`disabled` option](/references/proxy-config/#reporting) for the Engine proxy.
+##### Apollo Server 2.7.0 and later
+
+In Apollo Server 2.7.0 and later, **none** of an
+operation's GraphQL variables is sent to Graph Manager by default.
+
+You can set a value for the [`sendVariableValues` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
+some or all of your GraphQL variables.
+
+##### Versions prior to 2.7.0
+
+In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's GraphQL
+variables are sent to Graph Manager by default.
+
+If you're using an earlier version of Apollo Server, it's recommended that you
+update. If you can't update for
+whatever reason, you can use the [`privateVariables` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
+that should _not_ be sent to Graph Manager. This reporting option is deprecated
+and will not be available in future versions of Apollo Server.
+
+#### HTTP Headers
+
+Regardless of your server configuration, Graph Manager **never** collects the values
+of the following HTTP headers, even if they're sent:
+
+* `Authorization`
+* `Cookie`
+* `Set-Cookie`
+
+You can, however, configure reporting options for all other HTTP headers.
+
+> If you perform authorization in another header (such as `X-My-API-Key`), **do not send
+>that header to Graph Manager**.
+
+##### Apollo Server 2.7.0 and later
+
+In Apollo Server 2.7.0 and later, **none** of an
+operation's HTTP headers is sent to Graph Manager by default.
+
+You can set a value for the [`sendHeaders` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
+some or all of your HTTP headers.
+
+##### Versions prior to 2.7.0
+
+In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP headers
+(except the confidential headers listed above) are sent to Graph Manager by default.
+
+If you're using an earlier version of Apollo Server, it's recommended that you
+update. If you can't update for
+whatever reason, you can use the [`privateHeaders` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
+that should _not_ be sent to Graph Manager. This reporting option is deprecated
+and will not be available in future versions of Apollo Server.
 
 <!--
 ######################################################################
