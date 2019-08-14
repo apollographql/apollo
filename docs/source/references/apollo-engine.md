@@ -3,10 +3,22 @@ title: Apollo Graph Manager overview
 description: Account management, graph management, data privacy, and GDPR compliance
 ---
 
-Apollo Graph Manager (formerly Apollo Engine) is a cloud service for managing
-and monitoring your organization's data graph. In addition to serving as a [GraphQL schema registry](/docs/platform/schema-registry/), Graph Manager ingests operation metadata and execution trace data from your GraphQL server to provide valuable insights into schema and query usage.
+Apollo Graph Manager (formerly Apollo Engine) is a cloud service that helps you manage,
+validate, and secure your organization's data graph. In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to provide valuable insights into schema and query usage.
 
-Graph Manager's core schema management features are available in an unlimited capacity for free, and they always will be. Advanced features are available with a subscription to an Apollo Team or Enterprise plan. These features include:
+**Graph Manager provides the following features to all Apollo users for free:**
+
+* A [GraphQL schema registry](/docs/platform/schema-registry/) that tracks changes
+and enables you to [create variants of your schema](/docs/platform/schema-registry/#managing-environments) for different environments
+(such as staging and production)
+
+* A schema explorer that makes it easy to inspect your schema's queries,
+mutations, and other object definitions
+
+* Team collaboration via [organizations](#managing-organizations) that mirror
+your GitHub organizations
+
+**Advanced features are available with a subscription to an Apollo Team or Enterprise plan:**
 
 * [Operation safelisting](/docs/platform/operation-registry/)
 * [Schema change validation](/docs/platform/schema-validation/)
@@ -174,7 +186,7 @@ Let’s walk through Apollo Server's default behavior for reporting on fields in
 #### `response.data`
 
 As mentioned, Apollo Server **never** sends the contents of this field to Graph
-Manager. The responses from your GraphQL service stay on-prem.
+Manager. The responses from your GraphQL service stay internal to your application.
 
 #### `response.errors`
 
@@ -206,10 +218,11 @@ In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's Graph
 variables are sent to Graph Manager by default.
 
 If you're using an earlier version of Apollo Server, it's recommended that you
-update. If you can't update for
-whatever reason, you can use the [`privateVariables` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
-that should _not_ be sent to Graph Manager. This reporting option is deprecated
-and will not be available in future versions of Apollo Server.
+update. If you can't update for whatever reason, you can use the
+ [`privateVariables` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions)
+to specify the names of variables that should _not_ be sent to Graph Manager. You
+can also set this option to `false` to prevent all variables from being sent.
+This reporting option is deprecated and will not be available in future versions of Apollo Server.
 
 #### HTTP Headers
 
@@ -222,8 +235,8 @@ of the following HTTP headers, even if they're sent:
 
 You can, however, configure reporting options for all other HTTP headers.
 
-> If you perform authorization in another header (such as `X-My-API-Key`), **do not send
->that header to Graph Manager**.
+> **Important:** If you perform authorization in a header other than those listed above
+> (such as `X-My-API-Key`), **do not send that header to Graph Manager**.
 
 ##### Apollo Server 2.7.0 and later
 
@@ -241,8 +254,9 @@ In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP 
 If you're using an earlier version of Apollo Server, it's recommended that you
 update. If you can't update for
 whatever reason, you can use the [`privateHeaders` reporting option](/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
-that should _not_ be sent to Graph Manager. This reporting option is deprecated
-and will not be available in future versions of Apollo Server.
+that should _not_ be sent to Graph Manager. You can also set this
+option to `false` to prevent all headers from being sent.
+This reporting option is deprecated and will not be available in future versions of Apollo Server.
 
 <!--
 ######################################################################
