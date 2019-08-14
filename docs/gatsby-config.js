@@ -21,10 +21,9 @@ module.exports = {
             'tutorial/queries',
             'tutorial/mutations',
             'tutorial/local-state',
-            // 'tutorial/whats-next'
           ],
-          Platform: [
-            'references/apollo-engine',
+          'Apollo Graph Manager': [
+            'platform/graph-manager-overview',
             'platform/schema-registry',
             'platform/schema-validation',
             'platform/client-awareness',
@@ -42,6 +41,7 @@ module.exports = {
           References: [
             'references/apollo-config',
             'references/setup-analytics',
+            'references/apollo-engine',
             'references/engine-proxy',
             'references/engine-proxy-release-notes',
           ],
