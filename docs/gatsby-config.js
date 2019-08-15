@@ -41,7 +41,7 @@ module.exports = {
           References: [
             'references/apollo-config',
             'references/setup-analytics',
-            'references/apollo-engine',
+            'references/graph-manager-data-privacy',
             'references/engine-proxy',
             'references/engine-proxy-release-notes',
           ],

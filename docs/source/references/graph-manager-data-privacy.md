@@ -1,6 +1,6 @@
 ---
 title: Graph Manager data privacy and compliance
-description: Control what Graph Manager ingests and learn about GDPR
+description: Understand what Graph Manager ingests and learn about GDPR
 ---
 
 You can configure Apollo Server to automatically trace the execution of your requests and forward that information to Graph Manager. Graph Manager uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in the Graph Manager interface.
