@@ -45,7 +45,7 @@ Manager. The responses from your GraphQL service stay internal to your applicati
 By default, if Apollo Server sees a response that includes an `errors` field, it reports the values
 of the error's `message` and `locations` fields (if any) to Graph Manager.
 
-You can use the [`rewriteError` reporting option](/apollo-server/api/apollo-server/#enginereportingoptions) to filter or transform errors before they're stored in
+You can use the [`rewriteError` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to filter or transform errors before they're stored in
 Graph Manager. Use this to strip sensitive data from errors or filter "safe" errors from Graph Manager reports.
 
 ### Query operation strings
@@ -61,7 +61,7 @@ as passwords or personally identifiable information) in operation strings**. Ins
 In Apollo Server 2.7.0 and later, **none** of an
 operation's GraphQL variables is sent to Graph Manager by default.
 
-You can set a value for the [`sendVariableValues` reporting option](/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
+You can set a value for the [`sendVariableValues` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
 some or all of your GraphQL variables.
 
 #### Versions prior to 2.7.0
@@ -71,7 +71,7 @@ variables are sent to Graph Manager by default.
 
 If you're using an earlier version of Apollo Server, it's recommended that you
 update. If you can't update for whatever reason, you can use the
- [`privateVariables` reporting option](/apollo-server/api/apollo-server/#enginereportingoptions)
+ [`privateVariables` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions)
 to specify the names of variables that should _not_ be sent to Graph Manager. You
 can also set this option to `false` to prevent all variables from being sent.
 This reporting option is deprecated and will not be available in future versions of Apollo Server.
@@ -95,7 +95,7 @@ You can, however, configure reporting options for all other HTTP headers.
 In Apollo Server 2.7.0 and later, **none** of an
 operation's HTTP headers is sent to Graph Manager by default.
 
-You can set a value for the [`sendHeaders` reporting option](/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
+You can set a value for the [`sendHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
 some or all of your HTTP headers.
 
 #### Versions prior to 2.7.0
@@ -105,7 +105,7 @@ In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP 
 
 If you're using an earlier version of Apollo Server, it's recommended that you
 update. If you can't update for
-whatever reason, you can use the [`privateHeaders` reporting option](/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
+whatever reason, you can use the [`privateHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
 that should _not_ be sent to Graph Manager. You can also set this
 option to `false` to prevent all headers from being sent.
 This reporting option is deprecated and will not be available in future versions of Apollo Server.

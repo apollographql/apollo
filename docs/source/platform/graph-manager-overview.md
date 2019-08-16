@@ -131,7 +131,7 @@ You can delete a graph from Graph Manager by visiting its Settings page and clic
 Every graph in Graph Manager should correspond to a single application. However, a single
 application might run in multiple _environments_ (such as test, staging, and production).
 
-To distinguish between graph activity for different application environments, you can define [**variants**](/platform/schema-registry.html#schema-tags) for a graph. Each variant has its own schema
+To distinguish between graph activity for different application environments, you can define [**variants**](https://www.apollographql.com/docs/platform/schema-registry/#managing-environments) for a graph. Each variant has its own schema
 that can (but doesn't have to) differ from the default variant.
 
 When your server sends metrics to Graph Manager, it can associate an operation with
@@ -143,7 +143,7 @@ each application environment in isolation.
 Graph Manager ingests and stores performance metrics data sent from your GraphQL server.
 Use one of the following methods to send data to Graph Manager:
 
-* Use [Apollo Server](/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/tutorial/production/#get-an-engine-api-key) in your server configuration.
+* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/tutorial/production/#get-an-engine-api-key) in your server configuration.
 
 * If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](/references/setup-analytics/#engine-reporting-endpoint) (again,
 providing an API key with every request).
