@@ -33,7 +33,7 @@ mutations, and other object definitions
 
 [Learn more about pricing and billing](https://www.apollographql.com/plans/)
 
-![The Apollo Graph Manager Architecture](../img/apollo-engine/engine-architecture.png)
+![The Apollo Graph Manager Architecture](../img/apollo-engine/graph-manager-architecture.png)
 
 ## Creating an account
 
