@@ -7,7 +7,9 @@ Apollo projects are configured using an `apollo.config.js` file at the root of y
 
 If you're using one of our workflow tools like the Apollo CLI or the Apollo VS Code extension, you'll need to have an `apollo.config.js` project to get the features those tools bring.
 
-There are two types of projects, `client` and `service`, which can be in the same configuration file if necessary. This document describes all the options available in the Apollo config and defines which are required vs. optional.
+There are two types of projects, `client` and `service`. When a `client` key is found in the config, a project is treated as a client project, and only `client:*` commands may be run against it. The same is true for `service` projects. The `apollo.config.js` file is meant to describe configuration for a **single project only**. If used in a monorepo with multiple projects, there should be a separate config file for each project.
+
+This document describes all the options available in the Apollo config and defines which are required vs. optional.
 
 ## Client projects
 

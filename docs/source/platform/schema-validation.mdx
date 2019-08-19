@@ -90,19 +90,6 @@ Each of these changes updates an existing schema element. If an operation is act
   </li>
 </ul>
 
-#### Type extensions
-
-These changes add a type to an existing union or interface in your graph. If an operation is actively using an element of the union or interface, it could receive and unexpected result when updated depending on the fragment spreads requested.
-
-<ul>
-  <li id="TYPE_ADDED_TO_UNION">
-    <code>TYPE_ADDED_TO_UNION</code>: Type added to a union used by at least one operation
-  </li>
-  <li id="TYPE_ADDED_TO_INTERFACE">
-    <code>TYPE_ADDED_TO_INTERFACE</code>: Interface added to an object used by at least one operation
-  </li>
-</ul>
-
 #### Default arguments
 
 These changes update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation could experience unexpected results when the schema is updated if it was relying on the original default value.
@@ -118,26 +105,31 @@ These changes update the default value for an argument. If an operation is using
 These are change types detected ny the `apollo service:check` command, but they are "safe" and will always be compatible with all exisitng client usage of the graph. They will not affect the behavior of any clients if deployed.
 
 <ul>
-  <li>Optional arguments</li>
-  <ul>
-    <li id="OPTIONAL_ARG_ADDED"><code>OPTIONAL_ARG_ADDED</code> Nullable argument added to a field</li>
-    <li id="NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT"><code>NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT</code> Nullable field added to an input object</li>
-  </ul>
-  <li>Additions</li>
-  <ul>
-    <li id="FIELD_ADDED"><code>FIELD_ADDED</code> Field added to a type</li>
-    <li id="TYPE_ADDED"><code>TYPE_ADDED</code> Type added to the schema</li>
-    <li id="VALUE_ADDED_TO_ENUM"><code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients contain a switch case on the enum and do not include the `default`, this change could cause unexpected behavior</li>
-  </ul>
-  <li>Deprecations</li>
-  <ul>
-    <li id="FIELD_DEPRECATED"><code>FIELD_DEPRECATED</code> Field deprecated</li>
-    <li id="FIELD_DEPRECATION_REMOVED"><code>FIELD_DEPRECATION_REMOVED</code> Field no longer deprecated</li>
-    <li id="FIELD_DEPRECATED_REASON_CHANGE"><code>FIELD_DEPRECATED_REASON_CHANGE</code> Reason for deprecation changed</li>
-    <li id="ENUM_DEPRECATED"><code>ENUM_DEPRECATED</code> Enum deprecated</li>
-    <li id="ENUM_DEPRECATION_REMOVED"><code>ENUM_DEPRECATION_REMOVED</code> Enum no longer deprecated</li>
-    <li id="ENUM_DEPRECATED_REASON_CHANGE"><code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation changed</li>
-  </ul>
+  <li>Optional arguments
+    <ul>
+      <li id="OPTIONAL_ARG_ADDED"><code>OPTIONAL_ARG_ADDED</code> Nullable argument added to a field</li>
+      <li id="NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT"><code>NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT</code> Nullable field added to an input object</li>
+    </ul>
+  </li>
+  <li>Additions
+    <ul>
+      <li id="FIELD_ADDED"><code>FIELD_ADDED</code> Field added to a type</li>
+      <li id="TYPE_ADDED"><code>TYPE_ADDED</code> Type added to the schema</li>
+      <li id="VALUE_ADDED_TO_ENUM"><code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients contain a switch case on the enum and do not include the `default`, this change could cause unexpected behavior</li>
+      <li id="TYPE_ADDED_TO_UNION"><code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least one operation</li>
+      <li id="TYPE_ADDED_TO_INTERFACE"><code>TYPE_ADDED_TO_INTERFACE</code> Interface added to an object used by at least one operation</li>
+    </ul>
+  </li>
+  <li>Deprecations
+    <ul>
+      <li id="FIELD_DEPRECATED"><code>FIELD_DEPRECATED</code> Field deprecated</li>
+      <li id="FIELD_DEPRECATION_REMOVED"><code>FIELD_DEPRECATION_REMOVED</code> Field no longer deprecated</li>
+      <li id="FIELD_DEPRECATED_REASON_CHANGE"><code>FIELD_DEPRECATED_REASON_CHANGE</code> Reason for deprecation changed</li>
+      <li id="ENUM_DEPRECATED"><code>ENUM_DEPRECATED</code> Enum deprecated</li>
+      <li id="ENUM_DEPRECATION_REMOVED"><code>ENUM_DEPRECATION_REMOVED</code> Enum no longer deprecated</li>
+      <li id="ENUM_DEPRECATED_REASON_CHANGE"><code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation changed</li>
+    </ul>
+  </li>
 </ul>
 
 ### Validation response

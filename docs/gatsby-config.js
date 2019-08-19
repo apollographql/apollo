@@ -20,10 +20,10 @@ module.exports = {
             'tutorial/client',
             'tutorial/queries',
             'tutorial/mutations',
-            'tutorial/local-state'
-            // 'tutorial/whats-next'
+            'tutorial/local-state',
           ],
-          Platform: [
+          'Apollo Graph Manager': [
+            'platform/graph-manager-overview',
             'platform/schema-registry',
             'platform/schema-validation',
             'platform/client-awareness',
@@ -31,22 +31,22 @@ module.exports = {
             'platform/editor-plugins',
             'platform/performance',
             'platform/integrations',
-            'platform/federation'
+            'platform/federation',
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
-            'resources/faq'
+            'resources/faq',
           ],
           References: [
             'references/apollo-config',
-	          'references/setup-analytics',
-            'references/apollo-engine',
+            'references/setup-analytics',
+            'references/graph-manager-data-privacy',
             'references/engine-proxy',
-            'references/engine-proxy-release-notes'
-          ]
-        }
-      }
-    }
-  ]
+            'references/engine-proxy-release-notes',
+          ],
+        },
+      },
+    },
+  ],
 };
