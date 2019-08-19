@@ -9,7 +9,7 @@ Adopting GraphQL in your organization will ease these pain points considerably. 
 
 ## Developer experience
 
-Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Engine. Let's learn how!
+Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Graph Manager. Let's learn how!
 
 ### Explore your API
 
@@ -47,9 +47,9 @@ Teams who have switched to Apollo Client have reported [deleting thousands of li
 
 Developing your GraphQL API with the Apollo platform gives teams access to modern tooling that helps them uncover bugs quickly, gain visibility into their API, and develop challenging features such as caching with confidence.
 
-[Apollo Engine](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Apollo Engine displays per resolver tracing metrics that can help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
+[Apollo Graph Manager](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Graph Manager displays per-resolver tracing metrics that help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
 
-![Apollo Engine](../assets/engine.png)
+![Apollo Graph Manager](../assets/engine.png)
 
 ## Declarative data fetching
 

@@ -35,12 +35,12 @@ There are a few different ways you can link your client to a schema:
 
 To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](/platform/schema-registry/).
 
-With Engine set up, you can point your client directly to your graph's schema by putting your graph's Engine ID in your Apollo config, like so:
+With Graph Manager set up, you can point your client directly to your graph's schema by putting your graph's Graph Manager ID in your Apollo config, like so:
 
 ```js{3}
 module.exports = {
   client: {
-    service: 'my-apollo-service' // the id of your service in Engine (from the URL)
+    service: 'my-apollo-service' // the id of your service in Graph Manager (from the URL)
   }
 };
 ```
