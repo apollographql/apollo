@@ -53,7 +53,7 @@ Developing your GraphQL API with the Apollo platform gives teams access to moder
 
 ## Declarative data fetching
 
-One of the main advantages of adopting GraphQL is its declarative approach to data fetching. With GraphQL, there's no need to call multiple endpoints from the client or aggregate the data manually like you have to with traditional REST data fetching. Instead, you specify exactly the data you need and GraphQL gives you exactly what you asked for.
+One of the main advantages of adopting GraphQL is its declarative approach to data fetching. With GraphQL, there's no need to call multiple endpoints from the client or aggregate the data manually like you have to with traditional REST data fetching. Instead, you specify the exact data you need and GraphQL gives you exactly what you asked for.
 
 With REST, you would have to call all of these endpoints for each item in the list, filter down the data you need, and aggregate all of the remaining data into the shape your components consume.
 
