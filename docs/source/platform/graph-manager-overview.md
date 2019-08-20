@@ -143,9 +143,9 @@ each application environment in isolation.
 Graph Manager ingests and stores performance metrics data sent from your GraphQL server.
 Use one of the following methods to send data to Graph Manager:
 
-* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/tutorial/production/#get-an-engine-api-key) in your server configuration.
+* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/tutorial/production/#get-a-graph-manager-api-key) in your server configuration.
 
-* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](/references/setup-analytics/#engine-reporting-endpoint) (again,
+* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](/references/setup-analytics/#graph-manager-reporting-endpoint) (again,
 providing an API key with every request).
 
 ### API keys

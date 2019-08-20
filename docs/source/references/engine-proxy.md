@@ -4,7 +4,7 @@ description: Configuring and running the Engine proxy
 ---
 
 > **Engine proxy is deprecated.** Current users of Engine proxy should migrate their
-> system to use either Apollo Server or the [Graph Manager reporting endpoint](/references/setup-analytics/#engine-reporting-endpoint).
+> system to use either Apollo Server or the [Graph Manager reporting endpoint](/references/setup-analytics/#graph-manager-reporting-endpoint).
 
 ## Background
 

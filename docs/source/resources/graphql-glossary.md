@@ -7,7 +7,7 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 
 ## Apollo
 
-An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Client](https://www.apollographql.com/docs/react/), and [Engine](https://www.apollographql.com/docs/engine/)).
+An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Client](https://www.apollographql.com/docs/react/), and [Graph Manager](https://www.apollographql.com/docs/engine/)).
 
 ## Automatic Persisted Queries (APQ)
 
@@ -368,11 +368,11 @@ A [development approach](/intro/platform/#workflows) for designing and building 
 
 ## Schema registry
 
-A central source of truth for your schema in Apollo Engine. It enables schema registration, schema validation, tracking of detailed schema changes e.g. types added, fields added, fields deprecated and looking up previous versions of schema.
+A central source of truth for your schema in Apollo Graph Manager. It enables schema registration, schema validation, tracking of detailed schema changes e.g. types added, fields added, fields deprecated and looking up previous versions of schema.
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Engine. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
 
 ## Schema stitching
 

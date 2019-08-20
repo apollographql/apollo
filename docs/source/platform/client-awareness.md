@@ -9,7 +9,7 @@ Apollo provides a client identification and tracking system, which allows you to
 
 Like any API, your graph will end up with many consumers with different frequencies, subselections, and permissions as it grows over time. Apollo allows all reported data to be tagged with client information so it can be filtered and analyzed across different sets of clients and stacks.
 
-Here's an example of client identity reporting in Engine:
+Here's an example of client identity reporting in Apollo Graph Manager:
 
 ![client overview](../img/client-awareness/overview.png)
 
