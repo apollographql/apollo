@@ -86,7 +86,7 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 _src/index.js_
 
 ```jsx{8-12,15}
-import { ApolloProvider, Query } from '@apollo/react-hooks';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import Pages from './pages';
