@@ -181,6 +181,36 @@ The gateway for the 'space-explorer@current' graph was NOT updated with a new sc
 
 The reasoning behind this functionality is that the service registry should always be the source of truth for what is running in your infrastructure. Even if that means that composition is failing in your infrastructure, the service registry should reflect that. However, you still want your gateway to function as it has been before the service deployment. Additionally, this functionality can be used to make dependent changes, like smoothly migrating a field from one service to another or introducing a circular service dependency.
 
+### Validating during a migration from another architecture
+
+While migrating your GraphQL infrastructure from another architecture, be it a monolithic deployment or a schema-stitching gateway, it's important to validate that the changes you're making will not affect the consumers of the graph. To accomplish this, we recommend creating a variant of the same graph for each environment (e.g. a `prod-federated` and `staging-federated` to correspond with `prod` and `staging` of the other initial architecture).
+
+Every architecture and migration path will have a different story and a different set of requirement to validate changes incrementally. You can use both `service:check` and `client:check` throughout this process depending on what is right for your graph.
+
+// TODO: Name these section better & polish details <3
+#### Observing diffs between architectures incrementally
+
+Although the entirety of the migration may not be complete for a longer course of time, you will want to set up observability into differences between your gateway and your previous architecture as early as possible to understand the differences you may be introducing between the two graphs.
+
+#### Validating the END gateway against the previous architecture
+
+* When you're ready to pull the trigger, you want to make sure that the gateway is making only safe changes from the old graph's perspective
+* You can just do `service:check`, but you might need to do some fancy `service:download` or we can expand the check tool to be more generic
+
+#### Validating clients against both architectures
+
+* If you have clients that only touch a few services in the graph, then you will be able to migrate those to the gateway sooner via a load balancer in front of the two graphs
+* You should report information internally to understand when all clients are able to be migrated over to federation to help determine when to pull the plug on the old architecture
+
+#### Validating the gateway normally
+
+* You still want to run `service:check` from each **service** under the gateway
+* This is especially true when doign a long-running incremental migration, but it's also useful if migrating en-masse to validate composition.
+
+#### Full migration
+* Once all clients are safe and validating between the two shows only safe changes, you can migrate all traffic incrementally, ramping up percentage of traffic until you're at 100
+* Link to other docs on migrating shit
+
 ## Integrating with your deployment pipeline
 
 As an engineer working on a federated service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following worflow:
