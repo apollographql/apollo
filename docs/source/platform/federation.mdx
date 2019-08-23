@@ -181,7 +181,7 @@ The gateway for the 'space-explorer@current' graph was NOT updated with a new sc
 
 The reasoning behind this functionality is that the service registry should always be the source of truth for what is running in your infrastructure. Even if that means that composition is failing in your infrastructure, the service registry should reflect that. However, you still want your gateway to function as it has been before the service deployment. Additionally, this functionality can be used to make dependent changes, like smoothly migrating a field from one service to another or introducing a circular service dependency.
 
-### Validating during a migration from another architecture
+### Using validation features to support service migration
 
 While migrating your GraphQL infrastructure from another architecture, be it a monolithic deployment or a schema-stitching gateway, it's important to validate that the changes you're making will not affect the consumers of the graph. To accomplish this, we recommend creating a variant of the same graph for each environment (e.g. a `prod-federated` and `staging-federated` to correspond with `prod` and `staging` of the other initial architecture).
 
