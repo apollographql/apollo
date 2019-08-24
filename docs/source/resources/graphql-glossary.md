@@ -55,6 +55,8 @@ A new pattern for fetching data from a particular service, with built-in support
 
 ## Deferred query
 
+> This is an experimental feature.  It is not included in any stable releases of Apollo Client or Apollo Server.
+
 A query that has certain fields tagged with the `@defer` directive, so that fields that take a long time to resolve do not need to slow down the entire query.
 
 ```graphql
