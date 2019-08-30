@@ -11,11 +11,11 @@ A "trace" corresponds to exactly one [GraphQL operation](https://www.apollograph
 
 By recording which resolvers executed in our server and their traces, we can build a rich dataset. From it, we see exactly which query shapes are being run, who is sending them, which parts of the schema are most utilized, which resolvers in the server are bottlenecks, etc.
 
-We've specifically built an interface to view this information into [Apollo Engine](https://engine.apollographql.com/) and any GraphQL server can report metrics to Engine by sending data in the `apollo-tracing` format to our metrics ingress. Read on to learn how to set this up in your environment.
+We've specifically built an interface to view this information into [Apollo Graph Manager](https://engine.apollographql.com/) and any GraphQL server can report metrics to Engine by sending data in the `apollo-tracing` format to our metrics ingress. Read on to learn how to set this up in your environment.
 
 ## Apollo Server
 
-Apollo Server has had the ability to report its performance usage metrics to Engine built-in. To set it up, get an API key from [Engine](https://engine.apollographql.com/) by logging in and creating a graph. Then set your API key in the `ENGINE_API_KEY` environment variable or pass it into your Apollo Server constructor like so:
+Apollo Server has had the ability to report its performance usage metrics to Graph Manager built-in. To set it up, get an API key from [Graph Manager](https://engine.apollographql.com/) by logging in and creating a graph. Then set your API key in the `ENGINE_API_KEY` environment variable or pass it into your Apollo Server constructor like so:
 
 ```js{6-8}
 const { ApolloServer } = require("apollo-server");
@@ -42,9 +42,9 @@ There are 2 ways to send metrics data from your server to Engine:
 1. Report traces directly from your server to our reporting endpoint
 2. Use an Apollo tracing package and the Engine proxy (deprecated)
 
-### Engine reporting endpoint
+### Graph Manager reporting endpoint
 
-We recommend following the agent pattern to report trace metrics from your server to the Engine reporting endpoint. This is what Apollo Server does internally and you can view the code for the [Apollo Server reference agent](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts) as an example.
+We recommend following the agent pattern to report trace metrics from your server to the Graph Manager reporting endpoint. This is what Apollo Server does internally and you can view the code for the [Apollo Server reference agent](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts) as an example.
 
 We've been working with our community to build agent integrations for non-JavaScript servers. If you're interested in collaborating with us on an integration for your server, please get in touch with us at <support@apollographql.com> or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
 

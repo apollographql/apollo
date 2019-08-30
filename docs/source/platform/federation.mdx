@@ -139,7 +139,6 @@ Traces will be reported in the shape of the query plan, with each unique fetch t
 
 Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` validation workflow.
 
-
 ## Validating changes to the graph
 
 Federation allows teams to work independently on federated services without needing to coordinate over an all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) and not breaking the ability for the graph to compose. The Apollo platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
@@ -148,7 +147,7 @@ In particular, along with [validating overall schema changes against known opera
 
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
 
-When running `apollo service:check` on a federated service, Engine will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
+When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
 
 There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an @key for an extended type.
 

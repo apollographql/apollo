@@ -9,35 +9,35 @@ From that information it is possible to track down slow or frequently erroring r
 
 #### How it works
 
-With [one line of configuration](/references/setup-analytics/), Apollo Server will start recording traces of every request it receives and sending summaries of that performance data to Engine. Engine aggregates and summarizes those traces to provide segmented, filterable insights about your graph's usage.
+With [one line of configuration](/references/setup-analytics/), Apollo Server will start recording traces of every request it receives and sending summaries of that performance data to Graph Manager. Graph Manager aggregates and summarizes those traces to provide segmented, filterable insights about your graph's usage.
 
 ## Traces
 
-With the metrics reporting set up, you'll be able to see traces of your operations in [Engine](https://engine.apollographql.com). Execution of a GraphQL request happens layer by layer, and each field in the query calls a function in your server called a resolver. The [_trace_ view in Engine](https://blog.apollographql.com/the-new-trace-view-in-apollo-engine-566b25bdfdb0) allows you to look at a detailed breakdown of the execution for individual operations, with timing shown for every resolver.
+With the metrics reporting set up, you'll be able to see traces of your operations in [Graph Manager](https://engine.apollographql.com). Execution of a GraphQL request happens layer by layer, and each field in the query calls a function in your server called a resolver. The [_trace_ view in Graph Manager](https://blog.apollographql.com/the-new-trace-view-in-apollo-engine-566b25bdfdb0) allows you to look at a detailed breakdown of the execution for individual operations, with timing shown for every resolver.
 
 ![Trace view](../img/trace.png)
 
 ### Critical path
 
-When a trace is opened, some resolvers are collapsed and others are expanded. This is Engine automatically expanding resolvers on the "critical path" of the query. The critical path is the set of fields and resolvers that makes the longest sequence in the query. If you are trying to speed up your query's execution, this is the set of fields you should be looking at first.
+When a trace is opened, some resolvers are collapsed and others are expanded. This is Graph Manager automatically expanding resolvers on the "critical path" of the query. The critical path is the set of fields and resolvers that makes the longest sequence in the query. If you are trying to speed up your query's execution, this is the set of fields you should be looking at first.
 
 ### Trace inspector
 
-Every trace stored in Engine records the request's resolver timings, variables, and HTTP headers. This is particularly useful when debugging and the detailed information about the trace can be found by opening up the _trace inspector_:
+Every trace stored in Graph Manager records the request's resolver timings, variables, and HTTP headers. This is particularly useful when debugging and the detailed information about the trace can be found by opening up the _trace inspector_:
 
 ![Trace Inspector](../img/trace-inspector.png)
 
 ### A note on GraphQL subscriptions
 
-Engine does not currently track statistics or traces for subscriptions. The proxy does, however, support the transparent pass-through of subscription requests and responses.
+Graph Manager does not currently track statistics or traces for subscriptions. The proxy does, however, support the transparent pass-through of subscription requests and responses.
 
 ## Operation signatures
 
-Engine groups operations that select the same fields together, treating different queries distinctly even if they share the same name. Not every query string can be taken as-is for grouping though, because some queries inline their variables. For these cases, Engine has a _signature_ algorithm to normalize inline variables so that queries of the same shape can still be grouped together.
+Graph Manager groups operations that select the same fields together, treating different queries distinctly even if they share the same name. Not every query string can be taken as-is for grouping though, because some queries inline their variables. For these cases, Graph Manager has a _signature_ algorithm to normalize inline variables so that queries of the same shape can still be grouped together.
 
 ### Signature algorithm
 
-The current signature algorithm performs the following transformations when generating a signature. (Future improvements to Engine will allow users to customize the signature algorithm.)
+The current signature algorithm performs the following transformations when generating a signature. (Future improvements to Graph Manager will allow users to customize the signature algorithm.)
 
 - Input argument values are mapped according to the following rules:
   - `Variable`, `BooleanValue`, and `EnumValue` preserved
@@ -78,16 +78,16 @@ See the reference implementation of [query signatures](https://github.com/apollo
 
 ### Signatures and sensitive data
 
-The signature algorithm is primarily designed to make it possible to treat operations that differ only in trivial ways as the same operation. It also happens that removing the content of string literals appears to achieve greater data privacy within Engine, but this is not the primary goal. In fact, Engine also sends the full raw query along with traces (though it does not currently expose them in the user interface), so relying on the signature to ensure sensitive data never hits Engine's servers is inappropriate.
+The signature algorithm is primarily designed to make it possible to treat operations that differ only in trivial ways as the same operation. It also happens that removing the content of string literals appears to achieve greater data privacy within Graph Manager, but this is not the primary goal. In fact, Graph Manager also sends the full raw query along with traces (though it does not currently expose them in the user interface), so relying on the signature to ensure sensitive data never hits Graph Manager's servers is inappropriate.
 
-Future versions of Engine are likely to change this default algorithm to leave string literals alone, though it will still be easy to configure your server to remove string literals like in the current implementation. We also intend to stop sending the full raw query in future versions of Engine, so that the signature algorithm really can be used to avoid sending sensitive data in queries to Engine.
+Future versions of Graph Manager are likely to change this default algorithm to leave string literals alone, though it will still be easy to configure your server to remove string literals like in the current implementation. We also intend to stop sending the full raw query in future versions of Graph Manager, so that the signature algorithm really can be used to avoid sending sensitive data in queries to Graph Manager.
 
-But where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Engine reporting pathway for privacy purposes. See [data privacy](https://www.apollographql.com/docs/references/apollo-engine#data-privacy) for further detail on how this works.
+But where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Graph Manager reporting pathway for privacy purposes. See [data privacy](https://www.apollographql.com/docs/references/apollo-engine#data-privacy) for further detail on how this works.
 
 ## Error tracking
 
-Metrics reporting to Engine comes with built-in error tracking for basic GraphQL errors. Engine will be able to classify errors by **error type**, **class**, and **message**.
+Metrics reporting to Graph Manager comes with built-in error tracking for basic GraphQL errors. Graph Manager will be able to classify errors by **error type**, **class**, and **message**.
 
 ![Errors](../img/error.png)
 
-The errors tab in Engine's metrics layer automatically shows errors aggregated across your service, and this can be filtered to errors for a specific operation using the filter panel. Each operation can have multiple requests that return errors and will list these. Each error listed that has one trace can have multiple errors under each resolver. Clicking into the trace for a request with errors will take you to details of that error instance.
+The errors tab in Graph Manager's metrics layer automatically shows errors aggregated across your service, and this can be filtered to errors for a specific operation using the filter panel. Each operation can have multiple requests that return errors and will list these. Each error listed that has one trace can have multiple errors under each resolver. Clicking into the trace for a request with errors will take you to details of that error instance.

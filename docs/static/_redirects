@@ -1,5 +1,8 @@
 / /docs/
 
+# Split "Apollo Engine guide" into two articles
+/docs/references/apollo-engine/ /docs/platform/graph-manager-overview/
+
 # Redirect Removed Guides to Platform Features
 /docs/guides/security.html /docs/platform/operation-registry.html
 /docs/guides/monitoring.html /docs/platform/integrations.html

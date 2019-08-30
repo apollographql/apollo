@@ -3,24 +3,31 @@ title: Welcome
 description: Start here to learn about the Apollo platform
 ---
 
-Welcome! 👋 We're excited you're here to learn about Apollo.
+Hi there! 👋 We're excited you're here to learn about Apollo.
 
-The Apollo GraphQL platform is an implementation of GraphQL that helps you manage data from the cloud to your UI. It's incrementally adoptable and can be layered over your existing services, including REST APIs and databases. Apollo includes two open-source libraries for the client and server, in addition to developer tooling that provides everything you need to run a graph API in production with confidence.
+Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects application clients (such as React and iOS apps) to back-end services.
 
-import {ButtonWrapper, ButtonLink} from 'gatsby-theme-apollo-docs';
+It's easy to adopt Apollo incrementally, meaning you can set it up alongside an existing solution (such as a REST API) and migrate functionality at your convenience.
+
+**The Apollo platform consists of:**
+
+- [Apollo Client](https://apollographql.com/docs/react/), an open-source library for managing state in application clients
+
+- [Apollo Server](https://apollographql.com/docs/apollo-server/), an open-source framework for implementing and running a data graph at scale
+
+- [Apollo Graph Manager](https://apollographql.com/docs/platform/graph-manager-overview) (formerly Engine), a cloud service that helps you manage, validate, and secure your organization's data graph
+
+- Developer tools that make it even easier to work with Apollo, including extensions for [Chrome](https://apollographql.com/docs/react/features/developer-tooling/#apollo-client-devtools) and [VS Code](/platform/editor-plugins/)
+
+Conveniently, we have a tutorial that introduces you to each component of the platform. Ready to dive in?
+
+import { ButtonWrapper, ButtonLink } from 'gatsby-theme-apollo-docs';
 
 <ButtonWrapper>
-  <ButtonLink
-    size="large"
-    color="branded"
-    to="/tutorial/introduction"
-  >
+  <ButtonLink size="large" color="branded" to="/tutorial/introduction">
     Try it out!
   </ButtonLink>
-  <ButtonLink
-    size="large"
-    to="/intro/platform"
-  >
+  <ButtonLink size="large" to="/intro/platform">
     Learn more
   </ButtonLink>
 </ButtonWrapper>
