@@ -174,7 +174,7 @@ _src/resolvers.js_
 ```js
 import gql from 'graphql-tag';
 
-export const schema = gql`
+export const typeDefs = gql`
   extend type Launch {
     isInCart: Boolean!
   }
