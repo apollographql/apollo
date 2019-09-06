@@ -13,8 +13,8 @@ your schema and query usage.
 
 **Graph Manager provides the following features to all Apollo users for free:**
 
-* A [GraphQL schema registry](/platform/schema-registry/) that tracks changes
-and enables you to [create variants of your schema](/platform/schema-registry/#managing-environments) for different environments
+* A [GraphQL schema registry](/schema-registry/) that tracks changes
+and enables you to [create variants of your schema](/schema-registry/#managing-environments) for different environments
 (such as staging and production)
 
 * A schema explorer that makes it easy to inspect your schema's queries,
@@ -24,16 +24,16 @@ mutations, and other object definitions
 
 **Advanced features are available with a subscription to an Apollo Team or Enterprise plan:**
 
-* [Operation safelisting](/platform/operation-registry/)
-* [Schema change validation](/platform/schema-validation/)
-* [Resolver-level query tracing](/platform/performance/)
-* [Third-party integrations](/platform/integrations/)
-* [Management of a federated data graph](/platform/federation/)
+* [Operation safelisting](/operation-registry/)
+* [Schema change validation](/schema-validation/)
+* [Resolver-level query tracing](/performance/)
+* [Third-party integrations](/integrations/)
+* [Management of a federated data graph](/federation/)
 * Longer data retention
 
 [Learn more about pricing and billing](https://www.apollographql.com/plans/)
 
-![The Apollo Graph Manager Architecture](../img/apollo-engine/graph-manager-architecture.png)
+![The Apollo Graph Manager Architecture](./img/graph-manager-architecture.png)
 
 ## Creating an account
 
@@ -131,7 +131,7 @@ You can delete a graph from Graph Manager by visiting its Settings page and clic
 Every graph in Graph Manager should correspond to a single application. However, a single
 application might run in multiple _environments_ (such as test, staging, and production).
 
-To distinguish between graph activity for different application environments, you can define [**variants**](https://www.apollographql.com/docs/platform/schema-registry/#managing-environments) for a graph. Each variant has its own schema
+To distinguish between graph activity for different application environments, you can define [**variants**](/schema-registry/#managing-environments) for a graph. Each variant has its own schema
 that can (but doesn't have to) differ from the default variant.
 
 When your server sends metrics to Graph Manager, it can associate an operation with
@@ -143,9 +143,9 @@ each application environment in isolation.
 Graph Manager ingests and stores performance metrics data sent from your GraphQL server.
 Use one of the following methods to send data to Graph Manager:
 
-* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](/tutorial/production/#get-a-graph-manager-api-key) in your server configuration.
+* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](https://www.apollographql.com/docs/tutorial/production/#get-a-graph-manager-api-key) in your server configuration.
 
-* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](/references/setup-analytics/#graph-manager-reporting-endpoint) (again,
+* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](https://www.apollographql.com/docs/references/setup-analytics/#graph-manager-reporting-endpoint) (again,
 providing an API key with every request).
 
 ### API keys

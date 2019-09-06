@@ -210,7 +210,7 @@ View full details at: https://engine.apollographql.com/service/example-1234/chec
 
 Each change to the schema will be labeled with `PASS` or `FAIL` and a URL with full details on the changes and their impact on clients and operations will be generated. Following the URL will take you to Graph Manager:
 
-![Service check page in the Graph Manager UI](../img/schema-validation/service-check-page.png)
+![Service check page in the Graph Manager UI](./img/schema-validation/service-check-page.png)
 
 > **Note:** If you have [installed schema validation checks on your GitHub PRs](#github-integration), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
@@ -222,8 +222,8 @@ Since breaking changes are detected using live traffic, your service will _need 
 
 To set up schema validation, you will need to be both actively sending traces and registering schemas to Apollo:
 
-1. [Set up trace reporting to Apollo Graph Manager](/references/setup-analytics/)
-1. [Set up schema registration in your continuous delivery pipeline](/platform/schema-registry/)
+1. [Set up trace reporting to Apollo Graph Manager](https://www.apollographql.com/docs/references/setup-analytics/)
+1. [Set up schema registration in your continuous delivery pipeline](/schema-registry/)
 
 Then, you will need to configure your project for the `apollo service:check` command:
 
@@ -283,7 +283,7 @@ jobs:
 
 ### GitHub integration
 
-![GitHub Status View](../img/schema-validation/github-check.png)
+![GitHub Status View](./img/schema-validation/github-check.png)
 
 Like most tools, schema validation is best used when it is integrated directly into the rest of your workflow. If you're using GitHub, you can install the Apollo Engine GitHub app. This will enable Apollo's systems to send a webhook back to your project on each `apollo service:check`, providing built-in pass/fail status checks on your pull requests.
 
@@ -315,7 +315,7 @@ Variants mostly commonly represent environments and can also indicate branches o
 
 <div style="text-align:center">
 
-![multiple service checks](../img/schema-validation/multi-github-check.png)
+![multiple service checks](./img/schema-validation/multi-github-check.png)
 
 </div>
 

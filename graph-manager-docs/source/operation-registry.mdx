@@ -60,7 +60,7 @@ npm install apollo --save-dev
 
 ### 2. Push your schema to the Apollo schema registry
 
-> **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/platform/schema-registry/).
+> **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](/schema-registry/).
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
@@ -496,7 +496,7 @@ message with the operation that fails.
 A successful registration will show the operations that are newly registered:
 
 <img
-  src="../img/operation-registry/client-push-success.png"
+  src="./img/operation-registry/client-push-success.png"
   width="80%"
   style="margin: 5%"
   alt="apollo client:push successful push"
@@ -509,7 +509,7 @@ A successful registration will show the operations that are newly registered:
 A failed registration will include the validation failure next to the operation:
 
 <img
-  src="../img/operation-registry/client-push-failure.png"
+  src="./img/operation-registry/client-push-failure.png"
   width="80%"
   style="margin: 5%"
   alt="apollo client:push failure"
@@ -526,7 +526,7 @@ the metric tab
 The clients page will show the unregistered operation reported by client
 
 <img
-  src="../img/operation-registry/clients-page.png"
+  src="./img/operation-registry/clients-page.png"
   width="80%"
   style="margin: 5%"
   alt="The clients page showing unregistered operations"
@@ -537,7 +537,7 @@ The clients page will show the unregistered operation reported by client
 The filter on the metrics page will provide the option to show unregistered operations only
 
 <img
-  src="../img/operation-registry/metrics-filter.png"
+  src="./img/operation-registry/metrics-filter.png"
   width="50%"
   style="margin: 5%"
   alt="The metrics filter showing the option to select unregistered operations"
