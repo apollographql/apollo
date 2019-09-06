@@ -372,7 +372,7 @@ A central source of truth for your schema in Apollo Graph Manager. It enables sc
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](https://www.apollographql.com/docs/platform/schema-validation/#set-up-schema-validation).
 
 ## Schema stitching
 

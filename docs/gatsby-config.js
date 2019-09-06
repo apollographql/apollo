@@ -25,17 +25,6 @@ module.exports = {
             'tutorial/mutations',
             'tutorial/local-state',
           ],
-          'Apollo Graph Manager': [
-            'platform/graph-manager-overview',
-            'platform/schema-registry',
-            'platform/schema-validation',
-            'platform/client-awareness',
-            'platform/operation-registry',
-            'platform/editor-plugins',
-            'platform/performance',
-            'platform/integrations',
-            'platform/federation',
-          ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
