@@ -8,7 +8,7 @@ module.exports = {
       options: {
         ...themeOptions,
         root: __dirname,
-        subtitle: 'Platform',
+        subtitle: 'Apollo Basics',
         description: 'How to use the Apollo GraphQL platform',
         githubRepo: 'apollographql/apollo',
         spectrumPath: 'apollo-platform',
