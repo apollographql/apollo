@@ -12,7 +12,7 @@ module.exports = {
         subtitle: 'Graph Manager',
         description: 'How to use Apollo Graph Manager',
         githubRepo: 'apollographql/apollo',
-        spectrumPath: 'apollo-platform',
+        spectrumPath: '/apollo-platform',
         sidebarCategories: {
           null: [
             'index',

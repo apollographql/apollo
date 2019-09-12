@@ -11,7 +11,7 @@ module.exports = {
         subtitle: 'Apollo Basics',
         description: 'How to use the Apollo GraphQL platform',
         githubRepo: 'apollographql/apollo',
-        spectrumPath: 'apollo-platform',
+        spectrumPath: '/',
         sidebarCategories: {
           null: ['index', 'intro/platform', 'intro/benefits'],
           Tutorial: [
