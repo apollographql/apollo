@@ -1,7 +1,7 @@
 const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
-  pathPrefix: '/docs/platform',
+  pathPrefix: '/docs/graph-manager',
   plugins: [
     {
       resolve: 'gatsby-theme-apollo-docs',

@@ -106,9 +106,9 @@ Partial query caching can be achieved by caching the responses from underlying s
 
 Many apps and sites are powered almost completely by an API such as a GraphQL schema, so it's important to make sure the API is healthy at all times. Indicators of an unhealthy service include long response times, high resource usage, and unusual traffic patterns.
 
-[Apollo Graph Manager](https://www.apollographql.com/platform) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
+[Apollo Graph Manager](https://www.apollographql.com/graph-manager) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
 
-Apollo Graph Manager also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/platform/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [DataDog integration](https://www.apollographql.com/docs/platform/integrations#datadog)) works with existing DataDog accounts, to help teams track schema performance.
+Apollo Graph Manager also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/graph-manager/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [DataDog integration](https://www.apollographql.com/docs/graph-manager/integrations#datadog)) works with existing DataDog accounts, to help teams track schema performance.
 
 ## Moving a product to GraphQL
 
@@ -126,6 +126,6 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I safely make changes to the schema?
 
-Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](https://www.apollographql.com/docs/platform/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
+Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](https://www.npmjs.com/package/apollo) with Apollo Graph Manager provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
