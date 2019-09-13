@@ -79,7 +79,7 @@ How do we define what properties are exposed by `Launch` and `User`? For these t
 
 ### Object & scalar types
 
-Let's define what the structure of `Launch` looks like by creating an **object type**:
+Let's define what the structure of `Launch` looks like by creating an **object type**: Just like you did with the Query Type above, copy the following SDL code inside the backticks where the `gql` function is invoked in  `src/schema.js`
 
 _src/schema.js_
 
