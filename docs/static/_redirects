@@ -1,7 +1,7 @@
 / /docs/
 
 # Split "Apollo Engine guide" into two articles
-/docs/references/apollo-engine/ /docs/platform/graph-manager-overview/
+/docs/references/apollo-engine/ /docs/graph-manager
 
 # Redirect Removed Guides to Platform Features
 /docs/guides/security.html /docs/platform/operation-registry
@@ -25,7 +25,4 @@
 /docs/platform/setup-analytics.html /docs/references/setup-analytics
 
 # Move Graph Manager docs to their own website
-/docs/platform/graph-manager-overview /docs/graph-manager
-/docs/platform/tracing.html /docs/graph-manager/performance
-/docs/platform/errors.html /docs/graph-manager/performance
 /docs/platform/* /docs/graph-manager/:splat
