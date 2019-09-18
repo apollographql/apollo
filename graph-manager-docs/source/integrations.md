@@ -11,9 +11,9 @@ One of our fundamental beliefs is that our Apollo workflows should hook into and
 
 ## GitHub
 
-Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/platform/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
+Building tools to help you safely collaborate on the evolution of your graph is one of our biggest focuses at Apollo. To make [schema change validation](/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
 
-![GitHub Status View](../img/schema-validation/github-check.png)
+![GitHub Status View](./img/schema-validation/github-check.png)
 
 ### Install the GitHub application
 
@@ -62,7 +62,7 @@ jobs:
           fi
 ```
 
-> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/platform/schema-registry/#using-the-schema-registry) setup for other options.
+> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [Using the Schema Registry](/schema-registry/#using-the-schema-registry) setup for other options.
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Graph Manager. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 
@@ -73,7 +73,7 @@ Because you installed the Graph Manager app on GitHub, the check you've added wi
 Our Apollo Slack integration brings your server's performance metrics and analytics data from Apollo Graph Manager directly to your team's Slack workspace so you can be notified of potential issues proactively. The integration does two main things:
 
 1. Send a [**daily snapshot**](#daily-reports) of the request rate, error rate, and performance latency of your graph.
-1. Send [**notifications**](#notifications) that are triggered on thresholds like error percentage and performance latency.
+2. Send [**notifications**](#notifications) that are triggered on thresholds like error percentage and performance latency.
 
 ### Configure the integration
 
@@ -87,13 +87,13 @@ If you already have a Graph Manager account, [**log in**](https://engine.apollog
 
 Once you've configured your Slack channel you'll be able to turn on daily reports snapshotting and configure notifications in the "General" and "Performance Alerts" sections.
 
-![The Integrations tab in Graph Manager](../img/integrations/integrations-tab.png)
+![The Integrations tab in Graph Manager](./img/integrations/integrations-tab.png)
 
 ### Daily reports
 
 Daily reports from Graph Manager are sent out around 9am in whichever timezone you configure them to be in. You turn them on in the "Integrations" tab as shown above. The reports have a set format that gives a birds-eye view of what your GraphQL API delivered in the previous day:
 
-![Graph Manager slack report](../img/integrations/slack-report.png)
+![Graph Manager slack report](./img/integrations/slack-report.png)
 
 #### Using the report
 
@@ -115,7 +115,7 @@ In Graph Manager, you can configure notifications that are triggered on the perf
 
 The triggers you set up are evaluated on a rolling five minute window. For example, you can configure a notification to trigger when an operation's error rate exceeds 5%. In production, if 6 out of 100 requests result in an error during the last five minutes, the alert will trigger with an error rate of 6%. Once the error rate falls back below 5% your notification will resolve. Here's an example of what the notification looks like:
 
-![Slack Alert](../img/integrations/slack-notification.png)
+![Slack Alert](./img/integrations/slack-notification.png)
 
 ## Datadog
 
@@ -152,11 +152,11 @@ Getting set up with Graph Manager's Datadog integration is as simple as providin
 
 Navigate to the Apollo Engine Integration in Datadog
 
-![IntegrationTile](../img/datadog/integration-tile.png)
+![IntegrationTile](./img/datadog/integration-tile.png)
 
 Get the API Key from the Configuration tab before clicking "Install Integration":
 
-![ApiKey](../img/datadog/api-key.png)
+![ApiKey](./img/datadog/api-key.png)
 
 Once you've turned on the integration in Datadog, visit the "Integrations" tab in your Graph Manager account and turn on the toggle for Datadog.
 
@@ -172,7 +172,7 @@ If you want to aggregate across all operations or zoom in to a particular operat
 
 _In the metric explorer, select `apollo.engine.operations.latency.95percentile` and then choose service where it says “one graph per” and select the two services you'd like to compare. At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following_:
 
-![Compare p95](../img/datadog/datadog.png)
+![Compare p95](./img/datadog/datadog.png)
 
 _To perform more advanced manipulation of metrics, open up the [Metrics notebook](https://app.datadoghq.com/notebook)._
 

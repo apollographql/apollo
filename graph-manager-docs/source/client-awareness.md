@@ -11,7 +11,7 @@ Like any API, your graph will end up with many consumers with different frequenc
 
 Here's an example of client identity reporting in Apollo Graph Manager:
 
-![client overview](../img/client-awareness/overview.png)
+![client overview](./img/client-awareness/overview.png)
 
 ## Setup
 
@@ -48,13 +48,13 @@ owner. When changing, replacing, or deprecating a field in the API, the client
 metadata enables quickly identifying the client-side changes that need to
 occur to completely remove the field.
 
-![client field](../img/client-awareness/field-usage.png)
+![client field](./img/client-awareness/field-usage.png)
 
 ### Cutover
 
 Similarly to deprecation, adding fields to your graph often means that clients will also change. These modifications can be done incrementally or discretely during a cutover period. The cutover period and time immediately following change the utilization of the graph drastically and can expose some unexpected behavior. Filtering by client version enables monitoring the health of a release in real-time. The following demonstrates a cutover from one backend to another.
 
-![druid cutover](../img/client-awareness/cutover.png)
+![druid cutover](./img/client-awareness/cutover.png)
 
 ## Advanced setup
 
