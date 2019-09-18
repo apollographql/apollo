@@ -1,51 +1,86 @@
 ---
 title: 0. Introduction
-description: Start here to learn how to build fullstack apps with Apollo
+description: Start here to learn how to build full-stack apps with Apollo
 ---
 
-Welcome! We're excited that you've decided to learn Apollo. This fullstack tutorial will guide you through building your first app with the Apollo platform in about an hour. Throughout the tutorial, you'll learn how to build a graph API and connect it to a React frontend.
+Welcome! This tutorial guides you through building a full-stack, GraphQL-powered app with the Apollo platform.
 
-We want you to feel confident that you have the knowledge you need to build a production-ready app with Apollo, so we're forgoing hello world in favor of a real world example complete with authentication, pagination, testing, and more. Ready? Let's dive right in!
+We want you to feel empowered to build your own production-ready app with Apollo, so 
+we're skipping "Hello World" in favor of an example that's closer to a
+real-world app, complete with authentication, pagination, testing, and more. 
+
+Ready? Let's dive in!
 
 ## What is Apollo?
 
-Apollo is a complete platform for implementing a graph over your data. It includes two runtime libraries, **Apollo Server** and **Apollo Client**, for building and querying your graph's API. It also features developer tooling that integrates with your existing workflow and gives you full visibility into the performance and security of your graph.
+Apollo is a complete platform for implementing a **data graph**. The platform 
+includes two open-source libraries, **Apollo Server** and **Apollo Client**, that 
+together help you build and query your data graph. It also includes a cloud
+service, **Apollo Graph Manager**, that gives you full visibility into the performance and security of your data graph.
 
-Why do you need a graph? Today, one of the most difficult parts of building an app is figuring out your data layer. Often, there's many data sources you need to fetch from and many clients you need to support. When you layer a graph in between your services and your UI, you can remove a lot of complexity from your data fetching logic and ship features faster.
+[GraphQL](https://www.graphql.org/) is the specification that our app's data graph
+will use to move data between our front-end UI and back-end services. The GraphQL
+specification is language-agnostic and unopinionated, and the Apollo platform 
+provides an _implementation_ of that specification.
+
+### Why do you need a data graph?
+
+One of the hardest parts of building a modern app is figuring out your data layer.
+You often need to fetch data from multiple back-end services and deliver it to
+distinct clients across multiple platforms. By layering a data graph between your 
+back-end services and your front-end UI, you can remove complexity from your 
+data-fetching logic and ship features faster:
 
 <div style="text-align:center">
   <img src="../images/graph-layer.png" alt="Graph layer">
 </div>
 
-**[GraphQL](https://www.graphql.org/)** is the specification that we'll be using to communicate between our graph API and client. The spec itself is language-agnostic and unopinionated, so we're choosing to implement GraphQL with the Apollo platform.
-
 ## What we'll build
 
-In this tutorial, we'll build an interactive app for reserving your spot on an upcoming Space-X launch. You can think of it as an Airbnb for space travel! All of the data is real, thanks to the [SpaceX-API](https://github.com/r-spacex/SpaceX-API).
+In this tutorial, we'll build an interactive app for reserving a seat on an upcoming SpaceX launch. Think of it as an Airbnb for space travel! All of the data is real, thanks to the [SpaceX-API](https://github.com/r-spacex/SpaceX-API).
 
 Here's what the finished app will look like:
 
 <div style="text-align:center">
-  <img src="../images/space-explorer.png" alt="Space explorer">
+  <img src="../images/space-explorer.png" alt="Space explorer" width="400">
 </div>
 
-The app has five screens: a login screen, a list of launches, a launch detail, a profile page, and a cart. The graph API powering our space app connects to a REST API and a SQLite database. Don't worry if you're unfamiliar with those technologies, you don't need to know how to build a REST API or SQLite database from scratch in order to complete the tutorial.
+The app includes the following views:
 
-We want this to model a real world Apollo app as much as possible, so we're covering essential topics like authentication, pagination, state management, testing, and deployment.
+* A login page
+* A list of upcoming launches
+* A detail view for an individual launch
+* A user profile page
+* A cart
+
+To populate these views, our app's data graph will connect to two data sources: 
+a REST API and a SQLite database. (Don't worry, you don't need to be familiar with
+either of those technologies to complete the tutorial.)
+
+As mentioned, we want this example to resemble a real-world Apollo app, so we'll
+also add common useful features like authentication, pagination, and state
+management.
 
 ## Prerequisites
 
-The tutorial assumes that you're comfortable with JavaScript/ES6, you've fetched data from an API before, and you have basic familiarity with React. If you need to brush up on your React skills, we recommend going through the [official tutorial](https://reactjs.org/tutorial/tutorial.html). Building your frontend with React is not a requirement for using Apollo, although it is the most popular way developers integrate with Apollo Client. Even if you use another view layer like Angular or Vue, you will still be able to pick up on the concepts covered in the client section and apply them to your view layer of choice.
+The tutorial assumes that you have a basic familiarity with both JavaScript/ES6
+and React. If you need to brush up on React, we recommend going through the [official tutorial](https://reactjs.org/tutorial/tutorial.html).
+
+> Building your frontend with React is not a requirement for using the Apollo 
+> platform, but it is the primary view layer supported by Apollo.
+> If you use another view layer (such as Angular or Vue), you can still 
+> apply this tutorial's concepts to it.
 
 ### System requirements
 
-Before we begin, make sure you have:
+Before we begin, make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/) v8.x or greater
 - [npm](https://www.npmjs.com/) v6.x or greater
 - [git](https://git-scm.com/) v2.14.1 or greater
 
-While it's not a requirement, we recommend using [VSCode](https://code.visualstudio.com/) as your editor so you can take advantage of all the awesome features the Apollo VSCode extension enables. We're hoping to support other editors in the future.
+Although it isn't required, we also recommend using [VS Code](https://code.visualstudio.com/)
+as your editor so you can use Apollo's helpful VS Code extension.
 
 ## Set up your development environment
 
