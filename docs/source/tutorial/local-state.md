@@ -308,6 +308,38 @@ export default function BookTrips({ cartItems }) {
 }
 ```
 
+And navigate to `src/containers/cart-item.js` and copy the following code for create our `GET_LAUNCH` query.
+
+_src/containers/cart-item.js_
+
+```jsx
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+import LaunchTile from '../components/launch-tile';
+import { LAUNCH_TILE_DATA } from '../pages/launches';
+
+export const GET_LAUNCH = gql`
+  query GetLaunch($launchId: ID!) {
+    launch(id: $launchId) {
+      ...LaunchTile
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+
+export default function CartItem({ launchId }) {
+  const { data, loading, error } = useQuery(
+    GET_LAUNCH,
+    { variables: { launchId } }
+  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>ERROR: {error.message}</p>;
+  return data && <LaunchTile launch={data.launch} />;
+}
+```
+
 In this example, we're directly calling `cache.writeData` to reset the state of the `cartItems` after the `BookTrips` mutation is sent to the server. This direct write is performed inside of the update function, which is passed our Apollo Client instance.
 
 ### Local resolvers
