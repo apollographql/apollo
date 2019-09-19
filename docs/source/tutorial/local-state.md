@@ -173,6 +173,7 @@ _src/resolvers.js_
 
 ```js
 import gql from 'graphql-tag';
+import { GET_CART_ITEMS } from './pages/cart';
 
 export const schema = gql`
   extend type Launch {
