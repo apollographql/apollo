@@ -3,7 +3,8 @@ title: Welcome
 description: Get started with the Apollo platform
 ---
 
-import {StandaloneDocsetNav} from 'gatsby-theme-apollo-docs';
+import DocsetMenu from './components/docset-menu';
+import { ButtonWrapper, ButtonLink } from 'gatsby-theme-apollo-docs';
 
 Hi there! 👋 We're excited you're here to learn about Apollo.
 
@@ -13,11 +14,9 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
 
 **The Apollo platform includes:**
 
-<StandaloneDocsetNav />
+<DocsetMenu />
 
 Conveniently, we have a [tutorial](/tutorial/introduction/) that introduces you to each component of the platform. Ready to dive in?
-
-import { ButtonWrapper, ButtonLink } from 'gatsby-theme-apollo-docs';
 
 <ButtonWrapper>
   <ButtonLink size="large" color="branded" to="/tutorial/introduction">
