@@ -52,7 +52,7 @@ const IconWrapper = styled.div({
 const Title = styled.h4({
   fontWeight: 600,
   lineHeight: 1.3,
-  marginBottom: 6
+  marginBottom: 8
 });
 
 const StyledLink = styled.a({
