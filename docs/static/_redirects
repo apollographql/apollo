@@ -26,3 +26,4 @@
 
 # Move Graph Manager docs to their own website
 /docs/platform/* /docs/graph-manager/:splat
+/docs/references/graph-manager-data-privacy/ /docs/graph-manager/graph-manager-data-privacy/

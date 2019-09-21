@@ -24,6 +24,7 @@ module.exports = {
             'performance',
             'integrations',
             'federation',
+            'graph-manager-data-privacy'
           ],
         },
       },
