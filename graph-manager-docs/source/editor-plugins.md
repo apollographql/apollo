@@ -5,7 +5,7 @@ description: How to get the most out of your editor with Apollo
 
 GraphQL has the potential to create incredible developer experiences, thanks to its strongly typed schema and query language. The Apollo platform brings these possibilities to life by enhancing your editor with rich metadata from your graph API. Currently only [Visual Studio Code](https://code.visualstudio.com/) (VS Code) is supported, but more are coming soon.
 
-<img src="../img/editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
+<img src="./img//editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
 ## Apollo VS Code
 
@@ -96,7 +96,7 @@ Once you have a config set up and a schema published, [install the Apollo GraphQ
 
 When a file open, clicking the status bar icon will open the output window and print stats about the project associated with that file. This is helpful when confirming the project is setup properly.
 
-<img src="../img/editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
+<img src="./img//editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
 
 ## Features
 
@@ -106,19 +106,19 @@ Apollo for VS Code brings many helpful features for working on a GraphQL project
 
 Once configured, editors have full knowledge of the schema clients are running operations against, including client-only schemas (for things like local state mutations). Because of this, editors have the ability to autocomplete fields and arguments as you type.
 
-<img src="../img/editors/autocomplete.gif" width="80%" style="margin: 5%" alt="vscode completing a field when typing">
+<img src="./img//editors/autocomplete.gif" width="80%" style="margin: 5%" alt="vscode completing a field when typing">
 
 ### Inline errors and warnings
 
 Editors can use local or published schemas to validate operations before running them. **Syntax errors**, **invalid fields or arguments**, and even **deprecated fields** instantly appear as errors or warnings right in your editor, ensuring all developers are working with the most up-to-date production schemas.
 
-<img src="../img/editors/warnings-and-errors.gif" width="80%" style="margin: 5%" alt="tooltip showing a field deprecation warning and error">
+<img src="./img//editors/warnings-and-errors.gif" width="80%" style="margin: 5%" alt="tooltip showing a field deprecation warning and error">
 
 ### Inline field type information
 
 Because of GraphQL's strongly-typed schema, editors not only know about which fields and arguments are valid, but also what types are expected. Hover over any type in a valid GraphQL operation to see what type that field returns and whether or not it can be null.
 
-<img src="../img/editors/type-info.png" width="80%" style="margin: 5%" alt="a tooltip showing a Boolean type for a field">
+<img src="./img//editors/type-info.png" width="80%" style="margin: 5%" alt="a tooltip showing a Boolean type for a field">
 
 ### Performance insights
 
@@ -128,7 +128,7 @@ To turn on tracing for your GraphQL server, please visit our [guide](https://www
 
 The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Graph Manager. As operations are typed, any fields that take longer than 1ms to respond will be annoated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
 
-<img src="../img/editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
+<img src="./img//editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
 
 ### Syntax highlighting
 
@@ -138,7 +138,7 @@ Apollo's editor extension provides syntax highlighting for all things GraphQL, i
 
 Navigating large codebases can be difficult, but the Apollo GraphQL extension makes this easier. Right-clicking on any field in operations or schemas gives you the ability to jump to (or peek at) definitions, as well as find any other references to that field in your project.
 
-<img src="../img/editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
+<img src="./img//editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
 ### Schema variant switching
 
@@ -154,6 +154,6 @@ Other errors may be caused from an old version of a published schema. To reload 
 
 Sometimes errors will show up as a notification at the bottom of your editor. Other, less critical, messages may be shown in the output pane of the editor. To open the output pane and get diagnostic information about the extension and the current service loaded (if working with a client project), just click the "Apollo GraphQL" icon in the status bar at the bottom.
 
-<img src="../img/editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
+<img src="./img//editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
 
 If problems persist or the error messages are unhelpful, an [issue](https://github.com/apollographql/apollo-tooling/issues) can be opened on the `apollo-tooling` repository.
