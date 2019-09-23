@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
-import { IconClients } from '@apollo/space-kit/icons/IconClients';
+import { ReactComponent as AppleLogo } from '../assets/apple-logo.svg';
+import { IconLink } from '@apollo/space-kit/icons/IconLink';
+import { IconSatellite1 } from '@apollo/space-kit/icons/IconSatellite1';
+import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
+import { IconTelescope1 } from '@apollo/space-kit/icons/IconTelescope1';
+import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
 import {
   NavItemsContext,
   NavItemTitle,
@@ -65,14 +70,23 @@ const StyledLink = styled.a({
   }
 });
 
+const icons = [
+  <IconTelescope1 />,
+  <IconSatellite1 />,
+  <ReactLogo />,
+  <IconSchema />,
+  <AppleLogo />,
+  <IconLink />
+];
+
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
     <Wrapper>
-      {navItems.map(navItem => (
+      {navItems.map((navItem, index) => (
         <MenuItem key={navItem.url}>
           <IconWrapper>
-            <IconClients />
+            {icons[index]}
           </IconWrapper>
           <TextWrapper>
             <NavItemTitle>
