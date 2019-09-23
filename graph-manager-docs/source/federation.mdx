@@ -123,7 +123,14 @@ Managed configuration is the concept of allowing the gateway to update dynamical
 
 On `apollo service:push`, the service registry writes configuration files to a cloud file system, stored securely and accessible by your API key. These configuration files detail which federated services are part of the graph, metadata about the federated services, including the `serviceURL` specified in the `push` command, and the partial schema of that federated service. By default, when the Apollo gateway is instantiated with an API key rather than a `serviceList`, it will poll for that managed config to pick up changes and smoothly roll over to the new service configuration, draining in-flight requests while beginning to generate query plans for incoming requests against the new config.
 
-Because configuration changes can affect the query planner, it's highly recommended to **only call `apollo service:push` after all replicas of an federated service have deployed**.
+#### When to call `service:push`
+
+In general, when calling `service:push`, our goal should always be to roll out changes in a way that is backwards-compatible to existing clients, in order to avoid any downtime. Because configuration changes can affect the query planner, it's highly recommended to **call `apollo service:push` after all replicas of an federated service have deployed**. This way, you can be certain that only valid operations will be executable against the graph, and that operations will not be able to access fields or types that do not yet exist.
+
+In rare cases where the schema changes cause a backwards incompatible change to _query-planning_, however, it's recommended to update the service registry **before** deploying federated services. This will help avoid the situation that the query planner generates queries that fail validation in downstream services. This may occur for one of the following reasons:
+
+1. Modifying `@key` or `@requires` dependencies while simultaneously modifying dependency fields
+2. Removing a type implementation from an interface
 
 ## Metrics and observability
 
