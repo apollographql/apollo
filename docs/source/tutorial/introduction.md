@@ -55,10 +55,10 @@ Now the fun begins! First, you'll need to install our developer tools:
 - [Apollo DevTools for Chrome (suggested)](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) : Our Chrome extension giving you full visibility into your client.
 - [Apollo VSCode (suggested)](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo): Our editor integration that offers intelligent autocomplete, metrics, and more.
 
-Next, in your terminal, clone [this repository](https://github.com/apollographql/fullstack-tutorial):
+Next, in your terminal, clone [this repository](https://github.com/apollographql/fullstack-tutorial.git):
 
 ```bash
-git clone https://github.com/apollographql/fullstack-tutorial/
+git clone https://github.com/apollographql/fullstack-tutorial.git
 ```
 
 There are two folders: one for the starting point (`start`) and one for the final version (`final`). Within each directory are two folders: one for the server and one for the client. We will be working in the server folder first. If you're comfortable with building a graph API already and you want to skip to the client portion, navigate to the [last half of the tutorial](/tutorial/client/).
