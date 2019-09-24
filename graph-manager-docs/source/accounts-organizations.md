@@ -32,7 +32,7 @@ All data in Graph Manager (GraphQL schemas, metrics, etc.) belongs to a particul
 **organization**. Every organization has one or more **members** who manage it
 and can access its associated data.
 
-> **WARNING:** Currently, all members of a Graph Manager organization have full 
+> **Important:** Currently, all members of a Graph Manager organization have full 
 > permissions for the organization, including the ability to delete graphs or 
 > transfer them out of the organization.
 
@@ -57,8 +57,8 @@ The [Graph Manager UI](https://engine.apollographql.com) lists the organizations
 ### Inviting members
 
 Invite organization members from the Member Management tab of your 
-organization's settings. You can send 
-invitations to individual email addresses or create an **invite link** that anyone can use.
+organization's settings. You can send invitations to individual email addresses
+or create an **invite link** that anyone can use.
 
 > **Do not share your invite link publicly.** Anyone with the link can join your 
 > organization. If your invite link becomes compromised, you can
