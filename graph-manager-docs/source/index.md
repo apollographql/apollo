@@ -20,7 +20,7 @@ and enables you to [create variants of your schema](/schema-registry/#managing-e
 * A schema explorer that makes it easy to inspect your schema's queries,
 mutations, and other object definitions
 
-* Team collaboration via [organizations](/platform/accounts-organizations/)
+* Team collaboration via [organizations](/accounts-organizations/)
 
 **Advanced features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
 
