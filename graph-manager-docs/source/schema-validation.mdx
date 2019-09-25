@@ -60,6 +60,14 @@ Each of these change types removes a schema element. If an element of your graph
     <code>TYPE_REMOVED_FROM_INTERFACE</code>: An object removed from an
     interface used by at least one operation
   </li>
+  <li id="TYPE_ADDED_TO_UNION">
+    <code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least
+    one operation
+  </li>
+  <li id="TYPE_ADDED_TO_INTERFACE">
+    <code>TYPE_ADDED_TO_INTERFACE</code> An object added to an interface used
+    by at least one operation
+  </li>
 </ul>
 
 #### Required arguments
@@ -143,15 +151,6 @@ These are change types detected ny the `apollo service:check` command, but they 
         <code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients
         contain a switch case on the enum and do not include the `default`, this
         change could cause unexpected behavior
-      </li>
-      <li id="TYPE_ADDED_TO_UNION">
-        <code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least
-        one operation
-      </li>
-      <li id="TYPE_ADDED_TO_INTERFACE">
-        <code>TYPE_ADDED_TO_INTERFACE</code> Interface added to an object used
-        by at least one operation
-      </li>
     </ul>
   </li>
   <li>
