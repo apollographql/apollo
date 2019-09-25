@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as AppleLogo } from '../assets/apple-logo.svg';
 import { IconLink } from '@apollo/space-kit/icons/IconLink';
-import { IconSatellite1 } from '@apollo/space-kit/icons/IconSatellite1';
+import { IconSatellite3 } from '@apollo/space-kit/icons/IconSatellite3';
 import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
 import { IconTelescope1 } from '@apollo/space-kit/icons/IconTelescope1';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
@@ -19,7 +19,8 @@ const spacing = 12;
 const Wrapper = styled.div({
   display: 'flex',
   flexWrap: 'wrap',
-  margin: -spacing
+  margin: -spacing,
+  paddingTop: 8
 });
 
 const MenuItem = styled.div({
@@ -72,7 +73,7 @@ const StyledLink = styled.a({
 
 const icons = [
   <IconTelescope1 weight="thin" />,
-  <IconSatellite1 weight="thin" />,
+  <IconSatellite3 weight="thin" />,
   <ReactLogo />,
   <IconSchema weight="thin" />,
   <AppleLogo style={{
