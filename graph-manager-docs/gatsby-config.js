@@ -16,6 +16,7 @@ module.exports = {
         sidebarCategories: {
           null: [
             'index',
+            'accounts-organizations',
             'schema-registry',
             'schema-validation',
             'client-awareness',
