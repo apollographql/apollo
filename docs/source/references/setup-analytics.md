@@ -133,72 +133,68 @@ Another important feature is the ability to limit information sent, particularly
 
 ```json
 {
-  "header": {
-    "hostname": "www.example.com",
-    "schemaTag": "staging",
-    "schemaHash": "alskncka384u1923e8uino1289jncvo019n"
-  },
-  "tracesPerQuery": {
-    "# Foo\nquery Foo { user { email } }": {
-      "trace": [
-        {
-          "endTime": "2018-11-25T18:28:36.604Z",
-          "startTime": "2018-11-25T18:28:36.104Z",
-          "clientName": "c1",
-          "clientVersion": "v1",
-          "http": {
-            "method": "POST"
-          },
-          "durationNs": "2498055950907169",
-          "root": {
-            // (NOTE: These traces are incorrect: the root node should not itself
-            // have any fields other than `child`. We are working on generating an
-            // accurate trace for these docs.)
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
-            "child": [
-              {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "11",
-                "endTime": "12",
-                "parentType": "User"
-              }
-            ],
-            "parentType": "Query"
-          }
-        },
-        {
-          "endTime": "2018-11-25T18:28:37.004Z",
-          "startTime": "2018-11-25T18:28:36.404Z",
-          "clientName": "c2",
-          "clientVersion": "v1",
-          "http": {
-            "method": "POST"
-          },
-          "durationNs": "13154220",
-          "root": {
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
-            "child": [
-              {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "13",
-                "endTime": "15",
-                "parentType": "User"
-              }
-            ],
-            "parentType": "Query"
-          },
-          "clientReferenceId": "c2_id"
-        }
-      ]
-    }
-  }
+	"header": {
+		"hostname": "www.example.com",
+		"schemaTag": "staging",
+		"schemaHash": "alskncka384u1923e8uino1289jncvo019n"
+	},
+	"tracesPerQuery": {
+		"# Foo\nquery Foo { user { email } }": {
+			"trace": [{
+					"endTime": "2018-11-25T18:28:36.604Z",
+					"startTime": "2018-11-25T18:28:36.104Z",
+					"clientName": "c1",
+					"clientVersion": "v1",
+					"http": {
+						"method": "POST"
+					},
+					"durationNs": "2498055950907169",
+					"root": {
+						"child": [{
+							"response_name": "user",
+							"type": "User",
+							"start_time": "16450765",
+							"end_time": "750079190",
+							"child": [{
+								"response_name": "email",
+								"type": "String",
+								"start_time": "750122948",
+								"end_time": "750145101",
+								"parent_type": "User"
+							}],
+							"parent_type": "Query"
+						}]
+					}
+				},
+				{
+					"endTime": "2018-11-25T18:28:37.004Z",
+					"startTime": "2018-11-25T18:28:36.404Z",
+					"clientName": "c2",
+					"clientVersion": "v1",
+					"http": {
+						"method": "POST"
+					},
+					"durationNs": "13154220",
+					"clientReferenceId": "c2_id",
+					"root": {
+						"child": [{
+							"response_name": "user",
+							"type": "User",
+							"start_time": "16450962",
+							"end_time": "750079190",
+							"child": [{
+								"response_name": "email",
+								"type": "String",
+								"start_time": "720132958",
+								"end_time": "720145167",
+								"parent_type": "User"
+							}],
+							"parent_type": "Query"
+						}]
+					}
+				}
+			]
+		}
+	}
 }
 ```
