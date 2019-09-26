@@ -71,4 +71,4 @@ TODO: Add in this section after Apollo VSCode works for server development
 
 We know that learning a new technology can sometimes be overwhelming, and it's totally normal to get stuck! If that happens, we recommend joining the [Apollo Spectrum](https://spectrum.chat/apollo) community and posting in the relevant channel (either #apollo-server or #apollo-client) for some quick answers.
 
-If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the Edit on GitHub link on the right side of the page to open a new pull request or open an issue on the repository.
+If something in the tutorial seems confusing or contains an error, we'd love your feedback! Just click the "Edit on GitHub" link on the right side of the page if you are on desktop to [open a new pull request](https://github.com/apollographql/apollo/edit/master/docs/source/tutorial/introduction.md) or [open an issue](https://github.com/apollographql/apollo/issues/new) on the repository.
