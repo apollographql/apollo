@@ -352,6 +352,9 @@ _src/resolvers.js_
 
 ```js
 Mutation: {
+  
+  # add after `login` resolver ...
+  
   bookTrips: async (_, { launchIds }, { dataSources }) => {
     const results = await dataSources.userAPI.bookTrips({ launchIds });
     const launches = await dataSources.launchAPI.getLaunchesByIds({
