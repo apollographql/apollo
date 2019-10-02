@@ -35,7 +35,7 @@ Our key is now stored under the environment variable `ENGINE_API_KEY`.
 
 ### Check and publish with the Apollo CLI
 
-It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
+It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window make sure that you are in 'server' directory (run cd start/server if not), then run:
 
 ```bash
 npx apollo service:push --endpoint=http://localhost:4000
