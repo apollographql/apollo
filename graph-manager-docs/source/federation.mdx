@@ -37,7 +37,7 @@ If you're running a distributed GraphQL infrastructure, where federated services
 
 To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
 
-Make sure you have a `.env` file locally with your ENGINE_API_KEY defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
+Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 
 ```bash
 echo "ENGINE_API_KEY=<your API key here>" >> .env
