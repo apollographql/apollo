@@ -108,7 +108,9 @@ const gateway = new ApolloGateway();
 // Pass the gateway to Apollo Server
 const server = new ApolloServer({ gateway, subscriptions: false });
 
-> Note: Apollo gateway does not currently support subscriptions, but it's [on the roadmap](https://github.com/apollographql/apollo-server/issues/2360) for Apollo Server 3.x
+// Note: Apollo gateway does not currently support subscriptions,
+// but it's on the roadmap for Apollo Server 3.x:
+// https://github.com/apollographql/apollo-server/issues/2360
 
 server.listen().then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
