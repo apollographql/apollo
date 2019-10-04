@@ -273,7 +273,7 @@ Launch: {
     dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
 },
 User: {
-  trips: async (_, _, { dataSources }) => {
+  trips: async (_, __, { dataSources }) => {
     // get ids of launches by user
     const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
 
