@@ -257,7 +257,7 @@ _src/schema.js_
 ```js
   type Mission {
     # ... with rest of schema
-    missionPatch(mission: String, size: PatchSize): String
+    missionPatch(size: PatchSize): String
   }
 ```
 
@@ -273,7 +273,7 @@ Launch: {
     dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
 },
 User: {
-  trips: async (_, __, { dataSources }) => {
+  trips: async (_, _, { dataSources }) => {
     // get ids of launches by user
     const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
 
