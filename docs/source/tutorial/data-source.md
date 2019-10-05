@@ -13,13 +13,7 @@ In the next sections, we'll build data sources for a REST API and a SQL database
 
 ## Connect a REST API
 
-First, let's connect the [Space-X v2 REST API](https://github.com/r-spacex/SpaceX-API) to our graph. To get started, install the `apollo-datasource-rest` package:
-
-```bash
-npm install apollo-datasource-rest --save
-```
-
-This package exposes the `RESTDataSource` class that is responsible for fetching data from a REST API. To build a data source for a REST API, extend the `RESTDataSource` class and define `this.baseURL`.
+First, let's connect the [Space-X v2 REST API](https://github.com/r-spacex/SpaceX-API) to our graph. The `apollo-datasource-rest` package exposes the `RESTDataSource` class that is responsible for fetching data from a REST API. To build a data source for a REST API, extend the `RESTDataSource` class and define `this.baseURL`.
 
 In our example, the `baseURL` for our API is `https://api.spacexdata.com/v2/`. Let's create our `LaunchAPI` data source by adding the code below to `src/datasources/launch.js`:
 
