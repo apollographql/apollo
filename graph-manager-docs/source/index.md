@@ -45,7 +45,7 @@ To create a graph in the Graph Manager interface, first select the Graph Manager
 organization that the graph will belong to. Then click **New Graph** in the upper
 right and proceed through the creation flow.
 
-Note that every graph in Graph Manager has a globally unique **graph ID**. We recommend that you prefix your graph IDs with the name of your company or organization to avoid naming collisions.
+Note that every graph in Graph Manager has a globally unique **graph name**. We recommend that you prefix your graph names with the name of your company or organization to avoid naming collisions.
 
 ### Viewing graph information
 
