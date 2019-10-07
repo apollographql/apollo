@@ -139,7 +139,7 @@ Another important feature is the ability to limit information sent, particularly
 		"schemaHash": "alskncka384u1923e8uino1289jncvo019n"
 	},
 	"tracesPerQuery": {
-		"# Foo\nquery Foo { user { email } }": {
+		"# Foo\nquery Foo { user { email pets { name } } }": {
 			"trace": [{
 					"endTime": "2018-11-25T18:28:36.604Z",
 					"startTime": "2018-11-25T18:28:36.104Z",
@@ -188,7 +188,35 @@ Another important feature is the ability to limit information sent, particularly
 								"start_time": "720132958",
 								"end_time": "720145167",
 								"parent_type": "User"
-							}],
+							}, {
+								"response_name": "pets",
+								"type": "[Pet]",
+								"start_time": "720132959",
+								"end_time": "720135177",
+								"parent_type": "User",
+								"child": [
+									{
+										"index": 0,
+										"child": [{
+											"response_name": "name",
+											"type": "String",
+											"start_time": "720133006",
+											"end_time": "720133039",
+											"parent_type": "Pet"
+										}]
+									}, {
+										"index": 1,
+										"child": [{
+											"response_name": "name",
+											"type": "String",
+											"start_time": "720133041",
+											"end_time": "720133102",
+											"parent_type": "Pet"
+										}]
+									}
+								]
+							}
+						],
 							"parent_type": "Query"
 						}]
 					}
