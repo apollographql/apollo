@@ -148,7 +148,7 @@ Apollo supports publishing multiple versions ([variants](/schema-registry/#regis
 
 The most common errors are configuration errors, like a missing `.env` file or incorrect service information in the `apollo.config.js` file. Please see [the Apollo config docs][] for more configuration guidance.
 
-[the Apollo config docs]: /references/apollo-config/
+[the Apollo config docs]: https://www.apollographql.com/docs/references/apollo-config/
 
 Other errors may be caused from an old version of a published schema. To reload a schema, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Reload Schema" option.
 
