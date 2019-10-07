@@ -23,6 +23,7 @@
 # Move our Apollo config docs to the References section
 /docs/platform/apollo-config.html /docs/references/apollo-config
 /docs/platform/setup-analytics.html /docs/references/setup-analytics
+/docs/platform/schema-validation.html /docs/graph-manager/schema-validation
 
 # Move Graph Manager docs to their own website
 /docs/platform/* /docs/graph-manager/:splat
