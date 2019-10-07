@@ -151,6 +151,9 @@ Another important feature is the ability to limit information sent, particularly
           },
           "durationNs": "2498055950907169",
           "root": {
+            // (NOTE: These traces are incorrect: the root node should not itself
+            // have any fields other than `child`. We are working on generating an
+            // accurate trace for these docs.)
             "fieldName": "user",
             "type": "User!",
             "startTime": "1",
