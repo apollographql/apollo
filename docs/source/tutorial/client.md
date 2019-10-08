@@ -72,12 +72,12 @@ import { HttpLink } from 'apollo-link-http';
 const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'http://localhost:4000/'
-})
+});
 
 const client = new ApolloClient({
   cache,
   link
-})
+});
 ```
 
 In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.

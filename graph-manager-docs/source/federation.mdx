@@ -37,7 +37,7 @@ If you're running a distributed GraphQL infrastructure, where federated services
 
 To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
 
-Make sure you have a `.env` file locally with your ENGINE_API_KEY defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
+Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 
 ```bash
 echo "ENGINE_API_KEY=<your API key here>" >> .env
@@ -74,7 +74,7 @@ Run `apollo service:list` in the command line to see a snapshot of the services 
 Here's an example of what running `apollo service:list` will look like:
 
 ```
-~$ apollo service:list
+$ apollo service:list
   ✔ Loading Apollo Project
   ✔ Fetching list of services for graph service-list-federation-demo
 
@@ -108,14 +108,16 @@ const gateway = new ApolloGateway();
 // Pass the gateway to Apollo Server
 const server = new ApolloServer({ gateway, subscriptions: false });
 
-> Note: Apollo gateway does not currently support subscriptions, but it's [on the roadmap](https://github.com/apollographql/apollo-server/issues/2360) for Apollo Server 3.x
+// Note: Apollo gateway does not currently support subscriptions,
+// but it's on the roadmap for Apollo Server 3.x:
+// https://github.com/apollographql/apollo-server/issues/2360
 
 server.listen().then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
 ```
 
-> The managed configuration will default to using the `'current'` variant.
+> The managed configuration will default to using the `'current'` variant.  When running Apollo Gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
 
 ### Managed configuration
 
@@ -240,7 +242,7 @@ Apollo Server has support for reporting federated [tracing](/performance/) infor
 Traces will be reported in the shape of the query plan, with each unique fetch to a federated service reporting timing and error data.
 
 <div style="text-align:center">
-  <img src="../images/federated_trace.png" alt="Federated Trace" />
+  <img src="./img//federated_trace.png" alt="Federated Trace" />
 </div>
 
 Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` validation workflow.
@@ -255,7 +257,7 @@ With a federated graph, use the `apollo service:check` command to validate indiv
 
 When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
 
-There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an @key for an extended type.
+There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
 
 ### Handling composition failure
 
