@@ -82,18 +82,20 @@ module.exports = {
 
 #### _Option 3_: Link a schema from a local file
 
-In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
+In some cases you may have one or more locally generated files with your schema that you want to link. These can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to one or more local schema files, configure it like so:
 
 ```js{3-6}
 module.exports = {
   client: {
     service: {
       name: 'my-service-name',
-      localSchemaFile: './path/to/schema.graphql'
+      localSchemaFile: ['./path/to/schema.graphql', './another/schema.graphql']
     }
   }
 };
 ```
+
+If you're loading a single schema file, you can also pass the path as a string rather than a list of strings.
 
 ### `client.includes`
 
@@ -218,12 +220,14 @@ module.exports = {
 
 #### Option 2: Local schema
 
-In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
+In some cases you may have one or more locally generated files with your schema that you want to link. These can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your server project to one or more local schema files, configure it like so:
 
 ```js
 module.exports = {
   service: {
-    localSchemaFile: './path/to/schema.graphql'
+    localSchemaFile: ['./path/to/schema.graphql', './another/schema.graphql']
   }
 };
 ```
+
+If you're loading a single schema file, you can also pass the path as a string rather than a list of strings. If you have many schema files across your project, you can dynamically populate the `localSchemaFile` option using utilities like `glob` to load a list of filepaths.
