@@ -145,18 +145,18 @@ resolvers' expectations. Some examples of this include:
 
 For example, let's say we define a Channel interface in one service and define types that implement that interface in two other services:
 
-```
-// Channel service
+```graphql
+# Channel service
 interface Channel @key(fields: "id") {
   id: ID!
 }
 
-// Web service
+# Web service
 type WebChannel implements Channel @key(fields: "id") {
   id: ID!
 }
 
-// Email service
+# Email service
 type EmailChannel implements Channel @key(fields: "id") {
   id: ID!
 }
@@ -177,15 +177,15 @@ downstream services as the query planner changes, and planning for "double readi
 and replacing a field in an entity which another service `@requires`. Specifically, we'll consider the following example of a `Products` service
 and `Reviews` service:
 
-```js
-// Products Service
+```graphql
+# Products Service
 
 type Product @key(fields: "upc") {
   upc: ID!
   nameLowerCase: String!
 }
 
-// Review Service
+# Review Service
 
 extend type Product @key(fields: "upc") {
   upc: ID! @external
@@ -196,8 +196,8 @@ extend type Product @key(fields: "upc") {
 
 If we want to deprecate the `nameLowercase` field and replace it with the `name` field:
 
-```js
-// Products Service
+```graphql
+# Products Service
 
 type Product @key(fields: "upc") {
   upc: ID!
@@ -205,7 +205,7 @@ type Product @key(fields: "upc") {
   name: String!
 }
 
-// Reviews Service
+# Reviews Service
 
 extend type Product @key(fields: "upc") {
   upc: ID! @external
