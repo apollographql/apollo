@@ -262,7 +262,7 @@ query getHuman {
 
 Representation of a GraphQL operation(query, mutation, or subscription). These operations can be directly executable or normalized to a more simplified form. Normalization transforms an operation deterministically to reduce the number of possible forms it could take. For example, many normalization algorithms sort the fields of the operation to remove field order from the possible representations of an operation. Other normalization algorithms replace in-line variables(literals) with empty, null, or zero values, sort fragments, remove whitespace, or remove aliases.
 
-The following example shows the [default signature algorithm for performance monitoring](https://www.apollographql.com/docs/platform/performance/#operation-signatures). The first signature is before and the second is after normalization, which hides literal, sorts fields, removes aliases, and removes whitespace:
+The following example shows the [default signature algorithm for performance monitoring](https://www.apollographql.com/docs/graph-manager/performance/#operation-signatures). The first signature is before and the second is after normalization, which hides literal, sorts fields, removes aliases, and removes whitespace:
 
 ```
 query getHuman {
@@ -374,7 +374,7 @@ A central source of truth for your schema in Apollo Graph Manager. It enables sc
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](/platform/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](https://www.apollographql.com/docs/graph-manager/schema-validation/#set-up-schema-validation).
 
 ## Schema stitching
 
