@@ -131,20 +131,19 @@ These configuration files detail which federated services are part of the graph,
 
 #### When to call `service:push`
 
-In general, when calling `service:push`, our goal should always be to roll out changes in a way that is backwards-compatible to existing clients, in
-order to avoid any downtime. Because configuration changes can affect the query planner, it's highly recommended to **call `apollo service:push` after
-all replicas of an federated service have deployed**. This way, you can be certain that only valid operations will be executable against the graph, and
+In general, when calling `service:push`, you should always roll out changes in a way that is backward compatible with existing clients to avoid downtime. Because configuration changes can affect the query planner, it's highly recommended to **call `apollo service:push` after
+all replicas of a federated service have deployed**. This way, you can be certain that only valid operations will be executable against the graph, and
 that operations will not be able to access fields or types that do not yet exist.
 
 In rare cases where the schema changes cause a backwards incompatible change to _query-planning_, however, it's recommended to update the service registry
 **before** deploying federated services. In particular, schema changes that affect query planning should be done as separate changes to the registry, prior
-to other modifications. This will help avoid the situation that the query planner generates queries that fail validation in downstream services or violate
+to other modifications. This helps avoid the scenario where the query planner generates queries that fail validation in downstream services or violate
 resolvers' expectations. Some examples of this include:
 
 1. Modifying `@key` or `@requires` dependencies while simultaneously modifying dependency fields
 2. Removing a type implementation from an interface
 
-For example, with an interface that has implementations in multiple services, such as the following:
+For example, let's say we define a Channel interface in one service and define types that implement that interface in two other services:
 
 ```
 // Channel service
@@ -163,19 +162,20 @@ type EmailChannel implements Channel @key(fields: "id") {
 }
 ```
 
-In order to remove the `EmailChannel` implementation of the `Channel` interface, you'll want to perform the following steps:
+To remove the `EmailChannel` implementation of the `Channel` interface:
 
-1. Register a new `email` service that removes the `EmailChannel` implementation of `Channel`
-1. Deploy a new Email service that removes the implementation
+1. Register a new `email` service that removes the `EmailChannel` implementation of `Channel`.
+1. Deploy a new Email service that removes the implementation.
 
-The first step will cause the query-planner to stop sending along fragments `...on EmailChannel`, which would fail validation if sent
-to a service that did not have awareness of that type!
+The first step causes the query planner to stop sending along fragments `...on EmailChannel`, which would fail validation if sent
+to a service that isn't aware of that type.
 
 #### Modifying query-planning logic
 
-You'll want to treat migrations of query planning logic similarly to how you may treat database migrations, by carefully considering the effects on the
-downstream services as the query planner changes, and planning for "double reading" as appropriate. For example, consider the case of migrating a
-`@required` field in an extension from one to another. In this example, we'll consider the `Products` service and the `Reviews` service, like so:
+You should treat migrations of query-planning logic similarly to how you treat database migrations, by carefully considering the effects on the
+downstream services as the query planner changes, and planning for "double reading" as appropriate. For example, consider a migration of deprecating
+and replacing a field in an entity which another service `@requires`. Specifically, we'll consider the following example of a `Products` service
+and `Reviews` service:
 
 ```js
 // Products Service
@@ -194,7 +194,7 @@ extend type Product @key(fields: "upc") {
 }
 ```
 
-If the `nameLowercase` field is to be deprecated and replaced with the `name` field
+If we want to deprecate the `nameLowercase` field and replace it with the `name` field:
 
 ```js
 // Products Service
@@ -215,22 +215,21 @@ extend type Product @key(fields: "upc") {
 }
 ```
 
-To do this migration in-place, you would perform the following steps:
+To do this migration in-place:
 
-1. Modify the `Products` service to add the new field (as per usual, first deploy all replicas, then `apollo service:push` the new partial schema)
-1. Deploy a new version of the `Reviews` service with a resolver that accepts _either_ `nameLowercase` or `name` in the source object
-1. Modify the schema of the `Reviews` service in the registry to update query-planning logic to `@require` the new `name` field
-1. Deploy a new version of the `Reviews` service with a resolver that only accepts the `name` in its source object
+1. Modify the `Products` service to add the new field. (As in most cases, first deploy all replicas, then `apollo service:push` the new partial schema.)
+1. Deploy a new version of the `Reviews` service with a resolver that accepts _either_ `nameLowercase` or `name` in the source object.
+1. Modify the Reviews service's schema in the registry so that it @requires the new `name` field.
+1. Deploy a new version of the `Reviews` service with a resolver that only accepts the `name` in its source object.
 
-Alternatively, you could perform this operation with an atomic migration at the service level, by modifying the URL of the service. For that, the
-steps would be:
+Alternatively, you could perform this operation with an atomic migration at the service level, by modifying the service's URL:
 
-1. Modify the `Products` service to add the `name` field (as per usual, first deploy all replicas, then `apollo service:push` the new partial schema)
-1. Deploy a new set of `Reviews` replicas to a new URL
-1. Register the `Reviews` service with the new URL and the partial schema changes above
+1. Modify the `Products` service to add the `name` field (as per usual, first deploy all replicas, then `apollo service:push` the new partial schema).
+1. Deploy a new set of `Reviews` replicas to a new URL.
+1. Register the `Reviews` service with the new URL and the partial schema changes above.
 
-With this atomic strategy, the query planner will resolve all outstanding requests to the old service that relied on `nameLowercase` with the old
-query-planning configuration, which `@required` the `nameLowercase` field, and all **new** requests would be made to the new service (due to the
+With this atomic strategy, the query planner resolves all outstanding requests to the old service that relied on `nameLowercase` with the old
+query-planning configuration, which `@requires` the `nameLowercase` field, and all **new** requests are made to the new service (due to the
 change of URL) using the new query-planning configuration, which `@requires` the `name` field.
 
 ## Metrics and observability
@@ -293,11 +292,11 @@ The reasoning behind this functionality is that the service registry should alwa
 
 As an engineer working on a federated service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following worflow:
 
-1. Run validation on every commit through CI using `apollo service:check`
-1. Merge in a backwards-compatible PR that has passed schema validation
-1. Deploy changes to the federated service in your infrastructure
-1. Let all replicas finish deploying
-1. Call `apollo service:push` to update the federated service
+1. Run validation on every commit through CI using `apollo service:check`.
+1. Merge in a backwards-compatible PR that has passed schema validation.
+1. Deploy changes to the federated service in your infrastructure.
+1. Wait until all replicas finish deploying.
+1. Call `apollo service:push` to update the federated service.
 
 ```
 ~$ apollo service:push --serviceName="launches" \
@@ -323,18 +322,18 @@ It's important to make sure that any possible end-user effect from the changes t
 
 Every time that `apollo service:push` is called for a federated service, it not only registers the federated service to the graph, but it also updates the managed configuration files that the gateway has access to. Because the graph is dynamically changing, it's possible for composition errors to occur for a `service:push` even after a `service:check` has succeeded if other federated services changed in the interim. For this reason, updating a federated service will re-trigger composition in the cloud, ensuring that the federated services still compose to form a complete graph before provisioning the managed configuration. The workflow behind the scenes can be summed up as follows:
 
-1. The partial schema is uploaded to a secure location and indexed
-1. The federated service is updated in the registry to point to the partial schema
-1. All federated services are composed in the cloud to produce a new complete schema
-1. If composition fails, the command exits and emits errors
-1. If composition succeeds, the top-level managed configuration file is updated in-place to point to the updated set of federated services
+1. The partial schema is uploaded to a secure location and indexed.
+1. The federated service is updated in the registry to point to the partial schema.
+1. All federated services are composed in the cloud to produce a new complete schema.
+1. If composition fails, the command exits and emits errors.
+1. If composition succeeds, the top-level managed configuration file is updated in-place to point to the updated set of federated services.
 
 On the other side of the equation sits the gateway. The gateway is constantly listening for changes to the top-level managed configuration file. The location of the managed configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
 
-1. The gateway listens for updates to its managed configuration
-1. On update, the gateway downloads configuration for each federated service in parallel
-1. The gateway performs composition over the managed configuration to update query planning
-1. The gateway continues to resolve in-flight requests with the previous configuration while using the updated configuration for all new requests
+1. The gateway listens for updates to its managed configuration.
+1. On update, the gateway downloads configuration for each federated service in parallel.
+1. The gateway performs composition over the managed configuration to update query planning.
+1. The gateway continues to resolve in-flight requests with the previous configuration while using the updated configuration for all new requests.
 
 ### Reliability and security
 
