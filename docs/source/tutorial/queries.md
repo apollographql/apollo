@@ -251,6 +251,8 @@ const GET_LAUNCHES = gql`
 
 Let's use our fragment in our launch detail query too. Be sure to import the fragment from the `launches` page before you use it:
 
+_src/pages/launch.js_
+
 ```js{1,10,13}
 import { LAUNCH_TILE_DATA } from './launches';
 
