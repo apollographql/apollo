@@ -139,7 +139,7 @@ Another important feature is the ability to limit information sent, particularly
     "schemaHash": "alskncka384u1923e8uino1289jncvo019n"
   },
   "tracesPerQuery": {
-    "# Foo\nquery Foo { user { email } }": {
+    "# Foo\nquery Foo { user { email pets { name } } }": {
       "trace": [
         {
           "endTime": "2018-11-25T18:28:36.604Z",
@@ -151,20 +151,24 @@ Another important feature is the ability to limit information sent, particularly
           },
           "durationNs": "2498055950907169",
           "root": {
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
             "child": [
               {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "11",
-                "endTime": "12",
-                "parentType": "User"
+                "response_name": "user",
+                "type": "User",
+                "start_time": "16450765",
+                "end_time": "750079190",
+                "child": [
+                  {
+                    "response_name": "email",
+                    "type": "String",
+                    "start_time": "750122948",
+                    "end_time": "750145101",
+                    "parent_type": "User"
+                  }
+                ],
+                "parent_type": "Query"
               }
-            ],
-            "parentType": "Query"
+            ]
           }
         },
         {
@@ -176,23 +180,60 @@ Another important feature is the ability to limit information sent, particularly
             "method": "POST"
           },
           "durationNs": "13154220",
+          "clientReferenceId": "c2_id",
           "root": {
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
             "child": [
               {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "13",
-                "endTime": "15",
-                "parentType": "User"
+                "response_name": "user",
+                "type": "User",
+                "start_time": "16450962",
+                "end_time": "750079190",
+                "child": [
+                  {
+                    "response_name": "email",
+                    "type": "String",
+                    "start_time": "720132958",
+                    "end_time": "720145167",
+                    "parent_type": "User"
+                  },
+                  {
+                    "response_name": "pets",
+                    "type": "[Pet]",
+                    "start_time": "720132959",
+                    "end_time": "720135177",
+                    "parent_type": "User",
+                    "child": [
+                      {
+                        "index": 0,
+                        "child": [
+                          {
+                            "response_name": "name",
+                            "type": "String",
+                            "start_time": "720133006",
+                            "end_time": "720133039",
+                            "parent_type": "Pet"
+                          }
+                        ]
+                      },
+                      {
+                        "index": 1,
+                        "child": [
+                          {
+                            "response_name": "name",
+                            "type": "String",
+                            "start_time": "720133041",
+                            "end_time": "720133102",
+                            "parent_type": "Pet"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "parent_type": "Query"
               }
-            ],
-            "parentType": "Query"
-          },
-          "clientReferenceId": "c2_id"
+            ]
+          }
         }
       ]
     }

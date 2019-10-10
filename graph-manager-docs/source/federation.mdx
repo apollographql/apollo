@@ -37,7 +37,7 @@ If you're running a distributed GraphQL infrastructure, where federated services
 
 To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
 
-Make sure you have a `.env` file locally with your ENGINE_API_KEY defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
+Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 
 ```bash
 echo "ENGINE_API_KEY=<your API key here>" >> .env
@@ -74,7 +74,7 @@ Run `apollo service:list` in the command line to see a snapshot of the services 
 Here's an example of what running `apollo service:list` will look like:
 
 ```
-~$ apollo service:list
+$ apollo service:list
   ✔ Loading Apollo Project
   ✔ Fetching list of services for graph service-list-federation-demo
 
@@ -108,14 +108,16 @@ const gateway = new ApolloGateway();
 // Pass the gateway to Apollo Server
 const server = new ApolloServer({ gateway, subscriptions: false });
 
-> Note: Apollo gateway does not currently support subscriptions, but it's [on the roadmap](https://github.com/apollographql/apollo-server/issues/2360) for Apollo Server 3.x
+// Note: Apollo gateway does not currently support subscriptions,
+// but it's on the roadmap for Apollo Server 3.x:
+// https://github.com/apollographql/apollo-server/issues/2360
 
 server.listen().then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
 ```
 
-> The managed configuration will default to using the `'current'` variant.
+> The managed configuration will default to using the `'current'` variant.  When running Apollo Gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
 
 ### Managed configuration
 
@@ -129,12 +131,12 @@ Because configuration changes can affect the query planner, it's highly recommen
 
 Like any distributed architecture, you should make sure that your federated graph has proper observability, monitoring, and automation to ensure reliability and performance of both your gateway and the federated services underneath it. Serving your GraphQL API from a distributed architecture has many benefits, like productivity, isolation, and being able to match the right services with the right runtimes. Operating a distributed system also has more complexity and points of failure than operating a monolith, and with that complexity comes a need to heighten observability into the state of your system and control over its coordination.
 
-Apollo Server has support for reporting federated [tracing](/platform/performance/) information from the gateway. In order to support the gateway with detailed timing and error information, federated services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `ENGINE_API_KEY` is set in the environment for your gateway server and ensure that all federated services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that federated services do not have the `ENGINE_API_KEY` environment variable set.
+Apollo Server has support for reporting federated [tracing](/performance/) information from the gateway. In order to support the gateway with detailed timing and error information, federated services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `ENGINE_API_KEY` is set in the environment for your gateway server and ensure that all federated services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that federated services do not have the `ENGINE_API_KEY` environment variable set.
 
 Traces will be reported in the shape of the query plan, with each unique fetch to a federated service reporting timing and error data.
 
 <div style="text-align:center">
-  <img src="../images/federated_trace.png" alt="Federated Trace" />
+  <img src="./img//federated_trace.png" alt="Federated Trace" />
 </div>
 
 Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` validation workflow.
@@ -143,13 +145,13 @@ Operation-level statistics will still be collected over the operations sent by t
 
 Federation allows teams to work independently on federated services without needing to coordinate over an all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) and not breaking the ability for the graph to compose. The Apollo platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
 
-In particular, along with [validating overall schema changes against known operations](https://www.apollographql.com/docs/platform/schema-validation/), running `apollo service:check` for a federated service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
+In particular, along with [validating overall schema changes against known operations](/schema-validation/), running `apollo service:check` for a federated service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
 
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
 
 When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
 
-There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an @key for an extended type.
+There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
 
 ### Handling composition failure
 
@@ -234,7 +236,7 @@ The managed configuration for the Apollo gateway is exposed through [Google Clou
 
 ### Using variants to control rollout
 
-With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [schema validation](/platform/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/platform/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
+With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 
@@ -248,6 +250,6 @@ For instance, in order to have a canary deployment, you might maintain two produ
 1. Wait for health checks to pass against the canary, watch dashboards, etc.
 1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --tag=prod --serviceName=launches`.
 
-Because you can [tag metrics with variants](/platform/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
+Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
 
 <!-- ## Platform migration guide -->
