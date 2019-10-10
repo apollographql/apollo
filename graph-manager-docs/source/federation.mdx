@@ -135,8 +135,7 @@ In general, when calling `service:push`, you should always roll out changes in a
 all replicas of a federated service have deployed**. This way, you can be certain that only valid operations will be executable against the graph, and
 that operations will not be able to access fields or types that do not yet exist.
 
-In rare cases where the schema changes cause a backwards incompatible change to _query-planning_, however, it's recommended to update the service registry
-**before** deploying federated services. In particular, schema changes that affect query planning should be done as separate changes to the registry, prior
+In the rare case where a schema change is _not_ backward compatible with your gateway's query planner, you should update your service registry _before_ you deploy your federated services. In particular, schema changes that affect query planning should be done as separate changes to the registry, prior
 to other modifications. This helps avoid the scenario where the query planner generates queries that fail validation in downstream services or violate
 resolvers' expectations. Some examples of this include:
 
