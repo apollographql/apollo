@@ -82,7 +82,7 @@ module.exports = {
 
 #### _Option 3_: Link a schema from a local file
 
-In some cases you may have one or more locally generated files with your schema that you want to link. These can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to one or more local schema files, configure it like so:
+In some cases you might have one or more locally generated files with your schema that you want to link. These can be either `.graphql` files with the schema in SDL form or saved introspection results in `.json`. To link your client project to one or more local schema files, configure it like so:
 
 ```js{3-6}
 module.exports = {
@@ -95,7 +95,9 @@ module.exports = {
 };
 ```
 
-If you're loading a single schema file, you can also pass the path as a string rather than a list of strings.
+If you're loading a single schema file, you can pass the path as a string instead of as a list of strings.
+
+> Support for linking _multiple_ local schema files is available in the Apollo CLI version 2.18.2 and later, and in the Apollo VS Code extension version 1.10.2 and later.
 
 ### `client.includes`
 
@@ -220,7 +222,7 @@ module.exports = {
 
 #### Option 2: Local schema
 
-In some cases you may have one or more locally generated files with your schema that you want to link. These can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your server project to one or more local schema files, configure it like so:
+In some cases you might have one or more locally generated files with your schema that you want to link. These can be either `.graphql` files with the schema in SDL form or saved introspection results in `.json`. To link your server project to one or more local schema files, configure it like so:
 
 ```js
 module.exports = {
@@ -230,4 +232,6 @@ module.exports = {
 };
 ```
 
-If you're loading a single schema file, you can also pass the path as a string rather than a list of strings. If you have many schema files across your project, you can dynamically populate the `localSchemaFile` option using utilities like `glob` to load a list of filepaths.
+If you're loading a single schema file, you can pass the path as a string instead of as a list of strings. If you have many schema files across your project, you can dynamically populate the `localSchemaFile` option using utilities like `glob` to load a list of filepaths.
+
+> Support for linking _multiple_ local schema files is available in the Apollo CLI version 2.18.2 and later, and in the Apollo VS Code extension version 1.10.2 and later.
