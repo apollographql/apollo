@@ -245,7 +245,7 @@ _src/resolvers.js_
 ```js
 Mission: {
   // make sure the default size is 'large' in case user doesn't specify
-  missionPatch: (mission, { size } = { size: 'LARGE' }) => {
+  missionPatch: (mission, { size = 'LARGE' }) => {
     return size === 'SMALL'
       ? mission.missionPatchSmall
       : mission.missionPatchLarge;
