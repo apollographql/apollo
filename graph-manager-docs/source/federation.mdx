@@ -96,7 +96,11 @@ Federation is made up of two parts: federated services and a **gateway** to comp
 
 While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the federated services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
 
-For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-federated-services). To use the managed configuration provisioned by the Graph Manager, define `ENGINE_API_KEY` in the environment, and construct the gateway and ApolloServer like so:
+For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-federated-services).  To use the managed configuration provisioned by the Graph Manager, obtain an API key from the _Settings_ page of the [Graph Manager](https://engine.apollographql.com) and set the `ENGINE_API_KEY` environment variable to that key.
+
+> If you're already setting the `engine` property of [the `ApolloServer` constructor options](https://www.apollographql.com/docs/apollo-server/api/apollo-server/) and have included the API key in those settings, you can skip setting the `ENGINE_API_KEY` value in the environment.
+
+Then, construct the gateway and `ApolloServer` like so:
 
 ```js
 const { ApolloServer } = require('apollo-server');
@@ -117,7 +121,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-> The managed configuration will default to using the `'current'` variant.
+> The managed configuration will default to using the `'current'` variant.  When running Apollo Gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
 
 ### Managed configuration
 

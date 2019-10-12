@@ -135,7 +135,7 @@ The Datadog metrics forwarded by Graph Manager are:
   - `apollo.engine.operations.latency.avg`
 
 All of Graph Manager's new Datadog metrics are tagged with the GraphQL operation name, as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
-All of the metrics are also tagged with the Graph Manager graph ID, `service:<graph-id>`, so multiple graphs from Graph Manager can send data to the same Datadog account.
+All of the metrics are also tagged with the Graph Manager graph name, `service:<graph-name>`, so multiple graphs from Graph Manager can send data to the same Datadog account.
 
 Graph Manager sends metrics to Datadog in 60-second intervals. Data is forwarded with a 60-second delay to allow for reports to be collected, even in the case of temporary network failures.
 
@@ -164,7 +164,7 @@ Once you've turned on the integration in Datadog, visit the "Integrations" tab i
 
 Once you have Datadog forwarding set up, you will start seeing Graph Manager metrics forwarded to your Datadog account within a few minutes. Navigate to the [Datadog metric explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=avg&exp_row_type=metric) to see data from your GraphQL service flowing in.
 
-Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph ID (`service:<graph-id>`) it is reporting for and the operation name (`operation:<query-name>`), both of which are normalized by Datadog naming requirements (letters are all lower-case and illegal symbols are converted to underscores). This tagging makes it easier to see data at whatever level of granularity you might want.
+Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`) it is reporting for and the operation name (`operation:<query-name>`), both of which are normalized by Datadog naming requirements (letters are all lower-case and illegal symbols are converted to underscores). This tagging makes it easier to see data at whatever level of granularity you might want.
 
 If you want to aggregate across all operations or zoom in to a particular operation, it's simply a tag-filtering. Similarly, if you want to compare metrics across staging and production environment, it should be as simple as generating one graph per environment.
 
@@ -182,4 +182,4 @@ All of the metrics reported to Datadog can be notified on directly through Graph
 
 **Example**: Suppose you have a query that is run against your GraphQL server with a much higher volume in the morning than in the afternoon. You want to enable monitoring on that query's latency and error rates, but if the query volume is very low, you have a higher tolerance for latency and one error will skew the error rate and make the monitor too noisy.
 
-_You can use Datadog's [composite monitoring](https://docs.datadoghq.com/monitors/monitor_types/composite/) to enable more complex alerting. You need to start by creating a monitor for each condition you want to track and then combining them in a composite monitor, as explained in the [Datadog documentation](https://docs.datadoghq.com/monitors/monitor_types/composite/)._
+> You can use Datadog's [composite monitoring](https://docs.datadoghq.com/monitors/monitor_types/composite/) to enable more complex alerting. You need to start by creating a monitor for each condition you want to track and then combining them in a composite monitor, as explained in the [Datadog documentation](https://docs.datadoghq.com/monitors/monitor_types/composite/).
