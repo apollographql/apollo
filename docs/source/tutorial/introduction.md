@@ -75,6 +75,6 @@ building a graph API and you want to skip to the `client` portion, navigate to t
 
 ## Need help?
 
-Learning a new technology can be overwhelming sometimes, and it's easy to get stuck! If that happens, we recommend joining the [Apollo Spectrum community](https://spectrum.chat/apollo) and posting in the relevant channel (either `#apollo-server` or `#apollo-client`) for assistance from friendly fellow developers.
+Learning a new technology can be overwhelming sometimes, and it's common to get stuck! If that happens, we recommend joining the [Apollo Spectrum community](https://spectrum.chat/apollo) and posting in the relevant channel (either `#apollo-server` or `#apollo-client`) for assistance from friendly fellow developers.
 
 If anything in the tutorial seems confusing or contains an error, we'd love your feedback! Click the **Edit on GitHub** link on the right side of the page to open a new pull request, or [open an issue on the repository](https://github.com/apollographql/apollo/issues/new).
