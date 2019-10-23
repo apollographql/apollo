@@ -217,6 +217,10 @@ query {
 }
 ```
 
+Currently, the Apollo gateway expands all interfaces into implementing types,
+though a follow-up to the query-planning logic may make this only occur for
+interfaces that serve as entities (i.e. have a `@key`).
+
 #### Modifying query-planning logic
 
 You should treat migrations of query-planning logic similarly to how you treat database migrations, by carefully considering the effects on the
