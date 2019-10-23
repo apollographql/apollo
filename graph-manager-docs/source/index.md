@@ -3,22 +3,26 @@ title: Overview
 description: Learn about Graph Manager features and create your account
 ---
 
-Apollo Graph Manager (formerly Apollo Engine) is a cloud service that helps you manage,
-validate, and secure your organization's data graph.
+Apollo Graph Manager (formerly Apollo Engine) is a cloud service that helps you manage, validate, and secure your organization's data graph.
 
-In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand
-your schema and query usage.
+In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand your schema and query usage.
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 ## Feature summary
 
 **Graph Manager provides the following features to all Apollo users for free:**
 
 * A [GraphQL schema registry](/schema-registry/) that tracks changes
-and enables you to [create variants of your schema](/schema-registry/#managing-environments) for different environments
-(such as staging and production)
+and enables you to [create variants of your schema](/schema-registry/#managing-environments) for different environments (such as staging and production)
 
-* A schema explorer that makes it easy to inspect your schema's queries,
-mutations, and other object definitions
+* A schema explorer that makes it easy to inspect your schema's queries, mutations, and other object definitions
 
 * Team collaboration via [organizations](/accounts-organizations/)
 
