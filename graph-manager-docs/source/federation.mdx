@@ -135,13 +135,20 @@ These configuration files detail which federated services are part of the graph,
 
 #### When to call `service:push`
 
-In general, when calling `service:push`, you should always roll out changes in a way that is backward compatible with existing clients to avoid downtime. Because configuration changes can affect the query planner, it's highly recommended to **call `apollo service:push` after
-all replicas of a federated service have deployed**. This way, you can be certain that only valid operations will be executable against the graph, and
-that operations will not be able to access fields or types that do not yet exist.
+In general, you should always roll out changes in a way that is backward compatible
+with existing clients to avoid downtime. Specifically, it's highly recommended to
+**call `apollo service:push` after all replicas of a federated service have deployed**.
+You don't want to deploy a new schema before the resolvers are there to support it!
+This way, you can be certain that only valid operations will be executable against
+the graph, and that operations will not be able to access fields or types that do
+not yet exist.
 
-In the rare case where a schema change is _not_ backward compatible with your gateway's query planner, you should update your service registry _before_ you deploy your federated services. In particular, schema changes that affect query planning should be done as separate changes to the registry, prior
-to other modifications. This helps avoid the scenario where the query planner generates queries that fail validation in downstream services or violate
-resolvers' expectations. Some examples of this include:
+In the rare case where a schema change is _not_ backward compatible _with your
+gateway's query planner_, you should update your service registry _before_ you
+deploy your federated services. In particular, schema changes that affect query
+planning should be done as separate changes to the registry, prior to other modifications. This helps avoid the scenario where the query planner generates
+queries that fail validation in downstream services or violate resolvers'
+expectations. Some examples of this include:
 
 1. Modifying `@key` or `@requires` dependencies while simultaneously modifying dependency fields
 2. Removing a type implementation from an interface
@@ -157,21 +164,58 @@ interface Channel @key(fields: "id") {
 # Web service
 type WebChannel implements Channel @key(fields: "id") {
   id: ID!
+  webHook: String!
 }
 
 # Email service
 type EmailChannel implements Channel @key(fields: "id") {
   id: ID!
+  emailAddress: String!
 }
 ```
 
 To remove the `EmailChannel` implementation of the `Channel` interface:
 
-1. Register a new `email` service that removes the `EmailChannel` implementation of `Channel`.
-1. Deploy a new Email service that removes the implementation.
+1. Perform a `service:push` of the `email` service that removes the `EmailChannel` type.
+1. Deploy a new Email service that removes the `EmailChannel` type.
 
 The first step causes the query planner to stop sending along fragments `...on EmailChannel`, which would fail validation if sent
-to a service that isn't aware of that type.
+to a service that isn't aware of that type. If the goal is not to remove the type
+altogether, but to only remove it from the interface, you can follow a similar
+procedure, but instead of removing the `EmailChannel` type altogether, only
+removing the `implements Channel` addendum to the type definition. This is
+because the query planner expands queries to interfaces or unions into fragments
+on their implementing types. For example, a query such as
+```graphql
+query FindChannel($id: ID!) {
+  channel(id: $id) {
+    id
+  }
+}
+```
+
+will generate two queries, one to each service, like so:
+
+```graphql
+# To Email service
+
+query {
+  _entities(...) {
+    ...on EmailChannel {
+      id
+    }
+  }
+}
+
+# To Web Service
+query {
+  _entities(...) {
+    ...on WebChannel {
+      id
+    }
+  }
+}
+```
 
 #### Modifying query-planning logic
 
@@ -222,13 +266,13 @@ To do this migration in-place:
 
 1. Modify the `Products` service to add the new field. (As in most cases, first deploy all replicas, then `apollo service:push` the new partial schema.)
 1. Deploy a new version of the `Reviews` service with a resolver that accepts _either_ `nameLowercase` or `name` in the source object.
-1. Modify the Reviews service's schema in the registry so that it @requires the new `name` field.
+1. Modify the Reviews service's schema in the registry so that it `@requires(fields: "name")`.
 1. Deploy a new version of the `Reviews` service with a resolver that only accepts the `name` in its source object.
 
 Alternatively, you could perform this operation with an atomic migration at the service level, by modifying the service's URL:
 
 1. Modify the `Products` service to add the `name` field (as per usual, first deploy all replicas, then `apollo service:push` the new partial schema).
-1. Deploy a new set of `Reviews` replicas to a new URL.
+1. Deploy a new set of `Reviews` replicas to a new URL which reads from `name`.
 1. Register the `Reviews` service with the new URL and the partial schema changes above.
 
 With this atomic strategy, the query planner resolves all outstanding requests to the old service that relied on `nameLowercase` with the old
@@ -296,7 +340,7 @@ The reasoning behind this functionality is that the service registry should alwa
 As an engineer working on a federated service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following worflow:
 
 1. Run validation on every commit through CI using `apollo service:check`.
-1. Merge in a backwards-compatible PR that has passed schema validation.
+1. Merge in a backward compatible PR that has passed schema validation.
 1. Deploy changes to the federated service in your infrastructure.
 1. Wait until all replicas finish deploying.
 1. Call `apollo service:push` to update the federated service.
@@ -319,7 +363,7 @@ az329e  space-explorer    current
 
 > What's the difference between `serviceURL` and `endpoint` parameters? The `endpoint` parameter controls the endpoint where the schema will be fetched from at composition, whereas `serviceURL` controls what URL the gateway will query at runtime. This is especially useful because federated services **should not be publicly accessible**, so the `endpoint` might point to a locally running server or a file, whereas the `serviceURL` should be a URL accessible to the gateway.
 
-It's important to make sure that any possible end-user effect from the changes to the graph have been identified, and it's similarly important to strive for backwards-compatible changes to limit those effects. The reason for waiting for the service to completely roll over before registering it is that if some services are still exposing the previous configuration, they might elicit failures for operations the gateway has planned with the new configuration.
+It's important to make sure that any possible end-user effect from the changes to the graph have been identified, and it's similarly important to strive for backward compatible changes to limit those effects. The reason for waiting for the service to completely roll over before registering it is that if some services are still exposing the previous configuration, they might elicit failures for operations the gateway has planned with the new configuration.
 
 ### Diving into service:push
 
@@ -344,7 +388,7 @@ The managed configuration for the Apollo gateway is exposed through [Google Clou
 
 ### Using variants to control rollout
 
-With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
+With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 
