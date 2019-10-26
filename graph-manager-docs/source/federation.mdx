@@ -136,6 +136,7 @@ These configuration files detail which federated services are part of the graph,
 #### When to call `service:push`
 
 In general, you should always roll out changes in a way that is backward compatible
+(whether by modifying unused fields or by making additive schema changes)
 with existing clients to avoid downtime. Specifically, it's highly recommended to
 **call `apollo service:push` after all replicas of a federated service have deployed**.
 You don't want to deploy a new schema before the resolvers are there to support it!
