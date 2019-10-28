@@ -9,7 +9,7 @@ Adopting GraphQL in your organization will ease these pain points considerably. 
 
 ## Developer experience
 
-Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Engine. Let's learn how!
+Implementing GraphQL in your organization via the Apollo platform can help you ship features faster due to its excellent developer experience. Our #1 goal is to simplify data management across the stack. Features that are normally difficult to execute, such as fullstack caching, data normalization, and optimistic UI suddenly become trivial thanks to Apollo Client, Apollo Server, and Apollo Graph Manager. Let's learn how!
 
 ### Explore your API
 
@@ -47,13 +47,13 @@ Teams who have switched to Apollo Client have reported [deleting thousands of li
 
 Developing your GraphQL API with the Apollo platform gives teams access to modern tooling that helps them uncover bugs quickly, gain visibility into their API, and develop challenging features such as caching with confidence.
 
-[Apollo Engine](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Apollo Engine displays per resolver tracing metrics that can help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
+[Apollo Graph Manager](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Graph Manager displays per-resolver tracing metrics that help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
 
-![Apollo Engine](../assets/engine.png)
+![Apollo Graph Manager](../assets/engine.png)
 
 ## Declarative data fetching
 
-One of the main advantages of adopting GraphQL is its declarative approach to data fetching. With GraphQL, there's no need to call multiple endpoints from the client or aggregate the data manually like you have to with traditional REST data fetching. Instead, you specify exactly the data you need and GraphQL gives you exactly what you asked for.
+One of the main advantages of adopting GraphQL is its declarative approach to data fetching. With GraphQL, there's no need to call multiple endpoints from the client or aggregate the data manually like you have to with traditional REST data fetching. Instead, you specify the exact data you need and GraphQL gives you exactly what you asked for.
 
 With REST, you would have to call all of these endpoints for each item in the list, filter down the data you need, and aggregate all of the remaining data into the shape your components consume.
 
@@ -84,19 +84,17 @@ const GET_DOGS = gql`
 
 Here, we're describing the shape of the object we want to receive from the server. GraphQL takes care of combining and filtering the data while returning exactly what we ask for.
 
-How do we use this query in our app? Apollo Client builds off of GraphQL's declarative approach to data fetching. In a React app, all of the logic for retrieving your data, tracking loading and error states, and updating your UI is encapsulated in a single `Query` component. This encapsulation makes composing your data fetching components with your presentational components a breeze! Let’s see how to fetch GraphQL data with Apollo Client in a React app:
+How do we use this query in our app? Apollo Client builds off of GraphQL's declarative approach to data fetching. In a React app, all of the logic for retrieving your data, tracking loading and error states, and updating your UI is encapsulated in a single `useQuery` hook. This encapsulation makes composing your data fetching components with your presentational components a breeze! Let’s see how to fetch GraphQL data with Apollo Client in a React app:
 
 ```jsx
-const Feed = () => (
-  <Query query={GET_DOGS}>
-    {({ loading, error, data }) => {
-      if (error) return <Error />;
-      if (loading || !data) return <Fetching />;
+function Feed() {
+  const { loading, error, data } = useQuery(GET_DOGS);
 
-      return <DogList dogs={data.dogs} />;
-    }}
-  </Query>
-);
+  if (error) return <Error />;
+  if (loading || !data) return <Fetching />;
+
+  return <DogList dogs={data.dogs} />;
+}
 ```
 
 Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you. There’s no middleware to set up or boilerplate to write before making your first request, nor do you need to worry about transforming and caching the response. All you have to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪

@@ -11,11 +11,11 @@ A "trace" corresponds to exactly one [GraphQL operation](https://www.apollograph
 
 By recording which resolvers executed in our server and their traces, we can build a rich dataset. From it, we see exactly which query shapes are being run, who is sending them, which parts of the schema are most utilized, which resolvers in the server are bottlenecks, etc.
 
-We've specifically built an interface to view this information into [Apollo Engine](https://engine.apollographql.com/) and any GraphQL server can report metrics to Engine by sending data in the `apollo-tracing` format to our metrics ingress. Read on to learn how to set this up in your environment.
+We've specifically built an interface to view this information into [Apollo Graph Manager](https://engine.apollographql.com/) and any GraphQL server can report metrics to Engine by sending data in the `apollo-tracing` format to our metrics ingress. Read on to learn how to set this up in your environment.
 
 ## Apollo Server
 
-Apollo Server has had the ability to report its performance usage metrics to Engine built-in. To set it up, get an API key from [Engine](https://engine.apollographql.com/) by logging in and creating a graph. Then set your API key in the `ENGINE_API_KEY` environment variable or pass it into your Apollo Server constructor like so:
+Apollo Server has had the ability to report its performance usage metrics to Graph Manager built-in. To set it up, get an API key from [Graph Manager](https://engine.apollographql.com/) by logging in and creating a graph. Then set your API key in the `ENGINE_API_KEY` environment variable or pass it into your Apollo Server constructor like so:
 
 ```js{6-8}
 const { ApolloServer } = require("apollo-server");
@@ -42,9 +42,9 @@ There are 2 ways to send metrics data from your server to Engine:
 1. Report traces directly from your server to our reporting endpoint
 2. Use an Apollo tracing package and the Engine proxy (deprecated)
 
-### Engine reporting endpoint
+### Graph Manager reporting endpoint
 
-We recommend following the agent pattern to report trace metrics from your server to the Engine reporting endpoint. This is what Apollo Server does internally and you can view the code for the [Apollo Server reference agent](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts) as an example.
+We recommend following the agent pattern to report trace metrics from your server to the Graph Manager reporting endpoint. This is what Apollo Server does internally and you can view the code for the [Apollo Server reference agent](https://github.com/apollographql/apollo-server/blob/3d6912434051ae7038153ef39e32f485a35609f0/packages/apollo-engine-reporting/src/agent.ts) as an example.
 
 We've been working with our community to build agent integrations for non-JavaScript servers. If you're interested in collaborating with us on an integration for your server, please get in touch with us at <support@apollographql.com> or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
 
@@ -139,7 +139,7 @@ Another important feature is the ability to limit information sent, particularly
     "schemaHash": "alskncka384u1923e8uino1289jncvo019n"
   },
   "tracesPerQuery": {
-    "# Foo\nquery Foo { user { email } }": {
+    "# Foo\nquery Foo { user { email pets { name } } }": {
       "trace": [
         {
           "endTime": "2018-11-25T18:28:36.604Z",
@@ -151,20 +151,24 @@ Another important feature is the ability to limit information sent, particularly
           },
           "durationNs": "2498055950907169",
           "root": {
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
             "child": [
               {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "11",
-                "endTime": "12",
-                "parentType": "User"
+                "response_name": "user",
+                "type": "User",
+                "start_time": "16450765",
+                "end_time": "750079190",
+                "child": [
+                  {
+                    "response_name": "email",
+                    "type": "String",
+                    "start_time": "750122948",
+                    "end_time": "750145101",
+                    "parent_type": "User"
+                  }
+                ],
+                "parent_type": "Query"
               }
-            ],
-            "parentType": "Query"
+            ]
           }
         },
         {
@@ -176,23 +180,60 @@ Another important feature is the ability to limit information sent, particularly
             "method": "POST"
           },
           "durationNs": "13154220",
+          "clientReferenceId": "c2_id",
           "root": {
-            "fieldName": "user",
-            "type": "User!",
-            "startTime": "1",
-            "endTime": "10",
             "child": [
               {
-                "fieldName": "email",
-                "type": "String!",
-                "startTime": "13",
-                "endTime": "15",
-                "parentType": "User"
+                "response_name": "user",
+                "type": "User",
+                "start_time": "16450962",
+                "end_time": "750079190",
+                "child": [
+                  {
+                    "response_name": "email",
+                    "type": "String",
+                    "start_time": "720132958",
+                    "end_time": "720145167",
+                    "parent_type": "User"
+                  },
+                  {
+                    "response_name": "pets",
+                    "type": "[Pet]",
+                    "start_time": "720132959",
+                    "end_time": "720135177",
+                    "parent_type": "User",
+                    "child": [
+                      {
+                        "index": 0,
+                        "child": [
+                          {
+                            "response_name": "name",
+                            "type": "String",
+                            "start_time": "720133006",
+                            "end_time": "720133039",
+                            "parent_type": "Pet"
+                          }
+                        ]
+                      },
+                      {
+                        "index": 1,
+                        "child": [
+                          {
+                            "response_name": "name",
+                            "type": "String",
+                            "start_time": "720133041",
+                            "end_time": "720133102",
+                            "parent_type": "Pet"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "parent_type": "Query"
               }
-            ],
-            "parentType": "Query"
-          },
-          "clientReferenceId": "c2_id"
+            ]
+          }
         }
       ]
     }

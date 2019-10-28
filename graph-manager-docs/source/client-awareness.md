@@ -9,13 +9,13 @@ Apollo provides a client identification and tracking system, which allows you to
 
 Like any API, your graph will end up with many consumers with different frequencies, subselections, and permissions as it grows over time. Apollo allows all reported data to be tagged with client information so it can be filtered and analyzed across different sets of clients and stacks.
 
-Here's an example of client identity reporting in Engine:
+Here's an example of client identity reporting in Apollo Graph Manager:
 
-![client overview](../img/client-awareness/overview.png)
+![client overview](./img/client-awareness/overview.png)
 
 ## Setup
 
-Apollo Server 2.2.3+ will look for specific the request headers, `apollographql-client-name` and `apollographql-client-version`, by default. If present, Apollo Server will extract them and make sure the data for that request is reported to Apollo's systems with the correct client and version tag.
+Apollo Server 2.2.3+ will look for specific request headers, `apollographql-client-name` and `apollographql-client-version`, by default. If present, Apollo Server will extract them and make sure the data for that request is reported to Apollo's systems with the correct client and version tag.
 
 With Apollo Client 2.4.6+, simply passing the `name` and `version` options in your `ApolloClient` constructor will automatically add these headers to every request. Setting up client identity reporting is as simple as adding configuration to Apollo Client:
 
@@ -48,13 +48,13 @@ owner. When changing, replacing, or deprecating a field in the API, the client
 metadata enables quickly identifying the client-side changes that need to
 occur to completely remove the field.
 
-![client field](../img/client-awareness/field-usage.png)
+![client field](./img/client-awareness/field-usage.png)
 
 ### Cutover
 
 Similarly to deprecation, adding fields to your graph often means that clients will also change. These modifications can be done incrementally or discretely during a cutover period. The cutover period and time immediately following change the utilization of the graph drastically and can expose some unexpected behavior. Filtering by client version enables monitoring the health of a release in real-time. The following demonstrates a cutover from one backend to another.
 
-![druid cutover](../img/client-awareness/cutover.png)
+![druid cutover](./img/client-awareness/cutover.png)
 
 ## Advanced setup
 

@@ -1,0 +1,259 @@
+---
+title: Managing a federated graph
+description: How to run, manage, and deploy a federated graph
+---
+
+When organizations roll out GraphQL across multiple teams, coordinating and maintaining a single monolithic schema becomes difficult and error-prone. [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/) solves this problem by enabling teams to build a distributed graph composed of multiple services declaratively without fragile stitching code.
+
+While federation empowers teams to scale GraphQL much faster than before, it also introduces complexity that comes along with running a distributed system. Teams need federation-aware tooling in order to help them coordinate updating the graph whenever an underlying service changes. The **Apollo Graph Manager** is a turnkey solution to this problem that includes managed service deployments for free, as well as federated service checks and federation-aware analytics for teams on a paid plan.
+
+## What you'll learn
+
+Based on our experience helping companies scale GraphQL across their organizations, there are several steps teams need to take to successfully run a federated graph in production. We recommend running through these steps after you've already [implemented a federated graph](https://www.apollographql.com/docs/apollo-server/federation/implementing/):
+
+1. [Register all federated services](#registering-federated-services) with the Apollo Graph Manager.
+1. [Configure Apollo Server](#connecting-apollo-server-to-the-graph-manager) as a gateway to connect to the graph manager.
+1. [Turn on metrics](#metrics-and-observability) for your federated graph.
+1. [Validate changes](#validating-changes-to-the-graph) to the graph against production traffic.
+1. [Integrate your federated graph](#integrating-with-your-deployment-pipeline) into your deployment pipeline.
+
+<!-- TODO: For current Apollo platform users looking to migrate their monolithic API to a federated graph, follow our [platform migration guide](#platform-migration-guide). -->
+
+## Core concepts
+
+Federation introduces several new terms that are necessary for understanding the following steps in this article:
+
+- **Graph**: A single API composed of multiple federated services
+- **Federated services**: The underlying microservices that make up a graph. These services are standalone GraphQL servers that can be built in any language, since [federation](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) is spec-compliant GraphQL.
+- **Capabilities**: The types a service extends and adds to the graph. A service's capabilities describe how a service interacts with other portions of the graph.
+
+When you put these concepts together, a **graph** is composed of **federated services** that expose their **capabilities** in order to interact with each other.
+
+The rest of this article focuses on managing a federated graph with the Apollo platform. It assumes you've already implemented a federated graph. To implement a graph, read the [federation guide for Apollo Server](https://www.apollographql.com/docs/apollo-server/federation/introduction/) and come back to these steps once you're ready to run your graph in production.
+
+## Registering federated services
+
+If you're running a distributed GraphQL infrastructure, where federated services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, tracking the history of the graph and its underlying services is essential. Running `apollo service:push` from within CI/CD on any federated service registers the overall schema of the graph and updates the graph's [managed configuration](#managed-configuration).
+
+To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
+
+Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
+
+```bash
+echo "ENGINE_API_KEY=<your API key here>" >> .env
+```
+
+As an example, running service push on a “launches” federated service might look like:
+
+```bash
+apollo service:push --serviceName="launches" \
+                    --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
+                    --endpoint="http://localhost:4001/"
+```
+
+Pushing a federated service to Apollo will update the [Services tab](#inspecting-your-graph).
+
+> For production support, using `apollo service:push` should be an automated process that integrates with your continuous delivery pipeline. For more information, see integrating with CI/CD in the [managed federation section](#managed-configuration).
+
+### Removing a service from the registry
+
+Removing an federated service from the graph works similarly to registering a service. To delete a service, call `apollo service:delete`. You can also specify the graph variant you want to remove.
+
+```bash
+apollo service:delete --serviceName=launches --tag=staging
+```
+
+> WARNING! This action cannot be reversed. Also, once deleted, service names cannot be reused within the same graph.
+
+### Inspecting your graph
+
+To view the federated services that make up your graph, you can use both the Apollo CLI as well as the Apollo platform.
+
+Run `apollo service:list` in the command line to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated.
+
+Here's an example of what running `apollo service:list` will look like:
+
+```
+$ apollo service:list
+  ✔ Loading Apollo Project
+  ✔ Fetching list of services for graph service-list-federation-demo
+
+name       URL                            last updated
+─────────  ─────────────────────────────  ────────────────────────
+Accounts   http://localhost:4001/graphql  3 July 2019 (2 days ago)
+Inventory  http://localhost:4004/graphql  3 July 2019 (2 days ago)
+Products   http://localhost:4003/graphql  3 July 2019 (2 days ago)
+Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
+
+View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
+```
+
+You can see additional details about the services registered to the graph, such as each service's capabilities, in the [Apollo Dashboard](https://engine.apollographql.com/).
+
+## Connecting Apollo Server to the graph manager
+
+Federation is made up of two parts: federated services and a **gateway** to compose the complete graph and execute federated queries. Apollo Server comes with a [gateway](https://www.apollographql.com/docs/apollo-server/federation/implementing/#running-a-gateway) that composes a federated graph, but you could also implement a gateway in another language.
+
+While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the federated services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
+
+For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-federated-services).  To use the managed configuration provisioned by the Graph Manager, obtain an API key from the _Settings_ page of the [Graph Manager](https://engine.apollographql.com) and set the `ENGINE_API_KEY` environment variable to that key.
+
+> If you're already setting the `engine` property of [the `ApolloServer` constructor options](https://www.apollographql.com/docs/apollo-server/api/apollo-server/) and have included the API key in those settings, you can skip setting the `ENGINE_API_KEY` value in the environment.
+
+Then, construct the gateway and `ApolloServer` like so:
+
+```js
+const { ApolloServer } = require('apollo-server');
+const { ApolloGateway } = require('@apollo/gateway');
+
+// Managed configuration will be picked up using the API key
+const gateway = new ApolloGateway();
+
+// Pass the gateway to Apollo Server
+const server = new ApolloServer({ gateway, subscriptions: false });
+
+// Note: Apollo gateway does not currently support subscriptions,
+// but it's on the roadmap for Apollo Server 3.x:
+// https://github.com/apollographql/apollo-server/issues/2360
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+> The managed configuration will default to using the `'current'` variant.  When running Apollo Gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
+
+### Managed configuration
+
+Managed configuration is the concept of allowing the gateway to update dynamically in response to service changes. In principle, it's important to separate the reliability of your graph from the reliability of your services. For that reason, we recommend running federation in production using a managed configuration, where the gateway picks up config changes not from introspection, but from a set of files owned by your graph describing its current state.
+
+On `apollo service:push`, the service registry writes configuration files to a cloud file system, stored securely and accessible by your API key. These configuration files detail which federated services are part of the graph, metadata about the federated services, including the `serviceURL` specified in the `push` command, and the partial schema of that federated service. By default, when the Apollo gateway is instantiated with an API key rather than a `serviceList`, it will poll for that managed config to pick up changes and smoothly roll over to the new service configuration, draining in-flight requests while beginning to generate query plans for incoming requests against the new config.
+
+Because configuration changes can affect the query planner, it's highly recommended to **only call `apollo service:push` after all replicas of an federated service have deployed**.
+
+## Metrics and observability
+
+Like any distributed architecture, you should make sure that your federated graph has proper observability, monitoring, and automation to ensure reliability and performance of both your gateway and the federated services underneath it. Serving your GraphQL API from a distributed architecture has many benefits, like productivity, isolation, and being able to match the right services with the right runtimes. Operating a distributed system also has more complexity and points of failure than operating a monolith, and with that complexity comes a need to heighten observability into the state of your system and control over its coordination.
+
+Apollo Server has support for reporting federated [tracing](/performance/) information from the gateway. In order to support the gateway with detailed timing and error information, federated services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `ENGINE_API_KEY` is set in the environment for your gateway server and ensure that all federated services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that federated services do not have the `ENGINE_API_KEY` environment variable set.
+
+Traces will be reported in the shape of the query plan, with each unique fetch to a federated service reporting timing and error data.
+
+<div style="text-align:center">
+  <img src="./img//federated_trace.png" alt="Federated Trace" />
+</div>
+
+Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` validation workflow.
+
+## Validating changes to the graph
+
+Federation allows teams to work independently on federated services without needing to coordinate over an all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) and not breaking the ability for the graph to compose. The Apollo platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
+
+In particular, along with [validating overall schema changes against known operations](/schema-validation/), running `apollo service:check` for a federated service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
+
+With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
+
+When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
+
+There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
+
+### Handling composition failure
+
+In general, an `apollo service:push` should only be run after an `apollo service:check` has passed, but even so, due to changes in _other_ services, it's possible that the `apollo service:push` command will encounter composition errors. When this happens, the federated service will still be updated as long as its capabilities are spec-compliant, but **the graph will not be updated**. This means that a new schema will not be associated nor will the gateway's [managed configuration](#managed-configuration) be updated.
+
+An example output of this behavior looks like this:
+
+```
+~$ apollo service:push --serviceName="launches" \
+                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
+                      --endpoint="http://localhost:4001/"
+  ✔ Loading Apollo Project
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
+
+
+The 'launches' service for the 'space-explorer@current' graph was updated
+
+*THE SERVICE UPDATE RESULTED IN COMPOSITION ERRORS.*
+
+Composition errors must be resolved before the graph's schema or corresponding gateway can be updated.
+For more information, see https://www.apollographql.com/docs/apollo-server/federation/errors/
+
+
+Error   [launches] Mutation.createLaunch -> requires the field `launch` to be marked as @external.
+
+The gateway for the 'space-explorer@current' graph was NOT updated with a new schema
+```
+
+The reasoning behind this functionality is that the service registry should always be the source of truth for what is running in your infrastructure. Even if that means that composition is failing in your infrastructure, the service registry should reflect that. However, you still want your gateway to function as it has been before the service deployment. Additionally, this functionality can be used to make dependent changes, like smoothly migrating a field from one service to another or introducing a circular service dependency.
+
+## Integrating with your deployment pipeline
+
+As an engineer working on a federated service, you might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following worflow:
+
+1. Run validation on every commit through CI using `apollo service:check`
+1. Merge in a backwards-compatible PR that has passed schema validation
+1. Deploy changes to the federated service in your infrastructure
+1. Let all replicas finish deploying
+1. Call `apollo service:push` to update the federated service
+
+```
+~$ apollo service:push --serviceName="launches" \
+                      --serviceURL="http://launches-graphql.svc.cluster.local:4001/" \
+                      --endpoint="http://localhost:4001/"
+  ✔ Loading Apollo Project
+  ✔ Uploading service to Engine
+
+The 'registry' service for the 'space-explorer@current' graph was updated
+
+The gateway for the 'space-explorer@current' graph was updated with a new schema, composed from the updated 'launches' service
+
+id      graph             variant
+──────  ────────────────  ───────
+az329e  space-explorer    current
+```
+
+> What's the difference between `serviceURL` and `endpoint` parameters? The `endpoint` parameter controls the endpoint where the schema will be fetched from at composition, whereas `serviceURL` controls what URL the gateway will query at runtime. This is especially useful because federated services **should not be publicly accessible**, so the `endpoint` might point to a locally running server or a file, whereas the `serviceURL` should be a URL accessible to the gateway.
+
+It's important to make sure that any possible end-user effect from the changes to the graph have been identified, and it's similarly important to strive for backwards-compatible changes to limit those effects. The reason for waiting for the service to completely roll over before registering it is that if some services are still exposing the previous configuration, they might elicit failures for operations the gateway has planned with the new configuration.
+
+### Diving into service:push
+
+Every time that `apollo service:push` is called for a federated service, it not only registers the federated service to the graph, but it also updates the managed configuration files that the gateway has access to. Because the graph is dynamically changing, it's possible for composition errors to occur for a `service:push` even after a `service:check` has succeeded if other federated services changed in the interim. For this reason, updating a federated service will re-trigger composition in the cloud, ensuring that the federated services still compose to form a complete graph before provisioning the managed configuration. The workflow behind the scenes can be summed up as follows:
+
+1. The partial schema is uploaded to a secure location and indexed
+1. The federated service is updated in the registry to point to the partial schema
+1. All federated services are composed in the cloud to produce a new complete schema
+1. If composition fails, the command exits and emits errors
+1. If composition succeeds, the top-level managed configuration file is updated in-place to point to the updated set of federated services
+
+On the other side of the equation sits the gateway. The gateway is constantly listening for changes to the top-level managed configuration file. The location of the managed configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
+
+1. The gateway listens for updates to its managed configuration
+1. On update, the gateway downloads configuration for each federated service in parallel
+1. The gateway performs composition over the managed configuration to update query planning
+1. The gateway continues to resolve in-flight requests with the previous configuration while using the updated configuration for all new requests
+
+### Reliability and security
+
+The managed configuration for the Apollo gateway is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key. In the event that managed configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway will continue to serve the last-known configuration. In the event that Apollo Graph Manager API is down, changes to managed configuration will be stalled but the last-published configuration files will still be accessible via GCS.
+
+### Using variants to control rollout
+
+With [managed federation](#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backwards compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-schemas-to-a-variant) to manage different fleets of gateways running with different configurations.
+
+For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
+
+1. Check changes in "launches" against `prod` and `prod-canary`:
+   ```
+   apollo service:check --tag=prod --serviceName=launches
+   apollo service:check --tag=prod-canary --serviceName=launches
+   ```
+1. Deploy changes to "launches" into your production environment. (_Note: This will not roll out changes to the gateway yet_)
+1. Roll over the `prod-canary` graph, containing one gateway container, using `apollo service:push --tag=prod-canary --serviceName=launches`. (_Note: If composition fails due to intermediate changes to the canary graph, new configuration will not be rolled out_)
+1. Wait for health checks to pass against the canary, watch dashboards, etc.
+1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --tag=prod --serviceName=launches`.
+
+Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
+
+<!-- ## Platform migration guide -->

@@ -255,15 +255,15 @@ Mission: {
 
 _src/schema.js_
 ```js
-  type Mutation {
+  type Mission {
     # ... with rest of schema
-    missionPatch(mission: String, size: PatchSize): PatchSize
+    missionPatch(mission: String, size: PatchSize): String
   }
 ```
 
 The first argument passed into our resolver is the parent, which refers to the mission object. The second argument is the size we pass to our `missionPatch` field, which we use to determine which property on the mission object we want our field to resolve to.
 
-Now that we know how to add resolvers on types other than `Query` and `Mutation`, let's add some more resolvers to the `Launch` and `User` types. Copy this code into your resolver map:
+Now that we know how to add resolvers on types other than `Query` and `Mission`, let's add some more resolvers to the `Launch` and `User` types. Copy this code into your resolver map:
 
 _src/resolvers.js_
 
@@ -311,14 +311,14 @@ const isEmail = require('isemail');
 const server = new ApolloServer({
   context: async ({ req }) => {
     // simple auth check on every request
-    const auth = (req.headers && req.headers.authorization) || '';
+    const auth = req.headers && req.headers.authorization || '';
     const email = Buffer.from(auth, 'base64').toString('ascii');
 
-    // if the email isn't formatted validly, return null for user
     if (!isEmail.validate(email)) return { user: null };
+
     // find a user by their email
     const users = await store.users.findOrCreate({ where: { email } });
-    const user = users && users[0] ? users[0] : null;
+    const user = users && users[0] || null;
 
     return { user: { ...user.dataValues } };
   },

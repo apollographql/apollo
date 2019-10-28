@@ -5,19 +5,21 @@ description: Learn about deployment and essential developer tooling
 
 Time to accomplish: _10 Minutes_
 
-Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries.
+Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
 
-## Publish your schema to Engine
+An Apollo GraphQL API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. If you haven't already created an [Apollo Graph Manager](https://engine.apollographql.com/) account, you will need to sign up for one.
 
-Before we deploy our app, we need to publish our schema to the Apollo Engine cloud service in order to power developer tooling like VSCode and keep track of schema changes. Just like npm is a registry for JavaScript packages, Apollo Engine contains a schema registry that makes it simple to pull the most recent schema from the cloud.
+## Publish your schema to Graph Manager
 
-In a production application, you should set up this publishing script as part of your CI workflow. For now, we will run a script in our terminal that uses the Apollo CLI to publish our schema to Engine.
+Before we deploy our app, we need to publish our schema to the Apollo Graph Manager cloud service in order to power developer tooling like VSCode and keep track of schema changes. Just like npm is a registry for JavaScript packages, Apollo Graph Manager contains a schema registry that makes it simple to pull the most recent schema from the cloud.
 
-### Get an Engine API key
+In a production application, you should set up this publishing script as part of your CI workflow. For now, we will run a script in our terminal that uses the Apollo CLI to publish our schema to Graph Manager.
 
-First, we need an Apollo Engine API key. Navigate to [Apollo Engine](https://engine.apollographql.com/), login, and click on New Service at the top. The prompt will instruct you to name your service. When you're finished, click Create Service. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+### Get a Graph Manager API key
 
-Let's save our key as an environment variable. It's important to make sure we don't check our Engine API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Engine API key that you copied from the previous step to the file:
+First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+
+Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
 
 ```
 ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
@@ -33,7 +35,7 @@ Our key is now stored under the environment variable `ENGINE_API_KEY`.
 
 ### Check and publish with the Apollo CLI
 
-It's time to publish our schema to Engine! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
+It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
 
 ```bash
 npx apollo service:push --endpoint=http://localhost:4000
@@ -41,7 +43,7 @@ npx apollo service:push --endpoint=http://localhost:4000
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
 
-This command publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Engine](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Engine in order to power the Apollo VSCode extension.
+This command publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Graph Manager](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Graph Manager in order to power the Apollo VSCode extension.
 
 For subsequent publishes, we may first want to check for any breaking changes in our new schema against the old version. In a terminal window, run:
 
@@ -49,12 +51,12 @@ For subsequent publishes, we may first want to check for any breaking changes in
 npx apollo service:check --endpoint=http://localhost:4000
 ```
 
-### What are the benefits of Engine?
+### What are the benefits of Graph Manager?
 
-Publishing your schema to Apollo Engine unlocks many features necessary for running a graph API in production. Some of these features include:
+Publishing your schema to Apollo Graph Manager unlocks many features necessary for running a graph API in production. Some of these features include:
 
-- **Schema explorer:** With Engine's powerful schema registry, you can quickly explore all the types and fields in your schema with usage statistics on each field. This metric makes you understand the cost of a field. How expensive is a field? Is a certain field in so much demand?
-- **Schema history:** Apollo Engine’s schema history allows developers to confidently iterate a graph's schema by validating the new schema against field-level usage data from the previous schema. This empowers developers to avoid breaking changes by providing insights into which clients will be broken by a new schema.
+- **Schema explorer:** With Graph Manager's powerful schema registry, you can quickly explore all the types and fields in your schema with usage statistics on each field. This metric makes you understand the cost of a field. How expensive is a field? Is a certain field in so much demand?
+- **Schema history:** Apollo Graph Manager schema history allows developers to confidently iterate a graph's schema by validating the new schema against field-level usage data from the previous schema. This empowers developers to avoid breaking changes by providing insights into which clients will be broken by a new schema.
 - **Performance analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution
 - **Client awareness:** Report client identity (name and version) to your server for insights on client activity.
 

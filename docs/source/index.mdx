@@ -1,25 +1,30 @@
 ---
 title: Welcome
-description: Start here to learn about the Apollo platform
+description: Get started with the Apollo platform
 ---
 
-Welcome! 👋 We're excited you're here to learn about Apollo.
+import DocsetMenu from './components/docset-menu';
+import { ButtonWrapper, ButtonLink } from 'gatsby-theme-apollo-docs';
 
-The Apollo GraphQL platform is an implementation of GraphQL that helps you manage data from the cloud to your UI. It's incrementally adoptable and can be layered over your existing services, including REST APIs and databases. Apollo includes two open-source libraries for the client and server, in addition to developer tooling that provides everything you need to run a graph API in production with confidence.
+Hi there! 👋 We're excited you're here to learn about Apollo.
 
-import {
-  ButtonWrapper,
-  Button
-} from 'gatsby-theme-apollo-docs';
+Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects application clients (such as React and iOS apps) to back-end services.
+
+It's easy to adopt Apollo incrementally, meaning you can set it up alongside an existing solution (such as a REST API) and migrate functionality at your convenience.
+
+## Learn the basics
+
+Conveniently, we have a [tutorial](/tutorial/introduction/) that introduces you to each component of the platform. Ready to dive in?
 
 <ButtonWrapper>
-  <Button to="/tutorial/introduction">Try it out!</Button>
-  <Button
-    variant="hollow"
-    to="/intro/platform"
-  >
+  <ButtonLink size="large" color="branded" to="/tutorial/introduction">
+    Start the tutorial!
+  </ButtonLink>
+  <ButtonLink size="large" to="/intro/platform">
     Learn more
-  </Button>
+  </ButtonLink>
 </ButtonWrapper>
 
-![Graph layer](./img/platform.jpg)
+## Explore the Apollo platform
+
+<DocsetMenu />
