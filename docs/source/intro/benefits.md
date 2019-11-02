@@ -25,7 +25,7 @@ Apollo Server 2+ sets up GraphQL Playground out of the box, so you can start exp
 
 #### Apollo DevTools
 
-Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Client cache, track active queries, and view mutations. You also have access to GraphiQL within Apollo DevTools which is convenient for testing queries as you're working on front-end code with Apollo Client.
+Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Client cache, track active queries, and view mutations. You also have access to GraphQL within Apollo DevTools which is convenient for testing queries as you're working on front-end code with Apollo Client.
 
 ![Apollo DevTools](../assets/dev-tools.png)
 
