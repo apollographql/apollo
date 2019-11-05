@@ -125,7 +125,7 @@ server.listen().then(({ url }) => {
 
 ## Managed configuration
 
-With **managed configuration**, your GraphQL gateway updates dynamically in response to schema changes in your implementing services. You make these service changes with the `apollo service:push` CLI command, which pushes your service configuration files to Graph Manager and stores them securely.
+With **managed configuration**, your GraphQL gateway updates dynamically in response to schema changes in your implementing services. You make these service changes with the `apollo service:push` CLI command, which pushes your service configuration files to Graph Manager and stores them securely (as shown in [Registering federated services](#registering-federated-services)).
 
 These configuration files define:
 
@@ -137,7 +137,7 @@ When you initialize your Apollo gateway with a Graph Manager `apiKey` instead of
 
 ### Pushing configuration updates safely
 
-Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. To help ensure this, **call `apollo service:push` for an implementing service only after all replicas of the service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
+Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. To help ensure this, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
 
 In the rare case where a configuration change is not backward compatible with your gateway's query planner, you should update your service registry _before_ you deploy your implementing services.
 
@@ -145,8 +145,10 @@ Additionally, you should perform configuration updates that affect query plannin
 
 Examples of this include:
 
-1. Modifying `@key` or `@requires` dependencies while simultaneously modifying dependency fields
+1. Modifying `@key`, `@requires`, or `@provides` directives
 2. Removing a type implementation from an interface
+
+In general, always exercise caution when pushing configuration changes that affect your gateway's query planner, and consider how those changes will affect your other implementing services.
 
 #### Example scenario
 
