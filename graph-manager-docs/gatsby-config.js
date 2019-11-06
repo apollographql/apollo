@@ -24,6 +24,7 @@ module.exports = {
             'federation',
           ],
           'Monitoring & Metrics': [
+            'setup-analytics',
             'client-awareness',
             'performance',
           ],

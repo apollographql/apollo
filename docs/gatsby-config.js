@@ -27,14 +27,9 @@ module.exports = {
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
+            'resources/apollo-config',
             'resources/graphql-glossary',
             'resources/faq',
-          ],
-          References: [
-            'references/apollo-config',
-            'references/setup-analytics',
-            'references/engine-proxy',
-            'references/engine-proxy-release-notes',
           ],
         },
       },
