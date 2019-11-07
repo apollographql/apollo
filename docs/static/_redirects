@@ -1,5 +1,9 @@
 / /docs/
 
+# Get rid of "References" category
+/docs/references/apollo-config/ /docs/resources/apollo-config/
+/docs/references/setup-analytics/ /docs/graph-manager/setup-analytics/
+
 # Split "Apollo Engine guide" into two articles
 /docs/references/apollo-engine/ /docs/graph-manager
 
