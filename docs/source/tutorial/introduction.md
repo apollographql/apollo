@@ -63,7 +63,7 @@ as your editor so you can use Apollo's helpful VS Code extension.
 Now the fun begins! From your preferred development directory, clone [this repository](https://github.com/apollographql/fullstack-tutorial):
 
 ```bash
-git clone https://github.com/apollographql/fullstack-tutorial/
+git clone https://github.com/apollographql/fullstack-tutorial.git
 ```
 
 The repository contains two top-level directories: `start` and `final`. During the
