@@ -95,7 +95,7 @@ type Launch {
 }
 ```
 
-The `Launch` type has **fields** that correspond to object and scalar types. A **scalar type** is a primitive type like `ID`, `String`, `Boolean`, or `Int`. You can think of scalars as the leaves of your graph that all fields resolve to. GraphQL has many scalars built in, and you can also define [custom scalars](https://www.apollographql.com/docs/apollo-server/features/scalars-enums/) like `Date`.
+The `Launch` type has **fields** that correspond to object and scalar types. A **scalar type** is a primitive type like `ID`, `String`, `Boolean`, or `Int`. You can think of scalars as the leaves of your graph that all fields resolve to. GraphQL has many scalars built in, and you can also define [custom scalars](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/) like `Date`.
 
 The `Mission` and `Rocket` types represent other object types. Let's define the fields on `Mission`, `Rocket`, and `User`:
 
