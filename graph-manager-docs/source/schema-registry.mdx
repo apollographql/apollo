@@ -1,41 +1,24 @@
 ---
-title: Tracking your GraphQL schema
-description: A central hub for your GraphQL API
+title: The schema registry
+description: A central hub for your data graph
 ---
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-Apollo includes a schema registry that serves as a [central hub](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry) for tracking your GraphQL schema. Adopting a shared schema registry for your project has many benefits:
+Apollo Graph Manager provides a **schema registry** that serves as a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) to support environments besides production, such as test or staging.
 
-- Unlike introspection, which provides a snapshot of a particular server's current schema, the registry serves as a global source of truth for the schema. In small projects this frees you from always needing a running server to access the schema. At scale, it avoids issues related to running multiple servers that may not always be in sync (eg, rolling updates).
-- Much like a source control system, Apollo's schema registry tracks a full history of a schema and how it changed over time. This is valuable for understanding and collaborating on a GraphQL API, especially as your team grows.
-- Having a registry allows you to disable introspection in production – a recommended best practice for good security.
-- Tools like the [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) can automatically fetch your schema from the registry and provide intellisense like field descriptions and deprecations directly in your editor.
-- Apollo's registry lets you track related _variants_ of a schema, like staging or alpha versions. It's helpful to have these schema definitions handy without having to juggle running servers that implement them.
+## Prerequisites
 
-## Using the Schema Registry
-
-To get started using the schema registry, you'll need to make sure your repository is configured to be an Apollo project.
+To get started with the schema registry, first complete the following setup for the project that includes your GraphQL server:
 
 <ProjectConfigPanel />
 
-#### CLI commands
+## Registering a schema manually
 
-Once you have that set up, you'll be ready to start connecting to the schema registry using the CLI:
-
-- `apollo service:push`&mdash; push a new schema to the registry.
-- `apollo service:check`&mdash; calculate a local schema diff and compare the changes against live traffic to validate if the changes are _safe_ or if they will _break_ live running queries.
-
-## Registering a schema
-
-New versions of your schema are registered to Apollo by running the `apollo service:push` command from within your repository.
-
-The CLI will know where to fetch your local schema from based on your `apollo.config.js` configuration. Every time you push a new version of your schema it will be logged to your graph's schema history.
-
-Here's what running `apollo service:push` will look like:
+Register your schema with Apollo Graph Manager by running the `apollo service:push` command from your application's root directory, like so:
 
 ```
-~$ apollo service:push
+$ apollo service:push
   ✔ Loading Apollo Project
   ✔ Uploading service to Engine
 
@@ -44,9 +27,13 @@ id      schema        tag
 190330  example-4218  current
 ```
 
-### Hooking into CI
+The CLI fetches your schema via a configuration option you set up in [Prerequisites](#prerequisites) and pushes it to Graph Manager.
 
-To get the full value out of Apollo, your graph's schema history should be as accurately represented in the registry as possible. We _highly recommend_ hooking `apollo service:push` into your repository's continuous delivery pipeline so your schema is updated in the registry on every deploy. This will ensure that you always get intellisense for your live-running schema in your VS Code extension, for example.
+Every time you push a new version of your schema, it's appended to your graph's schema history.
+
+## Registering a schema via continuous delivery
+
+To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. To achieve this, include a call to `apollo service:push` in your continuous delivery pipeline.
 
 Here is a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
 
@@ -86,34 +73,35 @@ jobs:
 
 ## Viewing schema change history
 
-Changes made to your graph's schema over time can be viewed in [Graph Manager](https://engine.apollographql.com) by browsing to the History page for your graph. Each time you push a new version of your schema, it will appear in your graph's history along with a list of the changes introduced in that version.
+The History view in Graph Manager lets you view the timeline of changes made to your schema:
 
 ![Schema history page in the Graph Manager UI](./img//schema-history.png)
 
-## Managing environments
+**Only schema changes that you push to Graph Manager are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-a-schema-via-continuous-delivery).
 
-Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to _tags_).
+## Managing environments with variants
 
-Apollo supports tracking multiple _variants_ for every graph. A variant is just like a regular data graph. It has its own history of schemas, its own metadata store of metrics, and its own operation registry. Variants can be used to track ideas like staging environments, canaries, and deploys of experimental features destined for the production graph.
+Commonly, your application's staging and test environments use schemas that differ slightly from your production schema (especially if you're testing out updates to your schema).
 
-To get fully set up associating data sent to Apollo with _variant_ information, you'll need to [configure your CLI commands](#registering-schemas-to-a-variant) to send data with a `--tag` flag and [configure your Apollo Server](#associating-metrics-with-a-variant) with a `schemaTag` option.
+Because these schemas represent different environments of the same application, it makes sense to associate them with each other. To achieve this, you can define **variants** of your graph.
 
-### Registering schemas to a variant
+Each variant of a graph functions as a standalone graph. It has its own change history, metrics, and operation registry.
 
-To register your schema to a specific _variant_, simply add the `--tag=<VARIANT>` flag to your push command:
+### Registering a schema to a variant
+
+To register a schema to a variant, include the `--tag=<VARIANT>` flag in your `apollo service:push` command, like so:
 
 ```bash
 apollo service:push --tag=beta
 ```
 
-> **Note:** All schema pushes without a specified tag are registered under the default graph variant, `current`.
+If you omit the `--tag` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
 
 ### Associating metrics with a variant
 
-There are a few ways to associate metrics reported to [Graph Manager](https://engine.apollographql.com) with a specific variant:
+You can configure Apollo Server to associate the metrics it sends to Graph Manager with a particular variant. To do so, set the `ENGINE_SCHEMA_TAG` environment variable to the appropriate variant before initializing Apollo Server.
 
-1. The best way to associate metrics with a variant of your graph is to start your server with an environment variable named `ENGINE_SCHEMA_TAG` that contains the name of your variant. This will link metrics sent to Graph Manager with the value of that environment variable.
-1. Alternatively, add the `schemaTag` option to your Apollo Server configuration (works for Apollo Server 2.2+):
+Alternatively, you can include the `schemaTag` option in your call to the `ApolloServer` constructor, like so:
 
 ```js
 const server = new ApolloServer({
@@ -125,12 +113,12 @@ const server = new ApolloServer({
 });
 ```
 
-> **Note:** It's important that metrics are associated with the same tag as `service:push` if you want to track isolated data across different variants like production and staging.
+> Make sure you associate Apollo Server's metrics with the correct variant! Otherwise, metrics from your staging and test environments will be included in reports for your production graph.
 
 ## Tools that use the schema registry
 
-Keeping your schema up-to-date in Apollo's registry will ensure that you get the best experience from Apollo's tools that connect to the registry:
+Keeping your registered schema up to date ensures that you get the best possible experience from Apollo tools that connect to the registry:
 
-- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) provides built-in linting on queries by validating against the schema in your registry. It also annotates fields with their descriptions and with performance indicators collected in Apollo's trace warehouse.
+- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) provides built-in linting on queries by validating against your registered schema. It also annotates fields with their descriptions and with performance indicators collected in Apollo's trace warehouse.
 - The [schema validation](/schema-validation/) workflow protects your team from accidentally making breaking schema changes. It creates a diff between your local schema and the last schema pushed to the registry, and validates this diff against live traffic seen on your endpoint to warn you about problematic changes.
 - Your schema's full history and current usage can be seen in [Apollo Graph Manager](https://engine.apollographql.com). The History page tracks changes made over time, and the Explorer page shows which clients and which queries are using each field in your schema.

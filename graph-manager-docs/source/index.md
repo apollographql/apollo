@@ -11,7 +11,7 @@ In addition to serving as a GraphQL schema registry, Graph Manager ingests opera
 **Graph Manager provides the following features to all Apollo users for free:**
 
 * A [GraphQL schema registry](/schema-registry/) that tracks changes
-and enables you to [create variants of your schema](/schema-registry/#managing-environments) for different environments
+and enables you to [create variants of your schema](/schema-registry/#managing-environments-with-variants) for different environments
 (such as staging and production)
 
 * A schema explorer that makes it easy to inspect your schema's queries,
@@ -67,7 +67,7 @@ You can delete a graph from Graph Manager by visiting its Settings page and clic
 Every graph in Graph Manager should correspond to a single application. However, a single
 application might run in multiple _environments_ (such as test, staging, and production).
 
-To distinguish between graph activity for different application environments, you can define [**variants**](/schema-registry/#managing-environments) for a graph. Each variant has its own schema
+To distinguish between graph activity for different application environments, you can define [**variants**](/schema-registry/#managing-environments-with-variants) for a graph. Each variant has its own schema
 that can (but doesn't have to) differ from the default variant.
 
 When your server sends metrics to Graph Manager, it can associate an operation with

@@ -22,7 +22,7 @@ The [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apol
 
 ## Getting started
 
-To get all of the benefits of the VS Code experience, it's best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](/schema-registry/#registering-a-schema) to the Apollo schema registry. Once that is done, two steps are needed:
+To get all of the benefits of the VS Code experience, it's best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](/schema-registry/#registering-a-schema-manually) to the Apollo schema registry. Once that is done, two steps are needed:
 
 1. Create an `apollo.config.js` at the root of the project
 2. Copy an API key from the Graph Manager dashboard of the published service
@@ -142,7 +142,7 @@ Navigating large codebases can be difficult, but the Apollo GraphQL extension ma
 
 ### Schema variant switching
 
-Apollo supports publishing multiple versions ([variants](/schema-registry/#registering-schemas-to-a-variant)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between schema variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
+Apollo supports publishing multiple versions ([variants](/schema-registry/#registering-a-schema-to-a-variant)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between schema variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
 
 ## Troubleshooting
 
