@@ -263,7 +263,7 @@ _src/schema.js_
 
 The first argument passed into our resolver is the parent, which refers to the mission object. The second argument is the size we pass to our `missionPatch` field, which we use to determine which property on the mission object we want our field to resolve to.
 
-Now that we know how to add resolvers on types other than `Query` and `Mission`, let's add some more resolvers to the `Launch` and `User` types. Copy this code into your resolver map:
+Now that we know how to add resolvers on types other than `Query` and `Mutation`, let's add some more resolvers to the `Launch` and `User` types. Copy this code into your resolver map:
 
 _src/resolvers.js_
 
