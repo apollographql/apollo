@@ -1,13 +1,10 @@
 ---
-title: Overview
-description: Learn about Graph Manager features and create your account
+title: Graph Manager overview
 ---
 
-Apollo Graph Manager (formerly Apollo Engine) is a cloud service that helps you manage,
-validate, and secure your organization's data graph.
+**Apollo Graph Manager** (formerly Apollo Engine) is a cloud service that helps you manage, validate, and secure your organization's data graph.
 
-In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand
-your schema and query usage.
+In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand your schema and query usage.
 
 ## Feature summary
 
@@ -22,7 +19,7 @@ mutations, and other object definitions
 
 * Team collaboration via [organizations](/accounts-organizations/)
 
-**Advanced features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
+**Additional features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
 
 * [Operation safelisting](/operation-registry/)
 * [Schema change validation](/schema-validation/)
@@ -89,10 +86,6 @@ providing an API key with every request).
 
 ### API keys
 
-Any system that communicates with Graph Manager (whether to send metrics or fetch them)
-must use an **API key** to do so. You can add and remove API keys from your graph
-from its Settings page in the Graph Manager UI.
+Any system that communicates with Graph Manager (whether to send metrics or fetch them) must use an **API key** to do so. You can add and remove API keys from your graph from its Settings page in the Graph Manager UI.
 
-You should use a different API key for each system that communicates
-with Graph Manager. This provides you with more granular control over how Graph
-Manager data is sent and accessed.
+You should use a different API key for each system that communicates with Graph Manager. This provides you with more granular control over how Graph Manager data is sent and accessed.

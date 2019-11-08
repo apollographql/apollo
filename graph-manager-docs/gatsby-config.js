@@ -17,16 +17,25 @@ module.exports = {
           null: [
             'index',
             'accounts-organizations',
+          ],
+          'Schema Management': [
             'schema-registry',
             'schema-validation',
-            'client-awareness',
-            'operation-registry',
-            'editor-plugins',
-            'performance',
-            'integrations',
             'federation',
-            'graph-manager-data-privacy'
           ],
+          'Monitoring & Metrics': [
+            'setup-analytics',
+            'client-awareness',
+            'performance',
+          ],
+          'Security': [
+            'operation-registry',
+            'graph-manager-data-privacy',
+          ],
+          'Integrations': [
+            'integrations',
+            'editor-plugins',
+          ]
         },
       },
     },
