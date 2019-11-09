@@ -88,12 +88,6 @@ query AuthorForPost($bar: String!) {
   }
 }
 
-query AuthorForPost($foo: String!) {
-  post(id: $foo) {
-    author
-  }
-}
-
 query AuthorForPost {
   post(id: "my-post-id") {
     author
