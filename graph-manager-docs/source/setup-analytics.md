@@ -3,7 +3,7 @@ title: Pushing analytics to Graph Manager
 description: Understand your graph's performance with detailed metrics
 ---
 
-Apollo Graph Manager can ingest operation **traces** from your GraphQL server to provide detailed performance metrics for your data graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Apollo Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 Trace reporting enables you to visualize:
 
@@ -32,7 +32,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-Alternatively, you can assign your API key to the `ENGINE_API_KEY` environment variable in the environment where Apollo Server will run.
+Alternatively, you can specify your API key as the value of the `ENGINE_API_KEY` environment variable in the environment where Apollo Server will run.
 
 This is the only change required to begin sending traces to Graph Manager. For advanced configuration options, see [Metrics and logging](https://www.apollographql.com/docs/apollo-server/features/metrics/).
 
@@ -47,7 +47,7 @@ You can set up a reporting agent in your GraphQL server to push analytics to Apo
 
 Apollo Server defines its agent for performing these tasks in [`agent.ts`](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts).
 
-> If you're interested in collaborating with Apollo on creating a dedicated integration for your GraphQL server, please get in touch with us at <support@apollographql.com> or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
+> If you're interested in collaborating with Apollo on creating a dedicated integration for your GraphQL server, please get in touch with us at **support@apollographql.com** or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
 
 ### Tracing format
 
@@ -55,7 +55,7 @@ Graph Manager's reporting endpoint accepts batches of traces that are encoded in
 
 The schema for this protocol buffer is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L466). 
 
-As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L7). Then, you can batch multiple traces into a single report. We recommend sending batches every 5 to 10 seconds, and limiting each batch to a reasonable size (~4MB).
+As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L7). Then, you can batch multiple traces into a single report. We recommend sending batches approximately every 20 seconds, and limiting each batch to a reasonable size (~4MB).
 
 An example of a `FullTracesReport` message, represented as JSON, is provided [below](#example-fulltracesreport-message).
 
@@ -112,12 +112,14 @@ https://engine-report.apollodata.com/api/ingress/traces
 Each batch should be sent as an HTTP POST request. The body of the request can be one of the following:
 
 * A binary serialization of a `FullTracesReport` message
-* A _Gzipped_ binary serialization of a `FullTracesReport` message
+* A _gzipped_ binary serialization of a `FullTracesReport` message
 
 To authenticate with Graph Manager, each request must include either:
 
 * An `X-Api-Key` header with a valid API key for your graph
 * An `authtoken` cookie with a valid API key for your graph
+
+Only graph-level API keys (starting with the prefix `service:`) are supported.
 
 The request can also optionally include a `Content-Type` header with value `application/protobuf`, but this is not required.
 
@@ -131,9 +133,7 @@ We recommend implementing retries with backoff when you encounter `5xx` response
 
 The reference TypeScript implementation includes several features that you might want to include in your implementation. All of these features are implemented in the agent itself, and are documented in the interface description for the `EngineReportingOptions` of [the agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L48).
 
-For example, the option to send reports immediately is particularly useful for GraphQL servers that run in a serverless environment, like AWS Lambda or Google Cloud Functions.
-
-Another important feature is the ability to restrict which information is sent to Graph Manager, particularly to avoid reporting personal data. Because personal data most commonly appears in variables and headers, the TypeScript agent offers options for `privateVariables` and `privateHeaders`.
+For example, you can restrict which information is sent to Graph Manager, particularly to avoid reporting personal data. Because personal data most commonly appears in variables and headers, the TypeScript agent offers options to `sendVariablesValues` and `sendHeaders`.
 
 ### Example `FullTracesReport` message
 
