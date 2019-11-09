@@ -41,7 +41,7 @@ ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
 
-Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
+Next, open an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
 
 ```js
 module.exports = {
