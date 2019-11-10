@@ -27,7 +27,7 @@ Now, our dependencies are installed. Here are the packages we will be using to b
 
 While Apollo VSCode is not required to successfully complete the tutorial, setting it up unlocks a lot of helpful features such as autocomplete for operations, jump to fragment definitions, and more.
 
-First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Engine API key that you already created in step #4 to the file:
+First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Graph Manager API key that you already created in step #4 to the file:
 
 ```
 ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
@@ -72,12 +72,12 @@ import { HttpLink } from 'apollo-link-http';
 const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'http://localhost:4000/'
-})
+});
 
 const client = new ApolloClient({
   cache,
   link
-})
+});
 ```
 
 In just a few lines of code, our client is ready to fetch data! Let's try making a query in the next section.
