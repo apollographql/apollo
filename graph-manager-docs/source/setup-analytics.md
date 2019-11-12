@@ -140,111 +140,111 @@ For example, you can restrict which information is sent to Graph Manager, partic
 The `FullTracesReport` message must be provided to the Graph Manager reporting endpoint in protocol buffer format, as described in [Tracing format](#tracing-format). This example is shown in JSON format to illustrate the structure of the message.
 
 ```json
-{
-  "header": {
-    "hostname": "www.example.com",
-    "schemaTag": "staging",
-    "schemaHash": "alskncka384u1923e8uino1289jncvo019n"
-  },
-  "tracesPerQuery": {
-    "# Foo\nquery Foo { user { email pets { name } } }": {
-      "trace": [
-        {
-          "endTime": "2018-11-25T18:28:36.604Z",
-          "startTime": "2018-11-25T18:28:36.104Z",
-          "clientName": "c1",
-          "clientVersion": "v1",
-          "http": {
-            "method": "POST"
+  {
+    "header": {
+      "hostname": "www.example.com",
+      "schemaTag": "staging",
+      "schemaHash": "alskncka384u1923e8uino1289jncvo019n"
+    },
+    "tracesPerQuery": {
+      "# Foo\nquery Foo { user { email pets { name } } }": {
+        "trace": [
+          {
+            "endTime": "2018-11-25T18:28:36.604Z",
+            "startTime": "2018-11-25T18:28:36.104Z",
+            "clientName": "c1",
+            "clientVersion": "v1",
+            "http": {
+              "method": "POST"
+            },
+            "durationNs": "2498055950907169",
+            "root": {
+              "child": [
+                {
+                  "response_name": "user",
+                  "type": "User",
+                  "start_time": "16450765",
+                  "end_time": "750079190",
+                  "child": [
+                    {
+                      "response_name": "email",
+                      "type": "String",
+                      "start_time": "750122948",
+                      "end_time": "750145101",
+                      "parent_type": "User"
+                    }
+                  ],
+                  "parent_type": "Query"
+                }
+              ]
+            }
           },
-          "durationNs": "2498055950907169",
-          "root": {
-            "child": [
-              {
-                "response_name": "user",
-                "type": "User",
-                "start_time": "16450765",
-                "end_time": "750079190",
-                "child": [
-                  {
-                    "response_name": "email",
-                    "type": "String",
-                    "start_time": "750122948",
-                    "end_time": "750145101",
-                    "parent_type": "User"
-                  }
-                ],
-                "parent_type": "Query"
-              }
-            ]
+          {
+            "endTime": "2018-11-25T18:28:37.004Z",
+            "startTime": "2018-11-25T18:28:36.404Z",
+            "clientName": "c2",
+            "clientVersion": "v1",
+            "http": {
+              "method": "POST"
+            },
+            "durationNs": "13154220",
+            "clientReferenceId": "c2_id",
+            "root": {
+              "child": [
+                {
+                  "response_name": "user",
+                  "type": "User",
+                  "start_time": "16450962",
+                  "end_time": "750079190",
+                  "child": [
+                    {
+                      "response_name": "email",
+                      "type": "String",
+                      "start_time": "720132958",
+                      "end_time": "720145167",
+                      "parent_type": "User"
+                    },
+                    {
+                      "response_name": "pets",
+                      "type": "[Pet]",
+                      "start_time": "720132959",
+                      "end_time": "720135177",
+                      "parent_type": "User",
+                      "child": [
+                        {
+                          "index": 0,
+                          "child": [
+                            {
+                              "response_name": "name",
+                              "type": "String",
+                              "start_time": "720133006",
+                              "end_time": "720133039",
+                              "parent_type": "Pet"
+                            }
+                          ]
+                        },
+                        {
+                          "index": 1,
+                          "child": [
+                            {
+                              "response_name": "name",
+                              "type": "String",
+                              "start_time": "720133041",
+                              "end_time": "720133102",
+                              "parent_type": "Pet"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "parent_type": "Query"
+                }
+              ]
+            }
           }
-        },
-        {
-          "endTime": "2018-11-25T18:28:37.004Z",
-          "startTime": "2018-11-25T18:28:36.404Z",
-          "clientName": "c2",
-          "clientVersion": "v1",
-          "http": {
-            "method": "POST"
-          },
-          "durationNs": "13154220",
-          "clientReferenceId": "c2_id",
-          "root": {
-            "child": [
-              {
-                "response_name": "user",
-                "type": "User",
-                "start_time": "16450962",
-                "end_time": "750079190",
-                "child": [
-                  {
-                    "response_name": "email",
-                    "type": "String",
-                    "start_time": "720132958",
-                    "end_time": "720145167",
-                    "parent_type": "User"
-                  },
-                  {
-                    "response_name": "pets",
-                    "type": "[Pet]",
-                    "start_time": "720132959",
-                    "end_time": "720135177",
-                    "parent_type": "User",
-                    "child": [
-                      {
-                        "index": 0,
-                        "child": [
-                          {
-                            "response_name": "name",
-                            "type": "String",
-                            "start_time": "720133006",
-                            "end_time": "720133039",
-                            "parent_type": "Pet"
-                          }
-                        ]
-                      },
-                      {
-                        "index": 1,
-                        "child": [
-                          {
-                            "response_name": "name",
-                            "type": "String",
-                            "start_time": "720133041",
-                            "end_time": "720133102",
-                            "parent_type": "Pet"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ],
-                "parent_type": "Query"
-              }
-            ]
-          }
-        }
-      ]
+        ]
+      }
     }
   }
-}
 ```
