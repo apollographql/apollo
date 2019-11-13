@@ -289,6 +289,7 @@ export default function BookTrips({ cartItems }) {
   const [bookTrips, { data, loading, error }] = useMutation(
     BOOK_TRIPS,
     {
+      variables: { launchIds: cartItems },
       refetchQueries: cartItems.map(launchId => ({
         query: GET_LAUNCH,
         variables: { launchId },
