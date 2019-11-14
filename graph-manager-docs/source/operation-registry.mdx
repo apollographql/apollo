@@ -326,7 +326,7 @@ The operation registry plugin supports lifecycle methods to improve observabilit
 > Note: this function is **experimental**, since the manifest shape may change
 
 This **experimental** function is run with `newManifest` set to the result returned by polling the source.
-If the manifest is not retrieved on startup, `willUpdateManfiest` is run with `newManifest` set to `undefined`.
+If the manifest is not available on startup due to an outage of Google Cloud Storage, `newManifest` will be `undefined`.
 After the first call, `oldManifest` is set to the existing manifest if one is present.
 
 This **experimental** function can be used to monitor the number of operations in the manifest.
@@ -344,7 +344,6 @@ const server = new ApolloServer({
           newManifest.operations && 
           newManifest.operations.length
         );
-        return newManifest;
       }
     })
   ]
