@@ -317,6 +317,84 @@ const server = new ApolloServer({
 
 > _Note:_ The `forbidUnregisteredOperations` callback must be synchronous. If it is necessary to make an `async` request (e.g. a database inquiry) to make a determination about access, such a lookup should occur within the [`context` function](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#constructor-options-lt-ApolloServer-gt) on the `ApolloServer` constructor (or any life-cycle event which has access to `context`) and the result will be available on the `context` of `forbidUnregisteredOperations`.
 
+### Lifecycle methods
+
+The operation registry plugin supports lifecycle methods to improve observability and modify the behavior of safelist: `willUpdateManifest`, `onUnregisteredOperation`, and `onForbiddenOperation`.
+
+#### willUpdateManifest(newManifest?: OperationManifest, oldManifest?: OperationManifest) => void
+
+> Note: this function is **experimental**, since the manifest shape may change
+
+This **experimental** function is run with `newManifest` set to the result returned by polling the source.
+If the manifest is not available on startup due to an outage of Google Cloud Storage, `newManifest` will be `undefined`.
+After the first call, `oldManifest` is set to the existing manifest if one is present.
+
+This **experimental** function can be used to monitor the number of operations in the manifest.
+
+<ExpansionPanel title="Code sample">
+
+```js{4-10}
+const server = new ApolloServer({
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      willUpdateManifest(newManifest, oldManifest) {
+        metrics.report(
+          "safelist.numberOperations",
+          newManifest && 
+          newManifest.operations && 
+          newManifest.operations.length
+        );
+      }
+    })
+  ]
+});
+```
+
+</ExpansionPanel>
+
+#### onUnregisteredOperation(requestContext)
+
+This function is run when an operation is not found in the manifest.
+
+<ExpansionPanel title="Code sample">
+
+```js{4-6}
+const server = new ApolloServer({
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      onUnregisteredOperation(requestContext) {
+        metrics.increment("safelist.numberUnregisteredOperations", 1);
+      }
+    })
+  ]
+});
+```
+
+</ExpansionPanel>
+
+#### onForbiddenOperation(requestContext)
+
+This function is run when an operation is not in the manifest and
+`forbidUnregisteredOperations: boolean | (requestContext) => boolean` is
+`true` or returns `true` based on the current request context, ie doesn't accept the operation.
+
+<ExpansionPanel title="Code sample">
+
+```js{5-7}
+const server = new ApolloServer({
+  plugins: [
+    require("apollo-server-plugin-operation-registry")({
+      forbidUnregisterdOperations: true,
+      onForbiddenOperation(requestContext) {
+        metrics.increment("safelist.numberForbiddenOperations", 1);
+      }
+    })
+  ]
+});
+```
+
+</ExpansionPanel>
+
 ## Testing the plugin
 
 We recommend testing the behavior of the plugin, as well as your `forbidUnregisteredOperations` function, before actually forbidding operation execution in production. To do so, you can use the `dryRun` option, which will log information about the operation in lieu of actually forbidding anything.
@@ -387,7 +465,7 @@ If a problem occurs during the `apollo service:push` command, make sure that the
 
 Additionally, make sure that introspection is enabled on the server since introspection details are used to obtain and publish the schema.
 
-## Migrating from `0.1-alpha.4` to `0.2.0-alpha.1`
+## Migrating from `0.1-alpha.4` to `0.2.x-alpha.x`
 
 ### Summary of changes
 
