@@ -319,15 +319,17 @@ const server = new ApolloServer({
 
 ### Lifecycle methods
 
-The operation registry plugin supports three lifecycle methods to improve observability and modify the behavior of safelist: `willUpdateManifest`, `onUnregisteredOperation`, and `onForbiddenOperation`.
+The operation registry plugin supports lifecycle methods to improve observability and modify the behavior of safelist: `willUpdateManifest`, `onUnregisteredOperation`, and `onForbiddenOperation`.
 
-#### willUpdateManifest(newManifest?: OperationManifest, oldManifest?: OperationManifest) => OperationManifest
+#### willUpdateManifest(newManifest?: OperationManifest, oldManifest?: OperationManifest) => void
 
-This function is run with `newManfifest` set to the result from gcs, when new manifest is returned by the poll.
-If the manifest is not retrieved from gcs on startup, `willUpdateManfiest` is run with `newManifest` set to `undefined`.
-Every time the function is called `oldManifest` set to the existing manifest if one is present.
+**Experimental (manifest shape may change)**
 
-This function can be used to monitor the number of operations in the manifest and return a different or fallback manifest.
+This function is run with `newManifest` set to the result returned by polling the source.
+If the manifest is not retrieved on startup, `willUpdateManfiest` is run with `newManifest` set to `undefined`.
+After the first call, `oldManifest` is set to the existing manifest if one is present.
+
+This function can be used to monitor the number of operations in the manifest.
 
 <ExpansionPanel title="Code sample">
 
@@ -338,6 +340,8 @@ const server = new ApolloServer({
       willUpdateManifest(newManifest, oldManifest) {
         metrics.report(
           "safelist.numberOperations",
+          newManifest && 
+          newManifest.operations && 
           newManifest.operations.length
         );
         return newManifest;
@@ -351,7 +355,7 @@ const server = new ApolloServer({
 
 #### onUnregisteredOperation(requestContext)
 
-This function is run when an operation is not found in the safelist.
+This function is run when an operation is not found in the manifest.
 
 <ExpansionPanel title="Code sample">
 
@@ -360,7 +364,7 @@ const server = new ApolloServer({
   plugins: [
     require("apollo-server-plugin-operation-registry")({
       onUnregisteredOperation(requestContext) {
-        metrics.report("safelist.numberUnregisteredOperations", 1);
+        metrics.increment("safelist.numberUnregisteredOperations", 1);
       }
     })
   ]
@@ -371,9 +375,9 @@ const server = new ApolloServer({
 
 #### onForbiddenOperation(requestContext)
 
-This function is run when an operation is not in the safelist and
+This function is run when an operation is not in the manifest and
 `forbidUnregisteredOperations: boolean | (requestContext) => boolean` is
-`true`, ie doesn't accept the operation.
+`true` or returns `true` based on the current request context, ie doesn't accept the operation.
 
 <ExpansionPanel title="Code sample">
 
@@ -383,7 +387,7 @@ const server = new ApolloServer({
     require("apollo-server-plugin-operation-registry")({
       forbidUnregisterdOperations: true,
       onForbiddenOperation(requestContext) {
-        metrics.report("safelist.numberForbiddenOperations", 1);
+        metrics.increment("safelist.numberForbiddenOperations", 1);
       }
     })
   ]
