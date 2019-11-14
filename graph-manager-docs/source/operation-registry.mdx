@@ -323,13 +323,13 @@ The operation registry plugin supports lifecycle methods to improve observabilit
 
 #### willUpdateManifest(newManifest?: OperationManifest, oldManifest?: OperationManifest) => void
 
-**Experimental (manifest shape may change)**
+> Note: this function is **experimental**, since the manifest shape may change
 
-This function is run with `newManifest` set to the result returned by polling the source.
+This **experimental** function is run with `newManifest` set to the result returned by polling the source.
 If the manifest is not retrieved on startup, `willUpdateManfiest` is run with `newManifest` set to `undefined`.
 After the first call, `oldManifest` is set to the existing manifest if one is present.
 
-This function can be used to monitor the number of operations in the manifest.
+This **experimental** function can be used to monitor the number of operations in the manifest.
 
 <ExpansionPanel title="Code sample">
 
