@@ -79,7 +79,7 @@ Each of these changes adds a required input to a schema element. If an operation
 
 #### In-place updates
 
-Each of these changes updates an existing schema element. If an operation is activley using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
+Each of these changes updates an existing schema element. If an operation is actively using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
 
 > **Note:** In some cases, these changes are compatible with the client at runtime, such as a type rename or an object to interface conversion with the same fields. Schema validation still marks these breaking changes because validation does not have enough information to ensure safety and these changes deserve extra scrutiny, such as their impact on type generation.
 
@@ -115,7 +115,7 @@ These changes update the default value for an argument. If an operation is using
 
 #### Non-breaking changes
 
-These are change types detected ny the `apollo service:check` command, but they are "safe" and will always be compatible with all exisitng client usage of the graph. They will not affect the behavior of any clients if deployed.
+These are change types detected by the `apollo service:check` command, but they are "safe" and will always be compatible with all existing client usage of the graph. They will not affect the behavior of any clients if deployed.
 
 <ul>
   <li>
@@ -311,7 +311,7 @@ The output of `apollo service:check --markdown` looks like this:
 
 Product cycles move fast and it's common for schemas to be slightly different across environments as changes make their way through your system. To support this, schemas pushed to the registry can be associated with specific _variants_ of your graph (also referred to tags).
 
-Variants mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag=<VARIANT>` flag to `apollo service:check` specifies which schema variant to compara against, such as `prod` or `staging`. It's common to run checks against multple different graph variants in the same continuous integration pipeline to ensure that all important deployments are accounted for. Running `service:check` against multiple variants will result in status checks similar to:
+Variants mostly commonly represent environments and can also indicate branches or future schemas. Passing the `--tag=<VARIANT>` flag to `apollo service:check` specifies which schema variant to compara against, such as `prod` or `staging`. It's common to run checks against multiple different graph variants in the same continuous integration pipeline to ensure that all important deployments are accounted for. Running `service:check` against multiple variants will result in status checks similar to:
 
 <div style="text-align:center">
 
@@ -327,7 +327,7 @@ Depending on the requirements of your application, you may want to configure the
 apollo service:check --validationPeriod=P2W
 ```
 
-> **Note:** Valid durations are represented in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations). It can also be provided as a number in seconds, i.e. 86400 for a single day.
+> **Note:** Valid durations are represented in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations). They can also be provided as a number in seconds, i.e. 86400 for a single day.
 
 Two other parameters for customizing the results of `service:check` are threshold values. For example, you may wish to drop support for an old version of an app in order to remove some deprecated fields. Using these parameters, you can decide what amount of breakage is acceptable before shipping any breaking changes.
 
