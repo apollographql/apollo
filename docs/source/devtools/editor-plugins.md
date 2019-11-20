@@ -7,7 +7,7 @@ The Apollo [VS Code extension](https://marketplace.visualstudio.com/items?itemNa
 
 <img src="../img//editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
-It enables you to:
+The extension enables you to:
 
 - Add [syntax highlighting](#syntax-highlighting) for GraphQL files and gql templates inside JavaScript files
 - Get instant feedback and [intelligent autocomplete](#intelligent-autocomplete) for fields, arguments, types, and variables as you write queries

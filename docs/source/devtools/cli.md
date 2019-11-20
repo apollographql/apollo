@@ -22,11 +22,29 @@ apollo
 
 Most of the Apollo CLI's commands are in the following namespaces:
 
-* `client` (such as `client:codegen`) for interactions between Apollo Client and Graph Manager
-* `service` (such as `service:download`) for interactions between Apollo Server and Graph Manager
+* `client` (such as `apollo client:codegen`) for interactions involving Apollo Client and Graph Manager
+* `service` (such as `apollo service:download`) for interactions involving Apollo Server and Graph Manager
 
 For a full list of commands in a particular namespace, use the `apollo help` command:
 
 ```
-apollo help client
+$ apollo help client
+Check a client project against a pushed service
+
+USAGE
+  $ apollo client:COMMAND
+
+COMMANDS
+  client:check            Check a client project against a pushed service
+  client:codegen          Generate static types for GraphQL queries. Can use the published
+                          schema in Apollo Engine or a downloaded schema.
+  client:download-schema  Download a schema from engine or a GraphQL endpoint.
+  client:extract          Extract queries from a client
+  client:push             Register operations with Apollo, adding them to the safelist
+```
+
+You can also obtain the full set of options for an individual command like so:
+
+```
+$ apollo help client:codegen
 ```
