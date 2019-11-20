@@ -339,7 +339,7 @@ _src/resolvers.js_
 Mutation: {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
-    if (user) return Buffer.from(email).toString('base64');
+    if (user) return Buffer.from(email, 'base64').toString('ascii');
   }
 },
 ```
