@@ -321,7 +321,7 @@ _src/resolvers.js_
 ```js
 export const resolvers = {
   Mutation: {
-    addOrRemoveFromCart: (_, { id }, { cache }) => {
+    addOrRemoveFromCart: (_, { id }, { client }) => {
       const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
       const data = {
         cartItems: cartItems.includes(id)
