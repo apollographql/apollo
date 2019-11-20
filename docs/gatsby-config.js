@@ -25,7 +25,7 @@ module.exports = {
             'tutorial/mutations',
             'tutorial/local-state',
           ],
-          'Developer Tools': [
+          'Development Tools': [
             'devtools/cli',
             'devtools/editor-plugins',
             'devtools/apollo-config',
