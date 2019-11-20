@@ -26,11 +26,12 @@ module.exports = {
             'tutorial/local-state',
           ],
           'Developer Tools': [
-            'devtools/cli'
+            'devtools/cli',
+            'devtools/editor-plugins',
+            'devtools/apollo-config',
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
-            'resources/apollo-config',
             'resources/graphql-glossary',
             'resources/faq',
           ],
