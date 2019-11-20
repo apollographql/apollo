@@ -25,6 +25,9 @@ module.exports = {
             'tutorial/mutations',
             'tutorial/local-state',
           ],
+          'Developer Tools': [
+            'devtools/cli'
+          ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
             'resources/apollo-config',
