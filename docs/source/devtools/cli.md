@@ -6,16 +6,24 @@ The **Apollo CLI** provides useful commands for interacting with every component
 
 ## Download and install
 
-The Apollo CLI is available as an [npm](https://www.npmjs.com/get-npm) package. Install it globally in your development environment with the following command:
+The Apollo CLI is available as an [npm](https://www.npmjs.com/get-npm) package.
+
+### Project-level installation (recommended)
+
+If your project uses `npm`, we recommend installing the Apollo CLI locally by adding it to your project's `devDependencies`, like so:
+
+```bash
+npm install -D apollo
+```
+
+This helps make sure that all of your project's collaborators have the same version of the CLI installed.
+
+### Global installation
+
+You can install the CLI globally in your development environment with the following command:
 
 ```bash
 npm install -g apollo
-```
-
-After installation completes, run the following command to make sure it was successful:
-
-```bash
-apollo
 ```
 
 ## Supported commands
@@ -23,12 +31,14 @@ apollo
 Most of the Apollo CLI's commands are in the following namespaces:
 
 * `client` (such as `apollo client:codegen`) for interactions involving Apollo Client and Graph Manager
-* `service` (such as `apollo service:download`) for interactions involving Apollo Server and Graph Manager
+* `service` (such as `apollo service:check`) for interactions involving Apollo Server and Graph Manager
 
 For a full list of commands in a particular namespace, use the `apollo help` command:
 
+> Omit `npx` from the example commands below if you [installed the Apollo CLI globally](#global-installation).
+
 ```
-$ apollo help client
+$ npx apollo help client
 Check a client project against a pushed service
 
 USAGE
@@ -46,5 +56,5 @@ COMMANDS
 You can also obtain the full set of options for an individual command like so:
 
 ```
-$ apollo help client:codegen
+$ npx apollo help client:codegen
 ```
