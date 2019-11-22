@@ -18,9 +18,7 @@ By default, Apollo Server checks for the presence of the following HTTP headers 
 * `apollographql-client-name`
 * `apollographql-client-version`
 
-If one or both of these headers are present, Apollo Server automatically extracts their values and includes them in the trace report that it sends to Graph Manager. You can [override this default behavior](#advanced-server-configuration).
-
-If you're using Apollo Client, you can provide the `name` and `version` options to the `ApolloClient` constructor. If you do, Apollo Client automatically assigns the provided values to the corresponding headers in every operation request.
+**If you're using Apollo Client**, you can populate these headers automatically for every operation request by providing the `name` and `version` options to the `ApolloClient` constructor, like so:
 
 ```js{8-9}
 import { ApolloClient } from 'apollo-client';
@@ -35,7 +33,9 @@ const client = new ApolloClient({
 });
 ```
 
-#### Advanced server configuration
+If one or both of these headers are present, Apollo Server automatically extracts their values and includes them in the trace report that it sends to Graph Manager. You can [override this default behavior](#advanced-apollo-server-configuration).
+
+#### Advanced Apollo Server configuration
 
 You can configure Apollo Server to use a different method to determine the `name` and `version` of the client associated with a request. To do so, provide a `generateClientInfo` function to the `ApolloServer` constructor.
 
