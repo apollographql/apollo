@@ -46,9 +46,9 @@ Next, create an Apollo config file called `apollo.config.js`. This config file i
 ```js
 module.exports = {
   client: {
-    name: 'Space Explorer [web]',
-    service: 'space-explorer',
-  },
+    name: "Space Explorer [web]",
+    service: "space-explorer"
+  }
 };
 ```
 
@@ -65,13 +65,13 @@ If you didn't complete the server portion, you can use the `uri` from the code b
 _src/index.js_
 
 ```js
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'http://localhost:4000/'
+  uri: "http://localhost:4000/"
 });
 
 const client = new ApolloClient({
@@ -107,7 +107,7 @@ client
         launch(id: 56) {
           id
           mission {
-            name
+            missionPatch
           }
         }
       }
@@ -133,17 +133,18 @@ Open `src/index.js` and add the following lines of code:
 _src/index.js_
 
 ```jsx
-import { ApolloProvider } from '@apollo/react-hooks';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Pages from './pages';
+import { ApolloProvider } from "@apollo/react-hooks";
+import React from "react";
+import ReactDOM from "react-dom";
+import Pages from "./pages";
 
 // previous variable declarations
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Pages />
-  </ApolloProvider>, document.getElementById('root')
+  </ApolloProvider>,
+  document.getElementById("root")
 );
 ```
 
