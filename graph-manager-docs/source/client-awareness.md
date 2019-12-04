@@ -1,23 +1,24 @@
 ---
-title: Identifying clients
-description: Know who is using your graph and what exactly they're using
+title: Segmenting metrics by client
+description: Understand how each of your clients is using your graph
 ---
 
-Using GraphQL, clients describe exactly the data they want through the fields they put in their requests. This gives us the ability to precisely connect which clients, and which queries from those clients, are using exactly which fields in our schema &mdash; an insight that's immensely valuable as GraphQL development scales within an organization.
-
-Apollo provides a client identification and tracking system, which allows you to answer questions like _"which query is using this field?"_ and _"which versions of my iOS app are running this query?"_. It segments usage data by **client name and version** and allows for **field-level understanding** of how consumers are interacting with your graph in real-time.
-
-Like any API, your graph will end up with many consumers with different frequencies, subselections, and permissions as it grows over time. Apollo allows all reported data to be tagged with client information so it can be filtered and analyzed across different sets of clients and stacks.
-
-Here's an example of client identity reporting in Apollo Graph Manager:
+Apollo Graph Manager enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your data graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
 
 ![client overview](./img/client-awareness/overview.png)
 
 ## Setup
 
-Apollo Server 2.2.3+ will look for specific request headers, `apollographql-client-name` and `apollographql-client-version`, by default. If present, Apollo Server will extract them and make sure the data for that request is reported to Apollo's systems with the correct client and version tag.
+First, make sure that your GraphQL server is already [pushing analytics to Graph Manager](./setup-analytics).
 
-With Apollo Client 2.4.6+, simply passing the `name` and `version` options in your `ApolloClient` constructor will automatically add these headers to every request. Setting up client identity reporting is as simple as adding configuration to Apollo Client:
+### Using Apollo Server and Apollo Client
+
+By default, Apollo Server checks for the presence of the following HTTP headers in every incoming operation request:
+
+* `apollographql-client-name`
+* `apollographql-client-version`
+
+**If you're using Apollo Client**, you can populate these headers automatically for every operation request by providing the `name` and `version` options to the `ApolloClient` constructor, like so:
 
 ```js{8-9}
 import { ApolloClient } from 'apollo-client';
@@ -27,65 +28,20 @@ const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql'
   }),
-  name: 'insert your client name',
-  version: 'insert your client version'
+  name: 'web',
+  version: '1.0'
 });
 ```
 
-If you are not using Apollo Server and would like to gain client awareness,
-please reach out to opensource [at] apollographql.com to work with us to add
-support to your server language of choice.
+If one or both of these headers are present, Apollo Server automatically extracts their values and includes them in the trace report that it sends to Graph Manager. You can [override this default behavior](#advanced-apollo-server-configuration).
 
-## Use Cases
+#### Advanced Apollo Server configuration
 
-### Isolating Clients
+You can configure Apollo Server to use a different method to determine the `name` and `version` of the client associated with a request. To do so, provide a `generateClientInfo` function to the `ApolloServer` constructor.
 
-Filtering queries by client enables isolation of issues that affect a portion
-of all clients. In the opposite sense, if a client becomes problematic, such as
-requesting expensive fields or using deprecated fields, the Apollo Platform
-enables tracking down the faulty client to start solving the issue with the
-owner. When changing, replacing, or deprecating a field in the API, the client
-metadata enables quickly identifying the client-side changes that need to
-occur to completely remove the field.
+In the following example, the `generateClientInfo` function calls a `userSuppliedLogic` function, which can return values for the client's name and version based on the details of the `request`.
 
-![client field](./img/client-awareness/field-usage.png)
-
-### Cutover
-
-Similarly to deprecation, adding fields to your graph often means that clients will also change. These modifications can be done incrementally or discretely during a cutover period. The cutover period and time immediately following change the utilization of the graph drastically and can expose some unexpected behavior. Filtering by client version enables monitoring the health of a release in real-time. The following demonstrates a cutover from one backend to another.
-
-![druid cutover](./img/client-awareness/cutover.png)
-
-## Advanced setup
-
-### Client
-
-The requester is responsible for setting HTTP headers on its requests in a way the server will understand. As noted in "setup", Apollo Client and Server will handle this automatically. For advanced cases, rather than setting the `name` and `version` on `ApolloClient`, `headers` can be set on the `HttpLink` directly.
-
-```js{8-16}
-import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
-import { ApolloLink } from "apollo-link";
-
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      'client-name-for-advanced-use-cases': 'Web',
-      'client-version-for-advanced-use-cases': '1'
-    }
-  })
-});
-```
-
-### Server
-
-The server is responsible for collecting and assigning the client information
-to a request. To send client-tagged metrics to Apollo, pass a
-`generateClientInfo` function into the `ApolloServer` constructor. The
-following example checks the headers and provides a fallback:
-
-```js{8-22}
+```js{8-14}
 const { ApolloServer } = require("apollo-server");
 
 const server = new ApolloServer({
@@ -94,11 +50,6 @@ const server = new ApolloServer({
   engine: {
     apiKey: 'YOUR API KEY HERE',
     generateClientInfo: ({ request }) => {
-      // The default approach suggested in "Setup", which
-      // uses headers provided by Apollo Client, should work
-      // for most use cases, but advanced cases can use
-      // their own logic for determining the client name
-      // and version and return them from this function.
       const { clientName, clientVersion } = userSuppliedLogic(request);
       return {
         clientName,
@@ -112,3 +63,28 @@ server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
 ```
+
+### Using another GraphQL server
+
+Please reach out to **opensource [at] apollographql.com** to work with us to add
+client awareness support to your preferred GraphQL server.
+
+## Common use cases
+
+### Diagnose client-specific issues
+
+By filtering your data graph's metrics by client and client version, you can identify when a high failure rate for an operation is tied to a particular version. This helps you isolate the underlying cause of the failure and push an update for the affected client.
+
+### Deprecate, change, and remove fields safely
+
+Modifying or removing an existing field in your schema is often a **breaking change** for the clients that use that field. Client awareness gives you a breakdown of which clients use which fields in your schema, enabling you to determine the impact of such a change:
+
+![Table of client field usage](./img/client-awareness/field-usage.png)
+
+### Backend cutover
+
+Changes to your schema often accompany changes to your backend, such as the addition of a new resolver, or even an entirely new data source. When you deploy a new version of your client that executes operations against these new resources, it's important to monitor operations to detect issues. Viewing metrics specific to the new client version helps you identify and resolve these issues quickly.
+
+The following shows a cutover from one back-end service to another:
+
+![druid cutover](./img/client-awareness/cutover.png)

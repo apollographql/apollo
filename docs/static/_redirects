@@ -1,5 +1,8 @@
 / /docs/
 
+# Add Developer Tools category to root docset
+/docs/resources/apollo-config/ /docs/devtools/apollo-config/
+
 # Get rid of "References" category
 /docs/references/apollo-config/ /docs/resources/apollo-config/
 /docs/references/setup-analytics/ /docs/graph-manager/setup-analytics/
