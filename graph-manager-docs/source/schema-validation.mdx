@@ -79,7 +79,7 @@ Each of these changes adds a required input to a schema element. If an operation
 
 #### In-place updates
 
-Each of these changes updates an existing schema element. If an operation is activley using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
+Each of these changes updates an existing schema element. If an operation is actively using an element of your graph and that element is updated, the operation could start receiving an error from the GraphQL layer or, in some cases, an unexpected result.
 
 > **Note:** In some cases, these changes are compatible with the client at runtime, such as a type rename or an object to interface conversion with the same fields. Schema validation still marks these breaking changes because validation does not have enough information to ensure safety and these changes deserve extra scrutiny, such as their impact on type generation.
 
