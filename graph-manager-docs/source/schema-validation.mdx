@@ -12,7 +12,7 @@ Certain changes to your GraphQL schema (such as removing a field or type) can po
 To enable schema validation for your data graph, first do the following:
 
 1. [Set up trace reporting](./setup-analytics/) to Apollo Graph Manager from your GraphQL server.
-2. [Set up schema registration](/schema-registry) in your continuous delivery pipeline.
+2. [Set up schema registration](./schema-registry) in your continuous delivery pipeline.
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
 
 After you complete the above, you can perform a test validation by running the following command from your project's root directory:
@@ -29,7 +29,7 @@ If everything is set up correctly, the command's output looks similar to the out
 When you validate your schema with the `apollo service:check` command:
 
 1. Graph Manager generates a diff between your local schema and the schema that you most recently registered.
-2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#adjusting-validation-parameters)).
+2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-validation)).
 3. Graph Manager returns the diff and a list of any breaking changes found.
 4. The Apollo CLI prints the result of the validation and returns a non-zero exit code if at least one breaking change is found.
 
