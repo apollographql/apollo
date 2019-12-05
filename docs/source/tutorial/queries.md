@@ -50,7 +50,7 @@ const GET_LAUNCHES = gql`
 `;
 ```
 
-Here, we're defining a query to fetch a list of launches by calling the `launches` query from our schema. The `launches` query returns an object type with a list of launches, in addition to the `cursor` of the paginated list and whether or not the list `hasMore` launches. We need to wrap the query with the `gql` function in order to parse it into an AST.
+Here, we're defining a query to fetch a list of launches by calling the `launches` query from our schema. The `launches` query returns an object type with a list of launches, in addition to the `cursor` of the paginated list and whether or not the list `hasMore` launches. We need to wrap the query with the `gql` function in order to parse it into an Abstract Syntax Tree.
 
 Now, let's pass that query to Apollo's `useQuery` component to render the list:
 
