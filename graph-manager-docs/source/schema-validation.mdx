@@ -3,9 +3,9 @@ title: Schema validation
 description: Ensure the safety of changes to your production graph
 ---
 
-Certain changes to your GraphQL schema (such as removing a field or type) can potentially break one of your application's clients. Apollo Graph Manager provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
+Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Graph Manager provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
 
-> Schema validation is available as part of Graph Manager [Team and Enterprise plans](https://www.apollographql.com/plans/).
+> Schema validation is a **paid feature** that is available as part of Graph Manager [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 ## Prerequisites
 
@@ -68,11 +68,19 @@ The CLI output also includes a Graph Manager URL that provides full details on t
 
 > **Note:** If you've [installed schema validation checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
+### Validating a federated schema
+
+If your data graph uses [Apollo Federation](/federation/#validating-changes-to-the-graph), the schema validation process differs slightly.
+
+For details, see [Validating changes to the graph](/federation/#validating-changes-to-the-graph).
+
 ## Using with continuous integration
 
 Schema validation is especially useful when you add it to your continuous integration pipeline (e.g., Jenkins or CircleCI). By doing so, you can detect potential problems automatically and display validation results directly on pull requests.
 
 The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, and it [integrates with GitHub statuses](#integrating-with-github), making it straightforward to use with most CI tools.
+
+### CircleCI example
 
 Here's an example of how to add a schema validation check to CircleCI:
 
@@ -107,7 +115,7 @@ jobs:
 
 ### Integrating with GitHub
 
-If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Graph Manager to send a webhook back to your project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
+If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Graph Manager to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 ![GitHub Status View](./img/schema-validation/github-check.png)
 
@@ -157,7 +165,9 @@ This command checks your schema changes against the past two weeks of operations
 apollo service:check --validationPeriod=P2W
 ```
 
-> **Note:** Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
+Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
+
+> **Note:** If you specify a `validationPeriod` that exceeds your organization's operation retention period, the `service:check` command fails with an error.
 
 ### Threshold values
 
@@ -194,7 +204,7 @@ Not every change to a schema is a potentially breaking change. Additive changes 
 
 #### Removals
 
-These change types each remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
+These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
 
 <ul>
   <li id="FIELD_REMOVED">
@@ -228,7 +238,7 @@ These change types each remove a schema element. If a removed element is activel
 
 #### Addition of required arguments
 
-These change types each add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
+These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
 
 <ul>
   <li id="REQUIRED_ARG_ADDED">
@@ -243,7 +253,7 @@ These change types each add a required input to a schema element. If an operatio
 
 #### In-place updates
 
-These change types each update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
+These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
 
 > **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema validation still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 
@@ -268,7 +278,7 @@ These change types each update an existing schema element. If an operation is ac
 
 #### Default arguments
 
-These change types each update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation might get an unexpected result when the schema is updated if it was relying on the original default value.
+These changes update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation might get an unexpected result when the schema is updated if it was relying on the original default value.
 
 <ul>
   <li id="ARG_DEFAULT_VALUE_CHANGE">
@@ -279,7 +289,7 @@ These change types each update the default value for an argument. If an operatio
 
 ### Non-breaking changes
 
-These change types are detected by the `apollo service:check` command, but they are "safe." They will never affect the behavior of any existing clients if deployed.
+These changes are detected by the `apollo service:check` command, but they are "safe." They will never affect the behavior of any existing clients if deployed.
 
 <ul>
   <li>
