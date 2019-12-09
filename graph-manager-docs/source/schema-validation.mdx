@@ -1,6 +1,6 @@
 ---
 title: Schema validation
-description: Ensure the safety of changes to your production graph
+description: Ensure the safety of changes to your data graph
 ---
 
 Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Graph Manager provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
@@ -76,19 +76,23 @@ For details, see [Validating changes to the graph](/federation/#validating-chang
 
 ## Using with continuous integration
 
-Schema validation is especially useful when you add it to your continuous integration pipeline (e.g., Jenkins or CircleCI). By doing so, you can detect potential problems automatically and display validation results directly on pull requests.
+Schema validation is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain validation results and display them directly on your team's pull requests.
 
-The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, and it [integrates with GitHub statuses](#integrating-with-github), making it straightforward to use with most CI tools.
+We recommend defining a separate CI job for each [environment (production, staging, etc.)](#validating-against-multiple-environments) you validate schema changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when validation fails.
 
-### CircleCI example
+### Example configuration
 
-Here's an example of how to add a schema validation check to CircleCI:
+The following config defines a schema validation job for a CircleCI pipeline. Your config's syntax varies depending on your CI tool, but the job's steps are the same.
 
-```yaml{26}
+```yaml{30}:title=config.yml
 version: 2
 
 jobs:
-  build:
+
+  # ...other jobs...
+
+  # Define a separate job for each environment you validate against.
+  validate_against_staging:
     docker:
       - image: circleci/node:8
 
@@ -97,20 +101,20 @@ jobs:
 
       - run: npm install
 
-      # Start the GraphQL server.  If a different command is used to
+      # Start the GraphQL server. If a different command is used to
       # start the server, use it in place of `npm start` here.
       - run:
           name: Starting server
           command: npm start
           background: true
 
-      # make sure the server has enough time to start up before running
-      # commands against it
+      # Make sure the server has enough time to start up before running
+      # commands against it.
       - run: sleep 5
 
-      # This will authenticate using the `ENGINE_API_KEY` environment
-      # variable. Configure your endpoint's location in your Apollo config.
-      - run: npx apollo service:check
+      # This command authenticates using the `ENGINE_API_KEY` environment
+      # variable. Specify your GraphQL endpoint's URL in your Apollo config.
+      - run: npx apollo service:check --tag=staging
 ```
 
 ### Integrating with GitHub
@@ -118,8 +122,6 @@ jobs:
 If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Graph Manager to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 ![GitHub Status View](./img/schema-validation/github-check.png)
-
-> **Note:** If you're using GitHub status checks, we recommend _ignoring_ the exit code of the `apollo service:check` command so your continuous integration can complete without failing early. You can do this by appending `|| echo 'validation failed'` to the command call.
 
 ### Integrating with other version control services
 
