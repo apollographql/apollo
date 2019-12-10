@@ -6,6 +6,8 @@ title: Graph Manager overview
 
 In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand your schema and query usage.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Feature summary
 
 **Graph Manager provides the following features to all Apollo users for free:**
