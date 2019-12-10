@@ -64,7 +64,9 @@ Each change to the schema is labeled with either `PASS` or `FAIL`.
 
 The CLI output also includes a Graph Manager URL that provides full details on the changes and their impact on existing clients and operations:
 
-![Service check page in the Graph Manager UI](./img/schema-validation/service-check-page.png)
+
+<img class="screenshot" src="./img/schema-validation/service-check-page.png" alt="Service check page in the Graph Manager UI"></img>
+
 
 > **Note:** If you've [installed schema validation checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
@@ -78,7 +80,7 @@ For details, see [Validating changes to the graph](/federation/#validating-chang
 
 Schema validation is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain validation results and display them directly on your team's pull requests.
 
-We recommend defining a separate CI job for each [environment (production, staging, etc.)](#validating-against-multiple-environments) you validate schema changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when validation fails.
+We recommend defining a separate CI job for each [variant of your schema ](#validating-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when validation fails.
 
 ### Example configuration
 
@@ -121,7 +123,9 @@ jobs:
 
 If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Graph Manager to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
-![GitHub Status View](./img/schema-validation/github-check.png)
+
+<img class="screenshot" src="./img/schema-validation/github-check.png" alt="GitHub Status View"></img>
+
 
 ### Integrating with other version control services
 
@@ -143,7 +147,7 @@ The output of `apollo service:check --markdown` looks like this:
 
 ## Validating against multiple environments
 
-You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Graph Manager, these schemas typically belong to [variants](./schema-registry/#managing-environments-with-variants) of a single data graph.
+You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Graph Manager, these schemas are represented as [variants](./schema-registry/#managing-environments-with-variants) of a single data graph.
 
 You can validate your schema against a particular variant by including the `--tag` flag in your call to `apollo service:check`, like so:
 
