@@ -165,34 +165,34 @@ Once you have the Datadog integration set up, you will start seeing Graph Manage
 
 Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`), all of which are normalized by Datadog naming requirements (letters are all lower-cased and illegal symbols are converted to underscores).
 
-This tagging makes it easier to see data at whatever level of granularity you desire. Whether you want to aggregate across all operations or zoom in to a particular operation, you need only choose the appropriate operation tags for filtering and the right [space aggregation function](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
+Tagging enables you to see data at any level of granularity. Whether you want to aggregate across all operations or zoom in to a particular operation, you can choose the appropriate operation tags for filtering and the right [space aggregation function](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
 
 **Example**: Suppose you want to see the 95th percentile request latency averaged across all operations for a staging and a production service.
 
-_In the [Datadog metrics explorer](https://app.datadoghq.com/metric/explorer):_
-1. _Select `apollo.engine.operations.latency.95percentile` under "Graph"_
-2. _Select the targeted service name under "Over"_
-3. _Select `variant` under “One graph per” and choose the two variants for production and staging_
-4. _Select `Average of reported values` under "On each graph, aggregate with the"_
+In the [Datadog metrics explorer](https://app.datadoghq.com/metric/explorer):
+1. Select `apollo.engine.operations.latency.95percentile` under "Graph"
+2. Select the targeted service name under "Over"
+3. Select `variant` under “One graph per” and choose the two variants for production and staging
+4. Select `Average of reported values` under "On each graph, aggregate with the"
 
-_At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following_:
+At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following:
 
 ![Compare p95](./img/datadog/datadog.png)
 
-_To perform more advanced manipulation of metrics, open up a [Datadog notebook](https://app.datadoghq.com/notebook)._
+To perform more advanced manipulation of metrics, open up a [Datadog notebook](https://app.datadoghq.com/notebook).
 
 #### Alerting with Datadog
 
-Graph Manager supports direct alerting on metrics via the Notifications feature, but Datadog can be a powerful partner in enabling more complex alerts via [Datadog monitors](https://docs.datadoghq.com/monitors/).
+Graph Manager supports direct alerting on metrics via the Notifications feature, but Datadog can enable more complex alerts via [Datadog monitors](https://docs.datadoghq.com/monitors/).
 
-**Example**: Graph Manager's Notifications feature supports alerts that trigger when the percentage of requests with error in the last 5 minutes exceeds some threshold for a specific operation. Suppose that instead of alerting on a specific operation in the last 5 minutes, we want to alert on the error percentage over all operations in some graph in the last 10 minutes, e.g. when the percentage exceeds 1% for a graph `foo` with variant `bar`.
+**Example**: Graph Manager's Notifications feature supports alerts that trigger when the percentage of requests with an error in the last 5 minutes exceeds some threshold for a specific operation. Suppose that instead of alerting on a specific operation in the last 5 minutes, we want to alert on the error percentage over all operations in some graph in the last 10 minutes, such as when the percentage exceeds 1% for a graph `mygraph` with variant `staging`.
 
-_The [Datadog metric alert query](https://docs.datadoghq.com/api/?lang=curl#metric-alert-query) needed here is_
+The [Datadog metric alert query](https://docs.datadoghq.com/api/?lang=curl#metric-alert-query) needed here is
+```
+sum(last_10m):sum:apollo.engine.operations.error_count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) / sum:apollo.engine.operations.count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) > 0.01
+```
+The `.rollup(sum).fill(null)` is necessary since `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation]() and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
 
- `sum(last_10m): sum:apollo.engine.operations.error_count{service:foo,variant:bar}.as_count().rollup(sum).fill(null) / sum:apollo.engine.operations.count{service:foo,variant:bar}.as_count().rollup(sum).fill(null) > 0.01`
+**Example**: Suppose you're looking at the 95th percentile request latency for some operation, and you notice it follows a cyclical pattern (e.g., it's low during the night, but high during the day). You want to be alerted when this latency deviates from this cyclical pattern, but threshold-based alerts don't easily support this.
 
-_The `.rollup(sum).fill(null)` is necessary since `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation]() and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/)._
-
-**Example**: Suppose you're looking at the 95th percentile request latency for some operation, and you notice it follows a cyclical pattern (e.g. it's low during the night, but high during the day). You want to be alerted when this latency deviates away from this cyclical pattern, but threshold-based alerts don't easily support this.
-
-_You can use [Datadog anomaly detection](https://www.datadoghq.com/blog/introducing-anomaly-detection-datadog/) to be alerted on shifts from that cyclical pattern. You need to specify the metric to observe and the alert conditions/options (e.g. the size of the trigger window), as explained in the [anomaly monitor docs](https://docs.datadoghq.com/monitors/monitor_types/anomaly/)._
+You can use [Datadog anomaly detection](https://www.datadoghq.com/blog/introducing-anomaly-detection-datadog/) to be alerted on shifts from that cyclical pattern. You need to specify the metric to observe and the alert conditions/options (e.g. the size of the trigger window), as explained in the [anomaly monitor docs](https://docs.datadoghq.com/monitors/monitor_types/anomaly/).
