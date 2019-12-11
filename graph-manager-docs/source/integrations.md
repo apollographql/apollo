@@ -119,7 +119,7 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 ## Datadog
 
-The Apollo Datadog integration allows you to forward all the performance metrics and analytics data that's available to you in Graph Manager to Datadog as well. This is particularly convenient for teams already relying on Datadog for their monitoring, and of the best perks is that Datadog has advanced filtering features that alerts can be set on, and teams can set those alerts based on their GraphQL metrics data from Graph Manager through Datadog.
+The Apollo Datadog integration allows you to forward the performance metrics that are available to you in Graph Manager to Datadog, which is convenient for teams already relying on Datadog for their monitoring. Datadog additionally supports an advanced function API, allowing teams to create sophisticated graphs and alerts for their GraphQL metrics.
 
 The Datadog metrics forwarded by Graph Manager are:
 
@@ -134,18 +134,17 @@ The Datadog metrics forwarded by Graph Manager are:
   - `apollo.engine.operations.latency.max`
   - `apollo.engine.operations.latency.avg`
 
-All of Graph Manager's new Datadog metrics are tagged with the GraphQL operation name, as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
-All of the metrics are also tagged with the Graph Manager graph name, `service:<graph-name>`, so multiple graphs from Graph Manager can send data to the same Datadog account.
+All metrics forwarded to Datadog are aggregated in 60-second intervals and tagged with the GraphQL operation name as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
 
-Graph Manager sends metrics to Datadog in 60-second intervals. Data is forwarded with a 60-second delay to allow for reports to be collected, even in the case of temporary network failures.
+All of the metrics are also tagged with the Graph Manager graph name as `service:<graph-name>` and the variant name as `variant:<variant-name>`, so multiple graphs from Graph Manager can send data to the same Datadog account. If you have not set a variant name, then "current" will be used.
 
 If you're reporting metrics to Graph Manager through the Engine proxy, Datadog will merge your statistics across multiple instances of the proxy (per-host metrics are not available). Just like in the Graph Manager UI, each operation inside a query batch is counted individually.
 
 #### Setup
 
-Getting set up with Graph Manager's Datadog integration is as simple as providing a Datadog API key to Graph Manager. There's no further configuration required! You will need to have an account with administrator access to Datadog to acquire that API key.
+Getting set up with Graph Manager's Datadog integration is as simple as providing a Datadog API key to Graph Manager. There's no further configuration required! You will need access to a Datadog account with administrator privileges to acquire an API key.
 
-1.  Go to The [Datadog integrations page](https://app.datadoghq.com/account/settings) and search for "Apollo Engine".
+1.  Go to the [Datadog integrations page](https://app.datadoghq.com/account/settings) and search for "Apollo Engine".
 2.  Click the "+Available" button and go the the _Configuration_ tab. Copy the API key from the "Configuration" tab, click "Install Integration" at the bottom, and go to the [service](https://engine.apollographql.com) you'd like to enable Datadog Metric Forwarding for.
 3.  In the settings for the service, scroll to "Integrations", and toggle Datadog to ON. When prompted, paste in the API key.
 4.  Go to your Datadog metric explorer and start to see the metrics flow in! Please allow up to five minutes for metrics to be visible.
@@ -162,24 +161,38 @@ Once you've turned on the integration in Datadog, visit the "Integrations" tab i
 
 #### Metrics exploration
 
-Once you have Datadog forwarding set up, you will start seeing Graph Manager metrics forwarded to your Datadog account within a few minutes. Navigate to the [Datadog metric explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=avg&exp_row_type=metric) to see data from your GraphQL service flowing in.
+Once you have the Datadog integration set up, you will start seeing Graph Manager metrics forwarded to your Datadog account within a few minutes. Navigate to the [Datadog metrics explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=sum&exp_row_type=metric) to see data from your GraphQL service flowing in.
 
-Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`) it is reporting for and the operation name (`operation:<query-name>`), both of which are normalized by Datadog naming requirements (letters are all lower-case and illegal symbols are converted to underscores). This tagging makes it easier to see data at whatever level of granularity you might want.
+Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`), all of which are normalized by Datadog naming requirements (letters are all lower-cased and illegal symbols are converted to underscores).
 
-If you want to aggregate across all operations or zoom in to a particular operation, it's simply a tag-filtering. Similarly, if you want to compare metrics across staging and production environment, it should be as simple as generating one graph per environment.
+This tagging makes it easier to see data at whatever level of granularity you desire. Whether you want to aggregate across all operations or zoom in to a particular operation, you need only choose the appropriate operation tags for filtering and the right [space aggregation function](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
 
-**Example**: Suppose you want to see the 95th percentile averaged across all operations for a staging and a production service.
+**Example**: Suppose you want to see the 95th percentile request latency averaged across all operations for a staging and a production service.
 
-_In the metric explorer, select `apollo.engine.operations.latency.95percentile` and then choose service where it says “one graph per” and select the two services you'd like to compare. At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following_:
+_In the [Datadog metrics explorer](https://app.datadoghq.com/metric/explorer):_
+1. _Select `apollo.engine.operations.latency.95percentile` under "Graph"_
+2. _Select the targeted service name under "Over"_
+3. _Select `variant` under “One graph per” and choose the two variants for production and staging_
+4. _Select `Average of reported values` under "On each graph, aggregate with the"_
+
+_At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following_:
 
 ![Compare p95](./img/datadog/datadog.png)
 
-_To perform more advanced manipulation of metrics, open up the [Metrics notebook](https://app.datadoghq.com/notebook)._
+_To perform more advanced manipulation of metrics, open up a [Datadog notebook](https://app.datadoghq.com/notebook)._
 
-#### Monitoring with Datadog
+#### Alerting with Datadog
 
-All of the metrics reported to Datadog can be notified on directly through Graph Manager via the Notifications feature, but Datadog can be a powerful partner in enabling more complex alerts.
+Graph Manager supports direct alerting on metrics via the Notifications feature, but Datadog can be a powerful partner in enabling more complex alerts via [Datadog monitors](https://docs.datadoghq.com/monitors/).
 
-**Example**: Suppose you have a query that is run against your GraphQL server with a much higher volume in the morning than in the afternoon. You want to enable monitoring on that query's latency and error rates, but if the query volume is very low, you have a higher tolerance for latency and one error will skew the error rate and make the monitor too noisy.
+**Example**: Graph Manager's Notifications feature supports alerts that trigger when the percentage of requests with error in the last 5 minutes exceeds some threshold for a specific operation. Suppose that instead of alerting on a specific operation in the last 5 minutes, we want to alert on the error percentage over all operations in some graph in the last 10 minutes, e.g. when the percentage exceeds 1% for a graph `foo` with variant `bar`.
 
-> You can use Datadog's [composite monitoring](https://docs.datadoghq.com/monitors/monitor_types/composite/) to enable more complex alerting. You need to start by creating a monitor for each condition you want to track and then combining them in a composite monitor, as explained in the [Datadog documentation](https://docs.datadoghq.com/monitors/monitor_types/composite/).
+_The [Datadog metric alert query](https://docs.datadoghq.com/api/?lang=curl#metric-alert-query) needed here is_
+
+ `sum(last_10m): sum:apollo.engine.operations.error_count{service:foo,variant:bar}.as_count().rollup(sum).fill(null) / sum:apollo.engine.operations.count{service:foo,variant:bar}.as_count().rollup(sum).fill(null) > 0.01`
+
+_The `.rollup(sum).fill(null)` is necessary since `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation]() and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/)._
+
+**Example**: Suppose you're looking at the 95th percentile request latency for some operation, and you notice it follows a cyclical pattern (e.g. it's low during the night, but high during the day). You want to be alerted when this latency deviates away from this cyclical pattern, but threshold-based alerts don't easily support this.
+
+_You can use [Datadog anomaly detection](https://www.datadoghq.com/blog/introducing-anomaly-detection-datadog/) to be alerted on shifts from that cyclical pattern. You need to specify the metric to observe and the alert conditions/options (e.g. the size of the trigger window), as explained in the [anomaly monitor docs](https://docs.datadoghq.com/monitors/monitor_types/anomaly/)._
