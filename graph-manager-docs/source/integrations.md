@@ -165,7 +165,7 @@ Once you have the Datadog integration set up, you will start seeing Graph Manage
 
 Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`), all of which are normalized by Datadog naming requirements (letters are all lower-cased and illegal symbols are converted to underscores).
 
-Tagging enables you to see data at any level of granularity. Whether you want to aggregate across all operations or zoom in to a particular operation, you can choose the appropriate operation tags for filtering and the right [space aggregation function](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
+Tagging enables you to see data at any level of granularity, whether you want to aggregate across all operations or zoom in to a particular operation. You can control granularity by choosing a relevant set of operation tags for filtering, along with appropriate functions for [time aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-time-aggregation) and [space aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
 
 **Example**: Suppose you want to see the 95th percentile request latency averaged across all operations for a staging and a production service.
 
