@@ -3,8 +3,6 @@ title: '1. Build a schema'
 description: Create a blueprint for your graph's data
 ---
 
-import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
-
 The first step on our journey toward building our graph API is constructing its **schema**. You can think of a schema as a blueprint for all of the data you can access in your graph. Throughout this section, you'll learn how to build and explore your graph's schema with Apollo.
 
 ## Set up Apollo Server
@@ -169,8 +167,6 @@ Now that we have scoped out our app's schema, let's run the server by calling `s
 
 _src/index.js_
 
-<MultiCodeBlock>
-
 ```ts
 import { ApolloServer } from 'apollo-server';
 import typeDefs from './schema';
@@ -181,8 +177,6 @@ server.listen().then(({ url }: { url: string }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
 ```
-
-</MultiCodeBlock>
 
 In your terminal, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
 
