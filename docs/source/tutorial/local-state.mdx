@@ -3,6 +3,8 @@ title: '8. Manage local state'
 description: How to store and query local data in the Apollo cache
 ---
 
+import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
+
 Time to accomplish: _15 Minutes_
 
 In almost every app we build, we display a combination of remote data from our graph API and local data such as network status, form state, and more. What's awesome about Apollo Client is that it allows us to store local data inside the Apollo cache and query it alongside our remote data with GraphQL.
@@ -15,12 +17,17 @@ Managing local data with Apollo Client is very similar to how you've already man
 
 Just like how a schema is the first step toward defining our data model on the server, writing a local schema is the first step we take on the client.
 
-Navigate to `src/resolvers.js` and copy the following code to create your client schema (as well as blank client resolvers for later):
+Navigate to `src/resolvers.tsx` and copy the following code to create your client schema (as well as blank client resolvers for later):
 
-_src/resolvers.js_
+<MultiCodeBlock>
 
-```js
+```tsx:title=src/resolvers.tsx
 import gql from 'graphql-tag';
+import { GET_CART_ITEMS } from './pages/cart';
+import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
+import { ApolloCache } from 'apollo-cache';
+import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
+import { Resolvers } from 'apollo-client'
 
 export const typeDefs = gql`
   extend type Query {
@@ -37,8 +44,25 @@ export const typeDefs = gql`
   }
 `;
 
+type ResolverFn = (
+  parent: any, 
+  args: any, 
+  { cache } : { cache: ApolloCache<any> }
+) => any;
+
+interface ResolverMap {
+  [field: string]: ResolverFn;
+}
+
+interface AppResolvers extends Resolvers {
+  Launch: ResolverMap;
+  Mutation: ResolverMap;
+}
+
 export const resolvers = {};
 ```
+
+</MultiCodeBlock>
 
 To build a client schema, we **extend** the types of our server schema and wrap it with the `gql` function. Using the extend keyword allows us to combine both schemas inside developer tooling like Apollo VSCode and Apollo DevTools.
 
@@ -48,14 +72,14 @@ We can also add local fields to server data by extending types from our server. 
 
 Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
 
-Jump back to `src/index.js` and notice we had already added a `cache.writeData` call to prepare the cache in the last section. While we're here, make sure to also import the `typeDefs` and `resolvers` that we just created so we can use them later:
+Jump back to `src/index.tsx` and notice we had already added a `cache.writeData` call to prepare the cache in the last section. While we're here, make sure to also import the `typeDefs` and `resolvers` that we just created so we can use them later:
 
-_src/index.js_
+<MultiCodeBlock>
 
-```js{1,11-12,15-20}
+```tsx{1,11-12,15-20}:title=src/index.tsx
 import { resolvers, typeDefs } from './resolvers';
 
-const client = new ApolloClient({
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
@@ -75,6 +99,8 @@ cache.writeData({
 });
 ```
 
+</MultiCodeBlock>
+
 Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
 
 ## Query local data
@@ -83,9 +109,9 @@ Querying local data from the Apollo cache is almost the same as querying remote 
 
 Let's look at an example where we query the `isLoggedIn` field we wrote to the cache in the last mutation exercise.
 
-_src/index.js_
+<MultiCodeBlock>
 
-```jsx{8-12,15}
+```tsx{8-12,15}:title=src/index.tsx
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -113,19 +139,24 @@ ReactDOM.render(
 );
 ```
 
+</MultiCodeBlock>
+
 First, we create our `IsUserLoggedIn` local query by adding the `@client` directive to the `isLoggedIn` field. Then, we render a component with `useQuery`, pass our local query in, and based on the response render either a login screen or the homepage depending if the user is logged in. Since cache reads are synchronous, we don't have to account for any loading state.
 
-Let's look at another example of a component that queries local state in `src/pages/cart.js`. Just like before, we create our query:
+Let's look at another example of a component that queries local state in `src/pages/cart.tsx`. Just like before, we create our query:
 
-_src/pages/cart.js_
+<MultiCodeBlock>
 
-```js
+```tsx:title=src/pages/cart.tsx
 import React, { Fragment } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { Header, Loading } from '../components';
 import { CartItem, BookTrips } from '../containers';
+import { RouteComponentProps } from '@reach/router';
+import { QueryResult } from '@apollo/react-common';
+import { GetCartItems } from './__generated__/GetCartItems';
 
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
@@ -134,32 +165,46 @@ export const GET_CART_ITEMS = gql`
 `;
 ```
 
+</MultiCodeBlock>
+
 Next, we call `useQuery` and bind it to our `GetCartItems` query:
 
-_src/pages/cart.js_
+<MultiCodeBlock>
 
-```jsx
-export default function Cart() {
-  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+```tsx:title=src/pages/cart.tsx
+interface CartProps extends RouteComponentProps {}
+
+const Cart: React.FC<CartProps> = () => {
+  const { 
+    data, 
+    loading, 
+    error 
+  }: QueryResult<GetCartItems, any> = useQuery<GetCartItems, any>(GET_CART_ITEMS);
+  
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
+
   return (
     <Fragment>
       <Header>My Cart</Header>
-      {!data.cartItems || !data.cartItems.length ? (
+      {!data || !!data && data.cartItems.length === 0 ? (
         <p data-testid="empty-message">No items in your cart</p>
       ) : (
         <Fragment>
-          {data.cartItems.map(launchId => (
+          {!!data && data.cartItems.map((launchId: any) => (
             <CartItem key={launchId} launchId={launchId} />
           ))}
-          <BookTrips cartItems={data.cartItems} />
+          <BookTrips cartItems={!!data ? data.cartItems : []} />
         </Fragment>
       )}
     </Fragment>
   );
 }
+
+export default Cart;
 ```
+
+</MultiCodeBlock>
 
 It's important to note that you can mix local queries with remote queries in a single GraphQL document. Now that you're a pro at querying local data with GraphQL, let's learn how to add local fields to server data.
 
@@ -169,9 +214,9 @@ One of the unique advantages of managing your local data with Apollo Client is t
 
 To add a virtual field, first extend the type of the data you're adding the field to in your client schema. Here, we're extending the `Launch` type:
 
-_src/resolvers.js_
+<MultiCodeBlock>
 
-```js
+```ts:title=src/resolvers.tsx
 import gql from 'graphql-tag';
 
 export const schema = gql`
@@ -181,28 +226,39 @@ export const schema = gql`
 `;
 ```
 
+</MultiCodeBlock>
+
 Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field:
 
-_src/resolvers.js_
+<MultiCodeBlock>
 
-```js
-export const resolvers = {
+```tsx:title=src/resolvers.tsx
+interface AppResolvers extends Resolvers {
+  Launch: ResolverMap; // highlight-line
+}
+
+export const resolvers: AppResolvers = {
   Launch: {
-    isInCart: (launch, _, { cache }) => {
-      const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
-      return cartItems.includes(launch.id);
-    },
+    isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
+      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems, any>({ query: GET_CART_ITEMS });
+      if (queryResult) {
+        return queryResult.cartItems.includes(launch.id)
+      } 
+      return false;
+    }
   },
 };
 ```
+
+</MultiCodeBlock>
 
 We're going to learn more about client resolvers in the section below. The important thing to note is that the resolver API on the client is the same as the resolver API on the server.
 
 Now, you're ready to query your virtual field on the launch detail page! Similar to the previous examples, just add your virtual field to a query and specify the `@client` directive.
 
-_src/pages/launch.js_
+<MultiCodeBlock>
 
-```js{4}
+```tsx{4}:title=src/pages/launch.tsx
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
@@ -218,6 +274,8 @@ export const GET_LAUNCH_DETAILS = gql`
 `;
 ```
 
+</MultiCodeBlock>
+
 ## Update local data
 
 Up until now, we've focused on querying local data from the Apollo cache. Apollo Client also lets you update local data in the cache with either **direct cache writes** or **client resolvers**. Direct writes are typically used to write simple booleans or strings to the cache whereas client resolvers are for more complicated writes such as adding or removing data from a list.
@@ -226,9 +284,9 @@ Up until now, we've focused on querying local data from the Apollo cache. Apollo
 
 Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `useMutation` based component. Let's look at a similar example, where we copy the code below to create a logout button:
 
-_src/containers/logout-button.js_
+<MultiCodeBlock>
 
-```jsx
+```tsx:title=src/containers/logout-button.tsx
 import React from 'react';
 import styled from 'react-emotion';
 import { useApolloClient } from '@apollo/react-hooks';
@@ -258,21 +316,26 @@ const StyledButton = styled('button')(menuItemClassName, {
 });
 ```
 
+</MultiCodeBlock>
+
 When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.
 
-We can also perform direct writes within the `update` function of the `useMutation` hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.js`:
+We can also perform direct writes within the `update` function of the `useMutation` hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.tsx`:
 
-_src/containers/book-trips.js_
+<MultiCodeBlock>
 
-```jsx{29-31}
+```jsx{35-37}:title=src/containers/book-trips.tsx
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import Button from '../components/button';
 import { GET_LAUNCH } from './cart-item';
+import * as GetCartItemsTypes from '../pages/__generated__/GetCartItems';
+import * as BookTripsTypes from './__generated__/BookTrips';
 
-const BOOK_TRIPS = gql`
+export { GET_LAUNCH };
+export const BOOK_TRIPS = gql`
   mutation BookTrips($launchIds: [ID]!) {
     bookTrips(launchIds: $launchIds) {
       success
@@ -285,10 +348,18 @@ const BOOK_TRIPS = gql`
   }
 `;
 
-export default function BookTrips({ cartItems }) {
-  const [bookTrips, { data, loading, error }] = useMutation(
+interface BookTripsProps extends GetCartItemsTypes.GetCartItems {}
+
+const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
+  const [
+    bookTrips, { data }
+  ] = useMutation<
+    BookTripsTypes.BookTrips, 
+    BookTripsTypes.BookTripsVariables
+  > (
     BOOK_TRIPS,
     {
+      variables: { launchIds: cartItems },
       refetchQueries: cartItems.map(launchId => ({
         query: GET_LAUNCH,
         variables: { launchId },
@@ -297,16 +368,23 @@ export default function BookTrips({ cartItems }) {
         cache.writeData({ data: { cartItems: [] } });
       }
     }
-  )
+  );
+
   return data && data.bookTrips && !data.bookTrips.success
     ? <p data-testid="message">{data.bookTrips.message}</p>
     : (
-      <Button onClick={bookTrips} data-testid="book-button">
+      <Button 
+        onClick={() => bookTrips()} 
+        data-testid="book-button">
         Book All
       </Button>
     );
 }
+
+export default BookTrips;
 ```
+
+</MultiCodeBlock>
 
 In this example, we're directly calling `cache.writeData` to reset the state of the `cartItems` after the `BookTrips` mutation is sent to the server. This direct write is performed inside of the update function, which is passed our Apollo Client instance.
 
@@ -316,32 +394,46 @@ We're not done yet! What if we wanted to perform a more complicated local data u
 
 Let's write the local resolver for the `addOrRemoveFromCart` mutation. You should place this resolver underneath the `Launch` resolver we wrote earlier.
 
-_src/resolvers.js_
+<MultiCodeBlock>
 
-```js
+```tsx:title=src/resolvers.tsx
+interface AppResolvers extends Resolvers {
+  Launch: ResolverMap;
+  Mutation: ResolverMap; // highlight-line
+}
+
 export const resolvers = {
   Mutation: {
-    addOrRemoveFromCart: (_, { id }, { cache }) => {
-      const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
-      const data = {
-        cartItems: cartItems.includes(id)
-          ? cartItems.filter(i => i !== id)
-          : [...cartItems, id],
-      };
-      cache.writeQuery({ query: GET_CART_ITEMS, data });
-      return data.cartItems;
+    addOrRemoveFromCart: (_, { id }: { id: string }, { cache }): string[] => {
+      const queryResult = cache
+        .readQuery<GetCartItemTypes.GetCartItems, any>({ 
+          query: GET_CART_ITEMS 
+        });
+      if (queryResult) {
+        const { cartItems } = queryResult;
+        const data = {
+          cartItems: cartItems.includes(id)
+            ? cartItems.filter((i) => i !== id)
+            : [...cartItems, id],
+        };
+        cache.writeQuery({ query: GET_CART_ITEMS, data });
+        return data.cartItems;
+      }
+      return [];
     },
   },
 };
 ```
 
+</MultiCodeBlock>
+
 In this resolver, we destructure the Apollo `cache` from the context in order to read the query that fetches cart items. Once we have our cart data, we either remove or add the cart item's `id` passed into the mutation to the list. Finally, we return the updated list from the mutation.
 
 Let's see how we call the `addOrRemoveFromCart` mutation in a component:
 
-_src/containers/action-button.js_
+<MultiCodeBlock>
 
-```js
+```tsx:title=src/containers/action-button.tsx
 import gql from 'graphql-tag';
 
 const TOGGLE_CART = gql`
@@ -351,21 +443,30 @@ const TOGGLE_CART = gql`
 `;
 ```
 
+</MultiCodeBlock>
+
 Just like before, the only thing we need to add to our mutation is a `@client` directive to tell Apollo to resolve this mutation from the cache instead of a remote server.
 
 Now that our local mutation is complete, let's build out the rest of the `ActionButton` component so we can finish building the cart:
 
-_src/containers/action-button.js_
+<MultiCodeBlock>
 
-```jsx
+```tsx:title=src/containers/action-button.tsx
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';
+import * as LaunchDetailTypes from '../pages/__generated__/LaunchDetails';
 
-const CANCEL_TRIP = gql`
+export const TOGGLE_CART = gql`
+  mutation addOrRemoveFromCart($launchId: ID!) {
+    addOrRemoveFromCart(id: $launchId) @client
+  }
+`;
+
+export const CANCEL_TRIP = gql`
   mutation cancel($launchId: ID!) {
     cancelTrip(launchId: $launchId) {
       success
@@ -378,7 +479,9 @@ const CANCEL_TRIP = gql`
   }
 `;
 
-export default function ActionButton({ isBooked, id, isInCart }) {
+interface ActionButtonProps extends Partial<LaunchDetailTypes.LaunchDetails_launch> {}
+
+const ActionButton: React.FC<ActionButtonProps> = ({ isBooked, id, isInCart }) => {
   const [mutate, { loading, error }] = useMutation(
     isBooked ? CANCEL_TRIP : TOGGLE_CART,
     {
@@ -398,20 +501,23 @@ export default function ActionButton({ isBooked, id, isInCart }) {
   return (
     <div>
       <Button
-        onClick={mutate}
-        isBooked={isBooked}
+        onClick={() => mutate()}
         data-testid={'action-button'}
       >
         {isBooked
           ? 'Cancel This Trip'
           : isInCart
-          ? 'Remove from Cart'
-          : 'Add to Cart'}
+            ? 'Remove from Cart'
+            : 'Add to Cart'}
       </Button>
     </div>
   );
 }
+
+export default ActionButton;
 ```
+
+</MultiCodeBlock>
 
 In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` hook.
 
