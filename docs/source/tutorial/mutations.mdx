@@ -22,12 +22,12 @@ The first step is defining our GraphQL mutation. To start, navigate to `src/page
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/login.tsx
-import React from 'react';
-import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import React from 'react'; // preserve-line
+import { useApolloClient, useMutation } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag';
 
-import { LoginForm, Loading } from '../components';
-import ApolloClient from 'apollo-client';
+import { LoginForm, Loading } from '../components'; // preserve-line
+import ApolloClient from 'apollo-client'; // preserve-line
 import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
