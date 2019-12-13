@@ -80,6 +80,8 @@ module.exports = {
 
 The code above shows the resolver functions for the `Query` type fields: `launches`, `launch`, and `me`. The first argument to our _top-level_ resolvers, `parent`, is always blank because it refers to the root of our graph. The second argument refers to any `arguments` passed into our query, which we use in our `launch` query to fetch a launch by its id. Finally, we destructure our data sources from the third argument, `context`, in order to call them in our resolvers.
 
+The single and double underscores don't have any special meaning in the code above. The convention is to use an underscore as a placeholder because the arguments are not being used.
+
 Our resolvers are simple and concise because the logic is embedded in the `LaunchAPI` and `UserAPI` data sources. We recommend keeping your resolvers thin as a best practice, which allows you to safely refactor without worrying about breaking your API.
 
 ### Run queries in the playground
