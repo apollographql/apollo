@@ -136,7 +136,7 @@ The Datadog metrics forwarded by Graph Manager are:
 
 All metrics forwarded to Datadog are aggregated in 60-second intervals and tagged with the GraphQL operation name as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
 
-All of the metrics are also tagged with the Graph Manager graph name as `service:<graph-name>` and the variant name as `variant:<variant-name>`, so multiple graphs from Graph Manager can send data to the same Datadog account. If you have not set a variant name, then "current" will be used.
+All of the metrics are also tagged with the Graph Manager graph ID as `service:<graph-id>` and the variant name as `variant:<variant-name>`, so multiple graphs from Graph Manager can send data to the same Datadog account. If you have not set a variant name, then "current" will be used.
 
 If you're reporting metrics to Graph Manager through the Engine proxy, Datadog will merge your statistics across multiple instances of the proxy (per-host metrics are not available). Just like in the Graph Manager UI, each operation inside a query batch is counted individually.
 
@@ -163,7 +163,7 @@ Once you've turned on the integration in Datadog, visit the "Integrations" tab i
 
 Once you have the Datadog integration set up, you will start seeing Graph Manager metrics forwarded to your Datadog account within a few minutes. Navigate to the [Datadog metrics explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=sum&exp_row_type=metric) to see data from your GraphQL service flowing in.
 
-Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph name (`service:<graph-name>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`), all of which are normalized by Datadog naming requirements (letters are all lower-cased and illegal symbols are converted to underscores).
+Each of the metrics reported is [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph ID (`service:<graph-id>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`), all of which are normalized by Datadog naming requirements (letters are all lower-cased and illegal symbols are converted to underscores).
 
 Tagging enables you to see data at any level of granularity, whether you want to aggregate across all operations or zoom in to a particular operation. You can control granularity by choosing a relevant set of operation tags for filtering, along with appropriate functions for [time aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-time-aggregation) and [space aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
 
@@ -183,7 +183,7 @@ To perform more advanced manipulation of metrics, open up a [Datadog notebook](h
 
 #### Alerting with Datadog
 
-Graph Manager supports direct alerting on metrics via the Notifications feature, but Datadog can enable more complex alerts via [Datadog monitors](https://docs.datadoghq.com/monitors/).
+Graph Manager experimentally supports direct alerting on metrics via the Notifications feature, but Datadog can enable more complex alerts via [Datadog monitors](https://docs.datadoghq.com/monitors/).
 
 **Example**: Graph Manager's Notifications feature supports alerts that trigger when the percentage of requests with an error in the last 5 minutes exceeds some threshold for a specific operation. Suppose that instead of alerting on a specific operation in the last 5 minutes, we want to alert on the error percentage over all operations in some graph in the last 10 minutes, such as when the percentage exceeds 1% for a graph `mygraph` with variant `staging`.
 
