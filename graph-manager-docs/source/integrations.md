@@ -193,6 +193,10 @@ sum(last_10m):sum:apollo.engine.operations.error_count{service:mygraph,variant:s
 ```
 The `.rollup(sum).fill(null)` is necessary since `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation]() and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
 
-**Example**: Suppose you're looking at the 95th percentile request latency for some operation, and you notice it follows a cyclical pattern (e.g., it's low during the night, but high during the day). You want to be alerted when this latency deviates from this cyclical pattern, but threshold-based alerts don't easily support this.
+**Example**: Consider the error percentage monitor from the previous example. When the number of operations is small, a few errors may cause the error percentage to exceed the threshold, resulting in a noisy monitor during periods of low traffic. We want only want to alert when the number of operations isn't small (e.g. more than 10 in the last 10 minutes).
 
-You can use [Datadog anomaly detection](https://www.datadoghq.com/blog/introducing-anomaly-detection-datadog/) to be alerted on shifts from that cyclical pattern. You need to specify the metric to observe and the alert conditions/options (e.g. the size of the trigger window), as explained in the [anomaly monitor docs](https://docs.datadoghq.com/monitors/monitor_types/anomaly/).
+You can use [Datadog composite monitors](https://docs.datadoghq.com/monitors/monitor_types/composite/) to support this kind of alert. First, create a monitor with metric alert query
+```
+sum(last_10m):sum:apollo.engine.operations.count{service:mygraph,variant:staging}.rollup(sum).fill(null) > 10
+```
+Then create a composite monitor for the two monitors of the form `a && b`, which will have the desired behavior.
