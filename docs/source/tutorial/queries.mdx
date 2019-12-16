@@ -17,9 +17,13 @@ The `useQuery` hook leverages React's [Hooks API](https://reactjs.org/docs/hooks
 
 ## Fetching a list
 
+> **The code blocks below use TypeScript by default.** You can use the dropdown menu above a code block to switch to JavaScript.
+>
+>If you're using JavaScript, use `.js` and `.jsx` file extensions wherever `.ts` and `.tsx` are mentioned.
+
 To create a component with `useQuery`, import `useQuery` from `@apollo/react-hooks`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
 
-First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.js` to get started and copy the code below into the file.
+First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.tsx` to get started and copy the code below into the file.
 
 <MultiCodeBlock>
 
