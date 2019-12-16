@@ -146,22 +146,23 @@ Open `src/index.tsx` and add the following lines of code:
 
 <MultiCodeBlock>
 
-```tsx:title=src/index.tsx
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider } from '@apollo/react-hooks';  // highlight-line
-import React from 'react'; // highlight-line
-import ReactDOM from 'react-dom'; // highlight-line
-import Pages from './pages'; // highlight-line
+```tsx{4-7,11-16}:title=src/index.tsx
+import { ApolloClient } from 'apollo-client'; // preserve-line
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
+import { HttpLink } from 'apollo-link-http'; // preserve-line
+import { ApolloProvider } from '@apollo/react-hooks';
+import React from 'react';
+import ReactDOM from 'react-dom'; 
+import Pages from './pages';
 
 // previous variable declarations
 
-ReactDOM.render( // highlight-line
-  <ApolloProvider client={client}> // highlight-line
-    <Pages /> // highlight-line
-  </ApolloProvider>, document.getElementById('root') // highlight-line
-); // highlight-line
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Pages />
+  </ApolloProvider>, 
+  document.getElementById('root')
+);
 ```
 
 </MultiCodeBlock>
