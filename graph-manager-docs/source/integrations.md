@@ -142,22 +142,29 @@ If you're reporting metrics to Graph Manager through the Engine proxy, Datadog w
 
 #### Setup
 
-Getting set up with Graph Manager's Datadog integration is as simple as providing a Datadog API key to Graph Manager. There's no further configuration required! You will need access to a Datadog account with administrator privileges to acquire an API key.
+Getting set up with the Apollo Datadog integration is as simple as providing a Datadog API key to Graph Manager. There's no further configuration required! You will need access to a Datadog account with administrator privileges to acquire an API key.
 
-1.  Go to the [Datadog integrations page](https://app.datadoghq.com/account/settings) and search for "Apollo Engine".
-2.  Click the "+Available" button and go the the _Configuration_ tab. Copy the API key from the "Configuration" tab, click "Install Integration" at the bottom, and go to the [service](https://engine.apollographql.com) you'd like to enable Datadog Metric Forwarding for.
-3.  In the settings for the service, scroll to "Integrations", and toggle Datadog to ON. When prompted, paste in the API key.
-4.  Go to your Datadog metric explorer and start to see the metrics flow in! Please allow up to five minutes for metrics to be visible.
+1. Go to the [Datadog integrations page](https://app.datadoghq.com/account/settings) and search for "Apollo".
 
-Navigate to the Apollo Engine Integration in Datadog
+![DatadogIntegrationTile](./img/datadog/integration-tile.png)
 
-![IntegrationTile](./img/datadog/integration-tile.png)
+2. Press the **+Available** button on the Apollo tile, and go the _Configuration_ tab. Scroll to the bottom of the tab, and press the **Install Integration** button.
 
-Get the API Key from the Configuration tab before clicking "Install Integration":
+3. Go to the [Datadog APIs page](https://app.datadoghq.com/account/settings#api) and create an API key.
 
-![ApiKey](./img/datadog/api-key.png)
+![DatadogApiKey](./img/datadog/api-key.png)
 
-Once you've turned on the integration in Datadog, visit the "Integrations" tab in your Graph Manager account and turn on the toggle for Datadog.
+4. In Graph Manager, go to the integrations page for your graph.
+
+![IntegrationsPage](./img/datadog/settings-link.png)
+
+5. Toggle the Datadog integration to turn it on. A text field will appear where you can enter your API key.
+
+![IntegrationsToggle](./img/datadog/settings-toggle.png)
+
+6. Paste the API key, and press **Save**. You can use the same API key for all your graphs, since all metrics are tagged with the graph ID (`service:<graph-id>`).
+
+7. Go to the Datadog metrics explorer and start to see the metrics flow in! Please allow up to five minutes for metrics to be visible.
 
 #### Metrics exploration
 
