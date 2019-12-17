@@ -28,11 +28,11 @@ First, we're going to build a GraphQL query that fetches a list of launches. We'
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
-import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { Fragment } from 'react'; // preserve-line
+import { useQuery } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag';
 
-import { LaunchTile, Header, Button, Loading } from '../components';
+import { LaunchTile, Header, Button, Loading } from '../components'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import { QueryResult } from '@apollo/react-common';
 import * as GetLaunchListTypes from './__generated__/GetLaunchList';
@@ -137,16 +137,16 @@ Copy the code below and add it before the closing `</Fragment>` tag in the rende
 
 <MultiCodeBlock>
 
-```tsx:title=src/pages/launches.tsx
-{data.launches &&
+```tsx{5,9}:title=src/pages/launches.tsx
+{data.launches && 
   data.launches.hasMore && (
     <Button
       onClick={() =>
-        fetchMore({ // highlight-line
+        fetchMore({
           variables: {
             after: data.launches.cursor,
           },
-          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => {
             if (!fetchMoreResult) return prev;
             return {
               ...fetchMoreResult,
@@ -183,13 +183,13 @@ Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launch.tsx
-import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React, { Fragment } from 'react'; // preserve-line
+import { useQuery } from '@apollo/react-hooks'; // preserve-line
+import gql from 'graphql-tag'; 
 
-import { LAUNCH_TILE_DATA } from './launches';
-import { Loading, Header, LaunchDetail } from '../components';
-import { ActionButton } from '../containers';
+import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
+import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
+import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import { QueryResult } from '@apollo/react-common';
 import * as LaunchDetailsTypes from './__generated__/LaunchDetails';
@@ -293,7 +293,7 @@ To use our fragment in our query, we import it into the GraphQL document and use
 
 <MultiCodeBlock>
 
-```tsx{6,10}:title=src/pages/launches.tsx
+```tsx{7}:title=src/pages/launches.tsx
 const GET_LAUNCHES = gql`
   query launchList($after: String) {
     launches(after: $after) {
@@ -344,12 +344,12 @@ First, let's navigate to `src/pages/profile.tsx` and write our query:
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/profile.tsx
-import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React, { Fragment } from 'react'; // preserve-line
+import { useQuery } from '@apollo/react-hooks'; // preserve-line
+import gql from 'graphql-tag'; // preserve-line
 
-import { Loading, Header, LaunchTile } from '../components';
-import { LAUNCH_TILE_DATA } from './launches';
+import { Loading, Header, LaunchTile } from '../components'; // preserve-line
+import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import * as GetMyTripsTypes from './__generated__/GetMyTrips';
 

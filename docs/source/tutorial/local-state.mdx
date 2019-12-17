@@ -27,10 +27,10 @@ Navigate to `src/resolvers.tsx` and copy the following code to create your clien
 
 ```tsx:title=src/resolvers.tsx
 import gql from 'graphql-tag';
-import { GET_CART_ITEMS } from './pages/cart';
-import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
+import { GET_CART_ITEMS } from './pages/cart'; // preserve-line
 import { ApolloCache } from 'apollo-cache';
 import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
+import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
 import { Resolvers } from 'apollo-client'
 
 export const typeDefs = gql`
@@ -59,8 +59,7 @@ interface ResolverMap {
 }
 
 interface AppResolvers extends Resolvers {
-  Launch: ResolverMap;
-  Mutation: ResolverMap;
+  // We will update this with our app's resolvers later
 }
 
 export const resolvers = {};
@@ -116,12 +115,12 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 <MultiCodeBlock>
 
 ```tsx{8-12,15}:title=src/index.tsx
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';  // preserve-line
+import gql from 'graphql-tag'; // preserve-line
 
-import Pages from './pages';
-import Login from './pages/login';
-import injectStyles from './styles';
+import Pages from './pages'; // preserve-line
+import Login from './pages/login'; // preserve-line
+import injectStyles from './styles'; // preserve-line
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
@@ -152,12 +151,12 @@ Let's look at another example of a component that queries local state in `src/pa
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/cart.tsx
-import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { Fragment } from 'react'; // preserve-line
+import { useQuery } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag';
 
-import { Header, Loading } from '../components';
-import { CartItem, BookTrips } from '../containers';
+import { Header, Loading } from '../components'; // preserve-line
+import { CartItem, BookTrips } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import { QueryResult } from '@apollo/react-common';
 import { GetCartItems } from './__generated__/GetCartItems';
@@ -328,17 +327,16 @@ We can also perform direct writes within the `update` function of the `useMutati
 
 <MultiCodeBlock>
 
-```jsx{35-37}:title=src/containers/book-trips.tsx
-import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+```tsx{39-41}:title=src/containers/book-trips.tsx
+import React from 'react'; // preserve-line
+import { useMutation } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag';
 
-import Button from '../components/button';
-import { GET_LAUNCH } from './cart-item';
+import Button from '../components/button'; // preserve-line
+import { GET_LAUNCH } from './cart-item'; // preserve-line
 import * as GetCartItemsTypes from '../pages/__generated__/GetCartItems';
 import * as BookTripsTypes from './__generated__/BookTrips';
 
-export { GET_LAUNCH };
 export const BOOK_TRIPS = gql`
   mutation BookTrips($launchIds: [ID]!) {
     bookTrips(launchIds: $launchIds) {
