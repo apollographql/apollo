@@ -96,16 +96,18 @@ export default function Login() {
 
 We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.tsx` where we create our `ApolloClient` and replace the code below for the constructor:
 
+<!-- TODO: make this more brief after a fix lands -->
+
 <MultiCodeBlock>
 
-```tsx:title=src/index.tsx
-const client = new ApolloClient({
+```tsx{5-7}:title=src/index.tsx
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
-    headers: { // highlight-line
-      authorization: localStorage.getItem('token'), // highlight-line
-    },
+    headers: {
+      authorization: localStorage.getItem('token'),
+    }, 
   }),
 });
 
@@ -116,6 +118,25 @@ cache.writeData({
   },
 });
 ```
+
+
+```jsx{4}:title=src/index.jsx
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({
+    headers: { authorization: localStorage.getItem('token') },
+    uri: "http://localhost:4000/graphql",
+  }),
+});
+
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
+  },
+});
+```
+
 
 </MultiCodeBlock>
 

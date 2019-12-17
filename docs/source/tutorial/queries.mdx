@@ -133,20 +133,53 @@ const Launches: React.FC<LaunchesProps> = () => {
 
 Now that we have `fetchMore`, let's connect it to a Load More button to fetch more items when it's clicked. To do this, we will need to specify an `updateQuery` function on the return object from `fetchMore` that tells the Apollo cache how to update our query with the new items we're fetching.
 
-Copy the code below and add it before the closing `</Fragment>` tag in the render prop function we added in the previous step.
+Copy the code below and add it before the closing `</Fragment>` tag in the `Launches` component we added in the previous step.
+
+<!-- TODO: make this more brief after a fix lands -->
 
 <MultiCodeBlock>
 
-```tsx{5,9}:title=src/pages/launches.tsx
+```tsx:title=src/pages/launches.tsx
 {data.launches && 
   data.launches.hasMore && (
     <Button
       onClick={() =>
-        fetchMore({
+        fetchMore({ // highlight-line
           variables: {
             after: data.launches.cursor,
           },
-          updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
+            if (!fetchMoreResult) return prev;
+            return {
+              ...fetchMoreResult,
+              launches: {
+                ...fetchMoreResult.launches,
+                launches: [
+                  ...prev.launches.launches,
+                  ...fetchMoreResult.launches.launches,
+                ],
+              },
+            };
+          },
+        })
+      }
+    >
+      Load More
+    </Button>
+  )
+}
+```
+
+```jsx:title=src/pages/launches.jsx
+{data.launches && 
+  data.launches.hasMore && (
+    <Button
+      onClick={() =>
+        fetchMore({ // highlight-line
+          variables: {
+            after: data.launches.cursor,
+          },
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
             if (!fetchMoreResult) return prev;
             return {
               ...fetchMoreResult,
