@@ -239,7 +239,7 @@ interface AppResolvers extends Resolvers {
   Launch: ResolverMap; // highlight-line
 }
 
-export const resolvers: AppResolvers = {
+export const resolvers: AppResolvers = { // highlight-line
   Launch: {
     isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
       const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems, any>({ query: GET_CART_ITEMS });
