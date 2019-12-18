@@ -146,7 +146,7 @@ Open `src/index.tsx` and add the following lines of code:
 
 <MultiCodeBlock>
 
-```tsx{4-7,11-16}:title=src/index.tsx
+```tsx{4-8,12-18}:title=src/index.tsx
 import { ApolloClient } from 'apollo-client'; // preserve-line
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
 import { HttpLink } from 'apollo-link-http'; // preserve-line
@@ -154,9 +154,11 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
 import ReactDOM from 'react-dom'; 
 import Pages from './pages';
+import injectStyles from './styles';
 
 // previous variable declarations
 
+injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Pages />

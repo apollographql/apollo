@@ -63,7 +63,7 @@ const GET_LAUNCHES = gql`
 
 Here, we're defining a query to fetch a list of launches by calling the `launches` query from our schema. The `launches` query returns an object type with a list of launches, in addition to the `cursor` of the paginated list and whether or not the list `hasMore` launches. We need to wrap the query with the `gql` function in order to parse it into an AST.
 
-Now, let's pass that query to Apollo's `useQuery` component to render the list:
+Now, let's pass that query to Apollo's `useQuery` component to render the list. Copy and paste the following code after the query:
 
 <MultiCodeBlock>
 
@@ -220,7 +220,6 @@ import React, { Fragment } from 'react'; // preserve-line
 import { useQuery } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag'; 
 
-import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
 import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
 import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
