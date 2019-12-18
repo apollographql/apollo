@@ -144,27 +144,23 @@ If you're reporting metrics to Graph Manager through the Engine proxy, Datadog w
 
 Getting set up with the Apollo Datadog integration is as simple as providing a Datadog API key to Graph Manager. There's no further configuration required! You will need access to a Datadog account with administrator privileges to acquire an API key.
 
-1. Go to the [Datadog integrations page](https://app.datadoghq.com/account/settings) and search for "Apollo".
+1. Go to the [Datadog integrations page](https://app.datadoghq.com/account/settings) and click on the Apollo tile. Go to the _Configuration_ tab, scroll to the bottom, and press **Install Integration**.
 
 ![DatadogIntegrationTile](./img/datadog/integration-tile.png)
 
-2. Press the **+Available** button on the Apollo tile, and go the _Configuration_ tab. Scroll to the bottom of the tab, and press the **Install Integration** button.
-
-3. Go to the [Datadog APIs page](https://app.datadoghq.com/account/settings#api) and create an API key.
+2. Go to the [Datadog APIs page](https://app.datadoghq.com/account/settings#api) and create an API key.
 
 ![DatadogApiKey](./img/datadog/api-key.png)
 
-4. In Graph Manager, go to the integrations page for your graph.
+3. In Graph Manager, go to the integrations page for your graph.
 
 ![IntegrationsPage](./img/datadog/settings-link.png)
 
-5. Toggle the Datadog integration to turn it on. A text field will appear where you can enter your API key.
+4. Toggle the Datadog integration to turn it on. Paste the API key, and press **Save**. You can use the same API key for all your graphs, since all metrics are tagged with the graph ID (`service:<graph-id>`).
 
 ![IntegrationsToggle](./img/datadog/settings-toggle.png)
 
-6. Paste the API key, and press **Save**. You can use the same API key for all your graphs, since all metrics are tagged with the graph ID (`service:<graph-id>`).
-
-7. Go to the Datadog metrics explorer and start to see the metrics flow in! Please allow up to five minutes for metrics to be visible.
+5. Go to the Datadog metrics explorer and start to see the metrics flow in! Please allow up to five minutes for metrics to be visible.
 
 #### Metrics exploration
 
