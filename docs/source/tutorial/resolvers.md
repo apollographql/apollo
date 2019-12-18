@@ -139,7 +139,7 @@ Running the `launches` query returned a large data set of launches, which can sl
 
 **Pagination** is a solution to this problem that ensures that the server only sends data in small chunks. Cursor-based pagination is our recommended approach over numbered pages, because it eliminates the possibility of skipping items and displaying the same item more than once. In cursor-based pagination, a constant pointer (or **cursor**) is used to keep track of where in the data set the next items should be fetched from.
 
-We'll use cursor-based pagination for our graph API. Open up the `src/schema.js` file and update the `Query` type with `launches` and also add a new type called `LaunchConnection` to the schema as shown below:
+We'll use cursor-based pagination for our graph API. Open up the `src/schema.js` file and update the `Query` type with `launches` and also add a new type called `LaunchCollection` to the schema as shown below:
 
 _src/schema.js_
 
@@ -154,7 +154,7 @@ type Query {
     If you add a cursor here, it will only return results _after_ this cursor
     """
     after: String
-  ): LaunchConnection!
+  ): LaunchCollection!
   launch(id: ID!): Launch
   me: User
 }
@@ -164,7 +164,7 @@ Simple wrapper around our list of launches that contains a cursor to the
 last item in the list. Pass this cursor to the launches query to fetch results
 after these.
 """
-type LaunchConnection { # add this below the Query type as an additional type.
+type LaunchCollection { # add this below the Query type as an additional type.
   cursor: String!
   hasMore: Boolean!
   launches: [Launch]!
@@ -172,7 +172,7 @@ type LaunchConnection { # add this below the Query type as an additional type.
 ...
 ```
 
-You'll also notice we've added comments (also called docstrings) to our schema, indicated by `"""`. Now, the `launches` query takes in two parameters, `pageSize` and `after`, and returns a `LaunchConnection`. The `LaunchConnection` type returns a result that shows the list of launches, in addition to a `cursor` field that keeps track of where we are in the list and a `hasMore` field to indicate if there's more data to be fetched.
+You'll also notice we've added comments (also called docstrings) to our schema, indicated by `"""`. Now, the `launches` query takes in two parameters, `pageSize` and `after`, and returns a `LaunchCollection`. The `LaunchCollection` type returns a result that shows the list of launches, in addition to a `cursor` field that keeps track of where we are in the list and a `hasMore` field to indicate if there's more data to be fetched.
 
 Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accommodate pagination.
 
