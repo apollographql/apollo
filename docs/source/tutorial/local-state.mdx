@@ -230,11 +230,16 @@ export const schema = gql`
 
 </MultiCodeBlock>
 
-Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field:
+Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field :
 
 <MultiCodeBlock>
 
 ```tsx:title=src/resolvers.tsx
+// previous imports
+import { GET_CART_ITEMS } from './pages/cart';
+
+// type defs and other previous variable declarations
+
 interface AppResolvers extends Resolvers {
   Launch: ResolverMap; // highlight-line
 }
@@ -242,7 +247,9 @@ interface AppResolvers extends Resolvers {
 export const resolvers: AppResolvers = { // highlight-line
   Launch: {
     isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
-      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems, any>({ query: GET_CART_ITEMS });
+      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems, any>({ 
+        query: GET_CART_ITEMS 
+      });
       if (queryResult) {
         return queryResult.cartItems.includes(launch.id)
       } 
