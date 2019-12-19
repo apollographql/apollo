@@ -168,8 +168,8 @@ Now that we have scoped out our app's schema, let's run the server by calling `s
 _src/index.js_
 
 ```js
-import { ApolloServer } from 'apollo-server';
-import typeDefs from './schema';
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
 
 const server = new ApolloServer({ typeDefs });
 
@@ -187,13 +187,13 @@ By default, Apollo Server supports [GraphQL Playground](https://www.apollographq
 The GraphQL Playground provides the ability to introspect your schema. **Introspection** is a technique used to provide detailed information about a graph's schema. To see this in action, check out the right hand side of GraphQL Playground and click on the `schema` button.
 
 <div style="text-align:center">
-  <img src="../images/schematab.png" alt="Schema button" />
+  <img src="../images/schematab.png" alt="Schema button">
 </div>
 
 You can quickly have access to the documentation of a GraphQL API via the `schema` button.
 
 <div style="text-align:center">
-  <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type" />
+  <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
 </div>
 
 That's all for building our schema. Let's move on to the next part of our tutorial.
