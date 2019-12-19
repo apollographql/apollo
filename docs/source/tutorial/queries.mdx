@@ -33,7 +33,6 @@ import gql from 'graphql-tag';
 
 import { LaunchTile, Header, Button, Loading } from '../components'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
-import { QueryResult } from '@apollo/react-common';
 import * as GetLaunchListTypes from './__generated__/GetLaunchList';
 
 const GET_LAUNCHES = gql`
@@ -74,10 +73,10 @@ const Launches: React.FC<LaunchesProps> = () => {
     data, 
     loading, 
     error
-  }: QueryResult<
+  } = useQuery<
     GetLaunchListTypes.GetLaunchList, 
     GetLaunchListTypes.GetLaunchListVariables
-  > = useQuery(GET_LAUNCHES);
+  >(GET_LAUNCHES);
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
@@ -120,10 +119,10 @@ const Launches: React.FC<LaunchesProps> = () => {
     loading, 
     error, 
     fetchMore // highlight-line
-  }: QueryResult<
+  } = useQuery<
     GetLaunchListTypes.GetLaunchList, 
     GetLaunchListTypes.GetLaunchListVariables
-  > = useQuery(GET_LAUNCHES);
+  >(GET_LAUNCHES);
   // same as above
 }
 ```
@@ -222,7 +221,6 @@ import gql from 'graphql-tag';
 import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
 import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
-import { QueryResult } from '@apollo/react-common';
 import * as LaunchDetailsTypes from './__generated__/LaunchDetails';
 
 export const GET_LAUNCH_DETAILS = gql`
@@ -261,11 +259,10 @@ const Launch: React.FC<LaunchProps> = ({ launchId }) => {
     data, 
     loading, 
     error 
-  }: QueryResult<
+  } = useQuery<
     LaunchDetailsTypes.LaunchDetails, 
     LaunchDetailsTypes.LaunchDetailsVariables
-  > = useQuery(
-    GET_LAUNCH_DETAILS, 
+  >(GET_LAUNCH_DETAILS, 
     { variables: { launchId } }
   );
   

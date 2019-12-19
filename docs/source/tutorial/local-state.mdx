@@ -42,7 +42,7 @@ export const typeDefs = gql`
   }
 
   extend type Mutation {
-    addOrRemoveFromCart(id: ID!): [Launch]
+    addOrRemoveFromCart(id: ID!): [ID!]!
   }
 `;
 
@@ -156,8 +156,7 @@ import gql from 'graphql-tag';
 import { Header, Loading } from '../components'; // preserve-line
 import { CartItem, BookTrips } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
-import { QueryResult } from '@apollo/react-common';
-import { GetCartItems } from './__generated__/GetCartItems';
+import * as GetCartItemsTypes from './__generated__/GetCartItems';
 
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
@@ -176,11 +175,9 @@ Next, we call `useQuery` and bind it to our `GetCartItems` query:
 interface CartProps extends RouteComponentProps {}
 
 const Cart: React.FC<CartProps> = () => {
-  const { 
-    data, 
-    loading, 
-    error 
-  }: QueryResult<GetCartItems, any> = useQuery<GetCartItems, any>(GET_CART_ITEMS);
+  const { data, loading, error } = useQuery<
+    GetCartItemsTypes.GetCartItems
+  >(GET_CART_ITEMS);
   
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
@@ -246,7 +243,7 @@ interface AppResolvers extends Resolvers {
 export const resolvers: AppResolvers = { // highlight-line
   Launch: {
     isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
-      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems, any>({ 
+      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems>({ 
         query: GET_CART_ITEMS 
       });
       if (queryResult) {
