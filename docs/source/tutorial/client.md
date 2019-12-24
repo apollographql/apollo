@@ -91,7 +91,7 @@ With a `client.query()` call, we can query our graph's API. Add the following li
 _src/index.js_
 
 ```js
-import gql from "graphql-tag"; // highlight-line
+import gql from 'graphql-tag'; // highlight-line
 ```
 
 And add this code to the bottom of `index.js`:
