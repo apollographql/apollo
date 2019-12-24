@@ -186,6 +186,8 @@ Next, specify a client resolver on the `Launch` type to tell Apollo Client how t
 _src/resolvers.js_
 
 ```js
+import { GET_CART_ITEMS } from './pages/cart';
+
 export const resolvers = {
   Launch: {
     isInCart: (launch, _, { cache }) => {
