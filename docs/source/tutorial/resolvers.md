@@ -305,7 +305,7 @@ Let's open up `src/index.js` and update the `context` function on `ApolloServer`
 
 _src/index.js_
 
-```js{1,4,8,10}
+```js{1,4-16}
 const isEmail = require('isemail');
 
 const server = new ApolloServer({
