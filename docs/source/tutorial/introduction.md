@@ -3,6 +3,8 @@ title: 0. Introduction
 description: Start here to learn how to build full-stack apps with Apollo
 ---
 
+Time to accomplish: _5 Minutes_
+
 Welcome! This tutorial guides you through building a full-stack, GraphQL-powered app with the Apollo platform.
 
 We want you to feel empowered to build your own production-ready app with Apollo, so 
