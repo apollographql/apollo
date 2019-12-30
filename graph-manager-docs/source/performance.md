@@ -9,13 +9,13 @@ From that information it is possible to track down slow or frequently erroring r
 
 #### How it works
 
-With [one line of configuration](/references/setup-analytics/), Apollo Server will start recording traces of every request it receives and sending summaries of that performance data to Graph Manager. Graph Manager aggregates and summarizes those traces to provide segmented, filterable insights about your graph's usage.
+With [one line of configuration](https://www.apollographql.com/docs/references/setup-analytics/), Apollo Server will start recording traces of every request it receives and sending summaries of that performance data to Graph Manager. Graph Manager aggregates and summarizes those traces to provide segmented, filterable insights about your graph's usage.
 
 ## Traces
 
 With the metrics reporting set up, you'll be able to see traces of your operations in [Graph Manager](https://engine.apollographql.com). Execution of a GraphQL request happens layer by layer, and each field in the query calls a function in your server called a resolver. The [_trace_ view in Graph Manager](https://blog.apollographql.com/the-new-trace-view-in-apollo-engine-566b25bdfdb0) allows you to look at a detailed breakdown of the execution for individual operations, with timing shown for every resolver.
 
-![Trace view](../img/trace.png)
+![Trace view](./img/trace.png)
 
 ### Critical path
 
@@ -25,7 +25,7 @@ When a trace is opened, some resolvers are collapsed and others are expanded. Th
 
 Every trace stored in Graph Manager records the request's resolver timings, variables, and HTTP headers. This is particularly useful when debugging and the detailed information about the trace can be found by opening up the _trace inspector_:
 
-![Trace Inspector](../img/trace-inspector.png)
+![Trace Inspector](./img/trace-inspector.png)
 
 ### A note on GraphQL subscriptions
 
@@ -88,6 +88,6 @@ But where possible, we strongly advise that you keep sensitive data in GraphQL v
 
 Metrics reporting to Graph Manager comes with built-in error tracking for basic GraphQL errors. Graph Manager will be able to classify errors by **error type**, **class**, and **message**.
 
-![Errors](../img/error.png)
+![Errors](./img/error.png)
 
 The errors tab in Graph Manager's metrics layer automatically shows errors aggregated across your service, and this can be filtered to errors for a specific operation using the filter panel. Each operation can have multiple requests that return errors and will list these. Each error listed that has one trace can have multiple errors under each resolver. Clicking into the trace for a request with errors will take you to details of that error instance.

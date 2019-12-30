@@ -1,35 +1,34 @@
 ---
-title: Welcome
-description: Start here to learn about the Apollo platform
+title: Documentation Home
+description: Explore the Apollo platform
 ---
 
-Hi there! 👋 We're excited you're here to learn about Apollo.
+import DocsetMenu from './components/docset-menu';
+import { Button } from '@apollo/space-kit/Button';
+import { Link } from 'gatsby';
+import { colors } from 'gatsby-theme-apollo-core';
 
-Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects application clients (such as React and iOS apps) to back-end services.
+Welcome! 👋 Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects your application clients (such as React and iOS apps) to your back-end services.
+
+<DocsetMenu />
+
+### New to Apollo or GraphQL?
 
 It's easy to adopt Apollo incrementally, meaning you can set it up alongside an existing solution (such as a REST API) and migrate functionality at your convenience.
 
-**The Apollo platform consists of:**
-
-- [Apollo Client](https://apollographql.com/docs/react/), an open-source library for managing state in application clients
-
-- [Apollo Server](https://apollographql.com/docs/apollo-server/), an open-source framework for implementing and running a data graph at scale
-
-- [Apollo Graph Manager](https://apollographql.com/docs/platform/graph-manager-overview) (formerly Engine), a cloud service that helps you manage, validate, and secure your organization's data graph
-
-- Developer tools that make it even easier to work with Apollo, including extensions for [Chrome](https://apollographql.com/docs/react/features/developer-tooling/#apollo-client-devtools) and [VS Code](/platform/editor-plugins/)
-
-Conveniently, we have a tutorial that introduces you to each component of the platform. Ready to dive in?
-
-import { ButtonWrapper, ButtonLink } from 'gatsby-theme-apollo-docs';
-
-<ButtonWrapper>
-  <ButtonLink size="large" color="branded" to="/tutorial/introduction">
-    Try it out!
-  </ButtonLink>
-  <ButtonLink size="large" to="/intro/platform">
+<div>
+  <Button
+    size="large"
+    color={colors.primary}
+    as={<Link to="/tutorial/introduction" />}
+  >
+    Start the tutorial!
+  </Button>
+  <Button
+    size="large"
+    as={<Link to="/intro/platform" />}
+    style={{marginLeft: 16}}
+  >
     Learn more
-  </ButtonLink>
-</ButtonWrapper>
-
-![Graph layer](./img/platform.jpg)
+  </Button>
+</div>

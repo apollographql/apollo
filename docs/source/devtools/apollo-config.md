@@ -5,7 +5,7 @@ description: How to configure Apollo VS Code and CLI with apollo.config.js
 
 Apollo projects are configured using an `apollo.config.js` file at the root of your project. Many Apollo tools leverage your the Apollo config, reducing the net amount of configuration you need to do in your project in the end.
 
-If you're using one of our workflow tools like the Apollo CLI or the Apollo VS Code extension, you'll need to have an `apollo.config.js` project to get the features those tools bring.
+If you're using one of our workflow tools like the [Apollo CLI](./cli/) or the [Apollo VS Code extension](./editor-plugins/), you'll need to have an `apollo.config.js` project to get the features those tools bring.
 
 There are two types of projects, `client` and `service`. When a `client` key is found in the config, a project is treated as a client project, and only `client:*` commands may be run against it. The same is true for `service` projects. The `apollo.config.js` file is meant to describe configuration for a **single project only**. If used in a monorepo with multiple projects, there should be a separate config file for each project.
 
@@ -27,13 +27,13 @@ module.exports = {
 
 There are a few different ways you can link your client to a schema:
 
-1. Use the Apollo [schema registry](/platform/schema-registry/)
-1. With a remote endpoint (from a running server)
-1. With a local schema file
+1. Use the Apollo [schema registry](https://www.apollographql.com/docs/graph-manager/schema-registry/)
+2. With a remote endpoint (from a running server)
+3. With a local schema file
 
 #### _Option 1_: Use the Apollo schema registry
 
-To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](/platform/schema-registry/).
+To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](https://www.apollographql.com/docs/graph-manager/schema-registry/).
 
 With Graph Manager set up, you can point your client directly to your graph's schema by putting your graph's Graph Manager ID in your Apollo config, like so:
 
@@ -45,7 +45,7 @@ module.exports = {
 };
 ```
 
-> **Note:** you must have a [registered schema](/platform/schema-registry/#registering-a-schema) for features like VS Code intellisense, which requires knowledge of your schema, to work properly.
+> **Note:** you must have a [registered schema](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema) for features like VS Code intellisense, which requires knowledge of your schema, to work properly.
 
 If you're tracking different versions of your schema in the registry using schema variants, you can link your client to a specific variant like so:
 
