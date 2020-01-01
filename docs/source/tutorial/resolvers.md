@@ -22,7 +22,7 @@ fieldName: (parent, args, context, info) => data;
 - **context**: An object shared by all resolvers in a GraphQL operation. We use the context to contain per-request state such as authentication information and access our data sources.
 - **info**: Information about the execution state of the operation which should only be used in advanced cases
 
-Remember the `LaunchAPI` and `UserAPI` data sources we created in the previous section and passed to the `context` property of `ApolloServer`? We're going to call them in our resolvers by accessing the `context` argument.
+Remember the `LaunchAPI` and `UserAPI` data sources we created in the previous section and passed to the `dataSource` property of `ApolloServer`? We're going to call them in our resolvers by accessing the `context` argument.
 
 This might sound confusing at first, but it will start to make more sense once we dive into practical examples. Let's get started!
 
