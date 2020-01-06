@@ -54,7 +54,7 @@ There are GraphQL server tools available for most popular languages, but we reco
 
 One of the best things about GraphQL is that it works excellently with existing APIs. It's possible to connect any number of existing services to your schema.
 
-The most common source is a REST API. The [`RESTDataSource`](https://www.apollographql.com/docs/apollo-server/features/data-sources.html) is a tool that integrates with `apollo-server` to simplify fetching and caching for existing REST APIs.
+The most common source is a REST API. The [`RESTDataSource`](https://www.apollographql.com/docs/apollo-server/data/data-sources/#rest-data-source) is a tool that integrates with `apollo-server` to simplify fetching and caching for existing REST APIs.
 
 Other DataSources are under development, but even without the `DataSource` API, it's possible to connect any backend to a schema. [Resolvers](https://www.apollographql.com/docs/apollo-server/essentials/data.html) can do anything, including fetch data from an SDK or ORM.
 
