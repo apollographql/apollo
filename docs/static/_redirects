@@ -4,7 +4,7 @@
 /docs/resources/apollo-config/ /docs/devtools/apollo-config/
 
 # Get rid of "References" category
-/docs/references/apollo-config/ /docs/resources/apollo-config/
+/docs/references/apollo-config/ /docs/devtools/apollo-config/
 /docs/references/setup-analytics/ /docs/graph-manager/setup-analytics/
 
 # Split "Apollo Engine guide" into two articles
@@ -16,7 +16,7 @@
 /docs/guides/versioning.html /docs/platform/schema-validation#versioning
 
 # This lived here for a short period of time.
-/docs/resources/apollo-config.html /docs/platform/apollo-config
+/docs/resources/apollo-config.html /docs/devtools/apollo-config
 
 # Redirect Removed Guides to Client & Server Docs
 /docs/guides/schema-design.html /docs/apollo-server/essentials/schema
@@ -28,7 +28,7 @@
 /docs/guides/file-uploads.html https://blog.apollographql.com/file-uploads-with-apollo-server-2-0-5db2f3f60675
 
 # Move our Apollo config docs to the References section
-/docs/platform/apollo-config.html /docs/references/apollo-config
+/docs/platform/apollo-config.html /docs/devtools/apollo-config
 /docs/platform/setup-analytics.html /docs/references/setup-analytics
 /docs/platform/schema-validation.html /docs/graph-manager/schema-validation
 
