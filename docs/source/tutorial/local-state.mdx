@@ -25,11 +25,9 @@ Navigate to `src/resolvers.tsx` and copy the following code to create your clien
 <MultiCodeBlock>
 
 ```tsx:title=src/resolvers.tsx
-import gql from 'graphql-tag';
-import { ApolloCache } from 'apollo-cache';
+import { gql, ApolloCache, Resolvers } from '@apollo/client';
 import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
 import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
-import { Resolvers } from 'apollo-client'
 
 export const typeDefs = gql`
   extend type Query {
@@ -47,8 +45,8 @@ export const typeDefs = gql`
 `;
 
 type ResolverFn = (
-  parent: any, 
-  args: any, 
+  parent: any,
+  args: any,
   { cache } : { cache: ApolloCache<any> }
 ) => any;
 
@@ -77,17 +75,15 @@ Jump back to `src/index.tsx` and notice we had already added a `cache.writeData`
 
 <MultiCodeBlock>
 
-```tsx{1,11-12,15-20}:title=src/index.tsx
+```tsx{1,9-10,13-18}:title=src/index.tsx
 import { resolvers, typeDefs } from './resolvers';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  }),
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token'),
+  },
   typeDefs,
   resolvers,
 });
@@ -112,9 +108,8 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 
 <MultiCodeBlock>
 
-```tsx{8-12,15}:title=src/index.tsx
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';  // preserve-line
-import gql from 'graphql-tag'; // preserve-line
+```tsx{7-11,14}:title=src/index.tsx
+import { gql, ApolloProvider, useQuery } from '@apollo/client';  // preserve-line
 
 import Pages from './pages'; // preserve-line
 import Login from './pages/login'; // preserve-line
@@ -150,8 +145,7 @@ Let's look at another example of a component that queries local state in `src/pa
 
 ```tsx:title=src/pages/cart.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { Header, Loading } from '../components'; // preserve-line
 import { CartItem, BookTrips } from '../containers'; // preserve-line
@@ -178,7 +172,7 @@ const Cart: React.FC<CartProps> = () => {
   const { data, loading, error } = useQuery<
     GetCartItemsTypes.GetCartItems
   >(GET_CART_ITEMS);
-  
+
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
 
@@ -215,7 +209,7 @@ To add a virtual field, first extend the type of the data you're adding the fiel
 <MultiCodeBlock>
 
 ```ts:title=src/resolvers.tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const schema = gql`
   extend type Launch {
@@ -243,12 +237,12 @@ interface AppResolvers extends Resolvers {
 export const resolvers: AppResolvers = { // highlight-line
   Launch: {
     isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
-      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems>({ 
-        query: GET_CART_ITEMS 
+      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems>({
+        query: GET_CART_ITEMS
       });
       if (queryResult) {
         return queryResult.cartItems.includes(launch.id)
-      } 
+      }
       return false;
     }
   },
@@ -294,7 +288,7 @@ Direct cache writes are convenient when you want to write a simple field, like a
 ```tsx:title=src/containers/logout-button.tsx
 import React from 'react';
 import styled from 'react-emotion';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 
 import { menuItemClassName } from '../components/menu-item';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
@@ -331,10 +325,9 @@ We can also perform direct writes within the `update` function of the `useMutati
 
 <!-- TODO: make this more brief after a fix lands -->
 
-```tsx{39-41}:title=src/containers/book-trips.tsx
+```tsx{38-40}:title=src/containers/book-trips.tsx
 import React from 'react'; // preserve-line
-import { useMutation } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client'; // preserve-line
 
 import Button from '../components/button'; // preserve-line
 import { GET_LAUNCH } from './cart-item'; // preserve-line
@@ -360,7 +353,7 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
   const [
     bookTrips, { data }
   ] = useMutation<
-    BookTripsTypes.BookTrips, 
+    BookTripsTypes.BookTrips,
     BookTripsTypes.BookTripsVariables
   > (
     BOOK_TRIPS,
@@ -379,8 +372,8 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
   return data && data.bookTrips && !data.bookTrips.success
     ? <p data-testid="message">{data.bookTrips.message}</p>
     : (
-      <Button 
-        onClick={() => bookTrips()} 
+      <Button
+        onClick={() => bookTrips()}
         data-testid="book-button">
         Book All
       </Button>
@@ -392,8 +385,7 @@ export default BookTrips;
 
 ```jsx:title=src/containers/book-trips.jsx
 import React from 'react'; // preserve-line
-import { useMutation } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client'; // preserve-line
 
 import Button from '../components/button'; // preserve-line
 import { GET_LAUNCH } from './cart-item'; // preserve-line
@@ -419,7 +411,7 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
   const [
     bookTrips, { data }
   ] = useMutation<
-    BookTripsTypes.BookTrips, 
+    BookTripsTypes.BookTrips,
     BookTripsTypes.BookTripsVariables
   > (
     BOOK_TRIPS,
@@ -438,8 +430,8 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
   return data && data.bookTrips && !data.bookTrips.success
     ? <p data-testid="message">{data.bookTrips.message}</p>
     : (
-      <Button 
-        onClick={() => bookTrips()} 
+      <Button
+        onClick={() => bookTrips()}
         data-testid="book-button">
         Book All
       </Button>
@@ -471,8 +463,8 @@ export const resolvers = {
   Mutation: {
     addOrRemoveFromCart: (_, { id }: { id: string }, { cache }): string[] => {
       const queryResult = cache
-        .readQuery<GetCartItemTypes.GetCartItems, any>({ 
-          query: GET_CART_ITEMS 
+        .readQuery<GetCartItemTypes.GetCartItems, any>({
+          query: GET_CART_ITEMS
         });
       if (queryResult) {
         const { cartItems } = queryResult;
@@ -499,7 +491,7 @@ Let's see how we call the `addOrRemoveFromCart` mutation in a component:
 <MultiCodeBlock>
 
 ```tsx:title=src/containers/action-button.tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 const TOGGLE_CART = gql`
   mutation addOrRemoveFromCart($launchId: ID!) {
@@ -518,8 +510,7 @@ Now that our local mutation is complete, let's build out the rest of the `Action
 
 ```tsx:title=src/containers/action-button.tsx
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';

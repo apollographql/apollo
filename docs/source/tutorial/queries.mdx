@@ -8,7 +8,7 @@ import Disclaimer from '../../shared/disclaimer.mdx';
 
 Time to accomplish: _15 Minutes_
 
-Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/react-hooks` to fetch more complex queries and execute features like pagination.
+Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/client` to fetch more complex queries and execute features like pagination.
 
 ## The useQuery hook
 
@@ -20,7 +20,7 @@ The `useQuery` hook leverages React's [Hooks API](https://reactjs.org/docs/hooks
 
 <Disclaimer />
 
-To create a component with `useQuery`, import `useQuery` from `@apollo/react-hooks`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
+To create a component with `useQuery`, import `useQuery` from `@apollo/client`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
 
 First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.tsx` to get started and copy the code below into the file.
 
@@ -28,8 +28,7 @@ First, we're going to build a GraphQL query that fetches a list of launches. We'
 
 ```tsx:title=src/pages/launches.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { LaunchTile, Header, Button, Loading } from '../components'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
@@ -69,12 +68,12 @@ Now, let's pass that query to Apollo's `useQuery` component to render the list. 
 interface LaunchesProps extends RouteComponentProps {}
 
 const Launches: React.FC<LaunchesProps> = () => {
-  const { 
-    data, 
-    loading, 
+  const {
+    data,
+    loading,
     error
   } = useQuery<
-    GetLaunchListTypes.GetLaunchList, 
+    GetLaunchListTypes.GetLaunchList,
     GetLaunchListTypes.GetLaunchListVariables
   >(GET_LAUNCHES);
 
@@ -113,13 +112,13 @@ To build a paginated list with Apollo, we first need to destructure the `fetchMo
 
 ```tsx:title=src/pages/launches.tsx
 const Launches: React.FC<LaunchesProps> = () => {
-  const { 
-    data, 
-    loading, 
-    error, 
+  const {
+    data,
+    loading,
+    error,
     fetchMore // highlight-line
   } = useQuery<
-    GetLaunchListTypes.GetLaunchList, 
+    GetLaunchListTypes.GetLaunchList,
     GetLaunchListTypes.GetLaunchListVariables
   >(GET_LAUNCHES);
   // same as above
@@ -137,7 +136,7 @@ Copy the code below and add it before the closing `</Fragment>` tag in the `Laun
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
-{data.launches && 
+{data.launches &&
   data.launches.hasMore && (
     <Button
       onClick={() =>
@@ -168,7 +167,7 @@ Copy the code below and add it before the closing `</Fragment>` tag in the `Laun
 ```
 
 ```jsx:title=src/pages/launches.jsx
-{data.launches && 
+{data.launches &&
   data.launches.hasMore && (
     <Button
       onClick={() =>
@@ -214,8 +213,7 @@ Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we
 
 ```tsx:title=src/pages/launch.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag'; 
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
 import { ActionButton } from '../containers'; // preserve-line
@@ -254,17 +252,17 @@ interface LaunchProps extends RouteComponentProps {
 }
 
 const Launch: React.FC<LaunchProps> = ({ launchId }) => {
-  const { 
-    data, 
-    loading, 
-    error 
+  const {
+    data,
+    loading,
+    error
   } = useQuery<
-    LaunchDetailsTypes.LaunchDetails, 
+    LaunchDetailsTypes.LaunchDetails,
     LaunchDetailsTypes.LaunchDetailsVariables
-  >(GET_LAUNCH_DETAILS, 
+  >(GET_LAUNCH_DETAILS,
     { variables: { launchId } }
   );
-  
+
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
   if (!data) return <p>Not found</p>;
@@ -372,8 +370,7 @@ First, let's navigate to `src/pages/profile.tsx` and write our query:
 
 ```tsx:title=src/pages/profile.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag'; // preserve-line
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { Loading, Header, LaunchTile } from '../components'; // preserve-line
 import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
