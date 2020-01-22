@@ -119,7 +119,7 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 ## Datadog
 
-You can forward Graph Manager performance metrics to your Datadog account. Datadog supports an advanced function API, which enables you to create sophisticated graphs and alerts for GraphQL metrics.
+The **Apollo Datadog integration** enables you to forward Graph Manager performance metrics to your Datadog account. Datadog supports an advanced function API, which enables you to create sophisticated graphs and alerts for GraphQL metrics.
 
 ### Setup
 
@@ -176,7 +176,7 @@ Suppose you want to see the 95th percentile request latency averaged across all 
 In the [Datadog metrics explorer](https://app.datadoghq.com/metric/explorer):
 1. In the **Graph** field, select `apollo.engine.operations.latency.95percentile`.
 2. In the **Over** field, select the name of the service to graph.
-3. In the **One graph per** field, Select `variant`. Choose the variants for your production and staging environments.
+3. In the **One graph per** field, select `variant`. Choose the variants for your production and staging environments.
 4. In the **On each graph, aggregate with the** field, select `Average of reported values`.
 
 At Apollo, we use Graph Manager to monitor Graph Manager itself, so this graph for us looks like the following:
@@ -197,7 +197,7 @@ The [Datadog metric alert query](https://docs.datadoghq.com/api/?lang=curl#metri
 ```
 sum(last_10m):sum:apollo.engine.operations.error_count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) / sum:apollo.engine.operations.count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) > 0.01
 ```
-The `.rollup(sum).fill(null)` is necessary because `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation]() and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
+The `.rollup(sum).fill(null)` is necessary because `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation](https://docs.datadoghq.com/dashboards/functions/rollup/#rollup-interval-enforced-vs-custom) and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
 
 #### Example #2
 
