@@ -14,7 +14,7 @@ While Apollo Client works with any view layer, it's most commonly used with Reac
 
 ## Set up your development environment
 
-For this half of the tutorial, we will be working in the `client/` folder of the project. You should have the project already from the server portioned, but if you don't, make sure to clone [the tutorial](https://github.com/apollographql/fullstack-tutorial/). From the root of the project, run:
+For this half of the tutorial, we will be working in the `client/` folder of the project. You should have the project already from the server portion, but if you don't, make sure to clone [the tutorial](https://github.com/apollographql/fullstack-tutorial/). From the root of the project, run:
 
 ```bash
 cd start/client && npm install
@@ -139,7 +139,7 @@ Go ahead and delete the `client.query()` call you just made and the `gql` import
 
 Connecting Apollo Client to our React app with Apollo's hooks allows us to easily bind GraphQL operations to our UI.
 
-To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/client` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
+To connect Apollo Client to React, we'll wrap our app in an `ApolloProvider` component and pass our client to its `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
 Open `src/index.tsx` and add the following lines of code:
 
