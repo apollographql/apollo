@@ -37,10 +37,6 @@ export const typeDefs = gql`
     cartItems: [ID!]!
   }
 
-  extend type Launch {
-    isInCart: Boolean!
-  }
-
   extend type Mutation {
     addOrRemoveFromCart(id: ID!): [ID!]!
   }
@@ -214,17 +210,47 @@ To add a virtual field, first extend the type of the data you're adding the fiel
 
 <MultiCodeBlock>
 
-```ts:title=src/resolvers.tsx
+```tsx{13-15}:title=src/resolvers.tsx
 import gql from 'graphql-tag';
+import { ApolloCache } from 'apollo-cache';
+import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
+import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
+import { Resolvers } from 'apollo-client'
 
-export const schema = gql`
+export const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+    cartItems: [ID!]!
+  }
+
   extend type Launch {
     isInCart: Boolean!
   }
+
+  extend type Mutation {
+    addOrRemoveFromCart(id: ID!): [ID!]!
+  }
 `;
+
+type ResolverFn = (
+  parent: any, 
+  args: any, 
+  { cache } : { cache: ApolloCache<any> }
+) => any;
+
+interface ResolverMap {
+  [field: string]: ResolverFn;
+}
+
+interface AppResolvers extends Resolvers {
+  // We will update this with our app's resolvers later
+}
+
+export const resolvers = {};
 ```
 
 </MultiCodeBlock>
+
 
 Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field :
 
