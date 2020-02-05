@@ -33,8 +33,9 @@ module.exports = {
             'graph-manager-data-privacy',
           ],
           'Integrations': [
-            'integrations',
-            'editor-plugins',
+            'github-integration',
+            'slack-integration',
+            'datadog-integration'
           ]
         },
       },
