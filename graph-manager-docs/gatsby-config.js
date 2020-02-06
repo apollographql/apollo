@@ -8,7 +8,7 @@ module.exports = {
       options: {
         ...themeOptions,
         root: __dirname,
-        contentDir: 'graph-manager-docs/source',
+        baseDir: 'graph-manager-docs',
         subtitle: 'Graph Manager',
         description: 'How to use Apollo Graph Manager',
         githubRepo: 'apollographql/apollo',
