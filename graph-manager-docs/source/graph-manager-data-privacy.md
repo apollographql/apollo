@@ -147,7 +147,7 @@ Apollo has implemented a process to intake, review, and fulfill customer request
 
 #### Where can I learn more about Apollo's security and privacy policies?
 
-The legal terms and policies that apply to Apollo's corporate websites and customer products or services are available at https://www.meteor.com/policy.
+The legal terms and policies that apply to Apollo's corporate websites and customer products or services are available at https://www.apollographql.com/Apollo-Website-Terms-of-Service.pdf and https://www.apollographql.com/Apollo-Terms-of-Service.pdf.
 
 #### Where can I get more help?
 
@@ -161,4 +161,4 @@ Policies and Agreements
 
 ## Policies and Agreements
 
-To learn about other ways that we protect your data, please read over our [Terms of Service](https://www.apollographql.com/policies/terms) and [Privacy Policy](https://www.apollographql.com/policies/privacy).
+To learn about other ways that we protect your data, please read over our [Terms of Service](https://www.apollographql.com/Apollo-Terms-of-Service.pdf) and [Privacy Policy](https://www.apollographql.com/Apollo-Privacy-Policy.pdf).
