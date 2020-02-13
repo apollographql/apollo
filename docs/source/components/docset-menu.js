@@ -72,7 +72,6 @@ const StyledLink = styled.a({
 });
 
 const icons = [
-  <IconTelescope1 weight="thin" />,
   <IconSatellite3 weight="thin" />,
   <ReactLogo />,
   <IconSchema weight="thin" />,
@@ -81,14 +80,15 @@ const icons = [
     paddingTop: 0,
     paddingBottom: 2
   }} />,
-  <IconLink weight="thin" />
 ];
 
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
     <Wrapper>
-      {navItems.map((navItem, index) => (
+      {navItems.filter((navItem) => {
+        return !(navItem.omitLandingPage);
+      }).map((navItem, index) => (
         <MenuItem key={navItem.url}>
           <IconWrapper>
             {icons[index]}
