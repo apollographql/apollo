@@ -72,14 +72,14 @@ const StyledLink = styled.a({
 });
 
 const icons = [
-  <ReactLogo />,
   <IconSatellite3 weight="thin" />,
+  <ReactLogo />,
+  <IconSchema weight="thin" />,
   <AppleLogo style={{
     padding: 1,
     paddingTop: 0,
     paddingBottom: 2
   }} />,
-  <IconSchema weight="thin" />,
 ];
 
 export default function DocsetMenu() {
