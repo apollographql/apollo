@@ -8,7 +8,7 @@ module.exports = {
       options: {
         ...themeOptions,
         root: __dirname,
-        contentDir: 'graph-manager-docs/source',
+        baseDir: 'graph-manager-docs',
         subtitle: 'Graph Manager',
         description: 'How to use Apollo Graph Manager',
         githubRepo: 'apollographql/apollo',
@@ -17,16 +17,26 @@ module.exports = {
           null: [
             'index',
             'accounts-organizations',
+          ],
+          'Schema Management': [
             'schema-registry',
             'schema-validation',
-            'client-awareness',
-            'operation-registry',
-            'editor-plugins',
-            'performance',
-            'integrations',
             'federation',
-            'graph-manager-data-privacy'
           ],
+          'Monitoring & Metrics': [
+            'setup-analytics',
+            'client-awareness',
+            'performance',
+          ],
+          'Security': [
+            'operation-registry',
+            'graph-manager-data-privacy',
+          ],
+          'Integrations': [
+            'github-integration',
+            'slack-integration',
+            'datadog-integration'
+          ]
         },
       },
     },
