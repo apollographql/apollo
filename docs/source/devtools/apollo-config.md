@@ -3,7 +3,7 @@ title: Configuring Apollo projects
 description: How to configure Apollo VS Code and CLI with apollo.config.js
 ---
 
-Apollo projects are configured using an `apollo.config.js` file at the root of your project. Many Apollo tools leverage your the Apollo config, reducing the net amount of configuration you need to do in your project in the end.
+Apollo projects are configured using an `apollo.config.js` file at the root of your project. Many Apollo tools leverage your Apollo config, reducing the net amount of configuration you need to do in your project in the end.
 
 If you're using one of our workflow tools like the [Apollo CLI](./cli/) or the [Apollo VS Code extension](./editor-plugins/), you'll need to have an `apollo.config.js` project to get the features those tools bring.
 
