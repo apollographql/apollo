@@ -2,11 +2,13 @@
 title: Graph Manager overview
 ---
 
+import CalloutCard from '../components/callout-card';
+
 **Apollo Graph Manager** (formerly Apollo Engine) is a cloud service that helps you manage, validate, and secure your organization's data graph.
 
-In addition to serving as a GraphQL schema registry, Graph Manager ingests operation metadata and execution trace data from your GraphQL server to help you understand your schema and query usage.
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<CalloutCard style={{maxWidth: 560}} />
 
 ## Feature summary
 
@@ -23,11 +25,12 @@ mutations, and other object definitions
 
 **Additional features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
 
+* [Metrics segmentation by distinct clients and versions](/client-awareness/)
 * [Operation safelisting](/operation-registry/)
 * [Schema change validation](/schema-validation/)
 * [Resolver-level query tracing](/performance/)
-* [Third-party integrations](/integrations/)
 * [Management of a federated data graph](/federation/)
+* Third-party integrations (e.g., [Datadog](/datadog-integration/))
 * Longer data retention
 
 [Learn more about pricing and billing](https://www.apollographql.com/plans/)

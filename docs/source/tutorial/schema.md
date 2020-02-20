@@ -1,54 +1,66 @@
 ---
 title: '1. Build a schema'
-description: Create a blueprint for your graph's data
+description: Create the blueprint for your data graph
 ---
 
-The first step on our journey toward building our graph API is constructing its **schema**. You can think of a schema as a blueprint for all of the data you can access in your graph. Throughout this section, you'll learn how to build and explore your graph's schema with Apollo.
+Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might define the following types:
+
+```graphql
+type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+```
+
+In the steps below, we'll set up a GraphQL server that will enforce our schema's structure, and then we'll define the schema itself.
 
 ## Set up Apollo Server
 
-Before we write our schema, we need to set up our graph API's server. **Apollo Server** is a library that helps you build a production-ready graph API over your data. It can connect to any data source, including REST APIs and databases, and it seamlessly integrates with Apollo developer tooling.
+A schema is only useful if our data graph conforms to the schema's structure. Enforcing a schema's structure is one of the core features of **Apollo Server**, a production-ready, open-source library that helps you implement your data graph's API.
 
-From the root, let's install our project's dependencies:
+From the `start/server` directory, let's install Apollo Server (along with our project's other dependencies):
 
 ```bash
 cd start/server && npm install
 ```
 
-The two packages you need to get started with Apollo Server are `apollo-server` and `graphql`, which we've already installed for you. Now, let's navigate to `src/index.js` so we can create our server. Copy the code below into the file.
+The two packages you need to get started with Apollo Server are `apollo-server` and `graphql`, both of which are installed with the above command.
 
-_src/index.js_
+Now, let's navigate to `src/index.js` so we can create our server. Paste the code below into the file:
 
-```js
+```js:title=src/index.js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 
 const server = new ApolloServer({ typeDefs });
 ```
 
-To build our graph API, we need to import the `ApolloServer` class from `apollo-server`. We also need to import our schema from `src/schema.js`. Next, let's create a new instance of `ApolloServer` and pass our schema to the `typeDefs` property on the configuration object.
+This code imports the `ApolloServer` class from `apollo-server`, along with our (currently undefined) schema from `src/schema.js`. It then creates a new instance of `ApolloServer` and passes it the imported schema via the `typeDefs` property.
 
-Before we can start the server, we need to write our schema first.
+Now that Apollo Server is prepared to receive our schema, let's define it.
 
-## Write your graph's schema
+## Define your schema's types
 
-Every graph API is centered around its schema. You can think of a schema as a blueprint that describes all of your data's types and their relationships. A schema also defines what data we can fetch through queries and what data we can update through mutations. It is strongly typed, which unlocks powerful developer tooling.
+Your GraphQL schema defines what types of data a client can read and write to your data graph. Schemas are strongly typed, which unlocks powerful developer tooling.
 
-Schemas are at their best when they are designed around the needs of the clients that are consuming them. Since a schema sits in between your clients and your underlying services, it serves as a perfect middle ground for frontend and backend teams to collaborate. We recommend that teams practice **Schema First Development** and agree upon the schema first before any API development begins.
+Your schema's structure should support the actions that your clients will take. Our example app needs to be able to:
 
-Let's think about the data we will need to expose in order to build our app. Our app needs to:
+* Fetch a list of all upcoming rocket launches
+* Fetch a specific launch by its ID
+* Log in the user
+* Book a launch for a logged-in user
+* Cancel a previously booked launch for a logged-in user
 
-- Fetch all upcoming rocket launches
-- Fetch a specific launch by its ID
-- Login the user
-- Book launch trips if the user is logged in
-- Cancel launch trips if the user is logged in
+Let's design our schema to make these actions straightforward.
 
-Our schema will be based on these features. In `src/schema.js`, import `gql` from Apollo Server and create a variable called `typeDefs` for your schema. Your schema will go inside the `gql` function (between the backticks in this portion: <code>gql\`\`</code>).
+In `src/schema.js`, import `gql` from `apollo-server` and create a variable called `typeDefs` for your schema:
 
-_src/schema.js_
-
-```js
+```js:title=src/schema.js
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
@@ -58,34 +70,19 @@ const typeDefs = gql`
 module.exports = typeDefs;
 ```
 
-### Query type
+The schema will go inside the `gql` function (between the backticks). The language we'll use to write the schema is GraphQL's schema definition language (SDL).
 
-We'll start with the **Query type**, which is the entry point into our schema that describes what data we can fetch.
+> Because the schema sits directly between your application clients and your underlying data services, front-end and back-end teams should collaborate on its structure. When you develop your own data graph, practice **schema-first development** and agree on a schema _before_ you begin implementing your API.
 
-The language we use to write our schema is GraphQL's schema definition language (SDL). If you've used TypeScript before, the syntax will look familiar. Copy the following SDL code between the backticks where the `gql` function is invoked in  `src/schema.js`
+### Object types
 
-_src/schema.js_
+Most of the definitions in a GraphQL schema are **object types**. Each object type you define should represent an object that an application client might need to interact with.
 
-```graphql
-type Query {
-  launches: [Launch]!
-  launch(id: ID!): Launch
-  # Queries for the current user
-  me: User
-}
-```
+For example, our example app needs to be able to fetch a list of upcoming rocket launches, so we should define a `Launch` type to support that behavior.
 
-First, we define a `launches` query to fetch all upcoming rocket launches. This query returns an array of launches, which will never be null. Since all types in GraphQL are nullable by default, we need to add the `!` to indicate that our query will always return data. Next, we define a query to fetch a `launch` by its ID. This query takes an argument of `id` and returns a single launch. Finally, we will add a `me` query to fetch the current user's data. Above the `me` query is an example of a comment added to the schema.
+Paste the following inside the backticks of the `typeDefs` declaration in `src/schema.js`:
 
-How do we define what properties are exposed by `Launch` and `User`? For these types, we need to define a GraphQL object type.
-
-### Object & scalar types
-
-Let's define what the structure of `Launch` looks like by creating an **object type**.  Once again, copy the following SDL code inside the backticks where the `gql` function is invoked within  `src/schema.js`:
-
-_src/schema.js_
-
-```graphql
+```graphql:title=src/schema.js
 type Launch {
   id: ID!
   site: String
@@ -95,13 +92,13 @@ type Launch {
 }
 ```
 
-The `Launch` type has **fields** that correspond to object and scalar types. A **scalar type** is a primitive type like `ID`, `String`, `Boolean`, or `Int`. You can think of scalars as the leaves of your graph that all fields resolve to. GraphQL has many scalars built in, and you can also define [custom scalars](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/) like `Date`.
+The `Launch` object type has a collection of **fields**, and each field has a type of its own. A field's type can be either an object type or a **scalar type**. A scalar type is a primitive (like `ID`, `String`, `Boolean`, or `Int`) that resolves to a single value. In addition to GraphQL's built-in scalar types, you can define [custom scalar types](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/).
 
-The `Mission` and `Rocket` types represent other object types. Let's define the fields on `Mission`, `Rocket`, and `User`:
+> An exclamation point (`!`) after a declared field's type means "this field's value can never be null."
 
-_src/schema.js_
+In the `Launch` definition above, `Mission` and `Rocket` refer to _other_ object types. Let's add definitions for those, along with the `User` type (again, all inside the backticks):
 
-```graphql
+```graphql:title=src/schema.js
 type Rocket {
   id: ID!
   name: String
@@ -125,33 +122,55 @@ enum PatchSize {
 }
 ```
 
-You'll notice that the field `missionPatch` takes an argument of `size`. GraphQL is flexible because any fields can contain arguments, not just queries. The `size` argument corresponds to an **enum type**, which we're defining at the bottom with `PatchSize`.
+> If a declared field's type is in `[Square Brackets]`, it's an **array** of the specified type. If an array has an exclamation point after it, the array cannot be null, but it _can_ be empty.
 
-There are some other less common types you might also encounter when building your graph's schema. For a full list, you can reference this handy [cheat sheet](https://devhints.io/graphql#schema).
+Notice above that the `missionPatch` field of the `Mission` type takes an **argument** named `size`, which is of the **enum type** `PatchSize`. When you query for a field that takes an argument, the field's value can vary depending on the provided argument's value. In this case, the value you provide for `size` will determine which size of the mission's associated patch is returned (the `SMALL` size or the `LARGE` size).
 
-### Mutation type
+### The `Query` type
 
-Now, let's define the **Mutation type**. The `Mutation` type is the entry point into our graph for modifying data. Just like the `Query` type, the `Mutation` type is a special object type.
+We've defined the objects that exist in our data graph, but clients don't yet have a way to _fetch_ those objects. To resolve that, our schema needs to define  **queries** that clients can execute against the data graph.
 
-_src/schema.js_
+You define your data graph's supported queries as fields of a special type called the `Query` type. Paste the following into your schema definition:
 
-```graphql
+```graphql:title=src/schema.js
+type Query {
+  launches: [Launch]!
+  launch(id: ID!): Launch
+  me: User
+}
+```
+
+This `Query` type defines three available queries for clients to execute: `launches`, `launch`, and `me`.
+
+* The `launches` query will return an array of all upcoming `Launch`es.
+* The `launch` query will return a single `Launch` that corresponds to the `id` argument provided to the query.
+* The `me` query will return details for the `User` that's currently logged in.
+
+### The `Mutation` type
+
+Queries enable clients to fetch data, but not to _modify_ data. To enable clients to modify data, our schema needs to define some **mutations**.
+
+The `Mutation` type is a special type that's similar in structure to the `Query` type. Paste the following into your schema definition:
+
+```graphql:title=src/schema.js
 type Mutation {
-  # if false, booking trips failed -- check errors
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
-
-  # if false, cancellation failed -- check errors
   cancelTrip(launchId: ID!): TripUpdateResponse!
-
   login(email: String): String # login token
 }
 ```
 
-Both the `bookTrips` and `cancelTrip` mutations take an argument and return a `TripUpdateResponse`. The return type for your GraphQL mutation is completely up to you, but we recommend defining a special response type to ensure a proper response is returned back to the client. In a larger project, you might abstract this type into an interface, but for now, we're going to define `TripUpdateResponse`:
+This `Mutation` type defines three available mutations for clients to execute: `bookTrips`, `cancelTrip`, and `login`.
 
-_src/schema.js_
+* The `bookTrips` mutation enables a logged-in user to book a trip on one or more `Launch`es (specified by an array of launch IDs).
+* The `cancelTrip` mutation enables a logged-in user to cancel a trip that they previously booked.
+* The `login` mutation enables a user to log in by providing their email address.
 
-```graphql
+The `bookTrips` and `cancelTrip` mutations return the same object type: a `TripUpdateResponse`. A mutation's return type is entirely up to you, but we recommend defining special object types specifically for mutation responses.
+
+Add the definition for `TripUpdateResponse` to your schema:
+
+```graphql:title=src/schema.js
 type TripUpdateResponse {
   success: Boolean!
   message: String
@@ -159,15 +178,15 @@ type TripUpdateResponse {
 }
 ```
 
-Our mutation response type contains a success status, a corresponding message, and the launch that we updated. It's always good practice to return the data that you're updating in order for the Apollo Client cache to update automatically.
+This response type contains a `success` status, a corresponding `message`, and an array of any `Launch`es that were modified by the mutation. It's good practice for a mutation to return whatever objects it modifies so the requesting client can update its cache and UI without needing to make a followup query.
+
+Our example app's schema is now complete!
 
 ## Run your server
 
-Now that we have scoped out our app's schema, let's run the server by calling `server.listen()`.
+Return to `src/index.js` and add a call to `server.listen()`, like so:
 
-_src/index.js_
-
-```js
+```js:title=src/index.js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 
@@ -178,22 +197,22 @@ server.listen().then(({ url }) => {
 });
 ```
 
-In your terminal, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
+After saving, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
 
 ### Explore your schema
 
-By default, Apollo Server supports [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/). The Playground is an interactive, in-browser GraphQL IDE for exploring your schema and testing your queries. Apollo Server automatically serves GraphQL Playground in development only.
+With your server running, visit `localhost:4000` in your browser to open [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/), an IDE that enables you to **introspect** your schema and test out queries. Introspection is a helpful feature of a GraphQL server that enables you to obtain its schema.
 
-The GraphQL Playground provides the ability to introspect your schema. **Introspection** is a technique used to provide detailed information about a graph's schema. To see this in action, check out the right hand side of GraphQL Playground and click on the `schema` button.
+> Note that introspection should be **disabled** for a production GraphQL server. Apollo Server disables introspection automatically if the `NODE_ENV` environment variable is set to `production`.
 
-<div style="text-align:center">
-  <img src="../images/schematab.png" alt="Schema button">
-</div>
+To introspect your server's schema, click the **Schema** button on the right side of GraphQL Playground:
 
-You can quickly have access to the documentation of a GraphQL API via the `schema` button.
+<img src="../images/schematab.png" alt="Schema button">
 
-<div style="text-align:center">
-  <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
-</div>
+Your schema's queries, mutations, and object type definitions appear:
 
-That's all for building our schema. Let's move on to the next part of our tutorial.
+<img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
+
+
+
+Our server now knows which GraphQL types and operations it supports, but it doesn't know where to obtain the data to respond to those operations. Next, we'll connect our server to two data sources.
