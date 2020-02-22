@@ -321,8 +321,8 @@ The reporting configuration to use. Reports about the GraphQL queries and respon
 <dd><p>Disable sending error traces to Apollo servers. Errors are still returned in responses, but not reported to Apollo Engine cloud storage. This is for special cases when errors contain [personal data](https://en.wikipedia.org/wiki/Personal_data).</p></dd>
 <dt>privateHeaders (array of string)</dt>
 <dd><p>Headers that should not be sent to Apollo servers. These are case-sensitive.</p></dd>
-<dt>proxyUrl (string)</dt>
-<dd><p>URL to proxy reporting requests through. `socks5://` and `http://` proxies are supported.</p></dd>
+<dt>requestAgent (false | Agent | undefined)</dt>
+<dd><p>agent to proxy reporting requests through. `socks5://` and `http(s)://` proxies are supported.</p></dd>
 <dt>privateVariables (array of string)</dt>
 <dd><p>Names of variables whose values should not be sent to Apollo servers. These are case-sensitive.</p></dd>
 <dt>disabled (bool)</dt>
