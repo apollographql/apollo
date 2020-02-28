@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as AppleLogo } from '../assets/apple-logo.svg';
-import { IconLink } from '@apollo/space-kit/icons/IconLink';
 import { IconSatellite3 } from '@apollo/space-kit/icons/IconSatellite3';
 import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
-import { IconTelescope1 } from '@apollo/space-kit/icons/IconTelescope1';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
 import {
   NavItemsContext,
