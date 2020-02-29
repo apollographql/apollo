@@ -36,7 +36,7 @@ import { RouteComponentProps } from '@reach/router';
 import * as GetLaunchListTypes from './__generated__/GetLaunchList';
 
 const GET_LAUNCHES = gql`
-  query launchList($after: String) {
+  query launchList($after: String!) {
     launches(after: $after) {
       cursor
       hasMore
@@ -322,7 +322,7 @@ To use our fragment in our query, we import it into the GraphQL document and use
 
 ```tsx{7}:title=src/pages/launches.tsx
 const GET_LAUNCHES = gql`
-  query launchList($after: String) {
+  query launchList($after: String!) {
     launches(after: $after) {
       cursor
       hasMore
