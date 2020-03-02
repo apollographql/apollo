@@ -169,7 +169,6 @@ type LaunchConnection { # add this below the Query type as an additional type.
   hasMore: Boolean!
   launches: [Launch]!
 }
-
 ```
 
 You'll also notice we've added comments (also called docstrings) to our schema, indicated by `"""`. Now, the `launches` query takes in two parameters, `pageSize` and `after`, and returns a `LaunchConnection`. The `LaunchConnection` type returns a result that shows the list of launches, in addition to a `cursor` field that keeps track of where we are in the list and a `hasMore` field to indicate if there's more data to be fetched.
