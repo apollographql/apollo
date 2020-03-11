@@ -1,35 +1,27 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as AppleLogo } from '../assets/apple-logo.svg';
-import { IconLink } from '@apollo/space-kit/icons/IconLink';
 import { IconSatellite3 } from '@apollo/space-kit/icons/IconSatellite3';
 import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
-import { IconTelescope1 } from '@apollo/space-kit/icons/IconTelescope1';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
 import {
   NavItemsContext,
   NavItemTitle,
   NavItemDescription
 } from 'gatsby-theme-apollo-docs';
-import { breakpoints, colors } from 'gatsby-theme-apollo-core';
+import { colors } from 'gatsby-theme-apollo-core';
 import { colors as spaceKitColors } from '@apollo/space-kit/colors';
 import { size } from 'polished';
 
-const spacing = 12;
 const Wrapper = styled.div({
-  display: 'flex',
-  flexWrap: 'wrap',
-  margin: -spacing,
+  display: 'grid',
+  gridTemplateColumns: `repeat(auto-fill, minmax(270px, 1fr))`,
+  gridGap: 12,
   paddingTop: 8
 });
 
 const MenuItem = styled.div({
-  display: 'flex',
-  width: '50%',
-  padding: spacing,
-  [breakpoints.md]: {
-    width: '100%'
-  }
+  display: 'flex'
 });
 
 function getBoxShadow(opacity, y, blur) {
@@ -72,7 +64,6 @@ const StyledLink = styled.a({
 });
 
 const icons = [
-  <IconTelescope1 weight="thin" />,
   <IconSatellite3 weight="thin" />,
   <ReactLogo />,
   <IconSchema weight="thin" />,
@@ -81,14 +72,15 @@ const icons = [
     paddingTop: 0,
     paddingBottom: 2
   }} />,
-  <IconLink weight="thin" />
 ];
 
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
     <Wrapper>
-      {navItems.map((navItem, index) => (
+      {navItems.filter((navItem) => {
+        return !(navItem.omitLandingPage);
+      }).map((navItem, index) => (
         <MenuItem key={navItem.url}>
           <IconWrapper>
             {icons[index]}

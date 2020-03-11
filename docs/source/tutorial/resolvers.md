@@ -169,12 +169,11 @@ type LaunchConnection { # add this below the Query type as an additional type.
   hasMore: Boolean!
   launches: [Launch]!
 }
-...
 ```
 
 You'll also notice we've added comments (also called docstrings) to our schema, indicated by `"""`. Now, the `launches` query takes in two parameters, `pageSize` and `after`, and returns a `LaunchConnection`. The `LaunchConnection` type returns a result that shows the list of launches, in addition to a `cursor` field that keeps track of where we are in the list and a `hasMore` field to indicate if there's more data to be fetched.
 
-Open up the `src/utils.js` file in the repo you cloned in the previous section and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accommodate pagination.
+Open up the `src/utils.js` file and check out the `paginateResults` function. The `paginateResults` function in the file is a helper function for paginating data from the server. Now, let's update the necessary resolver functions to accommodate pagination.
 
 Let's import `paginateResults` and replace the `launches` resolver function in the `src/resolvers.js` file with the code below:
 
@@ -388,7 +387,7 @@ Mutation: {
 },
 ```
 
-Both `bookTrips` and `cancelTrips` must return the properties specified on our `TripUpdateResponse` type from our schema, which contains a success indicator, a status message, and an array of launches that we've either booked or cancelled. The `bookTrips` mutation can get tricky because we have to account for a partial success where some launches could be booked and some could fail. Right now, we're simply indicating a partial success in the `message` field to keep it simple.
+Both `bookTrips` and `cancelTrip` must return the properties specified on our `TripUpdateResponse` type from our schema, which contains a success indicator, a status message, and an array of launches that we've either booked or cancelled. The `bookTrips` mutation can get tricky because we have to account for a partial success where some launches could be booked and some could fail. Right now, we're simply indicating a partial success in the `message` field to keep it simple.
 
 ### Run mutations in the playground
 

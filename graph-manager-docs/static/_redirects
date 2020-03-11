@@ -1,5 +1,9 @@
 / /docs/graph-manager/
 
+/docs/graph-manager/integrations/ /docs/graph-manager/github-integration/
+
+/docs/graph-manager/editor-plugins/ /docs/devtools/editor-plugins/
+
 /docs/graph-manager/graph-manager-overview /docs/graph-manager
 /docs/graph-manager/tracing /docs/graph-manager/performance
 /docs/graph-manager/errors /docs/graph-manager/performance
