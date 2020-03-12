@@ -180,9 +180,6 @@ To safely remove the `EmailChannel` type from your schema:
 
 The first step causes the query planner to stop sending fragments `...on EmailChannel`, which would fail validation if sent to a service that isn't aware of the type.
 
-If you want to keep the `EmailChannel` type but remove its assocation with the `Channel` interface, follow the same steps, but only remove `implements Channel` from your `EmailChannel` definition in the first step.
-
-
 If the goal is not to remove the type
 altogether, but to only remove it from the interface, you can follow a similar
 procedure, but instead of removing the `EmailChannel` type altogether, only
