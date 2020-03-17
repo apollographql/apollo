@@ -21,12 +21,15 @@ module.exports = {
           'Schema Management': [
             'schema-registry',
             'schema-validation',
-            'federation',
           ],
           'Monitoring & Metrics': [
             'setup-analytics',
             'client-awareness',
             'performance',
+          ],
+          'Managed Federation': [
+            'federation',
+            'federation-advanced',
           ],
           'Security': [
             'operation-registry',
