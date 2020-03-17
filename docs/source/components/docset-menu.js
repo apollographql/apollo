@@ -16,7 +16,7 @@ import { size } from 'polished';
 const Wrapper = styled.div({
   display: 'grid',
   gridTemplateColumns: `repeat(auto-fill, minmax(270px, 1fr))`,
-  gridGap: 12,
+  gridGap: 24,
   paddingTop: 8
 });
 
