@@ -7,15 +7,15 @@ sidebar_title: Overview
 
 Based on our experience helping companies scale GraphQL across their organizations, there are several steps teams need to take to successfully run a federated graph in production. We recommend running through these steps after you've already [implemented a federated graph](https://www.apollographql.com/docs/apollo-server/federation/implementing/):
 
-1. [Register all implementing services](./federation/#1-register-your-implementing-services) with Apollo Graph Manager.
-2. [Configure continuous delivery](./federation/#2-configure-continuous-delivery) for schema registration.
-3. [Modify your gateway](./federation/#3-modify-the-gateway) to connect it to Graph Manager.
-4. [Turn on metrics](./federation-advanced/#metrics-and-observability) for your federated graph.
-5. [Validate changes](./federation-advanced/#validating-changes-to-the-graph) to the graph against production traffic.
+1. [Register all implementing services](./setup/#1-register-your-implementing-services) with Apollo Graph Manager.
+2. [Configure continuous delivery](./setup/#2-configure-continuous-delivery) for schema registration.
+3. [Modify your gateway](./setup/#3-modify-the-gateway) to connect it to Graph Manager.
+4. [Turn on metrics](./advanced-topics/#metrics-and-observability) for your federated graph.
+5. [Validate changes](./advanced-topics/#validating-changes-to-the-graph) to the graph against production traffic.
 
 ## Managed configuration
 
-With **managed configuration**, your GraphQL gateway updates dynamically in response to schema changes in your implementing services. You make these service changes with the `apollo service:push` CLI command, which pushes your service configuration files to Graph Manager and stores them securely (as shown in [Register your implementing services](./federation#1-register-your-implementing-services)).
+With **managed configuration**, your GraphQL gateway updates dynamically in response to schema changes in your implementing services. You make these service changes with the `apollo service:push` CLI command, which pushes your service configuration files to Graph Manager and stores them securely (as shown in [Register your implementing services](./setup#1-register-your-implementing-services)).
 
 These configuration files define:
 

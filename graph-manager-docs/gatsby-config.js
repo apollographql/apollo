@@ -28,9 +28,9 @@ module.exports = {
             'performance',
           ],
           'Managed Federation': [
-            'federation-overview',
-            'federation',
-            'federation-advanced',
+            'managed-federation/overview',
+            'managed-federation/setup',
+            'managed-federation/advanced-topics',
           ],
           'Security': [
             'operation-registry',
