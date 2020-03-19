@@ -5,9 +5,9 @@ sidebar_title: Setup
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-Apollo Graph Manager provides **managed federation** features for data graphs that use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+This article describes how to set up managed federation for an existing data graph that uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
-Graph Manager's federation-aware tooling helps your organization safely validate, coordinate, deploy, and monitor changes to your graph's gateway and implementing services.
+> As with all changes, you should first set up managed federation in a non-production environment, such as staging. To support this, you can use [variants](../schema-registry/#managing-environments-with-variants), which are distinct versions of the same data graph for different environments.
 
 ## 1. Register your implementing services
 
@@ -50,13 +50,23 @@ To get set up with schema registration, do the following for each of your implem
     * The `name` field uniquely identifies the service within your data graph. Its value appears throughout the Graph Manager UI.
     * The `url` field points to your service's GraphQL endpoint. To secure your data graph, this should be a URL that can be reached by your [gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/), but _cannot_ be reached via the public internet.
 
-3. From your project's root directory, run `apollo service:push`. The CLI obtains all necessary configuration from your project's `.env` and `apollo.config.js` files, then pushes your schema to Graph Manager.
+3. From your project's root directory, run the following:
+
+    ```
+    apollo service:push --tag=staging
+    ```
+
+    The CLI obtains all necessary configuration from your project's `.env` and `apollo.config.js` files, then pushes your schema to Graph Manager under the `staging` variant.
+
+> When you're ready to register your services in your production environment, you can either remove the `--tag` option to push to the default variant (named `current`) or replace `staging` with a new variant (such as `production`).
 
 ## 2. Configure continuous delivery
 
-With managed federation, Graph Manager (_not_ your gateway) is responsible for combining your individual schemas into a single federated schema. Consequently, **each service in your data graph must re-register its schema every time the schema changes.** Otherwise, Graph Manager can't push schema updates to your gateway.
+With managed federation, Graph Manager (_not_ your gateway) is responsible for combining your individual schemas into a single federated schema. Consequently, **each service in your data graph must re-register its schema every time the schema changes.** Otherwise, your gateway can't obtain the latest federated schema from Graph Manager.
 
 The best way to accomplish this is to add the `apollo service:push` call to your continuous delivery pipeline. Every time you push a schema change to production, this call should automatically accompany that push.
+
+For more information on best practices for updating your services, see [Pushing configuration updates safely](./advanced-topics/#pushing-configuration-updates-safely).
 
 ## 3. Modify the gateway
 
@@ -77,37 +87,48 @@ const gateway = new ApolloGateway({
 });
 ```
 
-The `serviceList` argument specifies the name and URL for each of your implementing services. With managed federation, Graph Manager pushes this information to your gateway instead.
+The `serviceList` argument specifies the name and URL for each of your implementing services. With managed federation, your gateway obtains this information from Graph Manager instead.
 
 **Remove the `serviceList` argument from your `ApolloGateway` constructor entirely.**
 
-### Register the gateway with Graph Manager
+### Connect the gateway to Graph Manager
 
-Similar to [registering your implementing services](#1-register-your-implementing-services), you need to register your gateway with Graph Manager.
+Like your implementing services, your gateway uses an API key to identify itself to Graph Manager. Create an API key from your graph's Settings page in the [Graph Manager UI](https://engine.apollographql.com/).
 
-Settings page and set the `ENGINE_API_KEY` environment variable to that key.
+Provide your API key to the gateway in any of the following ways:
 
-> If you're already setting the `engine` property of [the `ApolloServer` constructor options](https://www.apollographql.com/docs/apollo-server/api/apollo-server/) and have included the API key in those settings, you can skip setting the `ENGINE_API_KEY` value in the environment.
+* In your gateway's environment, set the `ENGINE_API_KEY` envrionment variable to the value of your API key.
+* In the constructor of `ApolloServer`, provide an `engine` argument with `apiKey` and `schemaTag` fields, like so:
 
-Then, construct the gateway and `ApolloServer` like so:
+    ```js{9-12}
+    const { ApolloServer } = require('apollo-server');
+    const { ApolloGateway } = require('@apollo/gateway');
 
-```js
-const { ApolloServer } = require('apollo-server');
-const { ApolloGateway } = require('@apollo/gateway');
+    const gateway = new ApolloGateway();
 
-// Managed configuration will be picked up using the API key
-const gateway = new ApolloGateway();
+    // Pass the gateway to Apollo Server
+    const server = new ApolloServer({
+      gateway,
+      engine: {
+        apiKey: YOUR_API_KEY,
+        schemaTag: 'staging'
+      },
+      subscriptions: false 
+    });
 
-// Pass the gateway to Apollo Server
-const server = new ApolloServer({ gateway, subscriptions: false });
+    server.listen().then(({ url }) => {
+      console.log(`🚀 Server ready at ${url}`);
+    });
+    ```
 
-// Note: Apollo gateway does not currently support subscriptions,
-// but it's on the roadmap for Apollo Server 3.x:
-// https://github.com/apollographql/apollo-server/issues/2360
+    The `engine` object is of type `EngineReportingOptions`. [See the API reference for all available fields.](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions)
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
-```
+As with your services, you can either remove or replace the `schemaTag` argument when you're ready to deploy to your production environment.
 
-> The managed configuration will default to using the `'current'` variant.  When running Apollo Gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
+> When running your gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
+
+## 4. Deploy the modified gateway
+
+You can now deploy your modified gateway to begin fetching your federated schema from Graph Manager instead of directly from your services.
+
+On startup, Apollo Server will use the API key you've specified to contact Graph Manager and pull down the federated schema. See Apollo Server's log output for details.

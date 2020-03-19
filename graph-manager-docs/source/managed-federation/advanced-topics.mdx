@@ -5,23 +5,27 @@ sidebar_title: Advanced topics
 
 The following sections describe advanced features of managed federation with Apollo Graph Manager.
 
-## Removing a service from the registry
+## Removing an implementing service
 
-Removing an federated service from the graph works similarly to registering a service. To delete a service, call `apollo service:delete`. You can also specify the graph variant you want to remove.
+To "de-register" an implementing service with Graph Manager, call `apollo service:delete`:
 
-```bash
-apollo service:delete --serviceName=launches --tag=staging
+> **This action cannot be reversed!**
+
+```
+apollo service:delete --serviceName=products
 ```
 
-> WARNING! This action cannot be reversed. Also, once deleted, service names cannot be reused within the same graph.
+Include the `--tag` option to remove an implementing service from a variant other than the default variant (`current`):
 
-### Inspecting your graph
+```
+apollo service:delete --serviceName=products --tag=staging
+```
 
-To view the federated services that make up your graph, you can use both the Apollo CLI as well as the Apollo platform.
+## Inspecting your graph
 
-Run `apollo service:list` in the command line to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated.
+To view the implementing services that make up your graph, you can use both the Apollo CLI and the [Graph Manager UI](https://engine.apollographql.com/).
 
-Here's an example of what running `apollo service:list` will look like:
+Run `apollo service:list` to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated:
 
 ```
 $ apollo service:list
@@ -38,9 +42,6 @@ Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
 View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
 ```
 
-You can see additional details about the services registered to the graph, such as each service's capabilities, in the [Apollo Dashboard](https://engine.apollographql.com/).
-
-
 ## Pushing configuration updates safely
 
 Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. To help ensure this, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
@@ -51,8 +52,8 @@ Additionally, you should perform configuration updates that affect query plannin
 
 Examples of this include:
 
-1. Modifying `@key`, `@requires`, or `@provides` directives
-2. Removing a type implementation from an interface
+* Modifying `@key`, `@requires`, or `@provides` directives
+* Removing a type implementation from an interface
 
 In general, always exercise caution when pushing configuration changes that affect your gateway's query planner, and consider how those changes will affect your other implementing services.
 
@@ -217,7 +218,7 @@ There are two types of failures that can occur during validation: failed usage c
 
 ### Handling composition failure
 
-In general, an `apollo service:push` should only be run after an `apollo service:check` has passed, but even so, due to changes in _other_ services, it's possible that the `apollo service:push` command will encounter composition errors. When this happens, the federated service will still be updated as long as its capabilities are spec-compliant, but **the graph will not be updated**. This means that a new schema will not be associated nor will the gateway's [managed configuration](./overview/#managed-configuration) be updated.
+In general, an `apollo service:push` should only be run after an `apollo service:check` has passed, but even so, due to changes in _other_ services, it's possible that the `apollo service:push` command will encounter composition errors. When this happens, the federated service will still be updated as long as its capabilities are spec-compliant, but **the graph will not be updated**. This means that a new schema will not be associated, nor will the gateway's configuration be updated.
 
 An example output of this behavior looks like this:
 
@@ -277,28 +278,28 @@ It's important to make sure that any possible end-user effect from the changes t
 
 ### Diving into service:push
 
-Every time that `apollo service:push` is called for a federated service, it not only registers the federated service to the graph, but it also updates the managed configuration files that the gateway has access to. Because the graph is dynamically changing, it's possible for composition errors to occur for a `service:push` even after a `service:check` has succeeded if other federated services changed in the interim. For this reason, updating a federated service will re-trigger composition in the cloud, ensuring that the federated services still compose to form a complete graph before provisioning the managed configuration. The workflow behind the scenes can be summed up as follows:
+Every time that `apollo service:push` is called for a federated service, it not only registers the federated service to the graph, but it also updates the configuration files that the gateway has access to. Because the graph is dynamically changing, it's possible for composition errors to occur for a `service:push` even after a `service:check` has succeeded if other federated services changed in the interim. For this reason, updating a federated service will re-trigger composition in the cloud, ensuring that the federated services still compose to form a complete graph before provisioning the configuration. The workflow behind the scenes can be summed up as follows:
 
 1. The partial schema is uploaded to a secure location and indexed.
 2. The federated service is updated in the registry to point to the partial schema.
 3. All federated services are composed in the cloud to produce a new complete schema.
 4. If composition fails, the command exits and emits errors.
-5. If composition succeeds, the top-level managed configuration file is updated in-place to point to the updated set of federated services.
+5. If composition succeeds, the top-level configuration file is updated in-place to point to the updated set of federated services.
 
-On the other side of the equation sits the gateway. The gateway is constantly listening for changes to the top-level managed configuration file. The location of the managed configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
+On the other side of the equation sits the gateway. The gateway is constantly listening for changes to the top-level configuration file. The location of the configuration file is guarded by using a hash of the API key, provisioned ahead of time so as not to affect reliability. The life-cycle of dynamic configuration updates is as follows:
 
-1. The gateway listens for updates to its managed configuration.
-2. On update, the gateway downloads configuration for each federated service in parallel.
-3. The gateway performs composition over the managed configuration to update query planning.
-4. The gateway continues to resolve in-flight requests with the previous configuration while using the updated configuration for all new requests.
+1. The gateway listens for updates to its configuration.
+2. On update, the gateway downloads the configuration for each implementing service in parallel.
+3. The gateway performs composition over the configuration to update query planning.
+4. The gateway continues to resolve in-flight requests with the previous configuration, while using the updated configuration for all new requests.
 
 ### Reliability and security
 
-The managed configuration for the Apollo gateway is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key. In the event that managed configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway will continue to serve the last-known configuration. In the event that Apollo Graph Manager API is down, changes to managed configuration will be stalled but the last-published configuration files will still be accessible via GCS.
+The gateway's configuration is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key. In the event that the configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway continues to serve the last known configuration. In the event that Apollo Graph Manager API is down, changes to your configuration will be stalled, but the last-published configuration files will still be accessible via GCS.
 
 ### Using variants to control rollout
 
-With [managed configuration](./overview/#managed-configuration), you have the ability to control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
+With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 

@@ -3,24 +3,31 @@ title: Managed federation overview
 sidebar_title: Overview
 ---
 
-## What you'll learn
+Apollo Graph Manager provides free **managed federation** features for data graphs that use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
-Based on our experience helping companies scale GraphQL across their organizations, there are several steps teams need to take to successfully run a federated graph in production. We recommend running through these steps after you've already [implemented a federated graph](https://www.apollographql.com/docs/apollo-server/federation/implementing/):
+With managed federation, your [gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) is no longer responsible for combining your [implementing service](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) schemas into a single federated schema. Instead, your implementing services push their schemas to Graph Manager, which combines them. Your gateway then fetches the federated schema and associated configuration from Graph Manager:
 
-1. [Register all implementing services](./setup/#1-register-your-implementing-services) with Apollo Graph Manager.
-2. [Configure continuous delivery](./setup/#2-configure-continuous-delivery) for schema registration.
-3. [Modify your gateway](./setup/#3-modify-the-gateway) to connect it to Graph Manager.
-4. [Turn on metrics](./advanced-topics/#metrics-and-observability) for your federated graph.
-5. [Validate changes](./advanced-topics/#validating-changes-to-the-graph) to the graph against production traffic.
+```mermaid
+graph BT;
+  subgraph " "
+  serviceA[Products service];
+  serviceB[Reviews service];
+  gateway([Gateway]);
+  end
+  graphManager{{Apollo Graph Manager}};
+  serviceA & serviceB -. Pushes schema .-> graphManager;
+  gateway -. Regularly polls for combined schema .-> graphManager;
+  class graphManager secondary;
+```
 
-## Managed configuration
+This architecture helps your organization safely validate, coordinate, deploy, and monitor changes to your graph:
 
-With **managed configuration**, your GraphQL gateway updates dynamically in response to schema changes in your implementing services. You make these service changes with the `apollo service:push` CLI command, which pushes your service configuration files to Graph Manager and stores them securely (as shown in [Register your implementing services](./setup#1-register-your-implementing-services)).
+* You can modify service schemas (and even add or remove entire services from your graph) _without_ needing to redeploy your gateway. Your gateway polls Graph Manager regularly for these changes and updates its query plans dynamically.
 
-These configuration files define:
+* If you accidentally push an _invalid_ schema change, Graph Manager continues to provide the most recent valid schema to your gateway. This prevents unintended downtime.
 
-* Which implementing services are part of your federated graph
-* The partial schema defined by each implementing service
-* Metadata about each implementing service, including the `serviceURL` specified in the CLI command
+* You can disable schema introspection for all of your implementing services, because the gateway no longer requires introspection to fetch schemas. This improves security.
 
-When you initialize your Apollo gateway with a Graph Manager `apiKey` instead of a `serviceList`, the gateway polls Graph Manager regularly to detect and incorporate any changes to your managed configuration. When it detects a change, it continues resolving incoming requests with its existing configuration while it begins to generate query plans for the new configuration. When this process completes, the gateway begins executing new incoming requests against the new configuration.
+* Graph Manager maintains the full history of your federated schema, enabling you to view when types and fields were added, deprecated, and removed.
+
+Ready to try out out? Continue to [Setup](./setup/).
