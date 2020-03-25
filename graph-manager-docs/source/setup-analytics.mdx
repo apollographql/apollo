@@ -1,7 +1,10 @@
 ---
-title: Pushing analytics to Graph Manager
+title: Pushing trace data to Graph Manager
+sidebar_title: Pushing trace data
 description: Understand your graph's performance with detailed metrics
 ---
+
+import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
 
 Apollo Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
@@ -12,31 +15,27 @@ Trace reporting enables you to visualize:
 * Which parts of the schema are used most
 * Which of your resolvers in the server are acting as bottlenecks
 
-## Pushing analytics from Apollo Server
+## Pushing traces from Apollo Server
 
-Apollo Server provides built-in support for pushing analytics to Graph Manager. To set it up, first obtain an API key from your graph's Settings page in the [Graph Manager UI](https://engine.apollographql.com/). Then, pass the API key to the `ApolloServer` constructor, like so:
+Apollo Server has built-in support for pushing traces to Graph Manager. To set it up, you provide it a **graph API key** from Graph Manager.
 
-```js{6-8}
-const { ApolloServer } = require("apollo-server");
+> A graph API key is different from a _personal_ API key. It grants access only to the graph it's associated with. Personal API keys do not allow trace reporting.
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  engine: {
-    apiKey: 'YOUR_API_KEY'
-  }
-});
+<ObtainGraphApiKey />
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
-```
+After you obtain a graph API key, assign it to the `ENGINE_API_KEY` environment variable in your production server's environment.
 
-Alternatively, you can specify your API key as the value of the `ENGINE_API_KEY` environment variable in the environment where Apollo Server will run.
+>Consult your production environment's documentation to learn how to set its environment variables.
 
-This is the only change required to begin sending traces to Graph Manager. For advanced configuration options, see [Metrics and logging](https://www.apollographql.com/docs/apollo-server/features/metrics/).
+Now the next time you start your production server, it will automatically begin pushing trace data to Graph Manager:
 
-## Pushing analytics from other GraphQL servers
+<img src="./img//metrics.jpg" class="screenshot" alt="Graph Manager metrics view"></img>
+
+You can also push trace data from environments besides production, such as a staging or beta server. To keep this data separate from your production data, learn how to [create variants of your graph](schema-registry/#managing-environments-with-variants).
+
+For advanced configuration options, see [Metrics and logging](https://www.apollographql.com/docs/apollo-server/features/metrics/).
+
+## Pushing traces from other GraphQL servers
 
 You can set up a reporting agent in your GraphQL server to push analytics to Apollo Graph Manager. The agent is responsible for:
 

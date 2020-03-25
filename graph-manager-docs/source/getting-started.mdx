@@ -1,13 +1,15 @@
 ---
-title: Getting started with Graph Manager
+title: Get started with Graph Manager
 sidebar_title: Get started
 ---
 
-import ObtainPersonalApiKey from '../shared/obtain-api-key.mdx';
+import ObtainPersonalApiKey from '../shared/obtain-personal-api-key.mdx';
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-This article gets you up and running with Graph Manager. None of these steps requires a paid plan.
+Hello! This article gets you up and running with Apollo Graph Manager.
+
+None of this setup requires a paid plan.
 
 ## Prerequisites
 
@@ -37,13 +39,13 @@ Before you begin, make sure of the following:
 
 In Graph Manager, each **graph** corresponds to a different GraphQL schema. Your first graph will correspond to the schema used by your application's GraphQL server.
 
-1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. This opens the **Graph Manager UI** now that you're logged in.
+1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens the **Graph Manager UI**.
 
     _The list of organizations you belong to appears in the left column:_
 
-    > SCREENSHOT TODO
+    <img src="./img//organization-list.png" class="screenshot" alt="Schema history page in the Graph Manager UI"></img>
 
-2. Select the organization that you want to add your GraphQL server to. Then, click **New Graph** in the upper right.
+2. Select the organization that you want to add your graph to. Then, click **New Graph** in the upper right.
 
 3. Specify a name for your graph and click **Next**. Graph Manager displays a list of instructions, which are also described in the [next section](#step-3-configure-your-project).
 
@@ -61,7 +63,7 @@ In Graph Manager, each **graph** corresponds to a different GraphQL schema. Your
     
     ```python:title=.env
     # Don't worry, the author invalidated this API key before sharing it 😉
-    ENGINE_API_KEY=user:gh.StephenBarlow:Rc5D_7mLwY74okHRCL2HMg
+    ENGINE_API_KEY=user:gh.StephenBarlow:Rc6D_7mLxY74okHRCL2HMg
     ```
 
 4. Add an `apollo.config.js` file to your project's root directory if there isn't one yet. Unlike `.env`, you _do_ add this file to version control.
@@ -71,14 +73,16 @@ In Graph Manager, each **graph** corresponds to a different GraphQL schema. Your
     ```js{3}:title=apollo.config.js
     module.exports = {
       service: {
-        name: "YOUR_SERVICE_NAME"
+        name: "YOUR_GRAPH_NAME"
       }
     }
     ```
 
 ## Step 4: Register your schema
 
-The **schema registry** sits at the heart of Graph Manager. It allows you to inspect your graph's schema and track changes to it over time.
+The **schema registry** sits at the heart of Graph Manager. It allows you to inspect your graph's schema and track changes to it over time:
+
+<img src="./img//explorer.jpg" class="screenshot" alt="Graph Manager explorer view"></img>
 
 You register your schema with the `apollo service:push` command. **You need to provide your schema to this command**, in one of the following ways:
 
@@ -86,7 +90,7 @@ You register your schema with the `apollo service:push` command. **You need to p
 
 The Apollo CLI can obtain your schema from your locally running GraphQL server via an **introspection query**. This is a special query supported by most GraphQL servers that returns the server's full schema.
 
-To provide your schema via introspection, run your GraphQL server locally. Then, run the `apollo service:push` command from your project's root directory and provide the server's `localhost` URL, like so:
+To provide your schema via introspection, first run your GraphQL server locally. Then, execute the `apollo service:push` command from your project's root directory and provide your GraphQL server's `localhost` URL, like so:
 
 ```
 apollo service:push --endpoint=http://localhost:4000/
@@ -99,9 +103,29 @@ If your entire schema is defined in a single `.gql` or `.graphql` file, you can 
 To do so, run the `apollo service:push` command from your project's root directory and provide a path to the schema file, like so:
 
 ```
-apollo service: push --localSchemaFile=./schema.gql
+apollo service:push --localSchemaFile=./schema.gql
 ```
 
-## Step 5: Set up metrics reporting
+## Step 5: Set up trace reporting
 
-TODO
+Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph.
+
+To begin pushing these traces to Graph Manager, read [Pushing trace data to Graph Manager](setup-analytics/).
+
+## Step 6: Set up continuous delivery
+
+Your schema is now registered with Graph Manager, and your server is pushing operation traces!
+
+However, to get the most out of Graph Manager, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's continuous delivery flow. [See an example.](schema-registry/#registering-a-schema-via-continuous-delivery)
+
+## Step 7: Explore
+
+The best way to familiarize yourself with Graph Manager's capabilities is to explore it! Visit [engine.apollographql.com](https://engine.apollographql.com/) and check out the various views and what they provide.
+
+You can also learn more about the features provided with Team and Enterprise plans, including:
+
+* [Schema validation](schema-validation)
+* [Segmenting metrics by client types and versions](client-awareness)
+* [Integration with Datadog](datadog-integration)
+
+If you'd like to have a conversation about Graph Manager and how it can help your organization, [please contact us](https://www.apollographql.com/contact-sales).
