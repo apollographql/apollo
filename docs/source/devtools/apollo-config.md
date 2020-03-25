@@ -47,17 +47,17 @@ module.exports = {
 
 > **Note:** you must have a [registered schema](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema) for features like VS Code intellisense, which requires knowledge of your schema, to work properly.
 
-If you're tracking different versions of your schema in the registry using schema variants, you can link your client to a specific variant like so:
+If you're tracking different versions of your schema in the registry using graph variants, you can link your client to a specific variant like so:
 
 ```js{3}
 module.exports = {
   client: {
-    service: 'my-apollo-service@staging' // "staging" is the schema variant we're using
+    service: 'my-apollo-service@staging' // "staging" is the graph variant we're using
   }
 };
 ```
 
-If a schema variant is not specified, Apollo tools will fall back to the default value of `current`.
+If a graph variant is not specified, Apollo tools will fall back to the default value of `current`.
 
 #### _Option 2_: Link a schema from a remote endpoint
 

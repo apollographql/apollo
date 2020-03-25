@@ -122,7 +122,7 @@ If you encounter any errors, check the _**Troubleshooting**_ section below.
 
 #### 3.1 Optionally, set the graph variant
 
-To specify the schema variant to register operations on, pass an additional `--variant <VARIANT>` argument (`npx apollo client:push --variant <VARIANT>`).
+To specify the graph variant to register operations on, pass an additional `--variant <VARIANT>` argument (`npx apollo client:push --variant <VARIANT>`).
 
 ### 4. Disable subscription support on Apollo Server
 
@@ -469,7 +469,7 @@ Additionally, make sure that introspection is enabled on the server since intros
 
 ### Summary of changes
 
-The new release operation registry improves observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location) based on a schema variant/tag rather than schema hash, registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
+The new release operation registry improves observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location) based on a graph variant/tag rather than schema hash, registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
 
 These updates are designed to be transparent with a [smooth upgrade path](#upgrade-path). Since the operation manifest location has changed, all versions of `apollo client:push` double-write to the new and old storage locations, enabling seamless upgrade. Additionally the server's registry plugin can be upgraded immediately, because the plugin reads from the new location and uses the old location as a fallback, meaning the safelist will always be populated.
 
@@ -508,9 +508,9 @@ specific variant/tag, follow these steps:
 
 - **client**: Upgrade the `apollo` CLI package to 2.13.0 (by default the variant/tag will be set to the value in the [apollo config](https://www.apollographql.com/docs/references/apollo-config/#option-1-use-the-apollo-schema-registry))
 - **server**: Ensure that a schema has been published to the specified graph variant/tag.
-  This can be done by running `apollo service:push --variant <TAG>`
+  This can be done by running `apollo service:push --variant <VARIANT>`
 - **client**: Ensure that operations have been registered to the specified graph variant/tag.
-  This can be done by running `apollo client:push --variant <TAG>` or modifying the service in the `apollo.config.js`
+  This can be done by running `apollo client:push --variant <VARIANT>` or modifying the service in the `apollo.config.js`
 - **server**: Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
 
 ```js

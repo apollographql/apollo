@@ -138,9 +138,9 @@ Navigating large codebases can be difficult, but the Apollo GraphQL extension ma
 
 <img src="../img//editors/jump-to-def.gif" width="80%" style="margin: 5%" alt="Using jump to definition on a fragment">
 
-### Schema variant switching
+### Graph variant switching
 
-Apollo supports publishing multiple versions ([variants](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema-to-a-variant)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between schema variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
+Apollo supports publishing multiple versions ([variants](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema-to-a-variant)) of a schema. This is useful for developing on a future development schema and preparing your clients to conform to that schema. To switch between graph variants, open the Command Palette (`cmd + shift + p` on mac), search "Apollo" and choose the "Apollo: Select Schema Tag" option.
 
 ## Troubleshooting
 
