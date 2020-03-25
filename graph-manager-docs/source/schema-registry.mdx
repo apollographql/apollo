@@ -73,7 +73,7 @@ jobs:
       # of the schema to Apollo Graph Manager.
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            apollo service:push --tag=master
+            apollo service:push --variant=master
           fi
 ```
 
@@ -95,13 +95,13 @@ Each variant of a graph functions as a standalone graph. It has its own change h
 
 ### Registering a schema to a variant
 
-To register a schema to a variant, include the `--tag=<VARIANT>` flag in your `apollo service:push` command, like so:
+To register a schema to a variant, include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
 
 ```bash
-apollo service:push --tag=beta
+apollo service:push --variant=beta
 ```
 
-If you omit the `--tag` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
+If you omit the `--variant` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
 
 ### Associating metrics with a variant
 
