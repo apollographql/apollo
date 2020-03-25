@@ -1,0 +1,107 @@
+---
+title: Getting started with Graph Manager
+sidebar_title: Get started
+---
+
+import ObtainPersonalApiKey from '../shared/obtain-api-key.mdx';
+
+import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
+
+This article gets you up and running with Graph Manager. None of these steps requires a paid plan.
+
+## Prerequisites
+
+Before you begin, make sure of the following:
+
+* You have an application that uses Apollo Server as its GraphQL server. 
+
+    _If you don't have one, first [get started with Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/)._
+
+* Your application does **not** currently use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/). 
+
+    _**Graph Manager fully supports Apollo Federation**, but the setup differs. Instead of this article, see [Managing a federated graph](./federation/)._ 
+
+## Step 1: Create your account
+
+1. Go to [engine.apollographql.com](https://engine.apollographql.com/) and click **Create an account**. 
+
+    _You can sign up with either your GitHub identity or a username and password._
+
+2. Complete the signup flow, which includes:
+
+    * Creating an **organization** that you can invite your teammates to
+
+    * [Selecting a plan](https://www.apollographql.com/pricing/) for your organization (the Free plan is always free, and the Team plan provides a free trial of advanced features)
+
+## Step 2: Create your first graph
+
+In Graph Manager, each **graph** corresponds to a different GraphQL schema. Your first graph will correspond to the schema used by your application's GraphQL server.
+
+1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. This opens the **Graph Manager UI** now that you're logged in.
+
+    _The list of organizations you belong to appears in the left column:_
+
+    > SCREENSHOT TODO
+
+2. Select the organization that you want to add your GraphQL server to. Then, click **New Graph** in the upper right.
+
+3. Specify a name for your graph and click **Next**. Graph Manager displays a list of instructions, which are also described in the [next section](#step-3-configure-your-project).
+
+## Step 3: Configure your project
+
+1. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/#download-and-install) if you haven't yet.
+
+2. Add a `.env` file to your project's root directory if there isn't one yet. **Do not add this file to version control.** It contains secrets that differ both per user and per environment.
+
+3. Add the `.env` file to your project's `.gitignore` file.
+
+4. Obtain a personal API key from Graph Manager and set it as the value of `ENGINE_API_KEY` in your `.env` file:
+
+    <ObtainPersonalApiKey />
+    
+    ```python:title=.env
+    # Don't worry, the author invalidated this API key before sharing it 😉
+    ENGINE_API_KEY=user:gh.StephenBarlow:Rc5D_7mLwY74okHRCL2HMg
+    ```
+
+4. Add an `apollo.config.js` file to your project's root directory if there isn't one yet. Unlike `.env`, you _do_ add this file to version control.
+
+5. Add your newly created graph's name to `apollo.config.js` in the `service.name` field, like so:
+
+    ```js{3}:title=apollo.config.js
+    module.exports = {
+      service: {
+        name: "YOUR_SERVICE_NAME"
+      }
+    }
+    ```
+
+## Step 4: Register your schema
+
+The **schema registry** sits at the heart of Graph Manager. It allows you to inspect your graph's schema and track changes to it over time.
+
+You register your schema with the `apollo service:push` command. **You need to provide your schema to this command**, in one of the following ways:
+
+### Provide your schema via introspection
+
+The Apollo CLI can obtain your schema from your locally running GraphQL server via an **introspection query**. This is a special query supported by most GraphQL servers that returns the server's full schema.
+
+To provide your schema via introspection, run your GraphQL server locally. Then, run the `apollo service:push` command from your project's root directory and provide the server's `localhost` URL, like so:
+
+```
+apollo service:push --endpoint=http://localhost:4000/
+```
+
+### Provide your schema via a local file
+
+If your entire schema is defined in a single `.gql` or `.graphql` file, you can provide that file to Graph Manager.
+
+To do so, run the `apollo service:push` command from your project's root directory and provide a path to the schema file, like so:
+
+```
+apollo service: push --localSchemaFile=./schema.gql
+```
+
+## Step 5: Set up metrics reporting
+
+TODO

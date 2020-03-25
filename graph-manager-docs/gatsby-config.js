@@ -16,6 +16,7 @@ module.exports = {
         sidebarCategories: {
           null: [
             'index',
+            'getting-started',
             'accounts-organizations',
           ],
           'Schema Management': [
