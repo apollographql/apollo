@@ -15,6 +15,8 @@ To "de-register" an implementing service with Graph Manager, call `apollo servic
 apollo service:delete --serviceName=products
 ```
 
+The next time it polls, your gateway obtains an updated configuration that reflects the removed service.
+
 Include the `--tag` option to remove an implementing service from a variant other than the default variant (`current`):
 
 ```
@@ -44,7 +46,9 @@ View full details at: https://engine.apollographql.com/graph/service-list-federa
 
 ## Pushing configuration updates safely
 
-Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. To help ensure this, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
+Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. The single best way to do this is to minimize the number of [breaking changes](../schema-validation/#potentially-breaking-changes) you make to your schemas.
+
+Additionally, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
 
 In the rare case where a configuration change is not backward compatible with your gateway's query planner, you should update your service registry _before_ you deploy your implementing services.
 
