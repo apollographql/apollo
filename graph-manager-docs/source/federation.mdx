@@ -37,10 +37,10 @@ If you're running a distributed GraphQL infrastructure, where federated services
 
 To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` tags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
 
-Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
+Make sure you have a `.env` file locally with your `APOLLO_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
 
 ```bash
-echo "ENGINE_API_KEY=<your API key here>" >> .env
+echo "APOLLO_KEY=<your API key here>" >> .env
 ```
 
 As an example, running service push on a “launches” federated service might look like:
@@ -96,9 +96,9 @@ Federation is made up of two parts: federated services and a **gateway** to comp
 
 While running in development, it's sufficient to run the gateway with a static service list and use introspection to support the gateway's configuration. When running a gateway in production, however, it's important that the uptime of your gateway is not impacted by the uptime of the federated services beneath it. If a gateway fails to introspect a service or if a service fails to compose with the graph, it's paramount that your gateway be resilient to that change and continue to serve traffic with its previous configuration.
 
-For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-federated-services).  To use the managed configuration provisioned by [Graph Manager](https://engine.apollographql.com), obtain an API key from the Settings page and set the `ENGINE_API_KEY` environment variable to that key.
+For this use case, an Apollo gateway can be created to pick up its configuration from a set of managed files, securely stored during [service registration](#registering-federated-services).  To use the managed configuration provisioned by [Graph Manager](https://engine.apollographql.com), obtain an API key from the Settings page and set the `APOLLO_KEY` environment variable to that key.
 
-> If you're already setting the `engine` property of [the `ApolloServer` constructor options](https://www.apollographql.com/docs/apollo-server/api/apollo-server/) and have included the API key in those settings, you can skip setting the `ENGINE_API_KEY` value in the environment.
+> If you're already setting the `engine` property of [the `ApolloServer` constructor options](https://www.apollographql.com/docs/apollo-server/api/apollo-server/) and have included the API key in those settings, you can skip setting the `APOLLO_KEY` value in the environment.
 
 Then, construct the gateway and `ApolloServer` like so:
 
@@ -287,7 +287,7 @@ With this atomic strategy, the query planner resolves all outstanding requests t
 
 Like any distributed architecture, you should make sure that your federated graph has proper observability, monitoring, and automation to ensure reliability and performance of both your gateway and the federated services underneath it. Serving your GraphQL API from a distributed architecture has many benefits, like productivity, isolation, and being able to match the right services with the right runtimes. Operating a distributed system also has more complexity and points of failure than operating a monolith, and with that complexity comes a need to heighten observability into the state of your system and control over its coordination.
 
-Apollo Server has support for reporting federated [tracing](/performance/) information from the gateway. In order to support the gateway with detailed timing and error information, federated services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `ENGINE_API_KEY` is set in the environment for your gateway server and ensure that all federated services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that federated services do not have the `ENGINE_API_KEY` environment variable set.
+Apollo Server has support for reporting federated [tracing](/performance/) information from the gateway. In order to support the gateway with detailed timing and error information, federated services expose their own tracing information per-fetch in their extensions, which are consumed by the gateway and merged together in order to be emitted to the Apollo metrics ingress. To enable this functionality, make sure the `APOLLO_KEY` is set in the environment for your gateway server and ensure that all federated services and the gateway are running `apollo-server` version `2.7.0` or greater. Also, ensure that federated services do not have the `APOLLO_KEY` environment variable set.
 
 Traces will be reported in the shape of the query plan, with each unique fetch to a federated service reporting timing and error data.
 

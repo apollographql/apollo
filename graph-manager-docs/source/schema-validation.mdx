@@ -114,7 +114,7 @@ jobs:
       # commands against it.
       - run: sleep 5
 
-      # This command authenticates using the `ENGINE_API_KEY` environment
+      # This command authenticates using the `APOLLO_KEY` environment
       # variable. Specify your GraphQL endpoint's URL in your Apollo config.
       - run: npx apollo service:check --tag=staging
 ```
@@ -204,7 +204,7 @@ If you have any requests for other filtering or threshold mechanisms, please get
 
 ## Types of schema changes
 
-Not every change to a schema is a potentially breaking change. Additive changes (such as adding a field to a type) are typically safe and do not affect active clients. Deletions and modifications (such as removing a field or changing a return type), however, can break clients that use affected types and fields. 
+Not every change to a schema is a potentially breaking change. Additive changes (such as adding a field to a type) are typically safe and do not affect active clients. Deletions and modifications (such as removing a field or changing a return type), however, can break clients that use affected types and fields.
 
 ### Potentially breaking changes
 

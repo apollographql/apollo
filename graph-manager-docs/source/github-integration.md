@@ -41,7 +41,7 @@ jobs:
       # commands against it
       - run: sleep 5
 
-      # This will authenticate using the `ENGINE_API_KEY` environment
+      # This will authenticate using the `APOLLO_KEY` environment
       # variable. If the GraphQL server is available elsewhere than
       # http://localhost:4000/graphql, set it with `--endpoint=<URL>`.
       - run: apollo service:check

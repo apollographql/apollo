@@ -32,7 +32,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-Alternatively, you can specify your API key as the value of the `ENGINE_API_KEY` environment variable in the environment where Apollo Server will run.
+Alternatively, you can specify your API key as the value of the `APOLLO_KEY` environment variable in the environment where Apollo Server will run.
 
 This is the only change required to begin sending traces to Graph Manager. For advanced configuration options, see [Metrics and logging](https://www.apollographql.com/docs/apollo-server/features/metrics/).
 
@@ -53,7 +53,7 @@ Apollo Server defines its agent for performing these tasks in [`agent.ts`](https
 
 Graph Manager's reporting endpoint accepts batches of traces that are encoded in **protocol buffer** format. Each trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
-The schema for this protocol buffer is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L466). 
+The schema for this protocol buffer is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L466).
 
 As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L7). Then, you can batch multiple traces into a single report. We recommend sending batches approximately every 20 seconds, and limiting each batch to a reasonable size (~4MB).
 

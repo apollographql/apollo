@@ -22,16 +22,16 @@ First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manage
 Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
 
 ```
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look like this:
 
 ```
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`.
+Our key is now stored under the environment variable `APOLLO_KEY`.
 
 ### Check and publish with the Apollo CLI
 

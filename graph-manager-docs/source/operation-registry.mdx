@@ -64,11 +64,11 @@ npm install apollo --save-dev
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
-Next, using the following command as a reference, replace the `<ENGINE_API_KEY>` with the Apollo Graph Manager API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
+Next, using the following command as a reference, replace the `<APOLLO_KEY>` with the Apollo Graph Manager API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
 
 ```
 npx apollo service:push               \
-    --key <ENGINE_API_KEY>            \
+    --key <APOLLO_KEY>            \
     --endpoint https://server/graphql
 ```
 
@@ -97,11 +97,11 @@ The `apollo client:push` command:
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 - By default, includes the `__typename` fields which are added by Apollo Client at runtime.  (Add the `--no-addTypeName` flag to disable this behavior.)
 
-To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Graph Manager API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
+To register operations, use the following command as a reference, taking care to replace the `<APOLLO_KEY>` with the appropriate Apollo Graph Manager API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
 ```
 npx apollo client:push \
-    --key <ENGINE_API_KEY> \
+    --key <APOLLO_KEY> \
     --clientName <CLIENT_IDENTIFIER> \
     --clientVersion <CLIENT_VERSION> \
     --includes="src/**/*.{ts,js,graphql}"
@@ -232,10 +232,10 @@ const server = new ApolloServer({
 
 If the server was already configured to use Apollo Graph Manager, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
-If the server was not previously configured with Apollo Graph Manager, be sure to start the server with the `ENGINE_API_KEY` variable set to the appropriate API key. For example:
+If the server was not previously configured with Apollo Graph Manager, be sure to start the server with the `APOLLO_KEY` variable set to the appropriate API key. For example:
 
 ```
-ENGINE_API_KEY=<ENGINE_API_KEY> npm start
+APOLLO_KEY=<APOLLO_KEY> npm start
 ```
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
@@ -243,7 +243,7 @@ Alternatively, the API key can be specified with the `engine` parameter on the A
 ```js
 const server = new ApolloServer({
   // ...
-  engine: '<ENGINE_API_KEY>', // highlight-line
+  engine: '<APOLLO_KEY>', // highlight-line
   // ...
 });
 ```
@@ -290,7 +290,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   subscriptions: false,
-  engine: '<ENGINE_API_KEY>',
+  engine: '<APOLLO_KEY>',
   plugins: [
     require('apollo-server-plugin-operation-registry')({
       // De-structure the object to get the HTTP `headers` and the GraphQL
@@ -340,8 +340,8 @@ const server = new ApolloServer({
       willUpdateManifest(newManifest, oldManifest) {
         metrics.report(
           "safelist.numberOperations",
-          newManifest && 
-          newManifest.operations && 
+          newManifest &&
+          newManifest.operations &&
           newManifest.operations.length
         );
       }

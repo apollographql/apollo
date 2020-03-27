@@ -33,16 +33,16 @@ While Apollo VSCode is not required to successfully complete the tutorial, setti
 First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Graph Manager API key that you already created in step #4 to the file:
 
 ```
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look something like this:
 
 ```
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
+Our key is now stored under the environment variable `APOLLO_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
 
 Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
 
@@ -59,7 +59,7 @@ Great, we're all set up! Let's dive into building our first client.
 
 ## Create an Apollo Client
 
-<Disclaimer /> 
+<Disclaimer />
 
 Now that we have installed the necessary packages, let's create an `ApolloClient` instance.
 
@@ -151,7 +151,7 @@ import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; //
 import { HttpLink } from 'apollo-link-http'; // preserve-line
 import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
 import Pages from './pages';
 import injectStyles from './styles';
 
@@ -161,7 +161,7 @@ injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Pages />
-  </ApolloProvider>, 
+  </ApolloProvider>,
   document.getElementById('root')
 );
 ```
