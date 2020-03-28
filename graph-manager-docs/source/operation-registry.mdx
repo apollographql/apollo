@@ -213,16 +213,16 @@ const gateway = new ApolloGateway({
 
 </ExpansionPanel>
 
-#### 5.1 Optionally, set the schema tag
+#### 5.1 Optionally, set the graph variant
 
-Configure the `schemaTag` field to specify which tag to pull operation manifests from.
+Configure the `graphVariant` field to specify which tag to pull operation manifests from.
 
 ```js
 const server = new ApolloServer({
   // Existing configuration
   plugins: [
     require('apollo-server-plugin-operation-registry')({
-      schemaTag: 'overrideTag', // highlight-line
+      graphVariant: 'overrideTag', // highlight-line
     }),
   ],
 });
@@ -340,8 +340,8 @@ const server = new ApolloServer({
       willUpdateManifest(newManifest, oldManifest) {
         metrics.report(
           "safelist.numberOperations",
-          newManifest && 
-          newManifest.operations && 
+          newManifest &&
+          newManifest.operations &&
           newManifest.operations.length
         );
       }
@@ -511,13 +511,13 @@ specific variant/tag, follow these steps:
   This can be done by running `apollo service:push --tag <TAG>`
 - **client**: Ensure that operations have been registered to the specified graph variant/tag.
   This can be done by running `apollo client:push --tag <TAG>` or modifying the service in the `apollo.config.js`
-- **server**: Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
+- **server**: Set the `graphVariant` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
 
 ```js
 const server = new ApolloServer({
   plugins: [
     require('apollo-server-plugin-operation-registry')({
-      schemaTag: 'prod', // highlight-line
+      graphVariant: 'prod', // highlight-line
 
       // suggested before enforcing the safelist
       debug: true,
