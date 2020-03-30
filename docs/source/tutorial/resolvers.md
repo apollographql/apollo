@@ -91,10 +91,12 @@ Start by copying the GraphQL query below and pasting it in the left side of the 
 ```graphql
 query GetLaunches {
   launches {
-    id
-    mission {
-      name
-    }
+    launches {
+      id
+      mission {
+        name
+      }
+    } 
   }
 }
 ```
