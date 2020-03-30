@@ -5,7 +5,7 @@ sidebar_title: Setup
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-This article describes how to set up managed federation for an existing data graph that uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+This article describes how to set up Apollo Graph Manager for a data graph that uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
 > As with all changes, you should first set up managed federation in a non-production environment, such as staging. To support this, you can use [variants](../schema-registry/#managing-environments-with-variants), which are distinct versions of the same data graph for different environments.
 
@@ -27,18 +27,18 @@ graph BT;
   class graphManager secondary;
 ```
 
-To get set up with schema registration, do the following for each of your implementing services:
+To get set up with schema registration, **do the following for each of your implementing services**:
 
-1. Complete the following prerequisites:
+1. Complete the prerequisites in the dropdown below. **However, only create a single graph in Graph Manager**. All of your implementing services register their schema with the same graph.
 
   <ProjectConfigPanel />
 
-2. In the service's `apollo.config.js` file, add a `name` field to the `service` object. This value must match the name of the graph in Graph Manager that this service will be a part of.
+2. In each service's `apollo.config.js` file, add a `name` field to the `service` object. This value must match the name of the graph in Graph Manager that your services belong to.
 
     ```json{3}:title=apollo.config.js
     module.exports = {
       service: {
-        name: "MyGraph",
+        name: "docs-example-graph",
         localSchemaFile: "schema.gql"
       }
     };
@@ -46,20 +46,22 @@ To get set up with schema registration, do the following for each of your implem
 
 3. Obtain the following values, which are required for the `apollo service:push` command:
 
-    * The URL that your gateway will use to communicate with this service (e.g., `http://products-graphql.svc.cluster.local:4001/`)
-    * The name that will uniquely identify this service within your graph (e.g., `Products`)
+    * The URL that your gateway will use to communicate with each service (e.g., `http://products-graphql.svc.cluster.local:4001/`)
+    * The name that will uniquely identify each service within your graph (e.g., `Products`)
 
-3. Now you can run the `apollo service:push` command with the necessary options. Assuming the example values in the previous step, that command looks like this:
+3. Now you can run the `apollo service:push` command with the necessary options from each service's root directory.
+
+    Assuming the example values in the previous step, that command looks like this:
 
     ```
     apollo service:push --serviceURL=http://products-graphql.svc.cluster.local:4001/ --serviceName=Products
     ```
 
-    The CLI obtains additional configuration from your project's `.env` and `apollo.config.js` files, then pushes your schema to Graph Manager. 
+    The CLI obtains additional configuration from your project's `.env` and `apollo.config.js` files, and then pushes your schema to Graph Manager.
 
 ## 2. Configure continuous delivery
 
-With managed federation, Graph Manager (_not_ your gateway) is responsible for combining your individual schemas into a single federated schema. Consequently, **each service in your data graph must re-register its schema every time the schema changes.** Otherwise, your gateway can't obtain the latest federated schema from Graph Manager.
+With managed federation, Graph Manager **composes** your individual service schemas into a single federated schema, just like your gateway does. Consequently, **each service in your data graph must re-register its schema every time the schema changes.** Otherwise, your gateway can't obtain the latest configuration from Graph Manager.
 
 The best way to accomplish this is to add the `apollo service:push` call to your continuous delivery pipeline. Every time you push a schema change to production, this call should automatically accompany that push.
 
