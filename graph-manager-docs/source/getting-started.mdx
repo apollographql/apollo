@@ -7,21 +7,15 @@ import ObtainPersonalApiKey from '../shared/obtain-personal-api-key.mdx';
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-Hello! This article gets you up and running with Apollo Graph Manager.
+Hello! This article gets you up and running with Apollo Graph Manager. None of this setup requires a paid plan.
 
-None of this setup requires a paid plan.
+> If you are using [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), get started with [Managing a federated graph](./federation/) instead of this article.
 
 ## Prerequisites
 
-Before you begin, make sure of the following:
+Before you begin, make sure that you have an application that uses Apollo Server as its GraphQL server.
 
-* You have an application that uses Apollo Server as its GraphQL server. 
-
-    _If you don't have one, first [get started with Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/)._
-
-* Your application does **not** currently use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/). 
-
-    _**Graph Manager fully supports Apollo Federation**, but the setup differs. Instead of this article, see [Managing a federated graph](./federation/)._ 
+If you don't have one, first [get started with Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/).
 
 ## Step 1: Create your account
 
@@ -37,7 +31,7 @@ Before you begin, make sure of the following:
 
 ## Step 2: Create your first graph
 
-In Graph Manager, each **graph** corresponds to a different GraphQL schema. Your first graph will correspond to the schema used by your application's GraphQL server.
+In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will correspond to your GraphQL server's schema.
 
 1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens the **Graph Manager UI**.
 
