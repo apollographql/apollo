@@ -9,7 +9,7 @@ import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-p
 
 Hello! This article gets you up and running with Apollo Graph Manager. None of this setup requires a paid plan.
 
-> If you are using [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), get started with [Managing a federated graph](./federation/) instead of this article.
+> If you're using [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), get started with [Setting up managed federation](managed-federation/setup/) instead of this article.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema
 
 1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens the **Graph Manager UI**.
 
-    _The list of organizations you belong to appears in the left column:_
+    The list of organizations you belong to appears in the left column:
 
     <img src="./img//organization-list.png" class="screenshot" alt="Schema history page in the Graph Manager UI"></img>
 
@@ -67,7 +67,7 @@ In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema
     ```js{3}:title=apollo.config.js
     module.exports = {
       service: {
-        name: "YOUR_GRAPH_NAME"
+        name: "acephei"
       }
     }
     ```
@@ -92,13 +92,15 @@ apollo service:push --endpoint=http://localhost:4000/
 
 ### Provide your schema via a local file
 
-If your entire schema is defined in a single `.gql` or `.graphql` file, you can provide that file to Graph Manager.
+If your schema is defined in a `.gql` or `.graphql` file, you can provide that file to Graph Manager.
 
 To do so, run the `apollo service:push` command from your project's root directory and provide a path to the schema file, like so:
 
 ```
 apollo service:push --localSchemaFile=./schema.gql
 ```
+
+The `--localSchemaFile` option also supports a comma-separated list of paths if your schema is defined across multiple files.
 
 ## Step 5: Set up trace reporting
 
