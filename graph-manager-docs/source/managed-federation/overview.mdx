@@ -27,19 +27,22 @@ graph BT;
 
 Managed federation helps your organization safely validate, coordinate, deploy, and monitor changes to your graph. It provides:
 
-### Gatway stability
+### Gateway stability
 
 You can modify service schemas (and even add or remove entire services from your graph) _without_ needing to modify or redeploy your gateway. As the point of entry to your entire data graph, your gateway should maximize its uptime.
 
 ### Composition stability
 
-When your gateway obtains an updated configuration, it knows that the new set of schemas will compose, because Graph Manager has already successfully composed them. If an implementing service accidentally pushes an invalid schema change, Graph Manager continues to provide the most recent _valid_ configuration to your gateway.
+Whenever your gateway obtains an updated configuration from Graph Manager, it knows that the updated set of schemas will compose, because Graph Manager has already successfully composed them.
 
-Additionally, when your gateway obtains a configuration, it can be confident that each implementing service is prepared to handle operations against its corresponding schema. This is because the updated service registered its updated schema as part of its deployment.
+The gateway _also_ knows that your implementing services are prepared to handle operations against the updated set of schemas. This is because your services should register their updated schemas as part of their deployment, meaning they're definitely running by the time the gateway is aware of the configuration change.
+
+And whenever an implementing service accidentally pushes a schema change that _doesn't_ compose, Graph Manager continues to provide the most recent _valid_ configuration to your gateway.
+
 
 ### Schema flexibility
 
-By using a source external to your data graph as the source of truth for its configuration, you ensure the safety of certain schema changes that are otherwise not guaranteed, such as migrating a schema type or field from one implementing service to another.
+By using a configuration manager that's external to your gateway, you help ensure the safety of certain schema changes. For example, if you want to migrate a type or field from one implementing service's schema to another, you can perform this migration safely _only_ if you externalize your configuration.
 
 <hr/>
 
