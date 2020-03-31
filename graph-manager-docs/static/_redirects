@@ -1,5 +1,7 @@
 / /docs/graph-manager/
 
+/docs/graph-manager/federation/ /docs/graph-manager/managed-federation/overview/
+
 /docs/graph-manager/integrations/ /docs/graph-manager/github-integration/
 
 /docs/graph-manager/editor-plugins/ /docs/devtools/editor-plugins/
