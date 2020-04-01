@@ -35,12 +35,25 @@ You can also push trace data from environments besides production, such as a sta
 
 For advanced configuration options, see [Metrics and logging](https://www.apollographql.com/docs/apollo-server/features/metrics/).
 
+
+## Third-party support
+
+The following third-party GraphQL servers support Graph Manager trace reporting:
+
+> These servers and their trace reporting mechanisms are not maintained by Apollo. Apollo does not provide official support for them.
+
+| Server  | Description  |
+|---|---|
+| [GraphQL Java](https://www.graphql-java.com/) | Provided via the [`apollo-tracing-uploader` instrumentation](https://github.com/braintree/apollo-tracing-uploader-java) |
+| [`graphene-tornado`](https://github.com/graphql-python/graphene-tornado) (Python) | Provided via the [`apollo-engine-reporting` extension](https://github.com/graphql-python/graphene-tornado#apollo-engine-reporting) |
+
+
 ## Pushing traces from other GraphQL servers
 
 You can set up a reporting agent in your GraphQL server to push analytics to Apollo Graph Manager. The agent is responsible for:
 
 * Translating operation details into the correct [trace format](#tracing-format)
-* Implementing a default signature function to identify each executed operation
+* Implementing a default **signature function** to identify each executed operation
 * Emitting batches of traces to the Graph Manager reporting endpoint
 * Optionally defining plugins to enable advanced reporting features
 
