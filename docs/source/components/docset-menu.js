@@ -6,36 +6,22 @@ import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
 import {
   NavItemsContext,
-  NavItemTitle,
   NavItemDescription
 } from 'gatsby-theme-apollo-docs';
-import { colors } from 'gatsby-theme-apollo-core';
-import { colors as spaceKitColors } from '@apollo/space-kit/colors';
+import { colors } from '@apollo/space-kit/colors';
 import { size } from 'polished';
-
-const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: `repeat(auto-fill, minmax(270px, 1fr))`,
-  gridGap: 24,
-  paddingTop: 8
-});
-
-const MenuItem = styled.div({
-  display: 'flex'
-});
+import { MenuWrapper, MenuItem } from './menu';
 
 function getBoxShadow(opacity, y, blur) {
   return `rgba(18, 21, 26, ${opacity}) 0 ${y}px ${blur}px`
 }
 
-const {indigo} = spaceKitColors;
-const IconWrapper = styled.div({
-  ...size(28),
-  flexShrink: 0,
+const {indigo} = colors;
+const AppIcon = styled.div({
+  ...size('100%'),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: 16,
   boxShadow: [
     getBoxShadow(0.12, 1, 2),
     getBoxShadow(0.1, 2, 4),
@@ -49,10 +35,6 @@ const IconWrapper = styled.div({
     ...size(16),
     fill: 'currentColor'
   }
-});
-
-const TextWrapper = styled.div({
-  color: colors.text1
 });
 
 const StyledLink = styled.a({
@@ -77,24 +59,26 @@ const icons = [
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
-    <Wrapper>
+    <MenuWrapper>
       {navItems.filter((navItem) => {
         return !(navItem.omitLandingPage);
       }).map((navItem, index) => (
-        <MenuItem key={navItem.url}>
-          <IconWrapper>
-            {icons[index]}
-          </IconWrapper>
-          <TextWrapper>
-            <NavItemTitle>
-              <StyledLink href={navItem.url}>
-                {navItem.title}
-              </StyledLink>
-            </NavItemTitle>
-            <NavItemDescription>{navItem.description}</NavItemDescription>
-          </TextWrapper>
+        <MenuItem
+          key={navItem.url}
+          icon={(
+            <AppIcon>
+              {icons[index]}
+            </AppIcon>
+          )}
+          title={(
+            <StyledLink href={navItem.url}>
+              {navItem.title}
+            </StyledLink>
+          )}
+        >
+          <NavItemDescription>{navItem.description}</NavItemDescription>
         </MenuItem>
       ))}
-    </Wrapper>
+    </MenuWrapper>
   );
 }
