@@ -7,12 +7,15 @@ import DocsetMenu from './components/docset-menu';
 import { Button } from '@apollo/space-kit/Button';
 import { Link } from 'gatsby';
 import { colors } from 'gatsby-theme-apollo-core';
+import {
+  ExpansionPanel,
+} from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 
 Welcome! 👋 Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects your application clients (such as React and iOS apps) to your back-end services.
 
 <DocsetMenu />
 
-### New to Apollo or GraphQL?
+## New to Apollo or GraphQL?
 
 It's easy to adopt Apollo incrementally, meaning you can set it up alongside an existing solution (such as a REST API) and migrate functionality at your convenience.
 
@@ -33,9 +36,9 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
   </Button>
 </div>
 
-### Recommended reading
+## Recommended workouts
 
-#### Discover
+<ExpansionPanel title="DISCOVER the platform">
 
 * [The Apollo GraphQL platform](./intro/platform/)
 * [Why GraphQL?](./intro/benefits/)
@@ -43,7 +46,10 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
 * [Introduction to Apollo Client](https://www.apollographql.com/docs/react/)
 * [Overview of Apollo Graph Manager](https://www.apollographql.com/docs/graph-manager/)
 
-#### Dive in
+</ExpansionPanel>
+
+
+<ExpansionPanel title="DIVE IN to the basics">
 
 * Get started with [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/) and [Apollo Client](https://www.apollographql.com/docs/react/get-started/)
 * [Resolvers](https://www.apollographql.com/docs/apollo-server/data/resolvers/) and [Data sources](https://www.apollographql.com/docs/apollo-server/data/data-sources/) (Apollo Server)
@@ -51,7 +57,10 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
 * [Get started with Apollo Graph Manager](https://www.apollographql.com/docs/graph-manager/getting-started/)
 * [The schema registry](https://www.apollographql.com/docs/graph-manager/schema-registry/)
 
-#### Develop
+</ExpansionPanel>
+
+
+<ExpansionPanel title="DEVELOP your features">
 
 * [Apollo extension for VS Code](./devtools/editor-plugins/)
 * [Using schema directives](https://www.apollographql.com/docs/apollo-server/schema/directives/) (Apollo Server)
@@ -59,7 +68,10 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
 * [Configuring the cache](https://www.apollographql.com/docs/react/caching/cache-configuration/) (Apollo Client)
 * [Mocking new schema capabilities](https://www.apollographql.com/docs/react/development-testing/client-schema-mocking/) (Apollo Client)
 
-#### Deploy
+</ExpansionPanel>
+
+
+<ExpansionPanel title="DEPLOY to production">
 
 * Deploying to [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/), [AWS Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/), [Zeit Now](https://www.apollographql.com/docs/apollo-server/deployment/now/), etc. (Apollo Server)
 * Authentication in [Apollo Server](https://www.apollographql.com/docs/apollo-server/security/authentication/) and [Apollo Client](https://www.apollographql.com/docs/react/networking/authentication/)
@@ -67,10 +79,14 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
 * [Improving performance](https://www.apollographql.com/docs/react/performance/performance/) (Apollo Client)
 * [Server-side rendering](https://www.apollographql.com/docs/react/performance/server-side-rendering/)
 
-#### Debug
+</ExpansionPanel>
+
+<ExpansionPanel title="DEBUG your solution">
 
 * [Pushing trace data to Graph Manager](https://www.apollographql.com/docs/graph-manager/setup-analytics/)
 * [Analyzing performance](https://www.apollographql.com/docs/graph-manager/performance/)
 * [Segmenting metrics by client](https://www.apollographql.com/docs/graph-manager/client-awareness/)
 * Error handling in [Apollo Server](https://www.apollographql.com/docs/apollo-server/data/errors/) and [Apollo Client](https://www.apollographql.com/docs/react/data/error-handling/)
 * [Federation error codes](https://www.apollographql.com/docs/apollo-server/federation/errors/)
+
+</ExpansionPanel>
