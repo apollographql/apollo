@@ -7,6 +7,7 @@ Apollo's Slack integration brings your server's performance metrics and analytic
 
 1. Send a [**daily snapshot**](#daily-reports) of the request rate, error rate, and performance latency of your graph.
 2. Send [**notifications**](#notifications) that are triggered on thresholds like error percentage and performance latency.
+3. Send [**schema notifications**](#schema-notifications) whenever an update lands on your schema.
 
 ## Configure the integration
 
@@ -49,3 +50,15 @@ In Graph Manager, you can configure notifications that are triggered on the perf
 The triggers you set up are evaluated on a rolling five minute window. For example, you can configure a notification to trigger when an operation's error rate exceeds 5%. In production, if 6 out of 100 requests result in an error during the last five minutes, the alert will trigger with an error rate of 6%. Once the error rate falls back below 5% your notification will resolve. Here's an example of what the notification looks like:
 
 ![Slack Alert](./img/integrations/slack-notification.png)
+
+## Schema Notifications
+
+From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why this feature is useful! We built this feature to help maintainers and readers of your graph stay in the loop on the latest changes. 
+
+To get started, click on the configure button and you will then be prompted to pick where you want your slack notifications to be sent to and which variant you want to be notified on. 
+
+If the channel you want to funnel notifications to isn't set up yet you can simply create a new channel by clicking on the Slack Channel drop down and click New Channel. 
+
+You will then need to paste in the slack hook URL for the channel you want schema change notifications to send to and also give it a name that you can reference to in the Graph Manager.
+
+After that you just need to pick which variant you want to configure notifications for and once you click Done you're all set and ready to go!
