@@ -53,12 +53,16 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 ## Schema Notifications
 
-From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why this feature is useful! We built this feature to help maintainers and readers of your graph stay in the loop on the latest changes. 
+From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why we built this feature to help maintainers and readers of your graph stay in the loop on the latest changes. 
 
-To get started, click on the configure button and you will then be prompted to pick where you want your slack notifications to be sent to and which variant you want to be notified on. 
+To get started, navigate to "Schema Change Notifications" and click on the configure button. You will then be prompted to choose where you want your slack notifications to send to and which variant you want to be notified on. 
 
-If the channel you want to funnel notifications to isn't set up yet you can simply create a new channel by clicking on the Slack Channel drop down and click New Channel. 
+If the channel you want to funnel notifications to isn't set up yet you can simply create a new channel by clicking on the "Slack Channel" drop down and click "New Channel."
 
-You will then need to paste in the slack hook URL for the channel you want schema change notifications to send to and also give it a name that you can reference to in the Graph Manager.
+You will then need to paste in the Slack hook URL for the channel you want schema change notifications to send to and also give it a name that you can reference to in the Graph Manager.
 
-After that you just need to pick which variant you want to configure notifications for and once you click Done you're all set and ready to go!
+<img class="screenshot" src="./img/integrations/slack-integration.jpg" alt="Modal to set up Slack integration"></img>
+
+After that you just need to pick which variant you want to configure notifications for and once you click "Done" you're all set and ready to receive schema change notifiations!
+
+<img class="screenshot" src="./img/integrations/schema-change-notifications.jpg" alt="Modal to set up schema change notifications"></img>
