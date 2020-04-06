@@ -53,7 +53,9 @@ The triggers you set up are evaluated on a rolling five minute window. For examp
 
 ## Schema Notifications
 
-From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why we built this feature to help maintainers and readers of your graph stay in the loop on the latest changes. 
+From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why we built this feature to help maintainers and readers of your graph stay in the loop on the latest changes:
+
+<img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
 
 To get started, navigate to "Schema Change Notifications" and click on the configure button. You will then be prompted to choose where you want your slack notifications to send to and which variant you want to be notified on. 
 
