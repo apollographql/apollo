@@ -3,43 +3,68 @@ title: Integrating Graph Manager with Slack
 sidebar_title: Slack
 ---
 
-Apollo's Slack integration brings your server's performance metrics and analytics data from Apollo Graph Manager directly to your team's Slack workspace so you can be notified of potential issues proactively. The integration does two main things:
+Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This enables you to act on any potential issues as soon as they arise.
 
-1. Send a [**daily snapshot**](#daily-reports) of the request rate, error rate, and performance latency of your graph.
-2. Send [**notifications**](#notifications) that are triggered on thresholds like error percentage and performance latency.
-3. Send [**schema notifications**](#schema-notifications) whenever an update lands on your schema.
+These notifications include:
 
-## Configure the integration
+* [Daily reports](#daily-reports) of your graph's request rate, error rate, and latency
+* [Schema change notifications](#schema-change-notifications) whenever your graph's schema is updated
+* [Performance alerts](#performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this feature requires a [paid plan](https://www.apollographql.com/pricing/))
 
-The Apollo Slack integration is set up and configured through the Graph Manager UI. If you do not yet have account, [**follow this guide**](https://www.apollographql.com/docs/apollo-server/features/metrics/#Apollo-Graph-Manager) to get started connecting your server to Graph Manager.
+## Setup
 
-If you already have a Graph Manager account, [**log in**](https://engine.apollographql.com) and ––
+> If you don't have a Graph Manager account yet, [get started](getting-started/).
 
-1. Select the service you want to turn on Slack notifications for.
-1. Visit the "Integrations" tab in the left nav.
-1. You'll notice a "Reporting Channels" section at the bottom of this page. Click the "Add channel" button and follow the steps in the Graph Manager UI to get a webhook from Slack.
+### Connecting a Slack channel
 
-Once you've configured your Slack channel you'll be able to turn on daily reports snapshotting and configure notifications in the "General" and "Performance Alerts" sections.
+You configure the Slack integration from the [Graph Manager UI](https://engine.apollographql.com):
 
-![The Integrations tab in Graph Manager](./img/integrations/integrations-tab.png)
+1. Select the graph you want to configure Slack notifications for.
+2. Open the graph's Integrations page in the left nav.
+3. In the Reporting Channels section at the bottom of the Integrations page, click **Configure Slack Channel**. The following dialog appears:
+
+    <img class="screenshot" src="./img/integrations/configure-slack-integration.jpg" alt="Modal to set up Slack integration"></img>
+
+4. Specify the name of the Slack channel you want to push notifications to. 
+
+    _You can complete this process multiple times if you want to push different notifications to different channels._
+5. Follow the instructions in the form's tooltips to obtain a webhook from Slack. Provide the webhook in the **Slack Webhook URL** field.
+
+6. Click **Done**.
+
+### Configuring individual notification types
+
+After you [connect at least one Slack channel](#connecting-a-slack-channel), you can set up each of the individual notification types from the other sections of your graph's Integrations page:
+
+<img src="./img/integrations/integrations-tab.jpg" class="screenshot" alt="The integrations page in Graph Manager"></img>
 
 ## Daily reports
 
-Daily reports from Graph Manager are sent out around 9am in whichever timezone you configure them to be in. You turn them on in the "Integrations" tab as shown above. The reports have a set format that gives a birds-eye view of what your GraphQL API delivered in the previous day:
+Graph Manager sends your graph's daily report around 9am in your specified time zone. The report provides a high-level summary of what your GraphQL API delivered in the previous day:
 
-![Graph Manager slack report](./img/integrations/slack-report.png)
+<img src="./img/integrations/slack-report.png" alt="Slack daily report" class="screenshot"></img>
 
-### Using the report
+### Acting on report data
 
-We've constructed the report provided to give you an actionable summary of what's happened in your API in the last 24 hours. Here’s how you can use it to identify issues:
+The daily report provides an actionable summary of what's happened in your API over the last 24 hours. Here’s how you can use it to identify issues:
 
-1.  **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a huge dip in this and it's usually a busy time for your app, it might mean that queries aren’t able to reach your server, or some client is down.
-2.  **p95 service time:** This shows you how long queries are taking to execute. We selected p95 since it’s the best overall representation of how your users are experiencing your app. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is usually directly connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
-3.  **Error percentage:** This will show you how many of your GraphQL requests end up with an error result. Spikes in errors might be the result of some underlying backend malfunctioning. You can also see which of your operations are most error-prone.
+*  **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
+*  **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
+*  **Error percentage:** This shows you how many of your GraphQL requests produce an error result. Spikes in errors might be the result of an underlying back-end malfunction. You can also see which of your operations are most error-prone.
 
-## Notifications
+## Schema change notifications
 
-In Graph Manager, you can configure notifications that are triggered on the performance data of your graph, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
+Graph Manager can notify your Slack channel whenever changes are made to your graph's registered schema. These changes include the addition or removal of types, fields, and directives:
+
+<img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
+
+You can configure separate change notifications for each [variant](schema-registry/#managing-environments-with-variants) of your graph.
+
+## Performance alerts
+
+> Performance alerts require a [paid plan](https://www.apollographql.com/pricing/).
+
+You can configure notifications that are triggered on the performance data of your graph, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
 
 - **Request rate:**  requests per minute
 - **Request duration:** p50/p95/p99 service time
@@ -47,24 +72,6 @@ In Graph Manager, you can configure notifications that are triggered on the perf
 - **Error percentage:** the number of requests with errors, divided by total
   requests
 
-The triggers you set up are evaluated on a rolling five minute window. For example, you can configure a notification to trigger when an operation's error rate exceeds 5%. In production, if 6 out of 100 requests result in an error during the last five minutes, the alert will trigger with an error rate of 6%. Once the error rate falls back below 5% your notification will resolve. Here's an example of what the notification looks like:
+The triggers you set up are evaluated on a rolling five-minute window. For example, you can configure a notification to trigger when an operation's error rate exceeds 5%. In production, if 6 out of 100 requests result in an error during the last five minutes, the alert will trigger with an error rate of 6%. When the error rate falls back below 5%, your notification will resolve. Here's an example of what the notification looks like:
 
 ![Slack Alert](./img/integrations/slack-notification.png)
-
-## Schema Notifications
-
-From the Graph Manager, you can configure schema notifications that are triggered when any update, such as type additions, field removals or deprecations, land on your schema. GraphQL makes it extremely easy for developers to collaborate on ever-changing schemas which is why we built this feature to help maintainers and readers of your graph stay in the loop on the latest changes:
-
-<img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
-
-To get started, navigate to "Schema Change Notifications" and click on the configure button. You will then be prompted to choose where you want your slack notifications to send to and which variant you want to be notified on. 
-
-If the channel you want to funnel notifications to isn't set up yet you can simply create a new channel by clicking on the "Slack Channel" drop down and click "New Channel."
-
-You will then need to paste in the Slack hook URL for the channel you want schema change notifications to send to and also give it a name that you can reference to in the Graph Manager.
-
-<img class="screenshot" src="./img/integrations/slack-integration.jpg" alt="Modal to set up Slack integration"></img>
-
-After that you just need to pick which variant you want to configure notifications for and once you click "Done" you're all set and ready to receive schema change notifiations!
-
-<img class="screenshot" src="./img/integrations/schema-change-notifications.jpg" alt="Modal to set up schema change notifications"></img>
