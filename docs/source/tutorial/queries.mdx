@@ -85,9 +85,7 @@ const Launches: React.FC<LaunchesProps> = () => {
   return (
     <Fragment>
       <Header />
-      {data.launches &&
-        data.launches.launches &&
-        data.launches.launches.map((launch: any) => (
+      {data?.launches?.launches?.map((launch: any) => (
           <LaunchTile key={launch.id} launch={launch} />
         ))}
     </Fragment>
@@ -137,8 +135,7 @@ Copy the code below and add it before the closing `</Fragment>` tag in the `Laun
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
-{data.launches && 
-  data.launches.hasMore && (
+{data?.launches?.hasMore && (
     <Button
       onClick={() =>
         fetchMore({ // highlight-line
@@ -168,8 +165,7 @@ Copy the code below and add it before the closing `</Fragment>` tag in the `Laun
 ```
 
 ```jsx:title=src/pages/launches.jsx
-{data.launches && 
-  data.launches.hasMore && (
+{data?.launches?.hasMore && (
     <Button
       onClick={() =>
         fetchMore({ // highlight-line
@@ -271,11 +267,11 @@ const Launch: React.FC<LaunchProps> = ({ launchId }) => {
 
   return (
     <Fragment>
-      <Header image={data.launch && data.launch.mission && data.launch.mission.missionPatch}>
-        {data && data.launch && data.launch.mission && data.launch.mission.name}
+      <Header image={data?.launch?.mission?.missionPatch}>
+        {data?.launch?.mission?.name}
       </Header>
-      <LaunchDetail {...data.launch} />
-      <ActionButton {...data.launch} />
+      <LaunchDetail {...data?.launch} />
+      <ActionButton {...data?.launch} />
     </Fragment>
   );
 }
@@ -415,7 +411,7 @@ const Profile: React.FC<ProfileProps> = () => {
   return (
     <Fragment>
       <Header>My Trips</Header>
-      {data.me && data.me.trips.length ? (
+      {data?.me?.trips?.length > 0 ? (
         data.me.trips.map((launch: any) => (
           <LaunchTile key={launch.id} launch={launch} />
         ))
