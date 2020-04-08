@@ -2,6 +2,7 @@ import { MenuItem } from './menu';
 import React from 'react';
 import styled from '@emotion/styled';
 import { colors } from 'gatsby-theme-apollo-core';
+import { MDXProvider } from '@mdx-js/react';
 
 const InnerWrapper = styled.div({
   marginTop: '1rem',
@@ -23,6 +24,22 @@ const TextWrapper = styled.span({
   fontWeight: 'normal'
 });
 
+const components = {
+  a(props) {
+    function handleClick(event) {
+      // track workout click event in GA
+      if (typeof window.analytics !== 'undefined') {
+        window.analytics.track('Click workout', {
+          category: 'Recommended workouts',
+          label: event.target.innerText,
+          value: event.target.href
+        });
+      }
+    }
+    return <a {...props} onClick={handleClick} />;
+  }
+}
+
 export default function WorkoutMenuItem(props) {
   return (
     <MenuItem
@@ -43,7 +60,9 @@ export default function WorkoutMenuItem(props) {
       )}
     >
       <InnerWrapper>
-        {props.children}
+        <MDXProvider components={components}>
+          {props.children}
+        </MDXProvider>
       </InnerWrapper>
     </MenuItem>
   )
