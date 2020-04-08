@@ -54,7 +54,7 @@ The daily report provides an actionable summary of what's happened in your API o
 
 ## Schema change notifications
 
-Graph Manager can notify your Slack channel whenever changes are made to your graph's registered schema. These changes include the addition or removal of types, fields, and directives:
+Graph Manager can notify your Slack channel whenever any changes (additions, deprecations, removals, etc.) are made to your graph's registered schema:
 
 <img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
 
