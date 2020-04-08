@@ -3,7 +3,7 @@ title: Integrating Graph Manager with Slack
 sidebar_title: Slack
 ---
 
-Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This enables you to act on any potential issues as soon as they arise.
+Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This enables you to stay up to date on changes to your graph's schema and performance as soon as they occur.
 
 These notifications include:
 
@@ -28,7 +28,8 @@ You configure the Slack integration from the [Graph Manager UI](https://engine.a
 4. Specify the name of the Slack channel you want to push notifications to. 
 
     _You can complete this process multiple times if you want to push different notifications to different channels._
-5. Follow the instructions in the form's tooltips to obtain a webhook from Slack. Provide the webhook in the **Slack Webhook URL** field.
+
+5. Follow the instructions in the form's tooltips to obtain a webhook URL from Slack for the desired channel. Provide the webhook in the **Slack Webhook URL** field.
 
 6. Click **Done**.
 
@@ -50,7 +51,7 @@ The daily report provides an actionable summary of what's happened in your API o
 
 *  **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
 *  **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
-*  **Error percentage:** This shows you how many of your GraphQL requests produce an error result. Spikes in errors might be the result of an underlying back-end malfunction. You can also see which of your operations are most error-prone.
+*  **Error percentage:** This shows you how many of your GraphQL requests produce an error result, along with a list of the operations with the highest error percentage. Spikes in errors might be the result of an underlying back-end malfunction.
 
 ## Schema change notifications
 
@@ -62,9 +63,11 @@ You can configure separate change notifications for each [variant](schema-regist
 
 ## Performance alerts
 
-> Performance alerts require a [paid plan](https://www.apollographql.com/pricing/).
+> Performance alerts require a [paid plan](https://www.apollographql.com/pricing/). They are currently experimental.
 
-You can configure notifications that are triggered on the performance data of your graph, like error percentages and request latencies. This is particularly useful for detecting anomalies, especially around releases. Notifications can be configured to monitor the following metrics for either your entire GraphQL service or individual operations:
+Graph Manager can notify you whenever a particular metric for your graph (such as error rate or request latency) exceeds a specified threshold. This is useful for detecting anomalies, especially around releases.
+
+You can configure performance alerts for any of the following metrics, measured either for a particular GraphQL operation (indicated by operation name) or across all operations in your graph:
 
 - **Request rate:**  requests per minute
 - **Request duration:** p50/p95/p99 service time
@@ -72,6 +75,8 @@ You can configure notifications that are triggered on the performance data of yo
 - **Error percentage:** the number of requests with errors, divided by total
   requests
 
-The triggers you set up are evaluated on a rolling five-minute window. For example, you can configure a notification to trigger when an operation's error rate exceeds 5%. In production, if 6 out of 100 requests result in an error during the last five minutes, the alert will trigger with an error rate of 6%. When the error rate falls back below 5%, your notification will resolve. Here's an example of what the notification looks like:
+Thresholds are measured against a rolling five-minute window. For example, let's say you configure an alert to trigger when an operation's error rate exceeds 5%. If 6 out of 100 executions of that operation result in an error during a five-minute period, the alert will trigger with an error rate of 6%. When the error rate falls back below 5%, your notification will resolve.
 
-![Slack Alert](./img/integrations/slack-notification.png)
+Here's an example of what the notification looks like:
+
+<img src="./img/integrations/slack-notification.png" class="screenshot" alt="Performance alert">
