@@ -33,6 +33,16 @@ ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 
 Our key is now stored under the environment variable `ENGINE_API_KEY`.
 
+Next, you'll need to create a file called `apollo.config.js` in the `./src` folder with the following configuration:
+
+```
+module.exports = {
+  service: {
+    name: <your-service-name>
+  }
+}
+```
+
 ### Check and publish with the Apollo CLI
 
 It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
