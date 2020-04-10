@@ -98,19 +98,25 @@ apollo service:push --localSchemaFile=./schema.gql
 
 The `--localSchemaFile` option also supports a comma-separated list of paths if your schema is defined across multiple files.
 
-## Step 5: Set up trace reporting
+## Step 5: Connect to Slack
+
+Graph Manager can connect to your Slack workspace to send you daily metrics reports, along with notifications whenever changes are made to your registered schema.
+
+[Set up Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/#setup)
+
+## Step 6: Set up trace reporting
 
 Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph.
 
 To begin pushing these traces to Graph Manager, read [Pushing trace data to Graph Manager](setup-analytics/).
 
-## Step 6: Set up continuous delivery
+## Step 7: Set up continuous delivery
 
 Your schema is now registered with Graph Manager, and your server is pushing operation traces!
 
 However, to get the most out of Graph Manager, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's continuous delivery flow. [See an example.](schema-registry/#registering-a-schema-via-continuous-delivery)
 
-## Step 7: Explore
+## Step 8: Explore
 
 The best way to familiarize yourself with Graph Manager's capabilities is to explore it! Visit [engine.apollographql.com](https://engine.apollographql.com/) and check out the various views and what they provide.
 
