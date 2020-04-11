@@ -304,7 +304,7 @@ Let's open up `src/index.js` and update the `context` function on `ApolloServer`
 
 _src/index.js_
 
-```js{1,4,8,10}
+```js{1,4-14}
 const isEmail = require('isemail');
 
 const server = new ApolloServer({
@@ -322,6 +322,7 @@ const server = new ApolloServer({
     return { user: { ...user.dataValues } };
   },
   // .... with the rest of the server object code below, typeDefs, resolvers, etc....
+});
 ```
 
 Just like in the steps outlined above, we're checking the authorization headers on the request, authenticating the user by looking up their credentials in the database, and attaching the user to the `context`. While we definitely don't advocate using this specific implementation in production since it's not secure, all of the concepts outlined here are transferable to how you'll implement authentication in a real world application.
