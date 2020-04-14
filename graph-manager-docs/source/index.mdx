@@ -18,25 +18,25 @@ import VideoFrame from "../components/video-frame";
 
 **Graph Manager provides the following features to all Apollo users for free:**
 
-- A [GraphQL schema registry](/schema-registry/) that tracks changes
-  and enables you to [create variants of your schema](/schema-registry/#managing-environments-with-variants) for different environments
-  (such as staging and production)
-
-- A schema explorer that makes it easy to inspect your schema's queries,
-  mutations, and other object definitions
-
-- Team collaboration via [organizations](/accounts-organizations/)
-
-- [Management of a federated data graph](/managed-federation/overview/)
+* A [GraphQL schema registry](/schema-registry/) that tracks changes
+and enables you to [create variants of your schema](/schema-registry/#managing-environments-with-variants) for different environments
+(such as staging and production)
+* A schema explorer that makes it easy to inspect your schema's queries,
+mutations, and other object definitions
+* [Metrics reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for up to the last 24 hours
+* Team collaboration via [organizations](/accounts-organizations/)
+* [Slack notifications](/slack-integration/) for schema changes and daily metrics reports
+* [Management of a federated data graph](/managed-federation/overview/)
 
 **Additional features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
 
-- [Metrics segmentation by distinct clients and versions](/client-awareness/)
-- [Operation safelisting](/operation-registry/)
-- [Schema change validation](/schema-validation/)
-- [Resolver-level query tracing](/performance/)
-- Third-party integrations (e.g., [Datadog](/datadog-integration/))
-- Longer data retention
+* Metrics reporting for arbitrary timeframes
+* [Metrics segmentation by distinct clients and versions](/client-awareness/)
+* [Schema change validation](/schema-validation/)
+* [Operation safelisting](/operation-registry/)
+* [Resolver-level query tracing](/performance/)
+* [Integration with Datadog](/datadog-integration/)
+* Longer data retention
 
 [Learn more about pricing and billing](https://www.apollographql.com/plans/)
 
@@ -44,7 +44,7 @@ import VideoFrame from "../components/video-frame";
 
 ## Managing graphs
 
-A **graph** in Graph Manager represents the data graph for a single project or application. Every graph has its own associated GraphQL schema.
+A **graph** in Graph Manager represents the entirety of a connected data graph. Every graph has its own associated GraphQL schema. 
 
 ### Creating a graph
 
