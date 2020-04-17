@@ -9,7 +9,7 @@ A data graph sits between application clients and back-end services, facilitatin
 
 ![diagram](../images/index-diagram.svg)
 
-An Apollo data graph uses **GraphQL** to define and enforce the structure of this data flow.
+An Apollo data graph uses [GraphQL](./benefits/) to define and enforce the structure of this data flow.
 
 
 ## Build your graph with Apollo Server
@@ -21,9 +21,7 @@ Apollo Server is an extensible, [open-source](https://github.com/apollographql/a
 * A [**GraphQL schema**](https://www.apollographql.com/docs/apollo-server/schema/schema/) that specifies all of the types and fields available in your graph
 * A collection of [**resolvers**](https://www.apollographql.com/docs/apollo-server/data/resolvers/) that specify how to populate each field of your schema with data from your back-end data sources
 
-You can deploy Apollo Server to any hosted or serverless environment. It supports a variety of popular [Node.js middleware](https://www.apollographql.com/docs/apollo-server/integrations/middleware/).
-
-And if you want your data graph to use a [federated architecture](#federate-your-graph-with-apollo-federation), Apollo Server includes extension libraries that enable it to act as every component of that architecture.
+You can deploy Apollo Server to any hosted or serverless environment. It supports a variety of popular [Node.js middleware](https://www.apollographql.com/docs/apollo-server/integrations/middleware/) and works seamlessly with TypeScript.
 
 ### Build incrementally
 
@@ -31,11 +29,15 @@ Your data graph doesn't immediately need to connect _all_ of your back-end data 
 
 As you connect more data sources and expand your schema, Apollo Server can handle a larger and larger percentage of your client data requests. Clients can continue using an existing solution for requests that your data graph doesn't yet support.
 
+### Make the jump to federation
+
+Apollo Server includes extension libraries that enable you to [federate your graph](#federate-your-graph-with-apollo-federation). In a federated architecture, your data graph's API is implemented across multiple services, each with its own GraphQL schema. Those schemas are merged by a **gateway** that intelligently executes operations across services.
+
 ## Query your graph with Apollo Client
 
 After you deploy a first version of your data graph, application clients can begin querying it. To execute these queries, you can use [**Apollo Client**](https://www.apollographql.com/docs/react/).
 
-Apollo Client is a customizable, [open-source](https://github.com/apollographql/apollo-client) JavaScript GraphQL client with powerful caching and state management features. It enables developers to define queries directly within the UI components that use them, and automatically update those components as query results arrive or change.
+Apollo Client is a customizable, [open-source](https://github.com/apollographql/apollo-client) JavaScript GraphQL client with powerful caching and state management features. It enables developers to define queries directly within the UI components that use them, and automatically update those components as query results arrive or change. It also works seamlessly with [TypeScript](https://www.apollographql.com/docs/react/development-testing/static-typing/).
 
 Apollo Client's cache locally replicates the parts of your data graph that your client cares about. This enables your client to query _itself_ for data if it's already present, dramatically improving performance by preventing unnecessary network requests.
 
@@ -51,19 +53,22 @@ In addition to its open-source libraries, the Apollo platform provides a cloud-h
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-#### Graph Manager provides the following features to all Apollo users for free:
+### The schema registry
 
-* A [GraphQL schema registry](https://www.apollographql.com/docs/graph-manager/schema-registry/) that tracks changes
-and enables you to [create variants of your schema](https://www.apollographql.com/docs/graph-manager/schema-registry/#managing-environments-with-variants) for different environments
-(such as staging and production)
-* A schema explorer that makes it easy to inspect your schema's queries,
-mutations, and other object definitions
+The [schema registry](https://www.apollographql.com/docs/graph-manager/schema-registry/) sits at the heart of Graph Manager. By registering your graph's schema with Graph Manager, you can explore its structure, track its change history, and lay the foundation for many other powerful features.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/duwM95RsiBs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Graph Manager features
+
+In addition to the schema registry and explorer, **Graph Manager provides the following features to all Apollo users for free:**
+
 * [Metrics reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for up to the last 24 hours
 * Team collaboration via [organizations](https://www.apollographql.com/docs/graph-manager/accounts-organizations/)
 * [Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/) for schema changes and daily metrics reports
 * [Management of a federated data graph](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/)
 
-#### Additional features are available to organizations with a subscription to an [Apollo Team or Enterprise plan](https://www.apollographql.com/pricing/):
+**These features are available to organizations with a subscription to an [Apollo Team or Enterprise plan](https://www.apollographql.com/pricing/):**
 
 * Metrics reporting for arbitrary timeframes
 * [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/graph-manager/client-awareness/)
@@ -74,34 +79,51 @@ mutations, and other object definitions
 
 ## Federate your graph with Apollo Federation
 
-As your data graph grows, it can be useful to divide its functionality across multiple services that are responsible for distinct portions of the graph's schema. Doing so is known as adopting a **federated architecture**. Apollo has defined the specification for a particular federated architecture called [**Apollo Federation**](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+As your data graph grows, it can be useful to divide its functionality across multiple GraphQL services that own distinct portions of the graph's schema. Doing so is known as adopting a **federated architecture**. Apollo has defined the specification for a particular federated architecture called [**Apollo Federation**](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
-An Apollo Federation architecture replaces a monolithic solution like this:
+### Non-federated architecture
+
+In a non-federated architecture, your monolithic GraphQL server owns the entirety of your graph's schema. When a client request comes in, the server resolves it by fetching and/or modifying data across one or more data stores that it connects to directly:
 
 ```mermaid
-graph BT;
+graph TB
+  subgraph " "
+  userdb[(Users database)];
+  productdb[(Products database)];
+  monolith([GraphQL server]);
+  end
+  userdb & productdb --- monolith;
   webapp(Web app);
   iosapp(iOS app);
-  monolith([GraphQL server]);
-  webapp & iosapp -.- monolith;
-  class webapp,iosapp tertiary;
+  monolith -.- webapp & iosapp ;
+  class webapp,iosapp secondary;
 ```
 
-With something like this:
+### Apollo Federation architecture
+
+With Apollo Federation, a **gateway** sits in front of one or more **implementing services**:
 
 ```mermaid
-graph BT;
-  webapp(Web app);
-  iosapp(iOS app);
+graph TB;
+  subgraph " "
+  userdb[(Users database)];
+  productdb[(Products database)];
   gateway([GraphQL gateway]);
   serviceA[Users service];
   serviceB[Products service];
-  serviceC[Reviews service];
-  webapp & iosapp -.- gateway;
-  gateway --- serviceA & serviceB & serviceC;
-  class webapp,iosapp tertiary;
+  serviceC[Inventory service];
+  end
+  webapp(Web app);
+  iosapp(iOS app);
+  userdb --- serviceA;
+  productdb --- serviceB & serviceC;
+  gateway -.- webapp & iosapp;
+  serviceA & serviceB & serviceC --- gateway;
+  class webapp,iosapp secondary;
 ```
 
-With Apollo Federation, a **gateway** receives GraphQL operations from clients and divides them up among whichever **implementing services** are needed to process them. This architecture helps each team in your organization own exactly the part of your data graph that they should.
+The gateway is a GraphQL server, _and so is each implementing service_. Each implementing service defines a distinct schema and connects to whichever data stores it needs to populate that schema's fields. The gateway then aggregates these schemas and combines them into a _single_ schema.
 
-Apollo Server includes extension libraries that enable it to act as either a gateway or an implementing service. And Apollo Graph Manager provides free [managed federation](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/) features that help maximize your graph's uptime.
+When a client request comes in, the gateway knows which requested fields are owned by which service. It intelligently executes operations across whichever combination of services is needed to fully complete the operation.
+
+Apollo Server includes extension libraries that enable it to act as either a gateway or an implementing service. And Apollo Graph Manager provides free [managed federation](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/) features that help you maximize your graph's uptime.
