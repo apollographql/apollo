@@ -105,13 +105,38 @@ Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Cli
 
 ## Production readiness
 
-GraphQL's adoption has risen steadily ever since Facebook published the original [specification](https://spec.graphql.org/) in 2015. For more and more organizations, the benefits of GraphQL are taking it from a single engineer's hack-week experiment to the heart of the application data layer. 
+GraphQL's adoption has risen steadily ever since Facebook published the original [specification](https://spec.graphql.org/) in 2015. For more and more organizations, the benefits of GraphQL are taking it from an enthusiastic engineer's hack-week experiment to the heart of the application data layer.
 
 At Apollo, we've received extensive feedback, contributions, and support from enterprise customers who have had both great confidence and great success in their transition to GraphQL. 
 
-Recent case studies include:
+## Trade-offs
 
-- [**Expedia Group**](https://www.apollographql.com/customers/expediagroup/)
-- [**NerdWallet**](https://www.apollographql.com/customers/nerdwallet/)
-- [**PayPal**](https://www.apollographql.com/customers/paypal/)
-- [**Knotel**](https://www.apollographql.com/customers/knotel/)
+When deciding whether to adopt a technology, it's just as important to understand the technology's limitations as it is to understand its benefits.
+
+Consider the following trade-offs when using GraphQL:
+
+### Change management
+
+GraphQL introduces a new conceptual model for representing and interacting with data. An organization that's comfortable with this model can design, implement, and ship features quickly. However, the process of _becoming_ comfortable with this model takes time.
+
+* Front-end developers must come up to speed with a new API for fetching and manipulating data. 
+* Back-end developers must come up to speed with how to handle incoming requests from the frontend.
+* Developers across the organization must collaborate on a single, product-driven GraphQL schema and appoint individuals as the official maintainers of that schema.
+
+The Apollo [docs](https://www.apollographql.com/docs/), [blog](https://www.apollographql.com/blog/), and [Spectrum community](https://spectrum.chat/apollo) are all here to help your organization master GraphQL and take full advantage of it.
+
+### Potential for slow operations
+
+Your [GraphQL schema](https://www.apollographql.com/docs/apollo-server/schema/schema/) defines which types and fields your clients can query. Your GraphQL server's [resolvers](https://www.apollographql.com/docs/apollo-server/data/resolvers/) define how those types and fields are populated from your data stores.
+
+Depending on your schema and your resolver definitions, your server might inadvertently support GraphQL operations that execute very slowly, or even max out your server's resources.
+
+Consequently, it's important to design your schema such that it supports the operations your clients need, _without_ supporting unnecessary operations that affect performance. It's also helpful to set up [trace reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for your GraphQL server, enabling you to identify and improve slow operations.
+
+[Learn about query-driven schema design](https://www.apollographql.com/docs/apollo-server/schema/schema/#query-driven-schema-design)
+
+### Incompatibility with web browser caching
+
+Although [Apollo Client](https://www.apollographql.com/docs/react/) provides useful client-side [caching features](https://www.apollographql.com/docs/react/caching/cache-configuration/), the automatic caching provided by your _web browser_ does not interact well with GraphQL.
+
+Web browsers cache fetched data according to its URL. With GraphQL, you fetch all data from the _same_ URL (the URL of your GraphQL server). Consequently, you can't rely on the cached value for this URL.
