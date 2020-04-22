@@ -5,25 +5,25 @@ description: GraphQL and Apollo help you ship features faster
 
 Managing data in modern applications is challenging. Most applications require:
 
-* Distinct front-end clients for different platforms (web, iOS, etc.), each with different data requirements
+* Distinct front-end clients for multiple platforms (web, iOS, etc.), each with different data requirements
 * A backend that serves data to clients from multiple sources (Postgres, Redis, etc.)
 * Complex state and cache management for both the frontend and the backend
 
-By adopting GraphQL and Apollo, you can reduce these challenges considerably. GraphQL's declarative model helps you create a consistent, predictable API you can use across all of your clients. As you add, remove, or migrate back-end data stores, that API doesn't change from the client's perspective.
+By adopting GraphQL and Apollo, you can reduce these challenges considerably. GraphQL's declarative model helps you create a consistent, predictable API you can use across all of your clients. As you add, remove, and migrate back-end data stores, that API doesn't change from the client's perspective.
 
-Even with many other advantages, **GraphQL's single greatest benefit is the developer experience it provides.** It's straightforward to add new types and fields to your GraphQL API, and similarly straightforward for your clients to begin using those fields. This helps you design, develop, and deploy features faster.
+Even with many other advantages, **GraphQL's single greatest benefit is the developer experience it provides.** It's straightforward to add new types and fields to your API, and similarly straightforward for your clients to begin using those fields. This helps you design, develop, and deploy features quickly.
 
-Combined with [the Apollo platform](./platform/), complex considerations like caching, data normalization, and optimistic UI become straightforward as well.
+Combined with [the Apollo platform](./platform/), complex considerations like caching, data normalization, and optimistic UI rendering become straightforward as well.
 
 ## Declarative and efficient data fetching
 
-GraphQL's declarative approach to data fetching provides significant performance and quality-of-life improvements over REST.
+GraphQL's declarative approach to data fetching provides significant performance and quality-of-life improvements over a REST API.
 
 Consider a webpage that displays a list of adorable pets that are available for adoption at local animal shelters. 🐶
 
 **Using REST**, the page might need to:
 
-1. `GET` a list of shelters and corresponding `pet_id`s from the `/api/shelters` endpoint
+1. `GET` a list of shelters and their corresponding `pet_id`s from the `/api/shelters` endpoint
 2. `GET` each individual pet's details (name, photo URL, etc.) with a separate request to `/api/pets/PET_ID`
 
 This solution requires multiple dependent network requests, which can result in slower page loads and additional battery consumption on mobile devices. This logic is also difficult to reuse on other pages that display slightly different data.
@@ -80,34 +80,49 @@ Apollo Client's `useQuery` hook takes care of the request lifecycle from start t
 Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-in support for  [introspection](https://graphql.org/learn/introspection/), developer tools for GraphQL are extremely powerful. These tools let you do things like:
 
 * Explore the full structure of a schema, complete with docstrings
-* Compose new queries with live validation and autocomplete
+* Compose new operations with live validation and autocomplete
 * Register your schema with a management service that tracks and validates changes
 
 ### GraphQL Playground
 
 [GraphQL Playground](https://github.com/prismagraphql/graphql-playground) by Prisma is an IDE for exploring a GraphQL schema and writing queries against it. At a glance, you can see all of the data available in your API, without needing to dive into back-end code or know which data stores are being used:
 
-![GraphQL Playground](../assets/graphql-playground.png)
+<img src="../assets/graphql-playground.png" alt="GraphQL Playground" class="screenshot"></img>
 
-[Apollo Server](https://www.apollographql.com/docs/apollo-server) includes GraphQL Playground out of the box, so as soon as you start up a server on your local machine, you can start exploring your schema and composing queries.
+[Apollo Server](https://www.apollographql.com/docs/apollo-server) includes GraphQL Playground out of the box. As soon as you start up a server on your local machine, you can start exploring your schema and composing client queries.
 
 ### Apollo Graph Manager
 
-[Apollo Graph Manager](https://engine.apollographql.com/login) is the only tool in the GraphQL ecosystem that can provide monitoring and analytics for your API. Graph Manager displays per-resolver tracing metrics that help you pinpoint bugs, as well as performance distribution for every field in your schema. You can also pipe this data to services you're probably already using like DataDog, and set up Slack alerts if these numbers pass a certain threshold.
+The Apollo platform provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Graph Manager**](https://www.apollographql.com/docs/graph-manager/).
 
-![Apollo Graph Manager](../assets/engine.png)
+This video covers several of Graph Manager's core features:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+For more information on _all_ of Graph Manager's features, [see the docs](https://www.apollographql.com/docs/graph-manager/).
 
 ### Apollo Client DevTools
 
-Apollo DevTools is a Chrome extension that allows you to inspect your Apollo Client cache, track active queries, and view mutations. You also have access to GraphiQL within Apollo DevTools which is convenient for testing queries as you're working on front-end code with Apollo Client.
+The [Apollo Client DevTools](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) Chrome extension enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes [GraphiQL](https://github.com/graphql/graphiql), an IDE that helps you test queries while you're working on front-end code.
 
-![Apollo DevTools](../assets/dev-tools.png)
+<img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot"></img>
 
 ## Production readiness
 
-GraphQL's adoption has risen steadily ever since Facebook published the original [specification](https://spec.graphql.org/) in 2015. For more and more organizations, the benefits of GraphQL are taking it from an enthusiastic engineer's hack-week experiment to the heart of the application data layer.
+GraphQL's adoption has risen steadily since Facebook published the original [specification](https://spec.graphql.org/) in 2015. For more and more organizations, the benefits of GraphQL are taking it from a curious engineer's hack-week experiment to the heart of the application data layer.
 
-At Apollo, we've received extensive feedback, contributions, and support from enterprise customers who have had both great confidence and great success in their transition to GraphQL. 
+GraphQL scales with the requirements of even the largest organizations, largely because of its [powerful tooling](#powerful-tooling) and its compatibility with a **federated architecture** like [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+
+In a federated architecture, a single GraphQL schema is split across multiple back-end services. Each team in an organization can then own exactly the services (and the corresponding parts of the schema) that they should.
+
+### Success stories
+
+Here are a few blog posts from organizations that have had great success adopting GraphQL in their production environment:
+
+* [Netflix](https://netflixtechblog.com/our-learnings-from-adopting-graphql-f099de39ae5f)
+* [The New York Times](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c)
+* [Nerdwallet](https://www.nerdwallet.com/blog/engineering/getting-started-with-graphql-and-apollo-part-1/)
+* [Shopify](https://www.shopify.com/partners/blog/graphql-admin-api)
 
 ## Trade-offs
 
