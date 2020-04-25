@@ -3,11 +3,15 @@ title: The schema registry
 description: A central hub for your data graph
 ---
 
-import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
+import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
+import VideoFrame from "../components/video-frame";
 
 Apollo Graph Manager provides a **schema registry** that serves as a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) to support environments besides production, such as test or staging.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/duwM95RsiBs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<VideoFrame
+  title="Tracking your GraphQL Schema in a Registry"
+  src="https://www.youtube.com/embed/duwM95RsiBs"
+/>
 
 ## Prerequisites
 

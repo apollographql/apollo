@@ -3,37 +3,40 @@ title: Graph Manager overview
 sidebar_title: Overview
 ---
 
-import CalloutCard from '../components/callout-card';
+import CalloutCard from "../components/callout-card";
+import VideoFrame from "../components/video-frame";
 
 **Apollo Graph Manager** (formerly Apollo Engine) is a cloud service that helps you manage, validate, and secure your organization's data graph.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-<CalloutCard style={{maxWidth: 560}} />
+<VideoFrame
+  title="Apollo Graph Manager Overview"
+  src="https://www.youtube.com/embed/yZ3_Yvlmy78"
+/>
+<CalloutCard style={{ maxWidth: 560 }} />
 
 ## Feature summary
 
 **Graph Manager provides the following features to all Apollo users for free:**
 
-* A [GraphQL schema registry](/schema-registry/) that tracks changes
-and enables you to [create variants of your schema](/schema-registry/#managing-environments-with-variants) for different environments
-(such as staging and production)
+- A [GraphQL schema registry](/schema-registry/) that tracks changes
+  and enables you to [create variants of your schema](/schema-registry/#managing-environments-with-variants) for different environments
+  (such as staging and production)
 
-* A schema explorer that makes it easy to inspect your schema's queries,
-mutations, and other object definitions
+- A schema explorer that makes it easy to inspect your schema's queries,
+  mutations, and other object definitions
 
-* Team collaboration via [organizations](/accounts-organizations/)
+- Team collaboration via [organizations](/accounts-organizations/)
 
-* [Management of a federated data graph](/managed-federation/overview/)
+- [Management of a federated data graph](/managed-federation/overview/)
 
 **Additional features are available to organizations with a subscription to an Apollo Team or Enterprise plan:**
 
-* [Metrics segmentation by distinct clients and versions](/client-awareness/)
-* [Operation safelisting](/operation-registry/)
-* [Schema change validation](/schema-validation/)
-* [Resolver-level query tracing](/performance/)
-* Third-party integrations (e.g., [Datadog](/datadog-integration/))
-* Longer data retention
+- [Metrics segmentation by distinct clients and versions](/client-awareness/)
+- [Operation safelisting](/operation-registry/)
+- [Schema change validation](/schema-validation/)
+- [Resolver-level query tracing](/performance/)
+- Third-party integrations (e.g., [Datadog](/datadog-integration/))
+- Longer data retention
 
 [Learn more about pricing and billing](https://www.apollographql.com/plans/)
 
@@ -41,7 +44,7 @@ mutations, and other object definitions
 
 ## Managing graphs
 
-A **graph** in Graph Manager represents the data graph for a single project or application. Every graph has its own associated GraphQL schema. 
+A **graph** in Graph Manager represents the data graph for a single project or application. Every graph has its own associated GraphQL schema.
 
 ### Creating a graph
 
@@ -55,7 +58,7 @@ Note that every graph in Graph Manager has a globally unique **graph name**. We 
 
 After selecting an organization in Graph Manager, click on a particular graph
 to view its data and settings. All of a Graph Manager organization's members have
-access to the data and settings for every graph that belongs to that organization. 
+access to the data and settings for every graph that belongs to that organization.
 
 ### Transferring graph ownership
 
@@ -64,7 +67,7 @@ by visiting the graph's Settings page and changing the **graph owner**.
 
 ### Deleting a graph
 
->**Deleting a graph cannot be undone!**
+> **Deleting a graph cannot be undone!**
 
 You can delete a graph from Graph Manager by visiting its Settings page and clicking
 **Delete**.
@@ -78,7 +81,7 @@ To distinguish between graph activity for different application environments, yo
 that can (but doesn't have to) differ from the default variant.
 
 When your server sends metrics to Graph Manager, it can associate an operation with
-a particular variant. Variants appear as separate items in your organization's graph list, allowing you to view analytics for 
+a particular variant. Variants appear as separate items in your organization's graph list, allowing you to view analytics for
 each application environment in isolation.
 
 ## Ingesting and fetching data
@@ -86,10 +89,10 @@ each application environment in isolation.
 Graph Manager ingests and stores performance metrics data sent from your GraphQL server.
 Use one of the following methods to send data to Graph Manager:
 
-* Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](https://www.apollographql.com/docs/tutorial/production/#get-a-graph-manager-api-key) in your server configuration.
+- Use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as your application's GraphQL server and [include a Graph Manager API key](https://www.apollographql.com/docs/tutorial/production/#get-a-graph-manager-api-key) in your server configuration.
 
-* If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](https://www.apollographql.com/docs/references/setup-analytics/#graph-manager-reporting-endpoint) (again,
-providing an API key with every request).
+- If you aren't using Apollo Server, you can send trace metrics to the [Graph Manager reporting endpoint](https://www.apollographql.com/docs/references/setup-analytics/#graph-manager-reporting-endpoint) (again,
+  providing an API key with every request).
 
 ### API keys
 
