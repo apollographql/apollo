@@ -17,21 +17,31 @@ In a production application, you should set up this publishing script as part of
 
 ### Get a Graph Manager API key
 
-First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. Step 1 of the prompt will instruct you to name your graph. Step 2 will give you instructions on how to publish your schema via the CLI, using your personal key. Follow the instruction. When you're finished, click _Done_. You will to find the API key by opening the Settings page, under API Keys. It will be prefixed by `service:`. Copy that key so we can save it as an environment variable.
 
-Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
+Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Save it to the root of your project. Add your Graph Manager API key that you copied from the previous step to the file:
 
 ```
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look like this:
 
 ```
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`.
+Our key is now stored under the environment variable `APOLLO_KEY`.
+
+You will also need to create a configuration file `apollo.config.js` in root of your project and add the following:
+
+```
+module.exports = {
+    service: {
+        name: "<your-service-name>"
+    }
+}
+```
 
 ### Check and publish with the Apollo CLI
 
