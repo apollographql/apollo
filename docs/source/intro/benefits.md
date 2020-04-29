@@ -117,12 +117,12 @@ In a federated architecture, a single GraphQL schema is split across multiple ba
 
 ### Success stories
 
-Here are a few blog posts from organizations that have had great success adopting GraphQL in their production environment:
+Here are a few blog posts from organizations that have benefited from adopting GraphQL in their production environment:
 
+* [PayPal](https://medium.com/paypal-engineering/scaling-graphql-at-paypal-b5b5ac098810)
 * [Netflix](https://netflixtechblog.com/our-learnings-from-adopting-graphql-f099de39ae5f)
 * [The New York Times](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c)
 * [Nerdwallet](https://www.nerdwallet.com/blog/engineering/getting-started-with-graphql-and-apollo-part-1/)
-* [Shopify](https://www.shopify.com/partners/blog/graphql-admin-api)
 
 ## Trade-offs
 
