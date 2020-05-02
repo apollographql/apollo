@@ -102,7 +102,7 @@ Next, let's take care of fetching a specific launch by its ID. Let's add two met
 _src/datasources/launch.js_
 
 ```js
-async getLaunchById({ launchId }) {
+async getLaunchById(launchId) {
   const response = await this.get('launches', { flight_number: launchId });
   return this.launchReducer(response[0]);
 }
