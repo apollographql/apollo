@@ -256,7 +256,7 @@ _src/schema.js_
 ```js
   type Mission {
     # ... with rest of schema
-    missionPatch(mission: String, size: PatchSize): String
+    missionPatch(size: PatchSize): String
   }
 ```
 
