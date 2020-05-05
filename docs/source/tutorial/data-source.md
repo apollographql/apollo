@@ -23,9 +23,7 @@ This package exposes the `RESTDataSource` class that is responsible for fetching
 
 In our example, the `baseURL` for our API is `https://api.spacexdata.com/v2/`. Let's create our `LaunchAPI` data source by adding the code below to `src/datasources/launch.js`:
 
-_src/datasources/launch.js_
-
-```js
+```js:title=src/datasources/launch.js
 const { RESTDataSource } = require('apollo-datasource-rest');
 
 class LaunchAPI extends RESTDataSource {
@@ -44,9 +42,7 @@ The Apollo `RESTDataSource` also sets up an in-memory cache that caches response
 
 The next step is to add methods to the `LaunchAPI` data source that correspond to the queries our graph API needs to fetch. According to our schema, we'll need a method to get all of the launches. Let's add a `getAllLaunches` method to our `LaunchAPI` class now:
 
-_src/datasources/launch.js_
-
-```js
+```js:title=src/datasources/launch.js
 async getAllLaunches() {
   const response = await this.get('launches');
   return Array.isArray(response)
@@ -59,9 +55,7 @@ The Apollo REST data sources have helper methods that correspond to HTTP verbs l
 
 Now, we need to write our `launchReducer` method in order to transform our launch data into the shape our schema expects. We recommend this approach in order to decouple your graph API from business logic specific to your REST API. First, let's recall what our `Launch` type looks like in our schema. You don't have to copy this code:
 
-_src/schema.js_
-
-```graphql
+```graphql:title=src/schema.js
 type Launch {
   id: ID!
   site: String
@@ -73,9 +67,7 @@ type Launch {
 
 Next, let's write a `launchReducer` function to transform the data into that shape. Copy the following code into your `LaunchAPI` class:
 
-_src/datasources/launch.js_
-
-```js
+```js:title=src/datasources/launch.js
 launchReducer(launch) {
   return {
     id: launch.flight_number || 0,
@@ -99,9 +91,7 @@ With the above changes, we can easily make changes to the `launchReducer` method
 
 Next, let's take care of fetching a specific launch by its ID. Let's add two methods, `getLaunchById`, and `getLaunchesByIds` to the `LaunchAPI` class.
 
-_src/datasources/launch.js_
-
-```js
+```js:title=src/datasources/launch.js
 async getLaunchById({ launchId }) {
   const response = await this.get('launches', { flight_number: launchId });
   return this.launchReducer(response[0]);
@@ -146,9 +136,7 @@ Now that we've built our `LaunchAPI` data source to connect our REST API and our
 
 Adding our data sources is simple. Just create a `dataSources` property on your `ApolloServer` that corresponds to a function that returns an object with your instantiated data sources. Let's see what that looks like by navigating to `src/index.js` and adding the code below:
 
-_src/index.js_
-
-```js{3,5,6,8,12-15}
+```js{3,5,6,8,12-15}:title=src/index.js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
