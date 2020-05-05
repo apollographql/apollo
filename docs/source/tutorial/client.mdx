@@ -32,13 +32,13 @@ While Apollo VSCode is not required to successfully complete the tutorial, setti
 
 First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Graph Manager API key that you already created in step #4 to the file:
 
-```
+```bash:title=.env
 ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look something like this:
 
-```
+```bash:title=.env
 ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
@@ -46,7 +46,7 @@ Our key is now stored under the environment variable `ENGINE_API_KEY`. Apollo VS
 
 Next, create an Apollo config file called `apollo.config.js`. This config file is how you configure both the Apollo VSCode extension and CLI. Paste the snippet below into the file:
 
-```js
+```js:title=apollo.config.js
 module.exports = {
   client: {
     name: 'Space Explorer [web]',
@@ -100,7 +100,7 @@ With a `client.query()` call, we can query our graph's API. Add the following li
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import gql from "graphql-tag"; // highlight-line
+import gql from 'graphql-tag'; // highlight-line
 ```
 
 </MultiCodeBlock>
