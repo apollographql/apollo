@@ -3,7 +3,7 @@ title: Integrating Graph Manager with Slack
 sidebar_title: Slack
 ---
 
-Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This enables you to stay up to date on changes to your graph's schema and performance as soon as they occur.
+Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This helps you stay up to date on changes to your graph's schema and performance as soon as they occur.
 
 These notifications include:
 
@@ -15,20 +15,21 @@ These notifications include:
 
 > If you don't have a Graph Manager account yet, [get started](getting-started/).
 
-### Setting up an Incoming Webhook
+To set up Slack notifications, you first configure an incoming webhook in Slack, then provide that webhook's URL to Graph Manager.
 
-Before you can connect a Slack channel in Graph manager, you will need
-to setup an "Incoming WebHooks Integration" for your team's Slack channel:
+### 1. Create an incoming webhook
 
-1. Visit [the Slack App Directory](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks)
-   for your team.
-2. Click on "Add to Slack", and choose the channel where notifications should be sent.
-3. Click on "Add Incoming WebHooks Integration" then copy the "Webhook URL" (e.g. https://hooks.slack.com/services/...)
-4. Using this URL, you can now complete [connecting a slack channel](#connecting-a-slack-channel)
+To create an incoming webhook:
 
-### Connecting a Slack channel
+1. From the [Incoming WebHooks](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) page of the Slack App Directory, sign in and click **Add to Slack**.
+2. Select the channel that should receive Graph Manager notifications and click **Add Incoming WebHooks integration**.
+3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-graph-manager).
 
-You configure the Slack integration from the [Graph Manager UI](https://engine.apollographql.com):
+You can repeat this process to create webhook URLs for multiple channels.
+
+### 2. Provide the webhook to Graph Manager
+
+From the [Graph Manager UI](https://engine.apollographql.com):
 
 1. Select the graph you want to configure Slack notifications for.
 2. Open the graph's Integrations page in the left nav.
@@ -38,20 +39,15 @@ You configure the Slack integration from the [Graph Manager UI](https://engine.a
 
 4. Specify the name of the Slack channel you want to push notifications to.
 
-   _You can complete this process multiple times if you want to push different notifications to different channels._
-
-5. Follow the instructions in [setting up an incoming webhook]() to obtain a webhook URL from Slack for the desired channel.
-   Provide the webhook in the **Slack Webhook URL** field.
+5. In the Slack Webhook URL field, paste the webhook URL you obtained in [Create an incoming webhook](#1-create-an-incoming-webhook).
 6. Click **Done**.
-7. Verify that you receive a message from Apollo in Slack.
+7. Verify that your selected Slack channel receives a confirmation notification from Graph Manager.
 
-Once configured, reports for individual graphs can be added and removed at any time via the Integrations page!
+To configure notifications for multiple Slack channels, repeat this process with a different corresponding webhook URL each time.
 
-6. Click **Done**.
+### 3. Configure individual notification types
 
-### Configuring individual notification types
-
-After you [connect at least one Slack channel](#connecting-a-slack-channel), you can set up each of the individual notification types from the other sections of your graph's Integrations page:
+After you provide at least one Slack webhook to Graph Manager, you can configure individual notification types from the other sections of your graph's Integrations page:
 
 <img src="./img/integrations/integrations-tab.jpg" class="screenshot" alt="The integrations page in Graph Manager"></img>
 
