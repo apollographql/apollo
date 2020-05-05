@@ -30,8 +30,7 @@ This might sound confusing at first, but it will start to make more sense once w
 
 First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
 
-_src/index.js_
-```js
+```js:title=src/index.js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
@@ -64,9 +63,7 @@ First, let's start by writing our resolvers for the `launches`, `launch`, and `m
 
 Navigate to `src/resolvers.js` and paste the code below into the file:
 
-_src/resolvers.js_
-
-```js
+```js:title=src/resolvers.js
 module.exports = {
   Query: {
     launches: (_, __, { dataSources }) =>
@@ -141,9 +138,7 @@ Running the `launches` query returned a large data set of launches, which can sl
 
 We'll use cursor-based pagination for our graph API. Open up the `src/schema.js` file and update the `Query` type with `launches` and also add a new type called `LaunchConnection` to the schema as shown below:
 
-_src/schema.js_
-
-```graphql
+```graphql:title=src/schema.js
 type Query {
   launches( # replace the current launches query with this one.
     """
@@ -177,9 +172,7 @@ Open up the `src/utils.js` file and check out the `paginateResults` function. Th
 
 Let's import `paginateResults` and replace the `launches` resolver function in the `src/resolvers.js` file with the code below:
 
-_src/resolvers.js_
-
-```js{1,5-26}
+```js{1,5-26}:title=src/resolvers.js
 const { paginateResults } = require('./utils');
 
 module.exports = {
@@ -239,9 +232,7 @@ You may have noticed that we haven't written resolvers for all our types, yet ou
 
 Let's look at a case where we do want to write a resolver on our `Mission` type. Navigate to `src/resolvers.js` and copy this resolver into our resolver map underneath the `Query` property:
 
-_src/resolvers.js_
-
-```js
+```js:title=src/resolvers.js
 Mission: {
   // make sure the default size is 'large' in case user doesn't specify
   missionPatch: (mission, { size } = { size: 'LARGE' }) => {
@@ -252,8 +243,7 @@ Mission: {
 },
 ```
 
-_src/schema.js_
-```js
+```js:title=src/schema.js
   type Mission {
     # ... with rest of schema
     missionPatch(mission: String, size: PatchSize): String
@@ -264,9 +254,7 @@ The first argument passed into our resolver is the parent, which refers to the m
 
 Now that we know how to add resolvers on types other than `Query` and `Mission`, let's add some more resolvers to the `Launch` and `User` types. Copy this code into your resolver map:
 
-_src/resolvers.js_
-
-```js
+```js:title=src/resolvers.js
 Launch: {
   isBooked: async (launch, _, { dataSources }) =>
     dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
@@ -302,9 +290,7 @@ Here are the steps you'll want to follow:
 
 Let's open up `src/index.js` and update the `context` function on `ApolloServer` to the code shown below:
 
-_src/index.js_
-
-```js{1,4,8,10}
+```js{1,4,8,10}:src/index.js
 const isEmail = require('isemail');
 
 const server = new ApolloServer({
@@ -332,9 +318,7 @@ How do we create the token passed to the `authorization` headers? Let's move on 
 
 Writing `Mutation` resolvers is similar to the resolvers we've already written. First, let's write the `login` resolver to complete our authentication flow. Add the code below to your resolver map underneath the `Query` resolvers:
 
-_src/resolvers.js_
-
-```js
+```js:title=src/resolvers.js
 Mutation: {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
@@ -347,9 +331,7 @@ The `login` resolver receives an email address and returns a token if a user exi
 
 Now, let's add the resolvers for `bookTrips` and `cancelTrip` to `Mutation`:
 
-_src/resolvers.js_
-
-```js
+```js:title=src/resolvers.js
 Mutation: {
   bookTrips: async (_, { launchIds }, { dataSources }) => {
     const results = await dataSources.userAPI.bookTrips({ launchIds });

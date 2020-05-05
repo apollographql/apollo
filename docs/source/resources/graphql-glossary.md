@@ -366,7 +366,7 @@ type Query {
 
 ## Schema first development
 
-A [development approach](/intro/platform/#workflows) for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
+A development approach for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
 
 ## Schema registry
 
