@@ -7,9 +7,9 @@ Apollo Graph Manager can send notifications about your data graph to your team's
 
 These notifications include:
 
-* [Daily reports](#daily-reports) of your graph's request rate, error rate, and latency
-* [Schema change notifications](#schema-change-notifications) whenever your graph's schema is updated
-* [Performance alerts](#performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this feature requires a [paid plan](https://www.apollographql.com/pricing/))
+- [Daily reports](#daily-reports) of your graph's request rate, error rate, and latency
+- [Schema change notifications](#schema-change-notifications) whenever your graph's schema is updated
+- [Performance alerts](#performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this feature requires a [paid plan](https://www.apollographql.com/pricing/))
 
 ## Setup
 
@@ -23,11 +23,11 @@ You configure the Slack integration from the [Graph Manager UI](https://engine.a
 2. Open the graph's Integrations page in the left nav.
 3. In the Reporting Channels section at the bottom of the Integrations page, click **Configure Slack Channel**. The following dialog appears:
 
-    <img class="screenshot" src="./img/integrations/configure-slack-integration.jpg" alt="Modal to set up Slack integration"></img>
+   <img class="screenshot" src="./img/integrations/configure-slack-integration.jpg" alt="Modal to set up Slack integration"></img>
 
-4. Specify the name of the Slack channel you want to push notifications to. 
+4. Specify the name of the Slack channel you want to push notifications to.
 
-    _You can complete this process multiple times if you want to push different notifications to different channels._
+   _You can complete this process multiple times if you want to push different notifications to different channels._
 
 5. Follow the instructions in the form's tooltips to obtain a webhook URL from Slack for the desired channel. Provide the webhook in the **Slack Webhook URL** field.
 
@@ -49,9 +49,9 @@ Graph Manager sends your graph's daily report around 9am in your specified time 
 
 The daily report provides an actionable summary of what's happened in your API over the last 24 hours. Here’s how you can use it to identify issues:
 
-*  **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
-*  **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
-*  **Error percentage:** This shows you how many of your GraphQL requests produce an error result, along with a list of the operations with the highest error percentage. Spikes in errors might be the result of an underlying back-end malfunction.
+- **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
+- **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
+- **Error percentage:** This shows you how many of your GraphQL requests produce an error result, along with a list of the operations with the highest error percentage. Spikes in errors might be the result of an underlying back-end malfunction.
 
 ## Schema change notifications
 
