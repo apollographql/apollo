@@ -3,39 +3,51 @@ title: Integrating Graph Manager with Slack
 sidebar_title: Slack
 ---
 
-Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This enables you to stay up to date on changes to your graph's schema and performance as soon as they occur.
+Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This helps you stay up to date on changes to your graph's schema and performance as soon as they occur.
 
 These notifications include:
 
-* [Daily reports](#daily-reports) of your graph's request rate, error rate, and latency
-* [Schema change notifications](#schema-change-notifications) whenever your graph's schema is updated
-* [Performance alerts](#performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this feature requires a [paid plan](https://www.apollographql.com/pricing/))
+- [Daily reports](#daily-reports) of your graph's request rate, error rate, and latency
+- [Schema change notifications](#schema-change-notifications) whenever your graph's schema is updated
+- [Performance alerts](#performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this feature requires a [paid plan](https://www.apollographql.com/pricing/))
 
 ## Setup
 
 > If you don't have a Graph Manager account yet, [get started](getting-started/).
 
-### Connecting a Slack channel
+To set up Slack notifications, you first configure an incoming webhook in Slack, then provide that webhook's URL to Graph Manager.
 
-You configure the Slack integration from the [Graph Manager UI](https://engine.apollographql.com):
+### 1. Create an incoming webhook
+
+To create an incoming webhook:
+
+1. From the [Incoming WebHooks](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) page of the Slack App Directory, sign in and click **Add to Slack**.
+2. Select the channel that should receive Graph Manager notifications and click **Add Incoming WebHooks integration**.
+3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-graph-manager).
+
+You can repeat this process to create webhook URLs for multiple channels.
+
+### 2. Provide the webhook to Graph Manager
+
+From the [Graph Manager UI](https://engine.apollographql.com):
 
 1. Select the graph you want to configure Slack notifications for.
 2. Open the graph's Integrations page in the left nav.
 3. In the Reporting Channels section at the bottom of the Integrations page, click **Configure Slack Channel**. The following dialog appears:
 
-    <img class="screenshot" src="./img/integrations/configure-slack-integration.jpg" alt="Modal to set up Slack integration"></img>
+   <img class="screenshot" src="./img/integrations/configure-slack-integration.jpg" alt="Modal to set up Slack integration"></img>
 
-4. Specify the name of the Slack channel you want to push notifications to. 
+4. Specify the name of the Slack channel you want to push notifications to.
 
-    _You can complete this process multiple times if you want to push different notifications to different channels._
-
-5. Follow the instructions in the form's tooltips to obtain a webhook URL from Slack for the desired channel. Provide the webhook in the **Slack Webhook URL** field.
-
+5. In the Slack Webhook URL field, paste the webhook URL you obtained in [Create an incoming webhook](#1-create-an-incoming-webhook).
 6. Click **Done**.
+7. Verify that your selected Slack channel receives a confirmation notification from Graph Manager.
 
-### Configuring individual notification types
+To configure notifications for multiple Slack channels, repeat this process with a different corresponding webhook URL each time.
 
-After you [connect at least one Slack channel](#connecting-a-slack-channel), you can set up each of the individual notification types from the other sections of your graph's Integrations page:
+### 3. Configure individual notification types
+
+After you provide at least one Slack webhook to Graph Manager, you can configure individual notification types from the other sections of your graph's Integrations page:
 
 <img src="./img/integrations/integrations-tab.jpg" class="screenshot" alt="The integrations page in Graph Manager"></img>
 
@@ -49,9 +61,9 @@ Graph Manager sends your graph's daily report around 9am in your specified time 
 
 The daily report provides an actionable summary of what's happened in your API over the last 24 hours. Here’s how you can use it to identify issues:
 
-*  **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
-*  **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
-*  **Error percentage:** This shows you how many of your GraphQL requests produce an error result, along with a list of the operations with the highest error percentage. Spikes in errors might be the result of an underlying back-end malfunction.
+- **Request rate:** This shows you how many queries are hitting your server every minute, along with a list of the most popular operations. If you see a significant dip in this value, it might mean that queries aren’t able to reach your server, or that a particular client is down.
+- **p95 service time:** An operation's p95 response time indicates that 95% of that operation's executions complete _faster_ than the reported value. You can use this to identify that your API is overloaded and users are seeing long loading delays, or to find out which queries are taking the longest to run. This is often connected to UI performance, so a 500ms query probably means some part of your UI is taking that long to display.
+- **Error percentage:** This shows you how many of your GraphQL requests produce an error result, along with a list of the operations with the highest error percentage. Spikes in errors might be the result of an underlying back-end malfunction.
 
 ## Schema change notifications
 
