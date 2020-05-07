@@ -17,28 +17,28 @@ In a production application, you should set up this publishing script as part of
 
 ### Get a Graph Manager API key
 
-First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph and then hit _Next_. After this you'll see a code to publish your schema, from here you need to copy your alphanumeric key (of length 22) prefixed by username in the second line that starts with --key. For eg: `--key=user:gh.username:SehfO-3aCA2sTdYjr2ekvw`, your key will be:- `SehfO-3aCA2sTdYjr2ekvw`. Copy that key so that we can save it as an environment variable.
 
 Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
 
 ```bash:title=.env
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look like this:
 
 ```bash:title=.env
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=service:my-service-439:SehfO-3aCA2sTdYjr2ekvw
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`.
+Our key is now stored under the environment variable `APOLLO_KEY`.
 
 ### Check and publish with the Apollo CLI
 
 It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
 
 ```bash
-npx apollo service:push --endpoint=http://localhost:4000
+npx apollo service:push --graph=my-service-439 --key=user:gh.username:SehfO-3aCA2sTdYjr2ekvw --endpoint=http://localhost:4000
 ```
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
