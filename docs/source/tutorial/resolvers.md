@@ -1,67 +1,39 @@
 ---
-title: "3. Write your graph's resolvers"
+title: "3. Define resolvers"
 description: Learn how a GraphQL query fetches data
 ---
 
-Time to accomplish: _15 Minutes_
+> Time to accomplish: 15 minutes
 
-Up until now, our graph API hasn't been very useful. We can inspect our graph's schema, but we can't actually run queries against it. Now that we've built our schema and data sources, it's time to leverage all of our hard work by calling our data sources in our graph API's resolver functions to possibly trigger business logic and/or to fetch and/or update data.
+We've designed our schema and configured our data sources, but our server doesn't yet know how to _use_ its data sources to populate the schema's fields. To achieve this, we'll define a collection of resolvers.
 
-## What is a resolver?
+**A resolver is a function that's responsible for populating the data for a single field in your schema.** Whenever a client queries for a particular field, the resolver for that field handles fetching the requested data from the appropriate data source.
 
-**Resolvers** provide the instructions for turning a GraphQL operation (a query, mutation, or subscription) into data. They either return the same type of data we specify in our schema or a promise for that data.
+A resolver function returns one of the following:
 
-Before we can start writing resolvers, we need to learn more about what a resolver function looks like. Resolver functions accept four arguments:
+* Data of the type required by the resolver's corresponding schema field (string, integer, object, etc.)
+* A promise that fulfills with data of the required type
+
+## The resolver function signature
+
+Before we start writing resolvers, let's cover what the resolver function signature looks like. Resolver functions can optionally accept four positional arguments:
 
 ```js
 fieldName: (parent, args, context, info) => data;
 ```
 
-- **parent**: An object that contains the result returned from the resolver on the parent type
-- **args**: An object that contains the arguments passed to the field
-- **context**: An object shared by all resolvers in a GraphQL operation. We use the context to contain per-request state such as authentication information and access our data sources.
-- **info**: Information about the execution state of the operation which should only be used in advanced cases
+- `parent`: The return value of the resolver for this field's parent (a parent field's resolver always executes _before_ the resolvers for that field's children).
+- `args`: An object that contains all [GraphQL arguments](https://graphql.org/graphql-js/passing-arguments/) provided for this field.
+- `context`: An object shared across all resolvers that are executing for a particular operation. Use this to share per-request state, such as authentication information and access to data sources.
+- `info`: Information about the execution state of the operation (used only in advanced cases).
 
-Remember the `LaunchAPI` and `UserAPI` data sources we created in the previous section and passed to the `context` property of `ApolloServer`? We're going to call them in our resolvers by accessing the `context` argument.
+Of these four arguments, our app will mostly use `context`. It enables our resolvers to share instances of our `LaunchAPI` and `UserAPI` data sources. To see how that works, let's get started creating some resolvers.
 
-This might sound confusing at first, but it will start to make more sense once we dive into practical examples. Let's get started!
+## Write query resolvers
 
-### Connecting resolvers to Apollo Server
+As mentioned above, the resolver for a parent field always executes before the resolvers for that field's children. Therefore, let's start by defining resolvers for some of our schema's top-level fields: the fields of the `Query` type.
 
-First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
-
-```js:title=src/index.js
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-const { createStore } = require('./utils');
-const resolvers = require('./resolvers'); // highlight-line
-
-const LaunchAPI = require('./datasources/launch');
-const UserAPI = require('./datasources/user');
-
-const store = createStore();
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers, // highlight-line
-  dataSources: () => ({
-    launchAPI: new LaunchAPI(),
-    userAPI: new UserAPI({ store })
-  })
-});
-
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
-```
-
-Apollo Server will automatically add the `launchAPI` and `userAPI` to our resolvers' context so we can easily call them.
-
-## Write Query resolvers
-
-First, let's start by writing our resolvers for the `launches`, `launch`, and `me` fields on our `Query` type. We structure our resolvers into a map where the keys correspond to the types and fields in our schema. If you ever get stuck remembering which fields are on a type, you can always check your graph API's schema.
-
-Navigate to `src/resolvers.js` and paste the code below into the file:
+As `src/schema.js` shows, our schema's `Query` type defines three fields: `launches`, `launch`, and `me`. To define resolvers for these fields, open `src/resolvers.js` and paste the code below:
 
 ```js:title=src/resolvers.js
 module.exports = {
@@ -75,9 +47,17 @@ module.exports = {
 };
 ```
 
-The code above shows the resolver functions for the `Query` type fields: `launches`, `launch`, and `me`. The first argument to our _top-level_ resolvers, `parent`, is always blank because it refers to the root of our graph. The second argument refers to any `arguments` passed into our query, which we use in our `launch` query to fetch a launch by its id. Finally, we destructure our data sources from the third argument, `context`, in order to call them in our resolvers.
+As this code shows, resolvers are defined as a **map**, where the map's keys correspond to our schema's types and fields.
 
-Our resolvers are simple and concise because the logic is embedded in the `LaunchAPI` and `UserAPI` data sources. We recommend keeping your resolvers thin as a best practice, which allows you to safely refactor without worrying about breaking your API.
+* All three resolver functions assign their first positional argument (`parent`) to the variable `_` as a convention to indicate that they don't use it.
+
+* The `launches` and `me` functions assign their _second_ positional argument (`args`) to `__` for the same reason. The `launch` function _does_ use the `args` argument, however, because the `launch` field takes an `id` argument.
+
+* All three resolver functions _do_ use the third positional argument (`context`). Specifically, they destructure it to access our data sources to call methods on them.
+
+* None of the resolver functions even specifies the fourth positional argument (`info`), because they don't use it and there's no other need to include it.
+
+As you can see, these resolver functions are short! That's because most of the logic they rely on is part of the `LaunchAPI` and `UserAPI` data sources. By keeping resolvers thin as a best practice, you can safely refactor your backing logic while reducing the likelihood of breaking your API.
 
 ### Run queries in the playground
 
@@ -223,6 +203,39 @@ query GetLaunches {
 ```
 
 Thanks to our pagination implementation, you should only see three launches returned back from our API.
+
+## Connect resolvers to Apollo Server
+
+First, let's connect our resolver map to Apollo Server. Right now, it's just an empty object, but we should add it to our `ApolloServer` instance so we don't have to do it later. Navigate to `src/index.js` and add the following code to the file:
+
+```js:title=src/index.js
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+const { createStore } = require('./utils');
+const resolvers = require('./resolvers'); // highlight-line
+
+const LaunchAPI = require('./datasources/launch');
+const UserAPI = require('./datasources/user');
+
+const store = createStore();
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers, // highlight-line
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store })
+  })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+Apollo Server will automatically add the `launchAPI` and `userAPI` to our resolvers' context so we can easily call them.
+
+
 
 ## Write resolvers on types
 
