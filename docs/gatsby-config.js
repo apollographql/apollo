@@ -19,6 +19,7 @@ module.exports = {
             'tutorial/schema',
             'tutorial/data-source',
             'tutorial/resolvers',
+            'tutorial/mutation-resolvers',
             'tutorial/production',
             'tutorial/client',
             'tutorial/queries',
