@@ -95,17 +95,17 @@ Each variant of a graph functions as a standalone graph. It has its own change h
 
 ### Registering a schema to a variant
 
-To register a schema to a variant, include the `--tag=<VARIANT>` flag in your `apollo service:push` command, like so:
+To register a schema to a variant, include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
 
 ```bash
-apollo service:push --tag=beta
+apollo service:push --variant=beta
 ```
 
-If you omit the `--tag` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
+If you omit the `--variant` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
 
 ### Associating metrics with a variant
 
-You can configure Apollo Server to associate the metrics it sends to Graph Manager with a particular variant. To do so, set the `ENGINE_SCHEMA_TAG` environment variable to the appropriate variant before initializing Apollo Server.
+You can configure Apollo Server to associate the metrics it sends to Graph Manager with a particular variant. To do so, set the `APOLLO_GRAPH_VARIANT` environment variable to the appropriate variant before initializing Apollo Server.
 
 Alternatively, you can include the `schemaTag` option in your call to the `ApolloServer` constructor, like so:
 
@@ -113,8 +113,8 @@ Alternatively, you can include the `schemaTag` option in your call to the `Apoll
 const server = new ApolloServer({
   ...
   engine: {
-    apiKey: "<ENGINE_API_KEY>",
-    schemaTag: "beta" // highlight-line
+    apiKey: "<APOLLO_KEY>",
+    graphVariant: "beta" // highlight-line
   }
 });
 ```
