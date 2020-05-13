@@ -27,7 +27,7 @@ APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
 
 The entry should basically look like this:
 
-```
+```bash:title=.env
 APOLLO_KEY=user:xz.5r134305-88p1-4840-12c1-88rc0xcxe179:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
