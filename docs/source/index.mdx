@@ -4,15 +4,26 @@ description: Explore the Apollo platform
 ---
 
 import DocsetMenu from './components/docset-menu';
+import { MenuWrapper } from './components/menu';
+import WorkoutMenuItem from './components/workout-menu-item';
 import { Button } from '@apollo/space-kit/Button';
+import { IconRobot1 } from '@apollo/space-kit/icons/IconRobot1';
 import { Link } from 'gatsby';
 import { colors } from 'gatsby-theme-apollo-core';
+import {
+  ExpansionPanel,
+} from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
+import { ReactComponent as BadmintonPlayer } from './assets/badminton-player.svg';
+import { ReactComponent as Paragliding } from './assets/paragliding.svg';
+import { ReactComponent as Weightlift } from './assets/weightlift.svg';
+import { ReactComponent as Diving } from './assets/diving.svg';
+import { ReactComponent as HeadLight } from './assets/head-light.svg';
 
 Welcome! 👋 Apollo is a platform for building a **data graph**, a communication layer that seamlessly connects your application clients (such as React and iOS apps) to your back-end services.
 
 <DocsetMenu />
 
-### New to Apollo or GraphQL?
+## New to Apollo or GraphQL?
 
 It's easy to adopt Apollo incrementally, meaning you can set it up alongside an existing solution (such as a REST API) and migrate functionality at your convenience.
 
@@ -32,3 +43,80 @@ It's easy to adopt Apollo incrementally, meaning you can set it up alongside an 
     Learn more
   </Button>
 </div>
+
+## Recommended workouts
+
+<MenuWrapper>
+
+<WorkoutMenuItem
+  icon={HeadLight}
+  keyWord="Discover"
+  otherWords="Apollo"
+>
+
+* [The Apollo GraphQL platform](./intro/platform/)
+* [Why GraphQL?](./intro/benefits/)
+* Introduction to [Apollo Server](https://www.apollographql.com/docs/apollo-server/) and [Apollo Client](https://www.apollographql.com/docs/react/)
+* [Overview of Apollo Graph Manager](https://www.apollographql.com/docs/graph-manager/)
+* [Principled GraphQL](https://principledgraphql.com/)
+
+</WorkoutMenuItem>
+
+<WorkoutMenuItem
+  icon={Diving}
+  keyWord="Dive in"
+  otherWords="to the basics"
+>
+
+* Get started with [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/) and [Apollo Client](https://www.apollographql.com/docs/react/get-started/)
+* The [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) and [VS Code extension](./devtools/editor-plugins/)
+* [Resolvers](https://www.apollographql.com/docs/apollo-server/data/resolvers/) and [Data sources](https://www.apollographql.com/docs/apollo-server/data/data-sources/) (Apollo Server)
+* [Queries](https://www.apollographql.com/docs/react/data/queries/) and [Mutations](https://www.apollographql.com/docs/react/data/mutations/) (Apollo Client)
+* [Get started with Apollo Graph Manager](https://www.apollographql.com/docs/graph-manager/getting-started/)
+
+</WorkoutMenuItem>
+
+<WorkoutMenuItem
+  icon={Weightlift}
+  keyWord="Develop"
+  otherWords="your graph"
+>
+
+* [Registering your schema](https://www.apollographql.com/docs/graph-manager/schema-registry/) with Graph Manager
+* Caching in [Apollo Server](https://www.apollographql.com/docs/apollo-server/performance/caching/) and [Apollo Client](https://www.apollographql.com/docs/react/caching/cache-configuration/)
+* Mocking new features in [Apollo Server](https://www.apollographql.com/docs/apollo-server/testing/mocking/) and [Apollo Client](https://www.apollographql.com/docs/react/development-testing/client-schema-mocking/)
+* [Using schema directives](https://www.apollographql.com/docs/apollo-server/schema/directives/) (Apollo Server)
+* [Extending Apollo Server with plugins](https://www.apollographql.com/docs/apollo-server/integrations/plugins/)
+
+
+</WorkoutMenuItem>
+
+<WorkoutMenuItem
+  icon={Paragliding}
+  keyWord="Deploy"
+  otherWords="to production"
+>
+
+* Deploying Apollo Server to [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/), [AWS Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/), [Zeit Now](https://www.apollographql.com/docs/apollo-server/deployment/now/), etc.
+* [Preventing breaking changes to your graph](https://www.apollographql.com/docs/graph-manager/schema-validation/)
+* Introduction to [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/) and [Managed federation](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/)
+* Authentication in [Apollo Server](https://www.apollographql.com/docs/apollo-server/security/authentication/) and [Apollo Client](https://www.apollographql.com/docs/react/networking/authentication/)
+* [Segmenting metrics by client](https://www.apollographql.com/docs/graph-manager/client-awareness/)
+
+</WorkoutMenuItem>
+
+<WorkoutMenuItem
+  icon={BadmintonPlayer}
+  keyWord="Debug"
+  otherWords="your solution"
+>
+
+* Testing in [Apollo Server](https://www.apollographql.com/docs/apollo-server/testing/testing/) and [Apollo Client](https://www.apollographql.com/docs/react/development-testing/testing/)
+* Error handling in [Apollo Server](https://www.apollographql.com/docs/apollo-server/data/errors/) and [Apollo Client](https://www.apollographql.com/docs/react/data/error-handling/)
+* [Metrics and logging](https://www.apollographql.com/docs/apollo-server/monitoring/metrics/) (Apollo Server)
+* [Analyzing performance](https://www.apollographql.com/docs/graph-manager/performance/) with Graph Manager
+* [Pushing federated trace data](https://www.apollographql.com/docs/apollo-server/federation/metrics/)
+
+</WorkoutMenuItem>
+
+</MenuWrapper>
