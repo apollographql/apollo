@@ -33,9 +33,9 @@ In a later chapter, we'll learn how to save this login token on the client.
 
 Our `Mutation.login` resolver returns a token that clients can use to authenticate themselves to our server. Now, we need to add logic to our server to actually perform the authentication.
 
-In `src/index.js`, pass a `context` function to the constructor of `ApolloServer` that matches the following:
+In `src/index.js`, import the `isEmail` function and pass a `context` function to the constructor of `ApolloServer` that matches the following:
 
-```js:title=src/index.js
+```js{1,4-16}:title=src/index.js
 const isEmail = require('isemail');
 
 const server = new ApolloServer({
@@ -71,7 +71,7 @@ By creating this `context` object at the beginning of each operation's execution
 Now let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
 
 ```js:title=src/resolvers.js
-Mutation: {
+//Mutation: {
   
   // login: ...
 
@@ -108,7 +108,6 @@ Mutation: {
       launches: [launch],
     };
   },
-},
 ```
 
 To match our schema, these two resolvers both return an object that conforms to the structure of the `TripUpdateResponse` type. This type's fields include a `success` indicator, a status `message`, and an array of `launches` that the mutation either booked or canceled.

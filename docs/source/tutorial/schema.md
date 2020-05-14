@@ -186,7 +186,7 @@ Our example app's schema is now complete!
 
 Return to `src/index.js` and add a call to `server.listen()`, like so:
 
-```js:title=src/index.js
+```js{6-8}:title=src/index.js
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 

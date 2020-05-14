@@ -98,13 +98,11 @@ By providing your resolver map to Apollo Server like so, it knows how to call re
 
 ## Run test queries
 
-Apollo Server includes an IDE called **GraphQL Playground** that allows you to explore your schema and run test queries on it:
+Let's run a test query on our server! Return to GraphQL Playground by running `npm start` and visiting `http://localhost:4000/` in your browser:
 
 <img class="screenshot" src="../images/playground.png" alt="GraphQL Playground"></img>
 
-Go ahead and start your server by running `npm start` and visit `http://localhost:4000/` in your browser to open GraphQL Playground.
-
-Let's run a test query on our server! Paste the query below into the left text area of  GraphQL Playground:
+Paste the following query into the left text field of GraphQL Playground:
 
 ```graphql
 # We'll cover more about the structure of a query later in the tutorial.
@@ -192,7 +190,10 @@ The resolver for `Mission.missionPatch` should return a different value dependin
 
 Add the following to your resolver map in `src/resolvers.js`, below the `Query` property:
 
-```js:title=src/resolvers.js
+```js{4-11}:title=src/resolvers.js
+// Query: {
+//   ...
+// },
 Mission: {
   // The default size is 'LARGE' if not provided
   missionPatch: (mission, { size } = { size: 'LARGE' }) => {
@@ -207,7 +208,10 @@ This resolver obtains a large or small patch from `mission`, which is the object
 
 Now that we know how to add resolvers for types besides `Query`, let's add some resolvers for fields of the `Launch` and `User` types. Add the following to your resolver map, below `Mission`:
 
-```js:title=src/resolvers.js
+```js{4-22}:title=src/resolvers.js
+// Mission: {
+//   ...
+// },
 Launch: {
   isBooked: async (launch, _, { dataSources }) =>
     dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
@@ -239,7 +243,7 @@ Pagination ensures that our server sends data in small chunks. We recommend **cu
 
 Let's set up cursor-based pagination. In `src/schema.js`, update `Query.launches` to match the following, and also add a new type called `LaunchConnection` like so:
 
-```graphql:title=src/schema.js
+```graphql{2-11,16-25}:title=src/schema.js
 type Query {
   launches( # replace the current launches query with this one.
     """
