@@ -213,9 +213,9 @@ const gateway = new ApolloGateway({
 
 </ExpansionPanel>
 
-#### 5.1 Optionally, set the graph variant (AKA schemaTag)
+#### 5.1 Optionally, set the graph variant (AKA graphVariant)
 
-Configure the `schemaTag` field to specify which graph variant to pull operation manifests from.
+Configure the `graphVariant` field (`schemaTag` in `apollo-server` pre-2.13.0) to specify which graph variant to pull operation manifests from.
 
 ```js
 const server = new ApolloServer({
