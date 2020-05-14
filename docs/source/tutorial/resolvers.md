@@ -22,12 +22,14 @@ Before we start writing resolvers, let's cover what a resolver function's signat
 fieldName: (parent, args, context, info) => data;
 ```
 
-- `parent`: This is the return value of the resolver for this field's parent (the resolver for a parent field always executes _before_ the resolvers for that field's children).
-- `args`: This object contains all [GraphQL arguments](https://graphql.org/graphql-js/passing-arguments/) provided for this field.
-- `context`: This object is shared across all resolvers that execute for a particular operation. Use this to share per-operation state, such as authentication information and access to data sources.
-- `info`: This contains information about the execution state of the operation (used only in advanced cases).
+| Argument  | Description  |
+|---|---|
+| `parent` | This is the return value of the resolver for this field's parent (the resolver for a parent field always executes _before_ the resolvers for that field's children).  |
+| `args` |  This object contains all [GraphQL arguments](https://graphql.org/graphql-js/passing-arguments/) provided for this field. |
+| `context` | This object is shared across all resolvers that execute for a particular operation. Use this to share per-operation state, such as authentication information and access to data sources. |
+| `info` | This contains information about the execution state of the operation (used only in advanced cases). |
 
-Of these four arguments, our app will mostly use `context`. It enables our resolvers to share instances of our `LaunchAPI` and `UserAPI` data sources. To see how that works, let's get started creating some resolvers.
+Of these four arguments, the resolvers we define will mostly use `context`. It enables our resolvers to share instances of our `LaunchAPI` and `UserAPI` data sources. To see how that works, let's get started creating some resolvers.
 
 ## Define top-level resolvers
 
@@ -267,7 +269,7 @@ type LaunchConnection { # add this below the Query type as an additional type.
 
 Now, `Query.launches` takes in two parameters (`pageSize` and `after`) and returns a `LaunchConnection` object. The `LaunchConnection` includes:
 
-* A list of `launches` (the actual data a query is requesting)
+* A list of `launches` (the actual data requested by a query)
 * A `cursor` that indicates the current position in the data set
 * A `hasMore` boolean that indicates whether the data set contains any more items beyond those included in `launches`
 
