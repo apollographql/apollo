@@ -11,54 +11,16 @@ To "de-register" an implementing service with Graph Manager, call `apollo servic
 
 > **This action cannot be reversed!**
 
-<<<<<<< HEAD:graph-manager-docs/source/managed-federation/advanced-topics.mdx
-=======
-1. [Register all federated services](#registering-federated-services) with the Apollo Graph Manager.
-1. [Configure Apollo Server](#connecting-apollo-server-to-graph-manager) as a gateway to connect to the graph manager.
-1. [Turn on metrics](#metrics-and-observability) for your federated graph.
-1. [Validate changes](#validating-changes-to-the-graph) to the graph against production traffic.
-1. [Integrate your federated graph](#integrating-with-your-deployment-pipeline) into your deployment pipeline.
-
-<!-- TODO: For current Apollo platform users looking to migrate their monolithic API to a federated graph, follow our [platform migration guide](#platform-migration-guide). -->
-
-## Core concepts
-
-Federation introduces several new terms that are necessary for understanding the following steps in this article:
-
-- **Graph**: A single API composed of multiple federated services
-- **Federated services**: The underlying microservices that make up a graph. These services are standalone GraphQL servers that can be built in any language, since [federation](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) is spec-compliant GraphQL.
-- **Capabilities**: The types a service extends and adds to the graph. A service's capabilities describe how a service interacts with other portions of the graph.
-
-When you put these concepts together, a **graph** is composed of **federated services** that expose their **capabilities** in order to interact with each other.
-
-The rest of this article focuses on managing a federated graph with the Apollo platform. It assumes you've already implemented a federated graph. To implement a graph, read the [federation guide for Apollo Server](https://www.apollographql.com/docs/apollo-server/federation/introduction/) and come back to these steps once you're ready to run your graph in production.
-
-## Registering federated services
-
-If you're running a distributed GraphQL infrastructure, where federated services [compose](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#fetch-service-capabilities) to form a complete schema, tracking the history of the graph and its underlying services is essential. Running `apollo service:push` from within CI/CD on any federated service registers the overall schema of the graph and updates the graph's [managed configuration](#managed-configuration).
-
-To push a single federated service to Apollo, run `apollo service:push` in CI/CD with the `--serviceName`, `--endpoint`, and `--serviceURL` flags. The CLI will know where to fetch your service's capabilities based on the `--endpoint` flag, and the `--serviceURL` flag indicates where the federated service can be reached by the gateway. The `--serviceName` flag is used as a unique identifier for each federated service.
-
-Make sure you have a `.env` file locally with your `ENGINE_API_KEY` defined! To get an API key, click [here](https://engine.apollographql.com). To create a new `.env` file, copy your API key into the following command from your terminal:
-
-```bash
-echo "ENGINE_API_KEY=<your API key here>" >> .env
->>>>>>> Change --tag references to --variant for commands:graph-manager-docs/source/federation.mdx
 ```
 apollo service:delete --serviceName=products
 ```
 
 The next time it polls, your gateway obtains an updated configuration that reflects the removed service.
 
-Include the `--tag` option to remove an implementing service from a variant other than the default variant (`current`):
+Include the `--variant` option to remove an implementing service from a variant other than the default variant (`current`):
 
-<<<<<<< HEAD:graph-manager-docs/source/managed-federation/advanced-topics.mdx
 ```
-apollo service:delete --serviceName=products --tag=staging
-=======
-```bash
-apollo service:delete --serviceName=launches --variant=staging
->>>>>>> Change --tag references to --variant for commands:graph-manager-docs/source/federation.mdx
+apollo service:delete --serviceName=products --variant=staging
 ```
 
 ## Inspecting your graph
