@@ -112,7 +112,7 @@ jobs:
       # commands against it.
       - run: sleep 5
 
-      # This command authenticates using the `ENGINE_API_KEY` environment
+      # This command authenticates using the `APOLLO_KEY` environment
       # variable. Specify your GraphQL endpoint's URL in your Apollo config.
       - run: npx apollo service:check --variant=staging
 ```
