@@ -21,6 +21,7 @@ First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manage
 
 Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Delete the content of the newly created file and add your Graph Manager API key that you copied from the previous step to the file:
 
+
 ```
 APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
 ```
@@ -38,7 +39,7 @@ Create `apollo.config.js` with the following configuration:
 ```js{3}
 module.exports = {
   service: {
-    name: 'my-graph-name' // the name of your graph in Apollo Graph Manager
+    name: 'my-graph-name' // the identifier for your graph in Apollo Graph Manager
   }
 };
 ```

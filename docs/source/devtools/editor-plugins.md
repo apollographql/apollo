@@ -50,7 +50,7 @@ To authenticate with Graph Manager to pull down the schema, create a file next t
 After the key is found, add the following line to the `.env` file:
 
 ```bash
-ENGINE_API_KEY=<enter copied key here>
+APOLLO_KEY=<enter copied key here>
 ```
 
 After this is done, VS Code can be reloaded and the Apollo integration will connect to Graph Manager to provide autocomplete, validation, and more.
