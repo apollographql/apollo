@@ -35,10 +35,10 @@ Our key is now stored under the environment variable `APOLLO_KEY`.
 
 ### Check and publish with the Apollo CLI
 
-It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
+It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run the following command, substituting the name of your graph where indicated:
 
 ```bash
-npx apollo service:push --endpoint=http://localhost:4000 --graph=my-graph
+npx apollo service:push --endpoint=http://localhost:4000 --graph=name-of-graph
 ```
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
