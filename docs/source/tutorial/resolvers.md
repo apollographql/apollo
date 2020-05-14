@@ -235,7 +235,7 @@ Let's look at a case where we do want to write a resolver on our `Mission` type.
 ```js:title=src/resolvers.js
 Mission: {
   // make sure the default size is 'large' in case user doesn't specify
-  missionPatch: (mission, { size } = { size: 'LARGE' }) => {
+  missionPatch: (mission, { size = 'LARGE' }) => {
     return size === 'SMALL'
       ? mission.missionPatchSmall
       : mission.missionPatchLarge;
