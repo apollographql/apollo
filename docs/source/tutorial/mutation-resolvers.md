@@ -5,11 +5,16 @@ description: Learn how a GraphQL mutation modifies data
 
 > Time to accomplish: 10 minutes
 
-## Define mutation resolvers
+We've written all of the resolvers we need for schema fields that apply to query operations. Now, let's write resolvers for our schema's **mutations**. This process is nearly identical.
 
-Writing `Mutation` resolvers is similar to the resolvers we've already written. First, let's write the `login` resolver to complete our authentication flow. Add the code below to your resolver map underneath the `Query` resolvers:
+## `login`
+
+First, let's write a resolver for `Mutation.login`, which enables a user to log in to our application. Add the following to your resolver map below the `Query` field:
 
 ```js:title=src/resolvers.js
+// Query: {
+//   ...
+// },
 Mutation: {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
@@ -18,12 +23,58 @@ Mutation: {
 },
 ```
 
-The `login` resolver receives an email address and returns a token if a user exists. In a later section, we'll learn how to save that token on the client.
+This resolver takes an `email` address and returns a login token for a corresponding user entity. If a user entity doesn't yet exist for this email address, one is created.
 
-Now, let's add the resolvers for `bookTrips` and `cancelTrip` to `Mutation`:
+In a later chapter, we'll learn how to save this login token on the client.
+
+### Authenticating logged-in users
+
+> The authentication method used in our example application is not at all secure and should not be used by production applications. However, you can apply the principles demonstrated below to a token-based authentication method that _is_ secure.
+
+Our `Mutation.login` resolver returns a token that clients can use to authenticate themselves to our server. Now, we need to add logic to our server to actually perform the authentication.
+
+In `src/index.js`, pass a `context` function to the constructor of `ApolloServer` that matches the following:
+
+```js:title=src/index.js
+const isEmail = require('isemail');
+
+const server = new ApolloServer({
+  context: async ({ req }) => {
+    // simple auth check on every request
+    const auth = req.headers && req.headers.authorization || '';
+    const email = Buffer.from(auth, 'base64').toString('ascii');
+
+    if (!isEmail.validate(email)) return { user: null };
+
+    // find a user by their email
+    const users = await store.users.findOrCreate({ where: { email } });
+    const user = users && users[0] || null;
+
+    return { user: { ...user.dataValues } };
+  },
+  // Additional constructor options
+});
+```
+
+The `context` function defined above is called once for _every GraphQL operation_ that clients send to our server. The return value of this function becomes the [`context` argument](./resolvers/#the-resolver-function-signature) that's passed to every resolver that runs as part of that operation.
+
+Here's what our `context` function does:
+
+1. Obtain the value of the `Authorization` header (if any) included in the incoming request.
+2. Decode the value of the `Authorization` header.
+3. If the decoded value resembles an email address, obtain user details for that email address from the database and return an object that includes those details in the `user` field.
+
+By creating this `context` object at the beginning of each operation's execution, all of our resolvers can access the details for the logged-in user and perform actions specifically _for_ that user.
+
+## `bookTrips` and `cancelTrip`
+
+Now let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
 
 ```js:title=src/resolvers.js
 Mutation: {
+  
+  // login: ...
+
   bookTrips: async (_, { launchIds }, { dataSources }) => {
     const results = await dataSources.userAPI.bookTrips({ launchIds });
     const launches = await dataSources.launchAPI.getLaunchesByIds({
@@ -60,50 +111,17 @@ Mutation: {
 },
 ```
 
-Both `bookTrips` and `cancelTrip` must return the properties specified on our `TripUpdateResponse` type from our schema, which contains a success indicator, a status message, and an array of launches that we've either booked or cancelled. The `bookTrips` mutation can get tricky because we have to account for a partial success where some launches could be booked and some could fail. Right now, we're simply indicating a partial success in the `message` field to keep it simple.
+To match our schema, these two resolvers both return an object that conforms to the structure of the `TripUpdateResponse` type. This type's fields include a `success` indicator, a status `message`, and an array of `launches` that the mutation either booked or canceled.
 
-## Authenticate users
+> The `bookTrips` resolver needs to account for the possibility of a **partial success**, where some launches are booked successfully and others fail. The code above indicates a partial success in the `message` field.
 
-Access control is a feature that almost every app will have to handle at some point. In this tutorial, we're going to focus on teaching you the essential concepts of authenticating users instead of focusing on a specific implementation.
+## Run mutations in GraphQL Playground
 
-Here are the steps you'll want to follow:
+We're ready to test out our mutations! Restart your server and return to GraphQL Playground in your browser.
 
-1. The context function on your `ApolloServer` instance is called with the request object each time a GraphQL operation hits your API. Use this request object to read the authorization headers.
-1. Authenticate the user within the context function.
-1. Once the user is authenticated, attach the user to the object returned from the context function. This allows us to read the user's information from within our data sources and resolvers, so we can authorize whether they can access the data.
+### Obtain a login token
 
-Let's open up `src/index.js` and update the `context` function on `ApolloServer` to the code shown below:
-
-```js{1,4,8,10}:src/index.js
-const isEmail = require('isemail');
-
-const server = new ApolloServer({
-  context: async ({ req }) => {
-    // simple auth check on every request
-    const auth = req.headers && req.headers.authorization || '';
-    const email = Buffer.from(auth, 'base64').toString('ascii');
-
-    if (!isEmail.validate(email)) return { user: null };
-
-    // find a user by their email
-    const users = await store.users.findOrCreate({ where: { email } });
-    const user = users && users[0] || null;
-
-    return { user: { ...user.dataValues } };
-  },
-  // .... with the rest of the server object code below, typeDefs, resolvers, etc....
-```
-
-Just like in the steps outlined above, we're checking the authorization headers on the request, authenticating the user by looking up their credentials in the database, and attaching the user to the `context`. While we definitely don't advocate using this specific implementation in production since it's not secure, all of the concepts outlined here are transferable to how you'll implement authentication in a real world application.
-
-How do we create the token passed to the `authorization` headers? Let's move on to the next section, so we can write our resolver for the `login` mutation.
-
-
-### Run mutations in GraphQL Playground
-
-It's time for the fun part - running our mutations in the playground! Go back to the playground in your browser and reload the schema with the little return arrow at the top on the right of the address line.
-
-GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Let's copy the mutation below and run in the playground:
+GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it in GraphQL Playground:
 
 ```graphql
 mutation LoginUser {
@@ -111,9 +129,19 @@ mutation LoginUser {
 }
 ```
 
-You should receive back a string that looks like this: `ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=`. Copy that string because we will need it for the next mutation.
+The server should respond with a string that looks like this: 
 
-Now, let's try booking some trips. Only authorized users are permitted to book trips, however. Luckily, the playground has a section where we can paste in our authorization header from the previous mutation to authenticate us as a user. First, paste this mutation into the playground:
+```
+ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
+```
+
+This is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
+
+### Book trips
+
+Let's try booking some trips. Only authenticated users are allowed to book trips, so we'll include our login token in our request.
+
+First, paste the mutation below into GraphQL playground:
 
 ```graphql
 mutation BookTrips {
@@ -127,12 +155,14 @@ mutation BookTrips {
 }
 ```
 
-Next, paste our authorization header into the HTTP Headers box at the bottom:
+Next, paste the following into the HTTP Headers box in the bottom left:
 
-```json
+```json:title=HTTP_HEADERS
 {
   "authorization": "ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20="
 }
 ```
 
-Then, run the mutation. You should see a success message, along with the ids of the mutations we just booked. Testing mutations manually in the playground is a good way to explore our API, but in a real-world application, we should run automated tests so we can safely refactor our code. In the next section, you'll actually learn about running your graph in production instead of testing your graph.
+Run the mutation. You should see a success message, along with the `id`s of the trips we just booked.
+
+Running mutations manually in GraphQL Playground is a helpful way to test out our API, but a real-world application should run automated tests so we can safely refactor our code. In the next section, you'll learn about running your graph in production instead of testing your graph locally.
