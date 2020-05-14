@@ -326,3 +326,7 @@ query GetLaunches {
 ```
 
 Thanks to our pagination implementation, the server should only return three launches instead of the full list.
+
+<hr/>
+
+That takes care of the resolvers for our schema's queries! Next, let's write resolvers for its [mutations](./mutation-resolvers).
