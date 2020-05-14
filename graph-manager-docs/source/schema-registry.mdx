@@ -105,7 +105,7 @@ If you omit the `--variant` flag, the `apollo service:push` command always pushe
 
 ### Associating metrics with a variant
 
-You can configure Apollo Server to associate the metrics it sends to Graph Manager with a particular variant. To do so, set the `APOLLO_GRAPH_VARIANT` environment variable (`ENGINE_SCHEMA_TAG` in `apollo-server` pre-2.13.0 ) to the appropriate variant before initializing Apollo Server.
+You can configure Apollo Server to associate the metrics it sends to Graph Manager with a particular variant. To do so, set the `APOLLO_GRAPH_VARIANT` environment variable (`ENGINE_SCHEMA_TAG` in `apollo-server` pre-2.13.0) to the appropriate variant before initializing Apollo Server.
 
 Alternatively, you can include the `graphVariant` (`schemaTag` in `apollo-server` pre-2.13.0) option in your call to the `ApolloServer` constructor, like so:
 
