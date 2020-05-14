@@ -17,21 +17,31 @@ In a production application, you should set up this publishing script as part of
 
 ### Get a Graph Manager API key
 
-First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll receive an API key for use in local development environment and CI. Copy the key for local dev prefixed by `user:` so we can save it as an environment variable.
 
-Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
+Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Delete the content of the newly created file and add your Graph Manager API key that you copied from the previous step to the file:
 
-```bash:title=.env
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+```
+APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look like this:
 
 ```bash:title=.env
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=user:xz.5r134305-88p1-4840-12c1-88rc0xcxe179:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`.
+Our key is now stored under the environment variable `APOLLO_KEY`. We now have to create a file called `apollo.config.js`. Apollo projects are configured using an `apollo.config.js` file at the root of your project. Many Apollo tools leverage your Apollo config, reducing the net amount of configuration you need to do in your project in the end.
+
+Create `apollo.config.js` with the following configuration:
+
+```js{3}
+module.exports = {
+  service: {
+    name: 'my-graph-name' // the name of your graph in Apollo Graph Manager
+  }
+};
+```
 
 ### Check and publish with the Apollo CLI
 
