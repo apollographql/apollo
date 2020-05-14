@@ -98,7 +98,7 @@ const gateway = new ApolloGateway();
 
 Like your implementing services, your gateway uses an API key to identify itself to Graph Manager. Obtain a **graph API key** from your graph's Settings page in the [Graph Manager UI](https://engine.apollographql.com/).
 
-Provide your API key to your gateway by setting it as the value of the `ENGINE_API_KEY` environment variable in your gateway's environment. Apollo Server will automatically read this environment variable on startup.
+Provide your API key to your gateway by setting it as the value of the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` in `apollo-server` pre-2.13.0) in your gateway's environment. Apollo Server will automatically read this environment variable on startup.
 
 Note that if you specify the API key in a `.env` file, the gateway does _not_ automatically read this file. Use a library such as [`dotenv`](https://www.npmjs.com/package/dotenv).
 

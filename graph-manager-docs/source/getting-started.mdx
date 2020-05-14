@@ -47,13 +47,13 @@ In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema
 
 3. Add the `.env` file to your project's `.gitignore` file.
 
-4. Obtain a personal API key from Graph Manager and set it as the value of `ENGINE_API_KEY` in your `.env` file:
+4. Obtain a personal API key from Graph Manager and set it as the value of `APOLLO_KEY` (previously `ENGINE_API_KEY`) in your `.env` file:
 
     <ObtainPersonalApiKey />
     
     ```python:title=.env
     # Don't worry, the author invalidated this API key before sharing it 😉
-    ENGINE_API_KEY=user:gh.StephenBarlow:Rc6D_7mLxY74okHRCL2HMg
+    APOLLO_KEY=user:gh.StephenBarlow:Rc6D_7mLxY74okHRCL2HMg
     ```
 
 4. Add an `apollo.config.js` file to your project's root directory if there isn't one yet. Unlike `.env`, you _do_ add this file to version control.
