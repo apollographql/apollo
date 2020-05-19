@@ -40,7 +40,7 @@ Running `apollo service:check` outputs the diff of all detected schema changes  
 ```console
 $ npx apollo service:check
   ✔ Loading Apollo Project
-  ✔ Validated local schema against tag prod on service engine
+  ✔ Validated local schema against variant prod on service engine
   ✔ Compared 8 schema changes against 110 operations over the last 24 hours
   ✖ Found 3 breaking changes and 5 compatible changes
     → breaking changes found
@@ -112,9 +112,9 @@ jobs:
       # commands against it.
       - run: sleep 5
 
-      # This command authenticates using the `ENGINE_API_KEY` environment
+      # This command authenticates using the `APOLLO_KEY` environment
       # variable. Specify your GraphQL endpoint's URL in your Apollo config.
-      - run: npx apollo service:check --tag=staging
+      - run: npx apollo service:check --variant=staging
 ```
 
 ### Integrating with GitHub
@@ -136,7 +136,7 @@ The output of `apollo service:check --markdown` looks like this:
 ```md
 ### Apollo Service Check
 
-🔄 Validated your local schema against schema tag `staging` on service `engine`.
+🔄 Validated your local schema against `engine@staging`.
 🔢 Compared **18 schema changes** against **100 operations** seen over the **last 24 hours**.
 ❌ Found **7 breaking changes** that would affect **3 operations** across **2 clients**
 
@@ -147,10 +147,10 @@ The output of `apollo service:check --markdown` looks like this:
 
 You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Graph Manager, these schemas are represented as [variants](./schema-registry/#managing-environments-with-variants) of a single data graph.
 
-You can validate your schema against a particular variant by including the `--tag` flag in your call to `apollo service:check`, like so:
+You can validate your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
 
 ```
-$ apollo service:check --tag=staging
+$ apollo service:check --variant=staging
 ```
 
 If you want to validate your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
@@ -202,7 +202,7 @@ If you have any requests for other filtering or threshold mechanisms, please get
 
 ## Types of schema changes
 
-Not every change to a schema is a potentially breaking change. Additive changes (such as adding a field to a type) are typically safe and do not affect active clients. Deletions and modifications (such as removing a field or changing a return type), however, can break clients that use affected types and fields. 
+Not every change to a schema is a potentially breaking change. Additive changes (such as adding a field to a type) are typically safe and do not affect active clients. Deletions and modifications (such as removing a field or changing a return type), however, can break clients that use affected types and fields.
 
 ### Potentially breaking changes
 

@@ -64,11 +64,11 @@ npm install apollo --save-dev
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
-Next, using the following command as a reference, replace the `<ENGINE_API_KEY>` with the Apollo Graph Manager API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
+Next, using the following command as a reference, replace the `<APOLLO_KEY>` with the Apollo Graph Manager API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
 
 ```
 npx apollo service:push               \
-    --key <ENGINE_API_KEY>            \
+    --key <APOLLO_KEY>            \
     --endpoint https://server/graphql
 ```
 
@@ -79,7 +79,7 @@ When successful, this command should return output similar to the following:
 ✔ Fetching current schema
 ✔ Publishing <service> to Apollo Engine
 
-id      schema        tag
+id      schema        variant
 ------  ------------- -------
 abc123  <service>     current
 ```
@@ -101,7 +101,7 @@ To register operations, use the following command as a reference, taking care to
 
 ```
 npx apollo client:push \
-    --key <ENGINE_API_KEY> \
+    --key <APOLLO_KEY> \
     --clientName <CLIENT_IDENTIFIER> \
     --clientVersion <CLIENT_VERSION> \
     --includes="src/**/*.{ts,js,graphql}"
@@ -120,9 +120,9 @@ Currently, once an operation is registered it will remain registered indefinitel
 
 If you encounter any errors, check the _**Troubleshooting**_ section below.
 
-#### 3.1 Optionally, set the schema tag
+#### 3.1 Optionally, set the graph variant
 
-To specify the schema tag to register operations on, pass an additional `--tag <TAG>` argument (`npx apollo client:push --tag <TAG>`).
+To specify the graph variant to register operations on, pass an additional `--variant <VARIANT>` argument (`npx apollo client:push --variant <VARIANT>`).
 
 ### 4. Disable subscription support on Apollo Server
 
@@ -213,9 +213,9 @@ const gateway = new ApolloGateway({
 
 </ExpansionPanel>
 
-#### 5.1 Optionally, set the schema tag
+#### 5.1 Optionally, set the graph variant (AKA graphVariant)
 
-Configure the `schemaTag` field to specify which tag to pull operation manifests from.
+Configure the `graphVariant` field (`schemaTag` in `apollo-server` pre-2.13.0) to specify which graph variant to pull operation manifests from.
 
 ```js
 const server = new ApolloServer({
@@ -232,10 +232,10 @@ const server = new ApolloServer({
 
 If the server was already configured to use Apollo Graph Manager, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
-If the server was not previously configured with Apollo Graph Manager, be sure to start the server with the `ENGINE_API_KEY` variable set to the appropriate API key. For example:
+If the server was not previously configured with Apollo Graph Manager, be sure to start the server with the `APOLLO_KEY` variable set to the appropriate API key. For example:
 
 ```
-ENGINE_API_KEY=<ENGINE_API_KEY> npm start
+APOLLO_KEY=<APOLLO_KEY> npm start
 ```
 
 Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
@@ -243,7 +243,7 @@ Alternatively, the API key can be specified with the `engine` parameter on the A
 ```js
 const server = new ApolloServer({
   // ...
-  engine: '<ENGINE_API_KEY>', // highlight-line
+  engine: '<APOLLO_KEY>', // highlight-line
   // ...
 });
 ```
@@ -290,7 +290,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   subscriptions: false,
-  engine: '<ENGINE_API_KEY>',
+  engine: '<APOLLO_KEY>',
   plugins: [
     require('apollo-server-plugin-operation-registry')({
       // De-structure the object to get the HTTP `headers` and the GraphQL
@@ -340,8 +340,8 @@ const server = new ApolloServer({
       willUpdateManifest(newManifest, oldManifest) {
         metrics.report(
           "safelist.numberOperations",
-          newManifest && 
-          newManifest.operations && 
+          newManifest &&
+          newManifest.operations &&
           newManifest.operations.length
         );
       }
@@ -469,7 +469,7 @@ Additionally, make sure that introspection is enabled on the server since intros
 
 ### Summary of changes
 
-The new release operation registry improves observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location) based on a schema variant/tag rather than schema hash, registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
+The new release operation registry improves observability and robustness. These changes include: a [**stable operation manifest location**](#manifest-storage-location) based on a graph variant/tag rather than schema hash, registry [**metrics in the UI**](#metrics-and-usage-statistics), apollo [**client:push diagnostics**](#operation-registration-observability), and [**variant/tag awareness**](#varianttag-awareness).
 
 These updates are designed to be transparent with a [smooth upgrade path](#upgrade-path). Since the operation manifest location has changed, all versions of `apollo client:push` double-write to the new and old storage locations, enabling seamless upgrade. Additionally the server's registry plugin can be upgraded immediately, because the plugin reads from the new location and uses the old location as a fallback, meaning the safelist will always be populated.
 
@@ -508,9 +508,9 @@ specific variant/tag, follow these steps:
 
 - **client**: Upgrade the `apollo` CLI package to 2.13.0 (by default the variant/tag will be set to the value in the [apollo config](https://www.apollographql.com/docs/references/apollo-config/#option-1-use-the-apollo-schema-registry))
 - **server**: Ensure that a schema has been published to the specified graph variant/tag.
-  This can be done by running `apollo service:push --tag <TAG>`
+  This can be done by running `apollo service:push --variant <VARIANT>`
 - **client**: Ensure that operations have been registered to the specified graph variant/tag.
-  This can be done by running `apollo client:push --tag <TAG>` or modifying the service in the `apollo.config.js`
+  This can be done by running `apollo client:push --variant <VARIANT>` or modifying the service in the `apollo.config.js`
 - **server**: Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
 
 ```js

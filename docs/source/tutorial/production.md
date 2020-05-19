@@ -1,5 +1,5 @@
 ---
-title: '4. Run your graph in production'
+title: '5. Run your graph in production'
 description: Learn about deployment and essential developer tooling
 ---
 
@@ -17,28 +17,28 @@ In a production application, you should set up this publishing script as part of
 
 ### Get a Graph Manager API key
 
-First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll see a key appear prefixed by `service:`. Copy that key so we can save it as an environment variable.
+First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll receive an API key for use in local development environment and CI. Copy the key for local dev prefixed by `user:` so we can save it as an environment variable.
 
-Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Add your Graph Manager API key that you copied from the previous step to the file:
+Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Delete the content of the newly created file and add your Graph Manager API key that you copied from the previous step to the file:
 
-```bash:title=.env
-ENGINE_API_KEY=service:<your-service-name>:<hash-from-apollo-engine>
+```
+APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
 ```
 
 The entry should basically look like this:
 
 ```bash:title=.env
-ENGINE_API_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=user:xz.5r134305-88p1-4840-12c1-88rc0xcxe179:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
-Our key is now stored under the environment variable `ENGINE_API_KEY`.
+Our key is now stored under the environment variable `APOLLO_KEY`.
 
 ### Check and publish with the Apollo CLI
 
-It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run:
+It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run the following command, substituting the name of your graph where indicated:
 
 ```bash
-npx apollo service:push --endpoint=http://localhost:4000
+npx apollo service:push --endpoint=http://localhost:4000 --graph=name-of-graph
 ```
 
 > npx is a tool bundled with npm for easily running packages that are not installed globally.
@@ -48,7 +48,7 @@ This command publishes your schema to the Apollo registry. Once your schema is u
 For subsequent publishes, we may first want to check for any breaking changes in our new schema against the old version. In a terminal window, run:
 
 ```bash
-npx apollo service:check --endpoint=http://localhost:4000
+npx apollo service:check --endpoint=http://localhost:4000 --graph=my-graph
 ```
 
 ### What are the benefits of Graph Manager?
