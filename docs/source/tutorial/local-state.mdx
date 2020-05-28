@@ -134,7 +134,7 @@ function IsLoggedIn() {
 injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <IsLoggedIn />
+    <IsLoggedIn /> // highlight-line
   </ApolloProvider>,
   document.getElementById('root'),
 );
@@ -210,7 +210,7 @@ It's important to note that you can mix local queries with remote queries in a s
 
 One of the unique advantages of managing your local data with Apollo Client is that you can add **virtual fields** to data you receive back from your graph API. These fields only exist on the client and are useful for decorating server data with local state. In our example, we're going to add an `isInCart` virtual field to our `Launch` type.
 
-To add a virtual field, first extend the type of the data you're adding the field to in your client schema. Here, we're extending the `Launch` type:
+To add a virtual field, first extend the type of the data you're adding the field to in your client schema. Here, we're extending the `Launch` type in `src/resolvers.tsx`:
 
 <MultiCodeBlock>
 
@@ -226,7 +226,7 @@ export const schema = gql`
 
 </MultiCodeBlock>
 
-Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field :
+Next, specify a client resolver on the `Launch` type in `src/resolvers.tsx` to tell Apollo Client how to resolve your virtual field :
 
 <MultiCodeBlock>
 
@@ -287,7 +287,7 @@ Up until now, we've focused on querying local data from the Apollo cache. Apollo
 
 ### Direct cache writes
 
-Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `useMutation` based component. Let's look at a similar example, where we copy the code below to create a logout button:
+Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `useMutation` based component. Let's look at a similar example, where we copy the code below to create a logout button in `src/containers/logout-button.tsx`:
 
 <MultiCodeBlock>
 
@@ -467,7 +467,8 @@ interface AppResolvers extends Resolvers {
   Mutation: ResolverMap; // highlight-line
 }
 
-export const resolvers = {
+export const resolvers: AppResolvers = {
+  // Launch: { ... },
   Mutation: {
     addOrRemoveFromCart: (_, { id }: { id: string }, { cache }): string[] => {
       const queryResult = cache
@@ -494,7 +495,7 @@ export const resolvers = {
 
 In this resolver, we destructure the Apollo `cache` from the context in order to read the query that fetches cart items. Once we have our cart data, we either remove or add the cart item's `id` passed into the mutation to the list. Finally, we return the updated list from the mutation.
 
-Let's see how we call the `addOrRemoveFromCart` mutation in a component:
+Let's see how we call the `addOrRemoveFromCart` mutation in a component, in this case `src/containers/action-button.tsx`:
 
 <MultiCodeBlock>
 
