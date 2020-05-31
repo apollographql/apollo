@@ -40,7 +40,7 @@ APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
 The entry should basically look something like this:
 
 ```bash:title=.env
-APOLLO_KEY=service:my-service-439:E4VSTiXeFWaSSBgFWXOiSA
+APOLLO_KEY=service:<your-service-name>:E4VSTiXeFWaSSBgFWXOiSA
 ```
 
 Our key is now stored under the environment variable `APOLLO_KEY`. Apollo VSCode uses this API key to pull down your schema from the registry.
@@ -50,11 +50,11 @@ Next, create an Apollo config file called `apollo.config.js`. This config file i
 ```js:title=apollo.config.js
 module.exports = {
   client: {
-    name: 'Space Explorer [web]',
-    service: 'space-explorer',
+    service: '<your-service-name>',
   },
 };
 ```
+> Note: You might need to reload your VSCode window in case you get an error on Loading Schema.
 
 Great, we're all set up! Let's dive into building our first client.
 
