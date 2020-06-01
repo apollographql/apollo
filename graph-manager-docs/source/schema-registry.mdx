@@ -13,15 +13,37 @@ Apollo Graph Manager provides a **schema registry** that serves as a central hub
   src="https://www.youtube.com/embed/duwM95RsiBs"
 />
 
-## Prerequisites
+## Registering your schema automatically (recommended)
 
-To get started with the schema registry, first complete the following setup for the project that includes your GraphQL server:
+> Automatic schema registration is available in Apollo Server v2.14 and later.
+
+If you use [Apollo Server](https://www.apollographql.com/docs/apollo-server/), you can configure it to register its schema with Graph Manager automatically every time it starts up.
+
+To do so, first obtain a **graph API key**:
+
+<ObtainGraphApiKey />
+
+After you obtain a graph API key, set it as the value of the `APOLLO_KEY` environment variable in your server's environment.
+
+### Automatic registration to a particular variant
+
+Your server can optionally report its schema to a particular [variant of your graph](#managing-environments-with-variants). To set this up, also set the `APOLLO_GRAPH_VARIANT` environment variable in your server's environment:
+
+```sh
+APOLLO_GRAPH_VARIANT=staging
+```
+
+If you don't specify a variant, Apollo Server reports its schema to the default variant (named `current`).
+
+## Registering your schema manually
+
+If you're using an older version of Apollo Server or another GraphQL server that doesn't support automatic schema registration, you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
+
+First, complete the following setup for your project:
 
 <ProjectConfigPanel />
 
-## Registering a schema manually
-
-Register your schema with Apollo Graph Manager by running the `apollo service:push` command from your application's root directory, like so:
+Now you can run the `apollo service:push` command from your application's root directory, like so:
 
 ```
 $ apollo service:push
@@ -33,15 +55,29 @@ id      schema        tag
 190330  example-4218  current
 ```
 
-The CLI fetches your schema via a configuration option you set up in [Prerequisites](#prerequisites) and pushes it to Graph Manager.
+The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Graph Manager.
 
 Every time you push a new version of your schema, it's appended to your graph's schema history.
 
+### Manual registration to a particular variant
+
+To register a schema to a particular [variant of your graph](#managing-environments-with-variants), include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
+
+```bash
+apollo service:push --variant=beta
+```
+
+If you omit the `--variant` flag, the `apollo service:push` command pushes to the default graph variant, named `current`.
+
 ## Registering a schema via continuous delivery
 
-To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. To achieve this, include a call to `apollo service:push` in your continuous delivery pipeline.
+To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
 
-Here is a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
+If you're using [automatic schema registration](#registering-your-schema-automatically-recommended), registration happens automatically each time you deploy your production server. No additional continuous delivery configuration is required.
+
+If you're [registering via the Apollo CLI](#registering-your-schema-via-the-apollo-cli), include a call to `apollo service:push` in your continuous delivery pipeline.
+
+Here's a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
 
 ```yaml{13,29-31}
 version: 2
@@ -95,13 +131,8 @@ Each variant of a graph functions as a standalone graph. It has its own change h
 
 ### Registering a schema to a variant
 
-To register a schema to a variant, include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
-
-```bash
-apollo service:push --variant=beta
-```
-
-If you omit the `--variant` flag, the `apollo service:push` command always pushes to the default graph variant, named `current`.
+* [Using automatic registration](#automatic-registration-to-a-particular-variant)
+* [Using the Apollo CLI](#manual-registration-to-a-particular-variant)
 
 ### Associating metrics with a variant
 
