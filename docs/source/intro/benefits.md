@@ -103,7 +103,7 @@ For more information on _all_ of Graph Manager's features, [see the docs](https:
 
 ### Apollo Client DevTools
 
-The [Apollo Client DevTools](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) Chrome extension enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes [GraphiQL](https://github.com/graphql/graphiql), an IDE that helps you test queries while you're working on front-end code.
+The Apollo Client DevTools extension for [Chrome](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/) enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes [GraphiQL](https://github.com/graphql/graphiql), an IDE that helps you test queries while you're working on front-end code.
 
 <img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot"></img>
 
