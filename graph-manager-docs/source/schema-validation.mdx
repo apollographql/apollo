@@ -3,9 +3,11 @@ title: Schema validation
 description: Ensure the safety of changes to your data graph
 ---
 
+> If your data graph uses Apollo Federation, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph) instead of this article.
+
 Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Graph Manager provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
 
-> Schema validation is a **paid feature** that is available as part of Graph Manager [Team and Enterprise plans](https://www.apollographql.com/plans/).
+Schema validation is a **paid feature** that is available as part of Graph Manager [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 ## Prerequisites
 
@@ -72,7 +74,7 @@ The CLI output also includes a Graph Manager URL that provides full details on t
 
 ### Validating a federated schema
 
-If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema validation process differs slightly. For details, see [Validating changes to the graph](/managed-federation/advanced-topics/#validating-changes-to-the-graph).
+If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema validation process differs slightly. For details, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph).
 
 ## Using with continuous integration
 
