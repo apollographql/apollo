@@ -6,28 +6,30 @@ description: A central hub for your data graph
 import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
 import VideoFrame from "../components/video-frame";
 
-Apollo Graph Manager provides a **schema registry** that serves as a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) to support environments besides production, such as test or staging.
+Apollo Graph Manager's **schema registry** serves as a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) to support environments besides production, such as test or staging.
 
 <VideoFrame
   title="Tracking your GraphQL Schema in a Registry"
   src="https://www.youtube.com/embed/duwM95RsiBs"
 />
 
-## Registering your schema automatically (recommended)
+## Registering your schema automatically
 
-> Automatic schema registration is available in Apollo Server v2.14 and later.
+> Automatic schema reporting is not available for graphs that use Apollo Federation. If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
 
-If you use [Apollo Server](https://www.apollographql.com/docs/apollo-server/), you can configure it to register its schema with Graph Manager automatically every time it starts up.
+If you use [Apollo Server](https://www.apollographql.com/docs/apollo-server/) version 2.14 or later, you can configure it to report its schema to Graph Manager automatically every time it starts up.
 
 To do so, first obtain a **graph API key**:
 
 <ObtainGraphApiKey />
 
-After you obtain a graph API key, set it as the value of the `APOLLO_KEY` environment variable in your server's environment.
+Then, set this API key as the value of the `APOLLO_KEY` environment variable in your server's environment. Now every time your server starts up, it reports its schema to Graph Manager.
 
-### Automatic registration to a particular variant
+### Registering automatically to a variant
 
-Your server can optionally report its schema to a particular [variant of your graph](#managing-environments-with-variants). To set this up, also set the `APOLLO_GRAPH_VARIANT` environment variable in your server's environment:
+Your server can report its schema to a particular [variant of your graph](#managing-environments-with-variants). Each of your server's environments (staging, production, etc.) should correspond to a different variant.
+
+To set this up, set the `APOLLO_GRAPH_VARIANT` environment variable in each server environment:
 
 ```sh
 APOLLO_GRAPH_VARIANT=staging
@@ -37,7 +39,7 @@ If you don't specify a variant, Apollo Server reports its schema to the default 
 
 ## Registering your schema manually
 
-If you're using an older version of Apollo Server or another GraphQL server that doesn't support automatic schema registration, you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
+If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support automatic schema reporting, you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
 
 First, complete the following setup for your project:
 
@@ -57,9 +59,7 @@ id      schema        tag
 
 The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Graph Manager.
 
-Every time you push a new version of your schema, it's appended to your graph's schema history.
-
-### Manual registration to a particular variant
+### Registering manually to a variant
 
 To register a schema to a particular [variant of your graph](#managing-environments-with-variants), include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
 
@@ -73,7 +73,7 @@ If you omit the `--variant` flag, the `apollo service:push` command pushes to th
 
 To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
 
-If you're using [automatic schema registration](#registering-your-schema-automatically-recommended), registration happens automatically each time you deploy your production server. No additional continuous delivery configuration is required.
+If you're using [automatic schema reporting](#registering-your-schema-automatically), registration happens automatically each time you deploy your production server. No additional continuous delivery configuration is required.
 
 If you're [registering via the Apollo CLI](#registering-your-schema-via-the-apollo-cli), include a call to `apollo service:push` in your continuous delivery pipeline.
 
@@ -113,7 +113,7 @@ jobs:
           fi
 ```
 
-## Viewing schema change history
+## Tracking schema changes
 
 The History view in Graph Manager lets you view the timeline of changes made to your schema:
 
@@ -131,8 +131,8 @@ Each variant of a graph functions as a standalone graph. It has its own change h
 
 ### Registering a schema to a variant
 
-* [Using automatic registration](#automatic-registration-to-a-particular-variant)
-* [Using the Apollo CLI](#manual-registration-to-a-particular-variant)
+* [Using automatic registration](#registering-automatically-to-a-variant)
+* [Using the Apollo CLI](#registering-manually-to-a-variant)
 
 ### Associating metrics with a variant
 
