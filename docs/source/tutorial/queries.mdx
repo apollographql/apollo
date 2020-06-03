@@ -327,11 +327,11 @@ const GET_LAUNCHES = gql`
       cursor
       hasMore
       launches {
-        ...LaunchTile
+        ...LaunchTile // highlight-line
       }
     }
   }
-  ${LAUNCH_TILE_DATA}
+  ${LAUNCH_TILE_DATA} // highlight-line
 `;
 ```
 
