@@ -320,7 +320,7 @@ To use our fragment in our query, we import it into the GraphQL document and use
 
 <MultiCodeBlock>
 
-```tsx{7}:title=src/pages/launches.tsx
+```tsx:title=src/pages/launches.tsx
 const GET_LAUNCHES = gql`
   query launchList($after: String) {
     launches(after: $after) {
@@ -351,10 +351,10 @@ export const GET_LAUNCH_DETAILS = gql`
       rocket {
         type
       }
-      ...LaunchTile
+      ...LaunchTile // highlight-line
     }
   }
-  ${LAUNCH_TILE_DATA}
+  ${LAUNCH_TILE_DATA} // highlight-line
 `;
 ```
 
