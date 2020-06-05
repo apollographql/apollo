@@ -100,15 +100,14 @@ We're almost done completing our login feature! Before we do, we need to attach 
 <MultiCodeBlock>
 
 ```tsx{5-7}:title=src/index.tsx
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    }, 
-  }),
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:4000/',
+  headers: {
+    authorization: localStorage.getItem('token'),
+  },
 });
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({ cache, link });
 
 cache.writeData({
   data: {
@@ -120,13 +119,14 @@ cache.writeData({
 
 
 ```jsx{4}:title=src/index.jsx
-const client = new ApolloClient({
-  cache,
-  link: new HttpLink({
-    headers: { authorization: localStorage.getItem('token') },
-    uri: "http://localhost:4000/graphql",
-  }),
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:4000/',
+  headers: {
+    authorization: localStorage.getItem('token'),
+  },
 });
+const client = new ApolloClient({ cache, link });
 
 cache.writeData({
   data: {
