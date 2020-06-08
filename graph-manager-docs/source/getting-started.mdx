@@ -5,7 +5,13 @@ sidebar_title: Get started
 
 import ObtainPersonalApiKey from '../shared/obtain-personal-api-key.mdx';
 
+import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
+
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
+
+import {
+  ExpansionPanel,
+} from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 
 Hello! This article gets you up and running with Apollo Studio. None of this setup requires a paid plan.
 
@@ -21,13 +27,13 @@ You can use Studio with any GraphQL server. Certain features (e.g., [trace repor
 
 2. Complete the signup flow, which includes:
 
-    * Creating an **organization** that you can invite your teammates to
+    * Creating an **organization** that you can invite teammates to
 
-    * [Selecting a plan](https://www.apollographql.com/pricing/) for your organization (the Free plan is always free, and the Team plan provides a free trial of advanced features)
+    * [Selecting a plan](https://www.apollographql.com/pricing/) for your organization (the Free plan is always free, and the Team plan provides a free trial of paid features)
 
 ## Step 2: Create your first graph
 
-In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will correspond to your GraphQL server's schema.
+In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will use your GraphQL server's schema.
 
 1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens Studio.
 
@@ -37,9 +43,27 @@ In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your 
 
 2. Select the organization that you want to add your graph to. Then, click **New Graph** in the upper right.
 
-3. Specify a name for your graph and click **Next**. Studio displays a list of instructions, which are also described in the [next section](#step-3-configure-your-project).
+3. Specify a name for your graph and click **Next**.
 
-## Step 3: Configure your project
+    * A graph's name must be globally unique across all of Studio. We recommend using a consistent prefix across all of your organization's graphs.
+
+4. Studio displays instructions for connecting your server, which is also described in the next step.
+
+## Step 3: Connect your server
+
+This step differs depending on whether your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/):
+
+<ExpansionPanel title="My data graph DOESN'T use Apollo Federation">
+
+1. Apollo Server can connect to Apollo Studio automatically on startup. To do so, it requires a **graph API key**. Obtain one like so:
+
+    <ObtainGraphApiKey/>
+
+2. TODO
+
+</ExpansionPanel>
+
+<ExpansionPanel title="My data graph DOES use Apollo Federation">
 
 1. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/#download-and-install) if you haven't yet.
 
@@ -67,6 +91,11 @@ In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your 
       }
     }
     ```
+
+6. TODO
+
+</ExpansionPanel>
+
 
 ## Step 4: Register your schema
 

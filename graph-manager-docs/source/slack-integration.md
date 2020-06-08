@@ -23,7 +23,7 @@ To create an incoming webhook:
 
 1. From the [Incoming WebHooks](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) page of the Slack App Directory, sign in and click **Add to Slack**.
 2. Select the channel that should receive Studio notifications and click **Add Incoming WebHooks integration**.
-3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-graph-manager).
+3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-studio).
 
 You can repeat this process to create webhook URLs for multiple channels.
 
