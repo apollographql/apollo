@@ -1,5 +1,5 @@
 ---
-title: Get started with Graph Manager
+title: Get started with Apollo Studio
 sidebar_title: Get started
 ---
 
@@ -7,9 +7,9 @@ import ObtainPersonalApiKey from '../shared/obtain-personal-api-key.mdx';
 
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
 
-Hello! This article gets you up and running with Apollo Graph Manager. None of this setup requires a paid plan.
+Hello! This article gets you up and running with Apollo Studio. None of this setup requires a paid plan.
 
-You can use Graph Manager with any GraphQL server. Certain features (e.g., [trace reporting](setup-analytics/)) are currently best supported by [Apollo Server](https://www.apollographql.com/docs/apollo-server/).
+You can use Studio with any GraphQL server. Certain features (e.g., [trace reporting](setup-analytics/)) are currently best supported by [Apollo Server](https://www.apollographql.com/docs/apollo-server/).
 
 > If you're using [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), get started with [Setting up managed federation](managed-federation/setup/) instead of this article.
 
@@ -27,17 +27,17 @@ You can use Graph Manager with any GraphQL server. Certain features (e.g., [trac
 
 ## Step 2: Create your first graph
 
-In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will correspond to your GraphQL server's schema.
+In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will correspond to your GraphQL server's schema.
 
-1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens the **Graph Manager UI**.
+1. Visit [engine.apollographql.com](https://engine.apollographql.com/) again. Now that you're logged in, this opens Studio.
 
     The list of organizations you belong to appears in the left column:
 
-    <img src="./img//organization-list.png" class="screenshot" alt="Schema history page in the Graph Manager UI"></img>
+    <img src="./img//organization-list.png" class="screenshot" alt="Schema history page in Studio"></img>
 
 2. Select the organization that you want to add your graph to. Then, click **New Graph** in the upper right.
 
-3. Specify a name for your graph and click **Next**. Graph Manager displays a list of instructions, which are also described in the [next section](#step-3-configure-your-project).
+3. Specify a name for your graph and click **Next**. Studio displays a list of instructions, which are also described in the [next section](#step-3-configure-your-project).
 
 ## Step 3: Configure your project
 
@@ -47,7 +47,7 @@ In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema
 
 3. Add the `.env` file to your project's `.gitignore` file.
 
-4. Obtain a personal API key from Graph Manager and set it as the value of `APOLLO_KEY` (previously `ENGINE_API_KEY`) in your `.env` file:
+4. Obtain a personal API key from Studio and set it as the value of `APOLLO_KEY` (previously `ENGINE_API_KEY`) in your `.env` file:
 
     <ObtainPersonalApiKey />
     
@@ -70,9 +70,9 @@ In Graph Manager, each **graph** corresponds to the entirety of a GraphQL schema
 
 ## Step 4: Register your schema
 
-The **schema registry** sits at the heart of Graph Manager. It allows you to inspect your graph's schema and track changes to it over time:
+The **schema registry** sits at the heart of Apollo Studio. It allows you to inspect your graph's schema and track changes to it over time:
 
-<img src="./img//explorer.jpg" class="screenshot" alt="Graph Manager explorer view"></img>
+<img src="./img//explorer.jpg" class="screenshot" alt="Studio explorer view"></img>
 
 You register your schema with the `apollo service:push` command. **You need to provide your schema to this command**, in one of the following ways:
 
@@ -88,7 +88,7 @@ apollo service:push --endpoint=http://localhost:4000/
 
 ### Provide your schema via a local file
 
-If your schema is defined in a `.gql` or `.graphql` file, you can provide that file to Graph Manager.
+If your schema is defined in a `.gql` or `.graphql` file, you can provide that file to Studio.
 
 To do so, run the `apollo service:push` command from your project's root directory and provide a path to the schema file, like so:
 
@@ -100,25 +100,25 @@ The `--localSchemaFile` option also supports a comma-separated list of paths if 
 
 ## Step 5: Connect to Slack
 
-Graph Manager can connect to your Slack workspace to send you daily metrics reports, along with notifications whenever changes are made to your registered schema.
+Studio can connect to your Slack workspace to send you daily metrics reports, along with notifications whenever changes are made to your registered schema.
 
 [Set up Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/#setup)
 
 ## Step 6: Set up trace reporting
 
-Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph.
+Studio can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph.
 
-To begin pushing these traces to Graph Manager, read [Pushing trace data to Graph Manager](setup-analytics/).
+To begin pushing these traces, read [Pushing trace data to Studio](setup-analytics/).
 
 ## Step 7: Set up continuous delivery
 
-Your schema is now registered with Graph Manager, and your server is pushing operation traces!
+Your schema is now registered with Studio, and your server is pushing operation traces!
 
-However, to get the most out of Graph Manager, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's [continuous delivery flow](schema-registry/#registering-with-continuous-delivery).
+However, to get the most out of Studio, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's [continuous delivery flow](schema-registry/#registering-with-continuous-delivery).
 
 ## Step 8: Explore
 
-The best way to familiarize yourself with Graph Manager's capabilities is to explore it! Visit [engine.apollographql.com](https://engine.apollographql.com/) and check out the various views and what they provide.
+The best way to familiarize yourself with Studio's capabilities is to explore it! Visit [engine.apollographql.com](https://engine.apollographql.com/) and check out the various views and what they provide.
 
 You can also learn more about the features provided with Team and Enterprise plans, including:
 
@@ -126,4 +126,4 @@ You can also learn more about the features provided with Team and Enterprise pla
 * [Segmenting metrics by client types and versions](client-awareness)
 * [Integration with Datadog](datadog-integration)
 
-If you'd like to have a conversation about Graph Manager and how it can help your organization, [please contact us](https://www.apollographql.com/contact-sales).
+If you'd like to have a conversation about Apollo Studio and how it can help your organization, [please contact us](https://www.apollographql.com/contact-sales).

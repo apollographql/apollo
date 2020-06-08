@@ -22,7 +22,7 @@ export default function CalloutCard(props) {
         <strong>Large team or Enterprise?</strong>
       </h4>
       <p>
-        Graph Manager provides core GraphQL schema management features to all
+        Apollo Studio provides core GraphQL schema management features to all
         users for free, along with advanced security, validation, and
         integration features to organizations with an{' '}
         <a

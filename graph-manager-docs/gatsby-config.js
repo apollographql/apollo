@@ -9,8 +9,8 @@ module.exports = {
         ...themeOptions,
         root: __dirname,
         baseDir: 'graph-manager-docs',
-        subtitle: 'Graph Manager',
-        description: 'How to use Apollo Graph Manager',
+        subtitle: 'Apollo Studio',
+        description: 'How to use Apollo Studio',
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/apollo-platform',
         sidebarCategories: {

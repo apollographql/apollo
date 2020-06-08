@@ -1,13 +1,14 @@
 ---
-title: Graph Manager data privacy and compliance
-description: Understand what Graph Manager ingests and learn about GDPR
+title: Apollo Studio data privacy and compliance
+sidebar_title: Data privacy and compliance
+description: Understand what Studio ingests and learn about GDPR
 ---
 
-You can configure Apollo Server to automatically trace the execution of your requests and forward that information to Graph Manager. Graph Manager uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in the Graph Manager interface.
+You can configure Apollo Server to automatically trace the execution of your requests and forward that information to Apollo Studio. Studio uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in Studio.
 
-## What data does Apollo Server send to Graph Manager?
+## What data does Apollo Server send to Apollo Studio?
 
-**Apollo Server never forwards the `data` of an operation response to Graph Manager.** It _does_ forward:
+**Apollo Server never forwards the `data` of an operation response to Apollo Studio.** It _does_ forward:
 
 * Several fields _besides_ `data` from every operation response
 
@@ -26,11 +27,11 @@ Let’s walk through Apollo Server's default behavior for reporting on fields in
 ```json
 // GraphQL Response
 {
-  "data": { ... },          // NEVER sent to Graph Manager.
-  "errors": [ ... ],        // Sent to Graph Manager, used to report on errors for operations and fields.
+  "data": { ... },          // NEVER sent to Apollo Studio.
+  "errors": [ ... ],        // Sent to Studio, used to report on errors for operations and fields.
   "extensions": {
-    "tracing": { ... },     // Sent to Graph Manager, used to report on performance data for operations and fields.
-    "cacheControl": { ... } // Sent to Graph Manager, used to determine cache policies and forward CDN cache headers.
+    "tracing": { ... },     // Sent to Studio, used to report on performance data for operations and fields.
+    "cacheControl": { ... } // Sent to Studio, used to determine cache policies and forward CDN cache headers.
   }
 }
 ```
@@ -42,43 +43,32 @@ Manager. The responses from your GraphQL service stay internal to your applicati
 
 #### `response.errors`
 
-By default, if Apollo Server sees a response that includes an `errors` field, it reports the values
-of the error's `message` and `locations` fields (if any) to Graph Manager.
+By default, if Apollo Server sees a response that includes an `errors` field, it reports the values of the error's `message` and `locations` fields (if any) to Apollo Studio.
 
-You can use the [`rewriteError` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to filter or transform errors before they're stored in
-Graph Manager. Use this to strip sensitive data from errors or filter "safe" errors from Graph Manager reports.
+You can use the [`rewriteError` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to filter or transform errors before they're stored in Studio. Use this to strip sensitive data from errors or filter "safe" errors from Studio reports.
 
 ### Query operation strings
 
-Apollo Server reports the string representation of each
-query operation to Graph Manager. Consequently, **do not include sensitive data (such
-as passwords or personally identifiable information) in operation strings**. Instead, include this information in [GraphQL variables](#graphql-variables), which you can send selectively.
+Apollo Server reports the string representation of each query operation to Apollo Studio. Consequently, **do not include sensitive data (such as passwords or personally identifiable information) in operation strings**. Instead, include this information in [GraphQL variables](#graphql-variables), which you can send selectively.
 
 ### GraphQL variables
 
 #### Apollo Server 2.7.0 and later
 
-In Apollo Server 2.7.0 and later, **none** of an
-operation's GraphQL variables is sent to Graph Manager by default.
+In Apollo Server 2.7.0 and later, **none** of an operation's GraphQL variables is sent to Apollo Studio by default.
 
-You can set a value for the [`sendVariableValues` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
-some or all of your GraphQL variables.
+You can set a value for the [`sendVariableValues` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting some or all of your GraphQL variables.
 
 #### Versions prior to 2.7.0
 
 In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's GraphQL
-variables are sent to Graph Manager by default.
+variables are sent to Apollo Studio by default.
 
-If you're using an earlier version of Apollo Server, it's recommended that you
-update. If you can't update for whatever reason, you can use the
- [`privateVariables` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions)
-to specify the names of variables that should _not_ be sent to Graph Manager. You
-can also set this option to `false` to prevent all variables from being sent.
-This reporting option is deprecated and will not be available in future versions of Apollo Server.
+If you're using an earlier version of Apollo Server, it's recommended that you update. If you can't update for whatever reason, you can use the [`privateVariables` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables that should _not_ be sent to Studio. You can also set this option to `false` to prevent all variables from being sent. This reporting option is deprecated and will not be available in future versions of Apollo Server.
 
 ### HTTP Headers
 
-Regardless of your server configuration, Graph Manager **never** collects the values
+Regardless of your server configuration, Apollo Studio **never** collects the values
 of the following HTTP headers, even if they're sent:
 
 * `Authorization`
@@ -87,13 +77,12 @@ of the following HTTP headers, even if they're sent:
 
 You can, however, configure reporting options for all other HTTP headers.
 
-> **Important:** If you perform authorization in a header other than those listed above
-> (such as `X-My-API-Key`), **do not send that header to Graph Manager**.
+> **Important:** If you perform authorization in a header other than those listed above (such as `X-My-API-Key`), **do not send that header to Studio**.
 
 #### Apollo Server 2.7.0 and later
 
 In Apollo Server 2.7.0 and later, **none** of an
-operation's HTTP headers is sent to Graph Manager by default.
+operation's HTTP headers is sent to Apollo Studio by default.
 
 You can set a value for the [`sendHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify a different strategy for reporting
 some or all of your HTTP headers.
@@ -101,20 +90,10 @@ some or all of your HTTP headers.
 #### Versions prior to 2.7.0
 
 In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP headers
-(except the confidential headers listed above) are sent to Graph Manager by default.
+(except the confidential headers listed [above](#http-headers)) are sent to Apollo Studio by default.
 
 If you're using an earlier version of Apollo Server, it's recommended that you
-update. If you can't update for
-whatever reason, you can use the [`privateHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables
-that should _not_ be sent to Graph Manager. You can also set this
-option to `false` to prevent all headers from being sent.
-This reporting option is deprecated and will not be available in future versions of Apollo Server.
-
-<!--
-######################################################################
-GDOR
-######################################################################
--->
+update. If you can't update for whatever reason, you can use the [`privateHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables that should _not_ be sent to Studio. You can also set this option to `false` to prevent all headers from being sent.This reporting option is deprecated and will not be available in future versions of Apollo Server.
 
 ## GDPR
 

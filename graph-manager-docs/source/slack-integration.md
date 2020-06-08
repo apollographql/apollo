@@ -1,9 +1,9 @@
 ---
-title: Integrating Graph Manager with Slack
+title: Integrating Apollo Studio with Slack
 sidebar_title: Slack
 ---
 
-Apollo Graph Manager can send notifications about your data graph to your team's Slack workspace. This helps you stay up to date on changes to your graph's schema and performance as soon as they occur.
+Apollo Studio can send notifications about your data graph to your team's Slack workspace. This helps you stay up to date on changes to your graph's schema and performance as soon as they occur.
 
 These notifications include:
 
@@ -13,23 +13,23 @@ These notifications include:
 
 ## Setup
 
-> If you don't have a Graph Manager account yet, [get started](getting-started/).
+> If you don't have an Apollo account yet, [get started](getting-started/).
 
-To set up Slack notifications, you first configure an incoming webhook in Slack, then provide that webhook's URL to Graph Manager.
+To set up Slack notifications, you first configure an incoming webhook in Slack, then provide that webhook's URL to Apollo Studio.
 
 ### 1. Create an incoming webhook
 
 To create an incoming webhook:
 
 1. From the [Incoming WebHooks](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) page of the Slack App Directory, sign in and click **Add to Slack**.
-2. Select the channel that should receive Graph Manager notifications and click **Add Incoming WebHooks integration**.
+2. Select the channel that should receive Studio notifications and click **Add Incoming WebHooks integration**.
 3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-graph-manager).
 
 You can repeat this process to create webhook URLs for multiple channels.
 
-### 2. Provide the webhook to Graph Manager
+### 2. Provide the webhook to Studio
 
-From the [Graph Manager UI](https://engine.apollographql.com):
+From [Apollo Studio](https://engine.apollographql.com):
 
 1. Select the graph you want to configure Slack notifications for.
 2. Open the graph's Integrations page in the left nav.
@@ -41,19 +41,19 @@ From the [Graph Manager UI](https://engine.apollographql.com):
 
 5. In the Slack Webhook URL field, paste the webhook URL you obtained in [Create an incoming webhook](#1-create-an-incoming-webhook).
 6. Click **Done**.
-7. Verify that your selected Slack channel receives a confirmation notification from Graph Manager.
+7. Verify that your selected Slack channel receives a confirmation notification from Studio.
 
 To configure notifications for multiple Slack channels, repeat this process with a different corresponding webhook URL each time.
 
 ### 3. Configure individual notification types
 
-After you provide at least one Slack webhook to Graph Manager, you can configure individual notification types from the other sections of your graph's Integrations page:
+After you provide at least one Slack webhook to Studio, you can configure individual notification types from the other sections of your graph's Integrations page:
 
-<img src="./img/integrations/integrations-tab.jpg" class="screenshot" alt="The integrations page in Graph Manager"></img>
+<img src="./img/integrations/integrations-tab.jpg" class="screenshot" alt="The integrations page in Apollo Studio"></img>
 
 ## Daily reports
 
-Graph Manager sends your graph's daily report around 9am in your specified time zone. The report provides a high-level summary of what your GraphQL API delivered in the previous day:
+Apollo Studio sends your graph's daily report around 9am in your specified time zone. The report provides a high-level summary of what your GraphQL API delivered in the previous day:
 
 <img src="./img/integrations/slack-report.png" alt="Slack daily report" class="screenshot"></img>
 
@@ -67,7 +67,7 @@ The daily report provides an actionable summary of what's happened in your API o
 
 ## Schema change notifications
 
-Graph Manager can notify your Slack channel whenever any changes (additions, deprecations, removals, etc.) are made to your graph's registered schema:
+Studio can notify your Slack channel whenever any changes (additions, deprecations, removals, etc.) are made to your graph's registered schema:
 
 <img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
 
@@ -77,7 +77,7 @@ You can configure separate change notifications for each [variant](schema-regist
 
 > Performance alerts require a [paid plan](https://www.apollographql.com/pricing/). They are currently experimental.
 
-Graph Manager can notify you whenever a particular metric (such as error rate) for a particular GraphQL operation exceeds a defined threshold. This is useful for detecting anomalies, especially following a release.
+Studio can notify you whenever a particular metric (such as error rate) for a particular GraphQL operation exceeds a defined threshold. This is useful for detecting anomalies, especially following a release.
 
 <img src="./img/integrations/slack-notification.png" class="screenshot" alt="Performance alert">
 
