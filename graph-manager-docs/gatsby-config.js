@@ -20,15 +20,18 @@ module.exports = {
             '[Explorer](https://studio.apollographql.com)',
             'accounts-organizations',
           ],
-          'Schema Management': [
+          'Registering a Schema': [
             'schema-registry',
             'schema-validation',
             'schema-reporting-protocol',
           ],
-          'Monitoring & Metrics': [
+          'Reporting': [
             'setup-analytics',
             'client-awareness',
             'performance',
+            // field usage
+            // operation usage
+            // integrating w/ Datadog?
           ],
           'Managed Federation': [
             'managed-federation/overview',
