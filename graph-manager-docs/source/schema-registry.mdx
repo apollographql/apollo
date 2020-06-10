@@ -9,7 +9,7 @@ import {
   ObtainGraphApiKey,
 } from '../shared/obtain-graph-api-key';
 
-Apollo Graph Manager's **schema registry** serves as a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) that correspond to different environments, such as staging and production.
+Apollo Graph Manager's **schema registry** is a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) that correspond to different environments, such as staging and production.
 
 ## Automatic registration
 
@@ -46,9 +46,9 @@ If you don't specify a variant, Apollo Server reports its schema to the default 
 
 ### Other GraphQL servers
 
-Any GraphQL server can support automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
+Any GraphQL server can perform automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
 
-At this time, no 
+> Currently, we are not aware of GraphQL server libraries besides Apollo Server that implement the schema reporting protocol. If you add support to an open-source library, please let us know at **support@apollographql.com**!
 
 ## Manual registration
 
@@ -132,15 +132,15 @@ The History view in Graph Manager lets you view the timeline of changes made to 
 
 ![Schema history page in the Graph Manager UI](./img//schema-history.png)
 
-**Only schema changes that you push to Graph Manager are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-a-schema-via-continuous-delivery).
+**Only schema changes that you push to Graph Manager are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-with-continuous-delivery).
 
 ## Managing environments with variants
 
-Commonly, your application's staging and test environments use schemas that differ slightly from your production schema (especially if you're testing out updates to your schema).
+Commonly, your application's development and staging environments use schemas that differ slightly from your production schema (especially if you're actively working on updates to your schema).
 
-Because these schemas represent different environments of the same application, it makes sense to associate them with each other. To achieve this, you can define **variants** of your graph.
+Because these schemas represent different environments for the same application, it makes sense to associate them with each other. To achieve this, you define **variants** of your graph.
 
-Each variant of a graph functions as a standalone graph. It has its own change history, metrics, and operation registry.
+Each variant of a graph functions as a standalone graph. Each has its own change history, metrics, and operation registry.
 
 ### Registering a schema to a variant
 

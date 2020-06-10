@@ -10,44 +10,39 @@ A reference implementation of this protocol is included in [Apollo Server](https
 
 ## Protocol sequence
 
-The following diagram illustrates the communication sequence for a GraphQL server (hereafter referred to as the **edge server**) reporting its schema to Apollo Graph Manager (**Apollo**):
+The following diagram (along with the list of steps below it) illustrates the communication sequence for a GraphQL server (hereafter referred to as the **edge server**) reporting its schema to Apollo Graph Manager (**Apollo**):
 
 ```mermaid
 sequenceDiagram
-    participant EdgeServer
+    participant Edge Server
     participant Apollo
-    EdgeServer->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
-    alt Schema version is already registered or another edge server is uploading
-        Apollo->>EdgeServer: ReportServerInfoResponse(withExecutableSchema = false, inSeconds = 57s)
-        Note over EdgeServer: Wait 57s
-        EdgeServer->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
-        Apollo->>EdgeServer: ReportServerInfoResponse(withExecutableSchema = false, inSeconds = 62s)
-    else Schema is not already registered
-        Apollo->>EdgeServer: ReportServerInfoResponse(withExecutableSchema = true, inSeconds = 0s)
-        Note over EdgeServer: No delay
-        EdgeServer->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = '…')
-        Note over Apollo: Persists schema
-        Apollo->>EdgeServer: ReportServerInfoResponse(withExecutableSchema = false, inSeconds = 62s)
-    else Request failed
-        Note over EdgeServer: Wait 20s
-        EdgeServer->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
+    Edge Server->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
+    alt The specified schema ID is already registered
+        Apollo->>Edge Server: Response(withExecutableSchema = false, inSeconds = 57s)
+        Note over Edge Server: Wait 57 seconds
+        Note over Edge Server: Go to top
+    else The specified schema ID is NOT already registered
+        Apollo->>Edge Server: Response(withExecutableSchema = true, inSeconds = 0s)
+        Note over Edge Server: Wait 0 seconds
+        Edge Server->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = '…')
+        Note over Apollo: Persist schema
+        Apollo->>Edge Server: Response(withExecutableSchema = false, inSeconds = 62s)
+        Note over Edge Server: Wait 62 seconds
+        Note over Edge Server: Go to top
+    else The reportServerInfo request failed
+        Note over Edge Server: Wait 20 seconds
+        Note over Edge Server: Go to top
     end
-    Note over EdgeServer: Wait 62s
-    EdgeServer->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
-    Apollo->>EdgeServer: ReportServerInfoResponse(withExecutableSchema = false, inSeconds = 56s)
-    Note over EdgeServer: Wait 56s
-    Note over EdgeServer,Apollo: …Continue forever…
-
 ```
 
 1. The edge server calls `reportServerInfo`, providing an `EdgeServerInfo` object with the server's details as input.
-    * The edge server **does not** include an `executableSchema` string in this request.
-    * The edge server **does** include an `executableSchemaId` in the `EdgeServerInfo` input. This is the SHA-256 hash of the edge server's schema, represented as a hexadecimal string. 
+    * This initial call **does not** include an `executableSchema` string.
+    * This initial call **does** include an `executableSchemaId` in the `EdgeServerInfo` input. This is the SHA-256 hash of the edge server's schema, represented as a hexadecimal string. 
     * If this or any other `reportServerInfo` request fails with a non-2xx response from Apollo, the edge server should retry after 20 seconds.
-2. Apollo responds with a `ReportServerInfoResponse`. This response tells the edge server: 
+2. Apollo responds with a `ReportServerInfoResponse` object. This response tells the edge server: 
     * How many seconds to wait before sending the next `reportServerInfo` request
     * Whether the next `reportServerInfo` request should include the `executableSchema` that corresponds to the `executableSchemaId` provided in the previous request.
-3. After waiting the specified number of seconds, the edge server calls `reportServerInfo` again. This request includes an `executableSchema` string if and only if `withExecutableSchema` was `true` in Apollo's most recent `ReportServerInfoResponse`.
+3. After waiting the specified number of seconds, the edge server calls `reportServerInfo` again. This request includes a [normalized `executableSchema` string](#schema-normalization) if and only if `withExecutableSchema` was `true` in Apollo's most recent `ReportServerInfoResponse`.
 4. Go to step 2.
 
 ## Type definitions
