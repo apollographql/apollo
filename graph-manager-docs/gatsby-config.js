@@ -22,6 +22,7 @@ module.exports = {
           'Schema Management': [
             'schema-registry',
             'schema-validation',
+            'schema-reporting-protocol',
           ],
           'Monitoring & Metrics': [
             'setup-analytics',
