@@ -13,21 +13,32 @@ Apollo Graph Manager's **schema registry** is a central hub for managing your da
 
 ## Automatic registration
 
-### Apollo Server
-
 > **Automatic schema reporting is not available for graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
 
-Apollo Server version 2.15.1 and later can register its schema with Graph Manager automatically every time it starts up.
+### Apollo Server setup
 
-To do so, first obtain an API key for your data graph:
+Apollo Server version 2.15.1 and later can register its schema with Graph Manager automatically every time it starts up. To do so:
 
-<ObtainGraphApiKey />
+1. Obtain an API key for your data graph:
 
-Then, set this API key as the value of the `APOLLO_KEY` environment variable in your server's environment. If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+    <ObtainGraphApiKey />
 
-```none:title=.env
-APOLLO_KEY=YOUR_KEY_HERE
-```
+2. Set this API key as the value of the `APOLLO_KEY` environment variable in your server's environment.
+
+    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+
+    ```none:title=.env
+    APOLLO_KEY=YOUR_KEY_HERE
+    ```
+
+3. Set the `reportSchema` option to `true` in your `ApolloServer` constructor, like so:
+
+    ```js
+    const server = new ApolloServer({
+      // ...other options...
+      reportSchema: true,
+    });
+    ```
 
 Now every time your server starts up, it registers its schema with Graph Manager.
 
