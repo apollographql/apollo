@@ -8,9 +8,19 @@ This document specifies the protocol that any GraphQL server can implement to en
 
 A reference implementation of this protocol is included in [Apollo Server](https://github.com/apollographql/apollo-server/pull/4084/files).
 
+## Schema reporting endpoint
+
+Servers that implement the schema reporting protocol communicate with the following GraphQL endpoint:
+
+```
+https://edge-server-reporting.api.apollographql.com/api/graphql
+```
+
 ## Protocol sequence
 
-The following diagram (along with the list of steps below it) illustrates the communication sequence for a GraphQL server (hereafter referred to as the **edge server**) reporting its schema to Apollo Graph Manager (**Apollo**):
+The following sections illustrate the communication sequence between a GraphQL server (hereafter referred to as the **edge server**) and the schema reporting endpoint (**Apollo**):
+
+### Diagram
 
 ```mermaid
 sequenceDiagram
@@ -35,15 +45,38 @@ sequenceDiagram
     end
 ```
 
-1. The edge server calls `reportServerInfo`, providing an `EdgeServerInfo` object with the server's details as input.
+### Step-by-step description
+
+1. On startup, the edge server executes the `service.reportServerInfo` mutation, providing an `EdgeServerInfo` object with the server's details as input.
     * This initial call **does not** include an `executableSchema` string.
     * This initial call **does** include an `executableSchemaId` in the `EdgeServerInfo` input. This is the SHA-256 hash of the edge server's schema, represented as a hexadecimal string. 
     * If this or any other `reportServerInfo` request fails with a non-2xx response from Apollo, the edge server should retry after 20 seconds.
 2. Apollo responds with a `ReportServerInfoResponse` object. This response tells the edge server: 
     * How many seconds to wait before sending the next `reportServerInfo` request
     * Whether the next `reportServerInfo` request should include the `executableSchema` that corresponds to the `executableSchemaId` provided in the previous request.
-3. After waiting the specified number of seconds, the edge server calls `reportServerInfo` again. This request includes a [normalized `executableSchema` string](#schema-normalization) if and only if `withExecutableSchema` was `true` in Apollo's most recent `ReportServerInfoResponse`.
+3. After waiting the specified number of seconds, the edge server executes `reportServerInfo` again. This request includes a [normalized `executableSchema` string](#schema-normalization) if and only if `withExecutableSchema` was `true` in Apollo's most recent `ReportServerInfoResponse`.
 4. Go to step 2.
+
+### Pseudocode example
+
+```
+val info = EdgeServerInfo(..)
+val schema = normalize("type Query { .. }")
+var withSchema = false
+
+function sendReport() {
+  val executableSchema = if (withSchema) null else schema
+  val response = reportServerInfo(info, executableSchema)
+
+  if (response.withExecutableSchema) {
+    withSchema = true
+  }
+
+  setTimeout(sendReport, response.inSeconds)
+}
+
+sendReport()
+```
 
 ## Type definitions
 
@@ -109,7 +142,7 @@ By providing these values in your requests, you'll help Apollo improve its servi
 
 ## Schema normalization
 
-Two semantically identical schemas can look different to Graph Manager, for example if you rearrange the order of an object type's fields. To avoid this, all edge servers should **normalize** their schema before sending it to Graph Manager.
+Two semantically identical schemas can appear different to Graph Manager, for example if those schemas list the same set of object fields in a different order. To avoid this, every edge server should **normalize** its schema before sending it to Graph Manager.
 
 To normalize your schema, do all of the following:
 
@@ -117,25 +150,4 @@ To normalize your schema, do all of the following:
 * Remove all redundant whitespace.
 * Remove all comments (but not docstrings).
 
-Runtime dependencies on your schema document might result in poor user experience in tracking your schema changes, or even throttling of service availability.
-
-### Pseudocode example
-
-```
-val info = EdgeServerInfo(..)
-val schema = normalize("type Query { .. }")
-var withSchema = false
-
-function sendReport() {
-  val executableSchema = if (withSchema) null else schema
-  val response = reportServerInfo(info, executableSchema)
-
-  if (response.withExecutableSchema) {
-    withSchema = true
-  }
-
-  setTimeout(sendReport, response.inSeconds)
-}
-
-sendReport()
-```
+Note that runtime dependencies on your schema document might result in poor user experience in tracking your schema changes, or even throttling of service availability.
