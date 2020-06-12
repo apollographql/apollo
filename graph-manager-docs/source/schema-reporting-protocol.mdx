@@ -4,6 +4,8 @@ sidebar_title: Schema reporting protocol
 description: Add automatic schema registration to your GraphQL server
 ---
 
+import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
+
 This document specifies the protocol that any GraphQL server can implement to enable automatic [schema registration](./schema-registry/) with Apollo Graph Manager.
 
 A reference implementation of this protocol is included in [Apollo Server](https://github.com/apollographql/apollo-server/pull/4084/files).
@@ -15,6 +17,10 @@ Servers that implement the schema reporting protocol communicate with the follow
 ```
 https://edge-server-reporting.api.apollographql.com/api/graphql
 ```
+
+All requests to this endpoint require a **graph API key** as authentication.
+
+<ObtainGraphApiKey />
 
 ## Protocol sequence
 

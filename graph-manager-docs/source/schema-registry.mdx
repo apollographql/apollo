@@ -7,9 +7,13 @@ import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-p
 import VideoFrame from "../components/video-frame";
 import {
   ObtainGraphApiKey,
-} from '../shared/obtain-graph-api-key';
+} from "../shared/obtain-graph-api-key";
 
-Apollo Graph Manager's **schema registry** is a central hub for managing your data graph (as recommended by [Principled GraphQL](https://principledgraphql.com/integrity#3-track-the-schema-in-a-registry)). The schema registry enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) that correspond to different environments, such as staging and production.
+Apollo Graph Manager's **schema registry** is a central hub for managing your data graph. It enables you to explore your schema's types and fields, track its change history, and improve your production server's security by removing the need for introspection. You can also [register **variants** of your schema](#managing-environments-with-variants) that correspond to different environments, such as staging and production.
+
+Apollo provides two mechanisms for schema registration, one [automatic](#automatic-registration) and one [manual](#manual-registration). We recommend automatic registration for architectures that support it.
+
+> **Do not use both automatic and manual schema registration for the same graph.** Doing so can cause you to register "no-op" schema changes, in which the two mechanisms register schemas that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
 
 ## Automatic registration
 
@@ -31,16 +35,20 @@ Apollo Server version 2.15.1 and later can register its schema with Graph Manage
     APOLLO_KEY=YOUR_KEY_HERE
     ```
 
-3. Set the `reportSchema` option to `true` in your `ApolloServer` constructor, like so:
+3. Set the `engine.reportSchema` option to `true` in your `ApolloServer` constructor, like so:
 
     ```js
     const server = new ApolloServer({
       // ...other options...
-      reportSchema: true,
+      engine {
+        reportSchema: true
+      }
     });
     ```
 
-Now every time your server starts up, it registers its schema with Graph Manager.
+Now every time your server finishes starting up, it registers its schema with Graph Manager.
+
+> **Note:** After starting up, Apollo Server waits a random amount of time between zero and ten seconds before automatically registering its schema. [You can customize this behavior.](#customizing-behavior-in-apollo-server)
 
 #### Registering automatically to a variant
 
@@ -55,11 +63,42 @@ APOLLO_GRAPH_VARIANT=staging
 
 If you don't specify a variant, Apollo Server reports its schema to the default variant (named `current`).
 
+#### Customizing behavior in Apollo Server
+
+In addition to `engine.reportSchema`, you can provide the following options to Apollo Server to modify schema reporting defaults:
+
+| Name  | Type | Description  |
+|---|---|---|
+| `engine.overrideReportedSchema` | String | If provided, Apollo Server sends this string value as the schema to register. By default, Apollo Server sends its interpreted `GraphQLSchema` object (the same value it returns from an introspection request) as an SDL string. This default behavior is appropriate for the majority of use cases. |
+| `engine.schemaReportingInitialDelayMaxMs` | Integer | On startup, Apollo Server waits a random number of milliseconds between `0` and this value before attempting to register its schema. This helps stagger registration requests when you deploy multiple instances of your server simultaneously. The default value is `10000` (10 seconds). |
+
+For example, the following value for `engine.overrideReportedSchema` provides a schema definition directly from Apollo Server's `typeDefs` object, instead of the interpreted `GraphQLSchema` created from that object:
+
+```js{5}
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  engine {
+    reportSchema: true
+    overrideReportedSchema: typeDefs.loc && typeDefs.loc.source.body
+  }
+});
+```
+
 ### Other GraphQL servers
 
 Any GraphQL server can perform automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
 
 > Currently, we are not aware of GraphQL server libraries besides Apollo Server that implement the schema reporting protocol. If you add support to an open-source library, please let us know at **support@apollographql.com**!
+
+### Handling conflicting schemas
+
+Whenever you perform a rolling deployment, different active instances of your server might report different schemas to Graph Manager. When this occurs, Graph Manager uses the following algorithm to choose which schema to register:
+
+1. If the specified variant does not yet have an active schema, register the most recently reported schema.
+2. If the specified variant _does_ have an active schema and that exact schema has been reported within the last 120 seconds, keep the current active schema.
+3. If the specified variant has an active schema and that exact schema has _not_ been reported in the last 120 seconds, register the most recently reported schema.
+4. In all other cases, keep the current active schema.
 
 ## Manual registration
 
@@ -97,9 +136,9 @@ If you omit the `--variant` flag, the `apollo service:push` command pushes to th
 
 To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
 
-If you're using [automatic schema reporting](#automatic-registration), registration happens automatically each time you deploy your production server. No additional continuous delivery configuration is required.
+**If you're using [automatic schema reporting](#automatic-registration)** with Apollo Server, registration happens automatically after your server's deployment completes. No additional continuous delivery configuration is required.
 
-If you're [registering via the Apollo CLI](#manual-registration), include a call to `apollo service:push` in your continuous delivery pipeline.
+**If you're [registering via the Apollo CLI](#manual-registration)**, include a call to `apollo service:push` in your continuous delivery pipeline.
 
 Here's a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
 
