@@ -2,17 +2,19 @@
 # yarn lockfile v1
 
 
-"@apollo/space-kit@2.15.0":
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/@apollo/space-kit/-/space-kit-2.15.0.tgz#e46a22f8de4ad5256d21db0b179de8b1498e4958"
-  integrity sha512-tAxOosmN8tWmObHuOyO2HI69+m63ZO5w2YQ+BoF/mNB3TmjpkJ3Yn3+r55rqfkQHQVkaTBBIXRIs1tRiGG4XTA==
+"@apollo/space-kit@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@apollo/space-kit/-/space-kit-5.6.0.tgz#a28055368ae7cfab5eef3c22cf9a2f0ab88e588f"
+  integrity sha512-8/dVkTFVdHz9c1iBhhPtF6OAzoc314+j7QgQLCUHX5/RrwPnIUFyZizJpjUD3m+q4TSnvSuAXiidnwOAW1o5ug==
   dependencies:
     "@emotion/cache" "^10.0.15"
     "@emotion/core" "^10.0.15"
+    "@tippyjs/react" "^4.0.0"
     "@types/classnames" "^2.2.9"
     "@types/tinycolor2" "^1.4.2"
     classnames "^2.2.6"
     tinycolor2 "^1.4.1"
+    tslib "^1.10.0"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
@@ -2060,6 +2062,11 @@
     native-url "^0.2.6"
     schema-utils "^2.6.5"
 
+"@popperjs/core@^2.3.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.4.2.tgz#7c6dc4ecef16149fd7a736710baa1b811017fdca"
+  integrity sha512-JlGTGRYHC2QK+DDbePyXdBdooxFq2+noLfWpRqJtkxcb/oYWzOF0kcbfvvbWrwevCC1l6hLUg1wHYT+ona5BWQ==
+
 "@reach/router@^1.3.3":
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.3.3.tgz#58162860dce6c9449d49be86b0561b5ef46d80db"
@@ -2197,6 +2204,14 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@tippyjs/react@^4.0.0":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@tippyjs/react/-/react-4.0.2.tgz#fadd14f1e36dd4f63f5f241cc78f3a1bb8394250"
+  integrity sha512-iAKTjUmrXqTTJ4HZRDgmvVfUiv9pTzJoDjPLDbmvB6vttkuYvZ/o8NhHa72vMFgHpiMFNoYWtB8OCRR6x5Zs8w==
+  dependencies:
+    prop-types "^15.6.2"
+    tippy.js "^6.2.0"
 
 "@types/classnames@^2.2.9":
   version "2.2.10"
@@ -7256,12 +7271,12 @@ gatsby-telemetry@^1.3.9:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-apollo-core@^3.0.11:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-core/-/gatsby-theme-apollo-core-3.0.11.tgz#53a38bca670dbd637db6b8e7a2279f5e911e81e7"
-  integrity sha512-dWpSi35pbNASs6/6flvlAP2qmOhaLrhDv9CqDyEYajG1yvH7qMrKHP8XLKVObyZ2BU3Y6Zzw+OKdoZVtlo/5Ig==
+gatsby-theme-apollo-core@^3.0.12:
+  version "3.0.12"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-core/-/gatsby-theme-apollo-core-3.0.12.tgz#b350fd91edc54c197bea3d42972f25ae91459dc3"
+  integrity sha512-kvTvIRRo3zYmxWj0Jo15vhlOBfmjqK8ucEt4AtmQiEhaotwwnGwHqATyxqphAUKtu0fU1AuvAO2q0rlqYkT4uw==
   dependencies:
-    "@apollo/space-kit" "2.15.0"
+    "@apollo/space-kit" "^5.6.0"
     "@emotion/core" "^10.0.7"
     "@emotion/styled" "^10.0.7"
     "@svgr/webpack" "^4.2.0"
@@ -7276,10 +7291,10 @@ gatsby-theme-apollo-core@^3.0.11:
     react-helmet "^5.2.0"
     react-use "^9.11.0"
 
-gatsby-theme-apollo-docs@4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.3.tgz#2ed253b5882739cdd7e50369372beff0c4c2990b"
-  integrity sha512-+JV2wW44xqRM7TICoHF8/rwQq+s5GOgMLBjGLpBLOj65raN/HV1dWphYK6VCUOpzFbPYV3gMeWqz5qBQf6Gh0g==
+gatsby-theme-apollo-docs@4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.6.tgz#d030d1d9542e01ce1c4a3f9cad57847847e35852"
+  integrity sha512-9dmypf3BfZ+/KV7G6M6q+ZfLiRetl7wTDfoELRhqjaGtFA3Yc3UmkrEn0ZFTPpRaoU10X0mNJY4icSFarOlguA==
   dependencies:
     "@mdx-js/mdx" "^1.1.0"
     "@mdx-js/react" "^1.0.27"
@@ -7295,7 +7310,7 @@ gatsby-theme-apollo-docs@4.2.3:
     gatsby-remark-rewrite-relative-links "^1.0.8"
     gatsby-source-filesystem "^2.0.29"
     gatsby-source-git "^1.0.1"
-    gatsby-theme-apollo-core "^3.0.11"
+    gatsby-theme-apollo-core "^3.0.12"
     gatsby-transformer-remark "^2.6.30"
     js-yaml "^3.13.1"
     prismjs "^1.15.0"
@@ -14482,6 +14497,13 @@ tinycolor2@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
+
+tippy.js@^6.2.0:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.2.3.tgz#0a5db67dc6bd9129233b26052b7ae2b2047fd73e"
+  integrity sha512-MzqHMrr2C0IC8ZUnG5kLQPxonWJ7V+Usqiy2W5b+dCvAfousio0mA85h+Ea5wRq94AQGd8mbFGeciRgkP+F+7w==
+  dependencies:
+    "@popperjs/core" "^2.3.2"
 
 title-case@^2.1.0:
   version "2.1.1"
