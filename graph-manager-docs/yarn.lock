@@ -7271,10 +7271,10 @@ gatsby-telemetry@^1.3.9:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-apollo-core@^3.0.12:
-  version "3.0.12"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-core/-/gatsby-theme-apollo-core-3.0.12.tgz#b350fd91edc54c197bea3d42972f25ae91459dc3"
-  integrity sha512-kvTvIRRo3zYmxWj0Jo15vhlOBfmjqK8ucEt4AtmQiEhaotwwnGwHqATyxqphAUKtu0fU1AuvAO2q0rlqYkT4uw==
+gatsby-theme-apollo-core@^3.0.13:
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-core/-/gatsby-theme-apollo-core-3.0.13.tgz#1deacd691e58684e0373b92680ac3da48ccdf4bb"
+  integrity sha512-Dq6ljDenUqSDMYyx9dDPw5/WgN1hbsL2sT1bqgjr+VYE1JT5zHINftDQn0MP6G7cl1wASbCXVWehgX13zB2QJA==
   dependencies:
     "@apollo/space-kit" "^5.6.0"
     "@emotion/core" "^10.0.7"
@@ -7291,10 +7291,10 @@ gatsby-theme-apollo-core@^3.0.12:
     react-helmet "^5.2.0"
     react-use "^9.11.0"
 
-gatsby-theme-apollo-docs@4.2.6:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.6.tgz#d030d1d9542e01ce1c4a3f9cad57847847e35852"
-  integrity sha512-9dmypf3BfZ+/KV7G6M6q+ZfLiRetl7wTDfoELRhqjaGtFA3Yc3UmkrEn0ZFTPpRaoU10X0mNJY4icSFarOlguA==
+gatsby-theme-apollo-docs@4.2.7:
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.7.tgz#16258a1907003f886e7719acdbe83236fbbca0ae"
+  integrity sha512-2M7btRvBpRprDI9pDKKkvT5k2G73TnBVOLW6tjVqGaChD5jhQQhMmoFyC9ogsptINlXgLRoRGeyXnDhRfvvBPQ==
   dependencies:
     "@mdx-js/mdx" "^1.1.0"
     "@mdx-js/react" "^1.0.27"
@@ -7310,7 +7310,7 @@ gatsby-theme-apollo-docs@4.2.6:
     gatsby-remark-rewrite-relative-links "^1.0.8"
     gatsby-source-filesystem "^2.0.29"
     gatsby-source-git "^1.0.1"
-    gatsby-theme-apollo-core "^3.0.12"
+    gatsby-theme-apollo-core "^3.0.13"
     gatsby-transformer-remark "^2.6.30"
     js-yaml "^3.13.1"
     prismjs "^1.15.0"
