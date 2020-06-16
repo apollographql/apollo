@@ -17,6 +17,7 @@ module.exports = {
           null: [
             'index',
             'getting-started',
+            '[Explorer](https://studio.apollographql.com)',
             'accounts-organizations',
           ],
           'Schema Management': [
