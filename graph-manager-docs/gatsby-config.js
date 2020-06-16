@@ -25,7 +25,7 @@ module.exports = {
             'schema-registry',
             'schema-reporting-protocol',
           ],
-          'Reporting': [
+          'Metrics': [
             'setup-analytics',
             'slack-integration',
             'client-awareness',
@@ -34,7 +34,7 @@ module.exports = {
             // field usage
             // operation usage
           ],
-          'Continuous Delivery': [
+          'Continuous Integration': [
             'schema-validation',
             'github-integration',
           ],

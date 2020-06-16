@@ -38,7 +38,7 @@ export default function CalloutCard(props) {
         color={colors.primary}
         as={
           <a
-            href="https://engine.apollographql.com/signup?utm_source=apollo-docs"
+            href="https://studio.apollographql.com/signup?utm_source=apollo-docs"
             target="_blank"
             rel="noopener noreferrer"
           />

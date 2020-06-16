@@ -1,6 +1,6 @@
 ---
-title: Integrating Apollo Studio with GitHub
-sidebar_title: GitHub
+title: Connecting Apollo Studio to GitHub
+sidebar_title: Connecting to GitHub
 ---
 
 To make [schema change validation](/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.

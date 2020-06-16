@@ -25,7 +25,7 @@ apollo service:delete --serviceName=products --variant=staging
 
 ## Inspecting your graph
 
-You can view the implementing services that make up your graph with either the Apollo CLI or [Apollo Studio](https://engine.apollographql.com/).
+You can view the implementing services that make up your graph with either the Apollo CLI or [Apollo Studio](https://studio.apollographql.com/).
 
 Run `apollo service:list` to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated:
 
@@ -41,7 +41,7 @@ Inventory  http://localhost:4004/graphql  3 July 2019 (2 days ago)
 Products   http://localhost:4003/graphql  3 July 2019 (2 days ago)
 Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
 
-View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
+View full details at: https://studio.apollographql.com/graph/service-list-federation-demo/service-list
 ```
 
 ## Pushing configuration updates safely
@@ -318,4 +318,4 @@ For instance, in order to have a canary deployment, you might maintain two produ
 1. Wait for health checks to pass against the canary, watch dashboards, etc.
 1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --variant=prod --serviceName=launches`.
 
-Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Studio](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
+Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Studio](https://studio.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.

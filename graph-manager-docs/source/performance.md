@@ -13,7 +13,7 @@ With [one line of configuration](https://www.apollographql.com/docs/references/s
 
 ## Traces
 
-With the metrics reporting set up, you'll be able to see traces of your operations in [Apollo Studio](https://engine.apollographql.com). Execution of a GraphQL request happens layer by layer, and each field in the query calls a function in your server called a resolver. The [_trace_ view in Studio](https://blog.apollographql.com/the-new-trace-view-in-apollo-engine-566b25bdfdb0) allows you to look at a detailed breakdown of the execution for individual operations, with timing shown for every resolver.
+With the metrics reporting set up, you'll be able to see traces of your operations in [Apollo Studio](https://studio.apollographql.com). Execution of a GraphQL request happens layer by layer, and each field in the query calls a function in your server called a resolver. The [_trace_ view in Studio](https://blog.apollographql.com/the-new-trace-view-in-apollo-engine-566b25bdfdb0) allows you to look at a detailed breakdown of the execution for individual operations, with timing shown for every resolver.
 
 ![Trace view](./img/trace.png)
 

@@ -29,7 +29,7 @@ You can repeat this process to create webhook URLs for multiple channels.
 
 ### 2. Provide the webhook to Studio
 
-From [Apollo Studio](https://engine.apollographql.com):
+From [Apollo Studio](https://studio.apollographql.com):
 
 1. Select the graph you want to configure Slack notifications for.
 2. Open the graph's Integrations page in the left nav.
