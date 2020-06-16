@@ -9,7 +9,7 @@ module.exports = {
         ...themeOptions,
         root: __dirname,
         baseDir: 'graph-manager-docs',
-        subtitle: 'Apollo Studio',
+        subtitle: 'Studio',
         description: 'How to use Apollo Studio',
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/apollo-platform',
@@ -17,21 +17,33 @@ module.exports = {
           null: [
             'index',
             'getting-started',
-            '[Explorer](https://studio.apollographql.com)',
-            'accounts-organizations',
+            '[Explorer](https://studio.apollographql.com/explorer)',
           ],
-          'Registering a Schema': [
+          'Registering your Schema': [
+            'schema/automatic-registration',
+            'schema/manual-registration',
             'schema-registry',
-            'schema-validation',
             'schema-reporting-protocol',
           ],
           'Reporting': [
             'setup-analytics',
+            'slack-integration',
             'client-awareness',
             'performance',
+            'datadog-integration',
             // field usage
             // operation usage
-            // integrating w/ Datadog?
+          ],
+          'Continuous Delivery': [
+            'schema-validation',
+            'github-integration',
+          ],
+          'Managing your Org': [
+            'org/account',
+            'org/organizations',
+            'org/members',
+            'org/graphs',
+            'org/api-keys',
           ],
           'Managed Federation': [
             'managed-federation/overview',
@@ -39,13 +51,8 @@ module.exports = {
             'managed-federation/advanced-topics',
           ],
           'Security': [
-            'operation-registry',
             'graph-manager-data-privacy',
-          ],
-          'Integrations': [
-            'github-integration',
-            'slack-integration',
-            'datadog-integration'
+            'operation-registry',
           ]
         },
       },

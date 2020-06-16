@@ -1,6 +1,6 @@
 ---
-title: Integrating Apollo Studio with Slack
-sidebar_title: Slack
+title: Slack notifications
+sidebar_title: Slack notifications
 ---
 
 Apollo Studio can send notifications about your data graph to your team's Slack workspace. This helps you stay up to date on changes to your graph's schema and performance as soon as they occur.

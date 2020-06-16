@@ -1,0 +1,28 @@
+---
+title: Organizations
+sidebar_title: Organizations
+---
+
+All data in Studio (GraphQL schemas, metrics, etc.) belongs to a particular organization. Every organization has one or more [members](./org-members/) who manage it and can access its associated data.
+
+> **Important**: Currently, all members of a Studio organization have full permissions for the organization, including the ability to delete graphs or transfer them out of the organization.
+
+## Creating an organization
+
+You create your first organization as part of [account creation](./org-account/), unless you've been invited to an existing organization by another Studio user.
+
+You can create additional organizations by clicking the `+` button at the top of your list of organizations in [Studio](https://engine.apollographql.com). A single Studio organization can include any number of [graphs](./org-graphs/), so a company rarely needs more than one or two organizations.
+
+## Viewing your organizations
+
+[Studio](https://studio.apollographql.com) lists the organizations you belong to in the left-hand column.
+
+* Click on an organization to view its associated schemas and metrics.
+* Click the gear icon next to an organization to view its settings.
+
+## Deleting an organization
+
+Deleting an organization requires contacting Apollo. You can do so from your organization's Settings tab.
+
+Deleting an organization does not affect the uptime of services that send data
+to Studio as part of that organization.
