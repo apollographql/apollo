@@ -19,7 +19,7 @@ Apollo provides two mechanisms for schema registration, one [automatic](#automat
 
 ### Apollo Server setup
 
-Apollo Server version 2.15.1 and later can register its schema with Graph Manager automatically every time it starts up. To do so:
+Apollo Server version 2.15 and later can register its schema with Graph Manager automatically every time it starts up. To do so:
 
 1. Obtain an API key for your data graph:
 
@@ -67,8 +67,8 @@ In addition to `engine.reportSchema`, you can provide the following options to A
 
 | Name  | Type | Description  |
 |---|---|---|
-| `engine.overrideReportedSchema` | String | If provided, Apollo Server sends this string value as the schema to register. By default, Apollo Server sends its interpreted `GraphQLSchema` object (the same value it returns from an introspection request) as an SDL string. This default behavior is appropriate for the majority of use cases. |
-| `engine.schemaReportingInitialDelayMaxMs` | Integer | On startup, Apollo Server waits a random number of milliseconds between `0` and this value before attempting to register its schema. This helps stagger registration requests when you deploy multiple instances of your server simultaneously. The default value is `10000` (10 seconds). |
+| `engine.overrideReportedSchema` | String | <p>If provided, Apollo Server sends this string value as the schema to register.</p><p>By default, Apollo Server sends its interpreted `GraphQLSchema` object (the same value it returns from an introspection request) as an SDL string. This default behavior is appropriate for the majority of use cases.</p> |
+| `engine.schemaReportingInitialDelayMaxMs` | Integer | <p>On startup, Apollo Server waits a random number of milliseconds between `0` and this value before attempting to register its schema. This helps stagger registration requests when you deploy multiple instances of your server simultaneously.</p><p>The default value is `10000` (10 seconds).</p>|
 
 For example, the following value for `engine.overrideReportedSchema` provides a schema definition directly from Apollo Server's `typeDefs` object, instead of the interpreted `GraphQLSchema` created from that object:
 
@@ -188,7 +188,7 @@ jobs:
 
 The History view in Graph Manager lets you view the timeline of changes made to your schema:
 
-![Schema history page in the Graph Manager UI](./img//schema-history.png)
+<img src="./img//schema-history.png" class="screenshot" alt="Graph Manager History view"></img>
 
 **Only schema changes that you push to Graph Manager are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-with-continuous-delivery).
 
