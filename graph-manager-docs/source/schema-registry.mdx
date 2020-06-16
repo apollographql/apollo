@@ -15,11 +15,13 @@ Apollo provides two mechanisms for schema registration, one [automatic](#automat
 
 ## Automatic registration (recommended)
 
-> **Automatic schema registration is not available for graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
+Graph Manager's **schema reporting** feature enables your GraphQL server to register its latest schema with Graph Manager every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). [Apollo Server](#apollo-server-setup) supports this protocol, and [other GraphQL servers](#other-graphql-servers) can implement support.
+
+> **Schema reporting does not currently support graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
 
 ### Apollo Server setup
 
-Apollo Server version 2.15 and later can register its schema with Graph Manager automatically every time it starts up. To do so:
+Schema reporting is available in Apollo Server version 2.15 and later. To enable it:
 
 1. Obtain an API key for your data graph:
 
@@ -45,8 +47,6 @@ Apollo Server version 2.15 and later can register its schema with Graph Manager 
     ```
 
 Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema with Graph Manager ([you can customize this time range](#customizing-behavior-in-apollo-server)).
-
-> Do not use both automatic and manual schema registration for the same graph. Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
 
 #### Registering automatically to a variant
 
@@ -85,11 +85,11 @@ const server = new ApolloServer({
 
 ### Other GraphQL servers
 
-Any GraphQL server can perform automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
+Any GraphQL server can (and is encouraged to!) support automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
 
 > Currently, we are not aware of GraphQL server libraries besides Apollo Server that implement the schema reporting protocol. If you add support to an open-source library, please let us know at **support@apollographql.com**!
 
-### Rolling deploys with automatic registration
+### Rolling deploys with schema reporting
 
 Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to Graph Manager. If this occurs, Graph Manager uses the following algorithm to choose which schema to register:
 
@@ -110,7 +110,9 @@ Using this algorithm, your updated schema is registered within a few minutes aft
 
 ## Manual registration
 
-If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support automatic schema registration, you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
+> **Do not use both automatic and manual schema registration for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
+
+If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [automatic schema registration](#automatic-registration-recommended), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
 
 First, complete the following setup for your project:
 
