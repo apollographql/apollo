@@ -9,13 +9,13 @@ import {
   ObtainGraphApiKey,
 } from "../shared/obtain-graph-api-key";
 
-Apollo Graph Manager's **schema registry** is a central hub for managing your data graph. By registering your schema, you can explore its types and fields, track its change history, and improve your production server's security by removing the need for introspection.
+Apollo Studio's **schema registry** is a central hub for managing your data graph. By registering your schema, you can explore its types and fields, track its change history, and improve your production server's security by removing the need for introspection.
 
 Apollo provides two mechanisms for schema registration, one [automatic](#automatic-registration-recommended) (recommended) and one [manual](#manual-registration).
 
 ## Automatic registration (recommended)
 
-Graph Manager's **schema reporting** feature enables your GraphQL server to register its latest schema with Graph Manager every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). [Apollo Server](#apollo-server-setup) supports this protocol, and [other GraphQL servers](#other-graphql-servers) can implement support.
+Studio's **schema reporting** feature enables your GraphQL server to register its latest schema with Studio every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). [Apollo Server](#apollo-server-setup) supports this protocol, and [other GraphQL servers](#other-graphql-servers) can implement support.
 
 > **Schema reporting does not currently support graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
 
@@ -46,7 +46,7 @@ Schema reporting is available in Apollo Server version 2.15 and later. To enable
     });
     ```
 
-Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema with Graph Manager ([you can customize this time range](#customizing-behavior-in-apollo-server)).
+Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema with Studio ([you can customize this time range](#customizing-behavior-in-apollo-server)).
 
 #### Registering automatically to a variant
 
@@ -103,13 +103,13 @@ Any GraphQL server can (and is encouraged to!) support automatic schema registra
 
 ### Rolling deploys with schema reporting
 
-Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to Graph Manager. If this occurs, Graph Manager uses the following algorithm to choose which schema to register:
+Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to Studio. If this occurs, Studio uses the following algorithm to choose which schema to register:
 
 ```mermaid
 graph TB;
   activeSchema(Does the specified variant already have an active schema?);
   exactReported("Does the active schema match any schema reported in the last 90 seconds?");
-  registerRecent(Register the schema most recently received by Graph Manager);
+  registerRecent(Register the schema most recently received by Studio);
   keepActive(Keep the current active schema);
   activeSchema --"No"-->registerRecent;
   activeSchema --"Yes"-->exactReported;
@@ -142,7 +142,7 @@ id      schema        tag
 190330  example-4218  current
 ```
 
-The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Graph Manager.
+The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Studio.
 
 ### Registering manually to a variant
 
@@ -156,7 +156,7 @@ If you omit the `--variant` flag, the `apollo service:push` command pushes to th
 
 ## Registering with continuous delivery
 
-To get the most out of Graph Manager, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
+To get the most out of Studio, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
 
 **If you're using [automatic schema reporting](#automatic-registration-recommended)** with Apollo Server (recommended), registration happens automatically after your server's deployment completes. No additional continuous delivery configuration is required.
 
@@ -202,9 +202,9 @@ jobs:
 
 The History view in Apollo Studio lets you view the timeline of changes made to your schema:
 
-<img src="./img//schema-history.png" class="screenshot" alt="Graph Manager History view"></img>
+<img src="./img//schema-history.png" class="screenshot" alt="Studio History view"></img>
 
-**Only schema changes that you push to Graph Manager are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-with-continuous-delivery).
+**Only schema changes that you push to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-with-continuous-delivery).
 
 ## Managing environments with variants
 
