@@ -31,16 +31,16 @@ There are a few different ways you can link your client to a schema:
 2. With a remote endpoint (from a running server)
 3. With a local schema file
 
-#### _Option 1_: Use the Apollo schema registry
+#### Option 1: Use the Apollo schema registry
 
 To link your client to a schema through the Apollo schema registry, you'll need to have at least one version of your schema uploaded to the [registry](https://www.apollographql.com/docs/graph-manager/schema-registry/).
 
-With Graph Manager set up, you can point your client directly to your graph's schema by putting your graph's Graph Manager ID in your Apollo config, like so:
+With Apollo Studio set up, you can point your client directly to your graph's schema by specifying your graph's name in your Apollo config, like so:
 
 ```js{3}
 module.exports = {
   client: {
-    service: 'my-apollo-service' // the id of your service in Graph Manager (from the URL)
+    service: 'my-apollo-service' // the name of your graph in Studio
   }
 };
 ```
@@ -59,7 +59,7 @@ module.exports = {
 
 If a graph variant is not specified, Apollo tools will fall back to the default value of `current`.
 
-#### _Option 2_: Link a schema from a remote endpoint
+#### Option 2: Link a schema from a remote endpoint
 
 Remote endpoints can be used to pull down a schema from a running service. This can be configured like so:
 
@@ -80,7 +80,7 @@ module.exports = {
 };
 ```
 
-#### _Option 3_: Link a schema from a local file
+#### Option 3: Link a schema from a local file
 
 In some cases you may have a locally generated file with your schema that you want to link. This can be either a `.graphql` file with the schema in SDL form or a saved introspection result in `.json`. To link your client project to a local schema file, configure it like so:
 

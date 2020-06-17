@@ -20,10 +20,10 @@ The extension enables you to:
 
 ## Getting started
 
-To get all of the benefits of the VS Code experience, it's best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [publishing a schema](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema-manually) to the Apollo schema registry. Once that is done, two steps are needed:
+To get all of the benefits of the VS Code experience, it's best to link the schema that is being developed against **before** installing the extension. The best way to do that is by [registering a schema](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema-manually) to the Apollo schema registry. Once that's done:
 
-1. Create an `apollo.config.js` at the root of the project
-2. Copy an API key from the Graph Manager dashboard of the published service
+1. Create an `apollo.config.js` file at the root of the project.
+2. Obtain an API key from Apollo Studio.
 
 ### Setting up an Apollo config
 
@@ -37,13 +37,11 @@ module.exports = {
 };
 ```
 
-The `service` name here is the ID of the graph you've created in [Apollo Graph Manager](https://engine.apollographql.com).
-
-> **Note:** The ID of your graph can be found in its URL in Graph Manager. We use the ID so you can change your graph's name freely without having to update this. This will be easier to manage in the future.
+The `service` name here is the name of the graph you've created in [Apollo Studio](https://studio.apollographql.com).
 
 ### Setting up an API key
 
-To authenticate with Graph Manager to pull down the schema, create a file next to the `apollo.config.js` called `.env`. This should be an untraced file (i.e., don't push it to GitHub). Go to the settings page of your graph in Graph Manager to get the API key.
+To authenticate with Apollo Studio to pull down your schema, create a file next to the `apollo.config.js` called `.env`. This should be an **untracked** file (i.e., don't commit it to Git). Go to your graph's Settings page in Apollo Studio to get the API key.
 
 > **Note:** It is best practice to create a new API key for each member of the team and name the key so its easy to find and revoke if needed. This will be easier to manage in the future.
 
@@ -53,7 +51,7 @@ After the key is found, add the following line to the `.env` file:
 APOLLO_KEY=<enter copied key here>
 ```
 
-After this is done, VS Code can be reloaded and the Apollo integration will connect to Graph Manager to provide autocomplete, validation, and more.
+After this is done, VS Code can be reloaded and the Apollo integration will connect to Apollo Studio to provide autocomplete, validation, and more.
 
 ### Local schemas
 
@@ -124,7 +122,7 @@ GraphQL's flexibility can make it difficult to predict the cost of an operation.
 
 To turn on tracing for your GraphQL server, please visit our [guide](https://www.apollographql.com/docs/references/setup-analytics/).
 
-The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Graph Manager. As operations are typed, any fields that take longer than 1ms to respond will be annoated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
+The VS Code extension will show inline performance diagnostics when connected to a service with reported metrics in Apollo Studio. As operations are typed, any fields that take longer than 1ms to respond will be annoated to the right of the field inline! This gives team members a picture of how long the operation will take as more and more fields are added to operations or fragments.
 
 <img src="../img//editors/perf-annotation.png" width="80%" style="margin: 5%" alt="Performance annotation next to a field">
 
