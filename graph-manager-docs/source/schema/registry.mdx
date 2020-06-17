@@ -1,0 +1,59 @@
+---
+title: Exploring your schema
+---
+
+import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
+import {
+  ObtainGraphApiKey,
+} from "../../shared/obtain-graph-api-key";
+
+Apollo Studio's **schema registry** is a central hub for managing your data graph. By registering your schema, you can explore its types and fields, track its change history, and improve your production server's security by removing the need for introspection.
+
+Apollo provides two mechanisms for schema registration, one [automatic](./automatic-registration/) (recommended) and one [manual](./manual-registration/).
+
+## Tracking schema changes
+
+The History view in Apollo Studio lets you view the timeline of changes made to your schema:
+
+<img src="../img//schema-history.png" class="screenshot" alt="Studio History view"></img>
+
+**Only schema changes that you push to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](#registering-with-continuous-delivery).
+
+## Managing environments with variants
+
+Commonly, your application's development and staging environments use schemas that differ slightly from your production schema (especially if you're actively working on updates to your schema).
+
+Because these schemas represent different environments for the same application, it makes sense to associate them with each other. To achieve this, you define **variants** of your graph.
+
+Each variant of a graph functions as a standalone graph. Each has its own change history, metrics, and operation registry.
+
+### Registering a schema to a variant
+
+* [Using automatic registration](#registering-automatically-to-a-variant)
+* [Using the Apollo CLI](#registering-manually-to-a-variant)
+
+### Associating metrics with a variant
+
+You can configure Apollo Server to associate the metrics it sends to Apollo Studio with a particular variant. To do so, set the `APOLLO_GRAPH_VARIANT` environment variable (`ENGINE_SCHEMA_TAG` in `apollo-server` pre-2.13.0) to the appropriate variant before initializing Apollo Server.
+
+Alternatively, you can include the `graphVariant` (`schemaTag` in `apollo-server` pre-2.13.0) option in your call to the `ApolloServer` constructor, like so:
+
+```js
+const server = new ApolloServer({
+  ...
+  engine: {
+    apiKey: "<APOLLO_KEY>",
+    graphVariant: "beta" // highlight-line
+  }
+});
+```
+
+> Make sure you associate Apollo Server's metrics with the correct variant! Otherwise, metrics from your staging and test environments will be included in reports for your production graph.
+
+## Tools that use the schema registry
+
+Keeping your registered schema up to date ensures that you get the best possible experience from Apollo tools that connect to the registry:
+
+- The [Apollo VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) provides built-in linting on queries by validating against your registered schema. It also annotates fields with their descriptions and with performance indicators collected in Apollo's trace warehouse.
+- The [schema validation](/schema-validation/) workflow protects your team from accidentally making breaking schema changes. It creates a diff between your local schema and the last schema pushed to the registry, and validates this diff against live traffic seen on your endpoint to warn you about problematic changes.
+- Your schema's full history and current usage can be seen in [Apollo Studio](https://studio.apollographql.com). The History page tracks changes made over time, and the Explorer page shows which clients and which queries are using each field in your schema.

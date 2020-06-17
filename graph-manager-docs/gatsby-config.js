@@ -22,7 +22,7 @@ module.exports = {
           'Registering your Schema': [
             'schema/automatic-registration',
             'schema/manual-registration',
-            'schema-registry',
+            'schema/registry',
             'schema-reporting-protocol',
           ],
           'Metrics': [
