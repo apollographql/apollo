@@ -61,6 +61,18 @@ APOLLO_GRAPH_VARIANT=staging
 
 If you don't specify a variant, Apollo Server reports its schema to the default variant (named `current`).
 
+#### Providing runtime metadata (appreciated 🙂)
+
+The schema reporting protocol accepts optional values that help Apollo associate each request with a particular server instance and platform. This in turn helps Apollo diagnose issues and improve performance.
+
+To provide these values to Apollo Server, set the following environment variables in your server's environment:
+
+| Name | Description  |
+|---|---|
+| `APOLLO_SERVER_USER_VERSION` | An identifier for the running version of your server, such as the SHA of its Git commit.
+| `APOLLO_SERVER_ID` | A randomly generated ID that's unique for each running instance of your server. **This value should persist across an instance's restarts.** For example, in a Kubernetes cluster, this might be the server's pod name. |
+| `APOLLO_SERVER_PLATFORM` | The infrastructure environment that your server is running in (`localhost`, `kubernetes/deployment`, `aws lambda`, `google cloud run`, `google cloud function`, `AWS ECS`, etc.) |
+
 #### Customizing behavior in Apollo Server
 
 In addition to `engine.reportSchema`, you can provide the following options to Apollo Server to modify schema reporting defaults:
