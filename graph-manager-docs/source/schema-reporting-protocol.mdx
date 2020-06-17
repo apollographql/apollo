@@ -155,7 +155,7 @@ type ServiceMutation {
 | Name  | Type | Description  |
 |---|---|---|
 | `graphVariant` | `String!` | The name of the graph variant to register the schema to. The default value is `current`. |
-| `serverId` | `String` | A randomly generated ID that's unique for each instance of your edge server. Unlike `bootId`, this value _should_ persist across an instance's restarts. In a Kubernetes cluster, this might be the **pod name**, whereas the **container** can restart. |
+| `serverId` | `String` | An ID that's unique for each instance of your edge server. Unlike `bootId`, this value _should_ persist across an instance's restarts. In a Kubernetes cluster, this might be the **pod name**, whereas the **container** can restart. |
 | `userVersion` | `String` | An arbitrary string you can set to distinguish data sent by different versions of your edge server. For example, this can be the SHA of the Git commit for your deployed server code. We plan to make this value visible in Graph Manager. |
 
 ### Appreciated fields 🙂
