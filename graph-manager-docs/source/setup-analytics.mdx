@@ -19,13 +19,11 @@ Trace reporting enables you to visualize:
 
 Apollo Server has built-in support for pushing traces to Apollo Studio. To set it up, you provide it a **graph API key** from Studio.
 
-> A graph API key is different from a _personal_ API key. It grants access only to the graph it's associated with. Personal API keys do not allow trace reporting.
-
 <ObtainGraphApiKey />
 
-After you obtain a graph API key, assign it to the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` in `apollo-server` pre-2.13.0) in your production server's environment.
+After you obtain a graph API key, assign it to the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` prior to version 2.13.0 of Apollo Server) in your production server's environment.
 
->Consult your production environment's documentation to learn how to set its environment variables.
+> Consult your production environment's documentation to learn how to set its environment variables.
 
 Now the next time you start your production server, it will automatically begin pushing trace data to Studio:
 
@@ -48,9 +46,9 @@ The following third-party GraphQL servers support Apollo Studio trace reporting:
 | [`graphene-tornado`](https://github.com/graphql-python/graphene-tornado) (Python) | Provided via the [`apollo-engine-reporting` extension](https://github.com/graphql-python/graphene-tornado#apollo-engine-reporting) |
 
 
-## Pushing traces from other GraphQL servers
+## Adding support to a third-party server
 
-You can set up a reporting agent in your GraphQL server to push analytics to Apollo Studio. The agent is responsible for:
+You can set up a reporting agent in your GraphQL server to push metrics to Apollo Studio. The agent is responsible for:
 
 * Translating operation details into the correct [trace format](#tracing-format)
 * Implementing a default **signature function** to identify each executed operation

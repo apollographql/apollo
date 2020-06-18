@@ -25,7 +25,7 @@ module.exports = {
             'schema/registry',
             'schema-reporting-protocol',
           ],
-          'Metrics': [
+          'Metrics Reporting': [
             'setup-analytics',
             'slack-integration',
             'client-awareness',

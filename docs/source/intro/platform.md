@@ -3,7 +3,7 @@ title: The Apollo platform
 description: Bring your data graph from prototype to production
 ---
 
-The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-graph-manager) a **data graph**: a unified data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
+The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-studio) a **data graph**: a unified data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
 
 A data graph sits between application clients and back-end services, facilitating the flow of data between them:
 

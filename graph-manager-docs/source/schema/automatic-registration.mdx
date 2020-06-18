@@ -1,9 +1,11 @@
 ---
-title: Automatic schema registration
-sidebar_title: Automatically (recommended)
+title: Schema registration via schema reporting
+sidebar_title: Using schema reporting (recommended)
 ---
 
-Apollo Studio's **schema reporting** feature enables your GraphQL server to register its latest schema with Studio every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). [Apollo Server](#apollo-server-setup) supports this protocol, and [other GraphQL servers](#other-graphql-servers) can implement support.
+import ObtainGraphApiKey from "../../shared/obtain-graph-api-key";
+
+**Schema reporting** enables your GraphQL server to register its latest schema with the Apollo schema registry every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). This protocol is supported by [Apollo Server](#apollo-server-setup), and [other GraphQL servers](#other-graphql-servers) can implement support.
 
 > **Schema reporting does not currently support graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](./managed-federation/setup/).
 
@@ -34,7 +36,7 @@ Schema reporting is available in Apollo Server version 2.15 and later. To enable
     });
     ```
 
-Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema with Studio ([you can customize this time range](#customizing-behavior-in-apollo-server)).
+Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema ([you can customize this time range](#customizing-schema-reporting-behavior-in-apollo-server)).
 
 #### Registering automatically to a variant
 
@@ -57,11 +59,11 @@ To provide these values to Apollo Server, set the following environment variable
 
 | Name | Description  |
 |---|---|
-| `APOLLO_SERVER_USER_VERSION` | An identifier for the current running version of your server, such as the SHA of its associated Git commit. We plan to display this value in the Graph Manager UI to help you segment metrics. |
+| `APOLLO_SERVER_USER_VERSION` | An identifier for the current running version of your server, such as the SHA of its associated Git commit. We plan to display this value in Apollo Studio to help you segment metrics. |
 | `APOLLO_SERVER_ID` | An ID that's unique for each running instance of your server. **This value should persist across an instance's restarts.** For example, in a Kubernetes cluster, you can use the server's pod name. |
 | `APOLLO_SERVER_PLATFORM` | The infrastructure environment that your server is running in (`localhost`, `kubernetes/deployment`, `aws lambda`, `google cloud run`, `google cloud function`, `AWS ECS`, etc.) |
 
-#### Customizing behavior in Apollo Server
+#### Customizing schema reporting behavior in Apollo Server
 
 In addition to `engine.reportSchema`, you can provide the following options to Apollo Server to modify schema reporting defaults:
 
@@ -91,13 +93,13 @@ Any GraphQL server can (and is encouraged to!) support automatic schema registra
 
 ### Rolling deploys with schema reporting
 
-Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to Studio. If this occurs, Studio uses the following algorithm to choose which schema to register:
+Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to the schema registry. If this occurs, the registry uses the following algorithm to choose which schema to register:
 
 ```mermaid
 graph TB;
   activeSchema(Does the specified variant already have an active schema?);
   exactReported("Does the active schema match any schema reported in the last 90 seconds?");
-  registerRecent(Register the schema most recently received by Studio);
+  registerRecent(Register the schema most recently received by the registry);
   keepActive(Keep the current active schema);
   activeSchema --"No"-->registerRecent;
   activeSchema --"Yes"-->exactReported;
