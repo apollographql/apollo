@@ -4,38 +4,21 @@ sidebar_title: Using the Apollo CLI
 ---
 
 import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
+import RegisterCli from '../../shared/register-cli.mdx';
+import RegisterFederatedCli from '../../shared/register-federated-cli.mdx'
+
 
 If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [schema reporting](./automatic-registration/), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
 
 > **Do not use both schema reporting and the Apollo CLI to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
 
-First, complete the following setup for your project:
+## Registering a non-federated schema
 
-<ProjectConfigPanel />
+<RegisterCli />
 
-Now you can run the `apollo service:push` command from your application's root directory, like so:
+## Registering federated schemas
 
-```
-$ apollo service:push
-  ✔ Loading Apollo Project
-  ✔ Uploading service to Engine
-
-id      schema        tag
-──────  ────────────  ───────
-190330  example-4218  current
-```
-
-The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Studio.
-
-## Registering to a variant with the CLI
-
-To register a schema to a particular [variant of your graph](#managing-environments-with-variants), include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
-
-```bash
-apollo service:push --variant=beta
-```
-
-If you omit the `--variant` flag, the `apollo service:push` command pushes to the default graph variant, named `current`.
+<RegisterFederatedCli />
 
 ## Registering with continuous delivery
 
