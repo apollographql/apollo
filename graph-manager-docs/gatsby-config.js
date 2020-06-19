@@ -20,10 +20,10 @@ module.exports = {
             '[Explorer](https://studio.apollographql.com/explorer)',
           ],
           'Registering your Schema': [
-            'schema/automatic-registration',
-            'schema/manual-registration',
+            'schema/schema-reporting',
+            'schema/cli-registration',
             'schema/registry',
-            'schema-reporting-protocol',
+            'schema/schema-reporting-protocol',
           ],
           'Metrics Reporting': [
             'setup-analytics',
