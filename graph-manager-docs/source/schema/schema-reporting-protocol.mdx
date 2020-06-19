@@ -1,12 +1,12 @@
 ---
-title: Apollo schema reporting protocol reference
+title: Schema reporting protocol reference
 sidebar_title: Schema reporting protocol reference
 description: Add automatic schema registration to your GraphQL server
 ---
 
-import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
+import ObtainGraphApiKey from '../../shared/obtain-graph-api-key.mdx';
 
-This document specifies the protocol that any GraphQL server can implement to enable automatic [schema registration](./schema-registry/) with Apollo Studio.
+This document specifies the protocol that any GraphQL server can implement to enable automatic [schema registration](./schema-registry/) with the Apollo schema registry.
 
 A reference implementation of this protocol is included in [Apollo Server](https://github.com/apollographql/apollo-server/pull/4084/files).
 
@@ -170,7 +170,7 @@ By providing these values in your requests, you'll help Apollo improve its servi
 
 ## Schema normalization
 
-Two semantically identical schemas can appear different to Apollo Studio, such as when those schemas list the same set of object fields in a different order. To avoid this scenario, every edge server should **normalize** its schema before sending it to Studio.
+Two semantically identical schemas can appear different to the schema registry, such as when those schemas list the same set of object fields in a different order. To avoid this scenario, every edge server should **normalize** its schema before sending it to the registry.
 
 To normalize your schema, do all of the following:
 
