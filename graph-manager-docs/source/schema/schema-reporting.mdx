@@ -9,7 +9,7 @@ import ObtainGraphApiKey from "../../shared/obtain-graph-api-key";
 
 > **Schema reporting does not currently support graphs that use Apollo Federation.** If you have a federated graph, instead see [Registering federated schemas](./cli-registration/#registering-federated-schemas).
 
-### Apollo Server setup
+## Apollo Server setup
 
 Schema reporting is available in Apollo Server version 2.15 and later. To enable it:
 
@@ -38,7 +38,7 @@ Schema reporting is available in Apollo Server version 2.15 and later. To enable
 
 Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema ([you can customize this time range](#customizing-schema-reporting-behavior-in-apollo-server)).
 
-#### Registering automatically to a variant
+### Registering automatically to a variant
 
 Your server can register its schema to a particular [variant of your graph](#managing-environments-with-variants). Each of your server's environments (development, staging, production, etc.) should register to a different variant.
 
@@ -51,7 +51,7 @@ APOLLO_GRAPH_VARIANT=staging
 
 If you don't specify a variant, Apollo Server reports its schema to the default variant (named `current`).
 
-#### Providing runtime metadata (recommended)
+### Providing runtime metadata (recommended)
 
 The schema reporting protocol accepts optional values that help both you and Apollo associate each request with a particular server instance and platform. This in turn helps with diagnosing issues and improving performance.
 
@@ -63,7 +63,7 @@ To provide these values to Apollo Server, set the following environment variable
 | `APOLLO_SERVER_ID` | An ID that's unique for each running instance of your server. **This value should persist across an instance's restarts.** For example, in a Kubernetes cluster, you can use the server's pod name. |
 | `APOLLO_SERVER_PLATFORM` | The infrastructure environment that your server is running in (`localhost`, `kubernetes/deployment`, `aws lambda`, `google cloud run`, `google cloud function`, `AWS ECS`, etc.) |
 
-#### Customizing schema reporting behavior in Apollo Server
+### Customizing schema reporting behavior in Apollo Server
 
 In addition to `engine.reportSchema`, you can provide the following options to Apollo Server to modify schema reporting defaults:
 
@@ -85,13 +85,13 @@ const server = new ApolloServer({
 });
 ```
 
-### Other GraphQL servers
+## Other GraphQL servers
 
 Any GraphQL server can (and is encouraged to!) support automatic schema registration by implementing the [Schema reporting protocol](./schema-reporting-protocol/).
 
 > Currently, we are not aware of GraphQL server libraries besides Apollo Server that implement the schema reporting protocol. If you add support to an open-source library, please let us know at **support@apollographql.com**!
 
-### Rolling deploys with schema reporting
+## Rolling deploys with schema reporting
 
 Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to the schema registry. If this occurs, the registry uses the following algorithm to choose which schema to register:
 
