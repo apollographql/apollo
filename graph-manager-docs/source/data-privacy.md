@@ -4,11 +4,15 @@ sidebar_title: Data privacy and compliance
 description: Understand what Studio ingests and learn about GDPR
 ---
 
-You can configure Apollo Server to automatically trace the execution of your requests and forward that information to Apollo Studio. Studio uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in Studio.
+This article describes which data is and is _not_ sent to Apollo as part of its platform's data management tools.
+
+> Most importantly, result data from GraphQL operations that your server executes is **never** sent to Apollo.
 
 ## What data does Apollo Server send to Apollo Studio?
 
-**Apollo Server never forwards the `data` of an operation response to Apollo Studio.** It _does_ forward:
+You can configure Apollo Server to trace the execution of each GraphQL operation and [push those metrics to Apollo Studio](./setup-analytics/). Studio uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in Studio.
+
+**Apollo Server never forwards the `data` field of an operation response to Apollo Studio.** It _does_ forward:
 
 * Several fields _besides_ `data` from every operation response
 
@@ -94,6 +98,10 @@ In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP 
 
 If you're using an earlier version of Apollo Server, it's recommended that you
 update. If you can't update for whatever reason, you can use the [`privateHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#enginereportingoptions) to specify the names of variables that should _not_ be sent to Studio. You can also set this option to `false` to prevent all headers from being sent.This reporting option is deprecated and will not be available in future versions of Apollo Server.
+
+## What data does Apollo Studio log about operations executed in its Explorer tab?
+
+**Only front-end usage metrics for improving the product.** The Explorer tab in Apollo Studio enables you to build and execute operations against your GraphQL server. These operations are sent directly from your browser and **do not** pass through Studio servers.
 
 ## GDPR
 

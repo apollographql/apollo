@@ -51,7 +51,7 @@ module.exports = {
             'managed-federation/advanced-topics',
           ],
           'Security': [
-            'graph-manager-data-privacy',
+            'data-privacy',
             'operation-registry',
           ]
         },
