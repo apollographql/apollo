@@ -117,7 +117,7 @@ Now whenever your server starts up, it automatically registers its schema with t
 
 <ExpansionPanel title="Any GraphQL server WITH Apollo Federation">
 
-[Learn more about managed federation](./managed-federation/overview/)
+> After you complete this step, complete the remaining steps in [Setting up managed federation](./managed-federation/setup/).
 
 In a federated architecture, each of your graph's [implementing services](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) uses the Apollo CLI to register its schema as a separate service **of the same graph**:
 
@@ -172,6 +172,8 @@ Then, **do the following for each of your implementing services**:
 | `--serviceURL` | The URL that your federated gateway will use to communicate with the service. |
 
 As you register your service schemas, the schema registry attempts to **compose** their latest versions into a single **federated schema**. Whenever composition succeeds, your gateway can fetch the latest federated schema from the registry.
+
+> After you complete this step, complete the remaining steps in [Setting up managed federation](./managed-federation/setup/).
 
 </ExpansionPanel>
 
