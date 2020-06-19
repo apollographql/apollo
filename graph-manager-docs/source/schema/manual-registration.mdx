@@ -27,7 +27,7 @@ id      schema        tag
 
 The CLI fetches your schema via a configuration option you set up in the project configuration above and pushes it to Studio.
 
-### Registering manually to a variant
+## Registering to a variant with the CLI
 
 To register a schema to a particular [variant of your graph](#managing-environments-with-variants), include the `--variant=<VARIANT>` flag in your `apollo service:push` command, like so:
 
@@ -41,11 +41,7 @@ If you omit the `--variant` flag, the `apollo service:push` command pushes to th
 
 To get the most out of Studio, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
 
-**If you're using [automatic schema reporting](#automatic-registration-recommended)** with Apollo Server (recommended), registration happens automatically after your server's deployment completes. No additional continuous delivery configuration is required.
-
-**If you're [registering via the Apollo CLI](#manual-registration)**, include a call to `apollo service:push` in your continuous delivery pipeline.
-
-Here's a sample continuous delivery configuration for pushing a schema to Apollo using CircleCI:
+Here's a sample continuous delivery configuration for CLI-based schema registration using CircleCI:
 
 ```yaml{13,29-31}
 version: 2

@@ -15,11 +15,9 @@ import {
 
 Hello! This article gets you up and running with Apollo Studio. None of this setup requires a paid plan.
 
-You can use Studio with any GraphQL server. Certain features (e.g., [trace reporting](setup-analytics/)) are currently best supported by [Apollo Server](https://www.apollographql.com/docs/apollo-server/).
+You can use Studio with any GraphQL server. Certain features (such as [metrics reporting](setup-analytics/)) are currently best supported by [Apollo Server](https://www.apollographql.com/docs/apollo-server/).
 
-> If you're using [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), get started with [Setting up managed federation](managed-federation/setup/) instead of this article.
-
-## Step 1: Create your account
+## 1. Create your account
 
 1. Go to [studio.apollographql.com](https://studio.apollographql.com/) and click **Create an account**. 
 
@@ -27,19 +25,19 @@ You can use Studio with any GraphQL server. Certain features (e.g., [trace repor
 
 2. Complete the signup flow, which includes:
 
-    * Creating an **organization** that you can invite teammates to
+    * Creating an [organization](./org/organizations/) that you can invite teammates to
 
     * [Selecting a plan](https://www.apollographql.com/pricing/) for your organization (the Free plan is always free, and the Team plan provides a free trial of paid features)
 
-## Step 2: Create your first graph
+## 2. Create your first graph
 
-In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your first graph will use your GraphQL server's schema.
+In Studio, each **graph** corresponds to a data graph and its associated GraphQL schema. Your first graph will use your GraphQL server's schema.
 
-1. Visit [studio.apollographql.com](https://studio.apollographql.com/) again. Now that you're logged in, this opens Studio.
+1. Visit [studio.apollographql.com](https://studio.apollographql.com/) again. Now that you have an account, this opens Studio.
 
     The list of organizations you belong to appears in the left column:
 
-    <img src="./img//organization-list.png" class="screenshot" alt="Schema history page in Studio"></img>
+    <img src="./img//organization-list.png" class="screenshot" alt="Schema history tab in Studio"></img>
 
 2. Select the organization that you want to add your graph to. Then, click **New Graph** in the upper right.
 
@@ -47,109 +45,172 @@ In Studio, each **graph** corresponds to the entirety of a GraphQL schema. Your 
 
     * A graph's name must be globally unique across all of Studio. We recommend using a consistent prefix across all of your organization's graphs.
 
-4. Studio displays instructions for connecting your server, which is also described in the next step.
+4. Studio displays instructions for registering your schema, which is also described in the next step.
 
-## Step 3: Connect your server
+## 3. Register your schema
 
-This step differs depending on whether your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/):
+The **Apollo schema registry** powers nearly every feature of Apollo Studio, along with helpful developer tools like our VS Code extension.
 
-<ExpansionPanel title="My data graph DOESN'T use Apollo Federation">
+To register your server's schema, first obtain a **graph API key** for your graph:
 
-1. Apollo Server can connect to Apollo Studio automatically on startup. To do so, it requires a **graph API key**. Obtain one like so:
+  <ObtainGraphApiKey />
 
-    <ObtainGraphApiKey/>
+Once you have your API key, select the registration method that corresponds  to your graph's architecture:
 
-2. TODO
+<ExpansionPanel title="Apollo Server WITHOUT Apollo Federation">
 
-</ExpansionPanel>
+Apollo Server supports a feature called **schema reporting** that enables it to register its schema automatically on startup.
 
-<ExpansionPanel title="My data graph DOES use Apollo Federation">
+1. Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment.
 
-1. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/#download-and-install) if you haven't yet.
+    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
 
-2. Add a `.env` file to your project's root directory if there isn't one yet. **Do not add this file to version control.** It contains secrets that differ both per user and per environment.
-
-3. Add the `.env` file to your project's `.gitignore` file.
-
-4. Obtain a personal API key from Studio and set it as the value of `APOLLO_KEY` (previously `ENGINE_API_KEY`) in your `.env` file:
-
-    <ObtainPersonalApiKey />
-    
-    ```python:title=.env
-    # Don't worry, the author invalidated this API key before sharing it 😉
-    APOLLO_KEY=user:gh.StephenBarlow:Rc6D_7mLxY74okHRCL2HMg
+    ```none:title=.env
+    APOLLO_KEY=YOUR_KEY_HERE
     ```
 
-4. Add an `apollo.config.js` file to your project's root directory if there isn't one yet. Unlike `.env`, you _do_ add this file to version control.
+2. Set the `engine.reportSchema` option to `true` in your `ApolloServer` constructor, like so:
 
-5. Add your newly created graph's name to `apollo.config.js` in the `service.name` field, like so:
-
-    ```js{3}:title=apollo.config.js
-    module.exports = {
-      service: {
-        name: "acephei"
+    ```js
+    const server = new ApolloServer({
+      // ...other options...
+      engine {
+        reportSchema: true
       }
-    }
+    });
     ```
 
-6. TODO
+Now whenever your server starts up, it automatically registers its schema with the Apollo schema registry _and_ begins pushing metrics to Apollo Studio!
+
+> We would love for other GraphQL servers to support schema reporting too! If you're interested in implementing support, [the protocol is documented here.](./schema-reporting-protocol/)
 
 </ExpansionPanel>
 
+<ExpansionPanel title="Another GraphQL server WITHOUT Apollo Federation">
 
-## Step 4: Register your schema
+1. <a href="https://www.apollographql.com/docs/devtools/cli/" target="_blank">Install the Apollo CLI</a> if you haven't yet.
 
-The **schema registry** sits at the heart of Apollo Studio. It allows you to inspect your graph's schema and track changes to it over time:
+2. Decide how you'll provide your server's schema to the Apollo CLI. The CLI can either:
 
-<img src="./img//explorer.jpg" class="screenshot" alt="Studio explorer view"></img>
+    * Use a `.gql` or `.graphql` file saved on your local machine, or
+    * Perform an introspection query on your running server to fetch the schema
 
-You register your schema with the `apollo service:push` command. **You need to provide your schema to this command**, in one of the following ways:
+2. Run the `apollo service:push` command, providing the following options (documented below):
 
-### Provide your schema via introspection
+    ```bash
+    apollo service:push \
+      --localSchemaFile=./schema.gql \ # (or --endpoint)
+      --key=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
+      --graph=docs-example-graph \
+      --variant=local-development \
+    ```
 
-The Apollo CLI can obtain your schema from your locally running GraphQL server via an **introspection query**. This is a special query supported by most GraphQL servers that returns the server's full schema.
+| Name | Description  |
+|---|---|
+| `--endpoint` | <p>The URL of the running service to perform an introspection query on.</p><p>**Provide this only if the CLI should obtain your schema via introspection.**</p> |
+| `--localSchemaFile` | <p>The path of the schema file to register.</p><p>**Provide this only if the CLI should obtain your schema via a local file.**</p> |
+| `--key` | <p>The graph API key that the CLI should use to authenticate with the schema registry.</p><p>By default, the CLI uses the value of the `APOLLO_KEY` environment variable.</p> |
+| `--graph` | The name of your graph in Apollo Studio (e.g., `docs-example-graph`) |
+| `--variant` | <p>The [variant of your graph](./schema/registry/#managing-environments-with-variants) to register the schema with.</p><p>The default value is `current`.</p> |
 
-To provide your schema via introspection, first run your GraphQL server locally. Then, execute the `apollo service:push` command from your project's root directory and provide your GraphQL server's `localhost` URL, like so:
+</ExpansionPanel>
 
+<ExpansionPanel title="Any GraphQL server WITH Apollo Federation">
+
+[Learn more about managed federation](./managed-federation/overview/)
+
+In a federated architecture, each of your graph's [implementing services](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) uses the Apollo CLI to register its schema as a separate service **of the same graph**:
+
+```mermaid
+graph BT;
+  subgraph " "
+  gateway([Gateway]);
+  serviceA[Products service];
+  serviceB[Reviews service];
+  serviceC[Inventory service];
+  end
+  registry{{Apollo Schema Registry}};
+  gateway --- serviceA & serviceB & serviceC;
+  serviceA -. --serviceName=Products  .-> registry;
+  serviceB -. --serviceName=Reviews  .-> registry;
+  serviceC -. --serviceName=Inventory  .-> registry;
+  class registry secondary;
 ```
-apollo service:push --endpoint=http://localhost:4000/
-```
 
-### Provide your schema via a local file
+First, <a href="https://www.apollographql.com/docs/devtools/cli/" target="_blank">install the Apollo CLI</a> if you haven't yet.
 
-If your schema is defined in a `.gql` or `.graphql` file, you can provide that file to Studio.
+Then, **do the following for each of your implementing services**:
 
-To do so, run the `apollo service:push` command from your project's root directory and provide a path to the schema file, like so:
+1. Obtain the following values, which are required for the `apollo service:push` command:
 
-```
-apollo service:push --localSchemaFile=./schema.gql
-```
+    * The URL that your federated gateway will use to communicate with the service (e.g., `http://products-graphql.svc.cluster.local:4001/`).
+    * The name that uniquely identifies the service within your graph (e.g., `products`).
+    * The service's schema. The Apollo CLI can either:
+        * Use a `.gql` or `.graphql` file saved on your local machine, or
+        * Perform an introspection query on the running service to fetch the schema
 
-The `--localSchemaFile` option also supports a comma-separated list of paths if your schema is defined across multiple files.
+2. Run the `apollo service:push` command, providing the following options (documented below):
 
-## Step 5: Connect to Slack
+    ```bash
+    apollo service:push \
+      --localSchemaFile=./schema.gql \ # (or --endpoint)
+      --key=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
+      --graph=docs-example-graph \
+      --variant=local-development \
+      --serviceName=products \
+      --serviceURL=http://products-graphql.svc.cluster.local:4001/
+    ```
 
-Studio can connect to your Slack workspace to send you daily metrics reports, along with notifications whenever changes are made to your registered schema.
+| Name | Description  |
+|---|---|
+| `--endpoint` | <p>The URL of the running service to perform an introspection query on.</p><p>**Provide this only if the CLI should obtain your schema via introspection.**</p> |
+| `--localSchemaFile` | <p>The path of the schema file to register.</p><p>**Provide this only if the CLI should obtain your schema via a local file.**</p> |
+| `--key` | <p>The graph API key that the CLI should use to authenticate with the schema registry.</p><p>By default, the CLI uses the value of the `APOLLO_KEY` environment variable.</p> |
+| `--graph` | The name of your graph in Apollo Studio (e.g., `docs-example-graph`) |
+| `--variant` | <p>The [variant of your graph](./schema/registry/#managing-environments-with-variants) to register the schema with.</p><p>The default value is `current`.</p> |
+| `--serviceName` | The service's unique name in your federated graph (e.g., `products`). |
+| `--serviceURL` | The URL that your federated gateway will use to communicate with the service. |
 
-[Set up Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/#setup)
+As you register your service schemas, the schema registry attempts to **compose** their latest versions into a single **federated schema**. Whenever composition succeeds, your gateway can fetch the latest federated schema from the registry.
 
-## Step 6: Set up trace reporting
+</ExpansionPanel>
 
-Studio can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph.
+After you register your schema, select your graph in [Apollo Studio](https://studio.apollographql.com/) and open its Fields tab. You'll see a list of all of your schema's types and fields.
 
-To begin pushing these traces, read [Pushing trace data to Studio](setup-analytics/).
+## 4. Explore your schema
 
-## Step 7: Set up continuous delivery
+Now that your schema's registered, you're ready to try out one of Studio's most powerful features: the **explorer**. The explorer provides visibility into your entire schema and helps you build and run queries against it.
 
-Your schema is now registered with Studio, and your server is pushing operation traces!
+From [Apollo Studio](https://studio.apollographql.com/), select your graph and open the Explorer tab.
 
-However, to get the most out of Studio, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's [continuous delivery flow](schema-registry/#registering-with-continuous-delivery).
 
-## Step 8: Explore
+## 5. Connect to Slack
 
-The best way to familiarize yourself with Studio's capabilities is to explore it! Visit [studio.apollographql.com](https://studio.apollographql.com/) and check out the various views and what they provide.
+Studio can connect to your Slack workspace to send a notification whenever your registered schema is updated. If you [configure metrics reporting](#6-configure-metrics-reporting), Studio can also send you a daily metrics report.
 
-You can also learn more about the features provided with Team and Enterprise plans, including:
+[Set up Slack notifications](./slack-integration/#setup)
+
+## 6. Configure metrics reporting
+
+Your GraphQL server can push operation metrics to Apollo Studio, enabling you to visualize and improve performance.
+
+To set up metrics reporting, read [Pushing metrics to Apollo Studio](./setup-analytics/).
+
+## 7. Set up continuous delivery
+
+Your schema is now registered with Studio, and your server is pushing operation metrics!
+
+However, to get the most out of Studio, you need to _re_-register your server's schema every time it changes. The easiest way to do this is to make schema registration part of every deployment in your application's continuous delivery flow.
+
+**If you set up schema reporting** in [Step 3](#3-register-your-schema) (the first schema registration option), Apollo Server automatically registers your schema every time it starts up, and no additional setup is required.
+
+**If you registered your schema with the Apollo CLI**, see [Registering with continuous delivery](./schema/manual-registration/#registering-with-continuous-delivery) for an example.
+
+## Next steps
+
+The best way to fully familiarize yourself with Studio is to use it! Visit [studio.apollographql.com](https://studio.apollographql.com/) and check out the all the various views and what they provide.
+
+The docs also have plenty of information on the features available with Team and Enterprise plans, such as:
 
 * [Schema validation](schema-validation)
 * [Segmenting metrics by client types and versions](client-awareness)

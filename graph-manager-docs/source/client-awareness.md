@@ -1,5 +1,5 @@
 ---
-title: Segmenting usage by client
+title: Segmenting metrics by client
 description: Understand how each of your clients is using your graph
 ---
 
