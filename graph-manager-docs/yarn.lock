@@ -7298,10 +7298,10 @@ gatsby-theme-apollo-core@^3.0.14:
     react-helmet "^5.2.0"
     react-use "^9.11.0"
 
-gatsby-theme-apollo-docs@4.2.9:
-  version "4.2.9"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.9.tgz#c78a4ccd22774ec2a72e7d07db44f3cae23304f8"
-  integrity sha512-5MxSlwpOZkZX7Iks9F9WUlzJ+B4yf2/hwUUBGGGTCD3CVl3Dvdv6yrurCz0hUjqxQ94+wfuT0BFvI0tXx0AxkA==
+gatsby-theme-apollo-docs@4.2.10:
+  version "4.2.10"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-apollo-docs/-/gatsby-theme-apollo-docs-4.2.10.tgz#ad37df3f131a2f002061600837381110424bd072"
+  integrity sha512-R8utENlyzaMTljCzs+01E4S/d6b4Tbh0uA5gEDRFJArQDqt0z6YbTksiuE9S74g0YB1FI0SjIpG4Rdv+2CRGfg==
   dependencies:
     "@mdx-js/mdx" "^1.1.0"
     "@mdx-js/react" "^1.0.27"
