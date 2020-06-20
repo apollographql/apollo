@@ -38,21 +38,21 @@ module.exports = {
             'schema-validation',
             'github-integration',
           ],
-          'Managing your Org': [
-            'org/account',
-            'org/organizations',
-            'org/members',
-            'org/graphs',
-            'org/api-keys',
-          ],
           'Managed Federation': [
             'managed-federation/overview',
             'managed-federation/setup',
             'managed-federation/advanced-topics',
           ],
           'Security': [
+            'api-keys',
             'data-privacy',
             'operation-registry',
+          ],
+          'Managing your Org': [
+            'org/account',
+            'org/organizations',
+            'org/members',
+            'org/graphs',
           ]
         },
       },
