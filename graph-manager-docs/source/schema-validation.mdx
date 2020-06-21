@@ -13,8 +13,9 @@ Schema validation is a **paid feature** that is available as part of Apollo Stud
 
 To enable schema validation for your data graph, first do the following:
 
-1. [Set up trace reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
-2. [Set up schema registration](./schema-registry) in your continuous delivery pipeline.
+1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
+2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
+    * If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
 
 After you complete the above, you can perform a test validation by running the following command from your project's root directory:
