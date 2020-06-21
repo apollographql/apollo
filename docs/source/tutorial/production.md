@@ -24,8 +24,10 @@ Let's save our key as an environment variable. It's important to make sure we do
 ```
 APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
 ```
+THIS NEEDS UPDATING AS IT INDICATES BOTH SIDES OF THE COLON ARE IDENTICAL
 
 The entry should basically look like this:
+THIS NEEDS UPDATING OR CLARITY AS THE API KEYS ARE DIFFERENT ON BOTH SIDES OF THE HASH AND THE ENGINE ONLY PROVIDES ONE. I STILL DON'T KNOW WHAT TO PUT HERE OR I WOULD PROVIDE THE CORRECTION. 
 
 ```bash:title=.env
 APOLLO_KEY=user:xz.5r134305-88p1-4840-12c1-88rc0xcxe179:E4VSTiXeFWaSSBgFWXOiSA
