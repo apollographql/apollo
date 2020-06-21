@@ -63,7 +63,7 @@ Start up your server using `npm start`, then return to your Studio homepage. Aft
 
 Connecting your server to Apollo Studio activates a variety of powerful features: 
 
-### Explorer
+### The Explorer tab
 
 Your graph's Explorer tab provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
