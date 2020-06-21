@@ -10,7 +10,7 @@ Great work! We have a running GraphQL server that interacts with data from multi
 
 **Apollo Studio** is a cloud platform that helps you with every phase of GraphQL development, from prototyping to deploying to monitoring.
 
-Studio's core features are free for all users. All features included in this tutorial are free features.
+Studio's core features are free for everyone. All of the features in this tutorial are free features.
 
 ## Create an Apollo account
 
@@ -28,16 +28,15 @@ In Apollo Studio, each **graph** is a distinct data graph with a corresponding G
 
 ## Connect your server
 
-Apollo Server communicates directly with Apollo Studio to register its schema and push performance metrics. This communication requires an **API key**. Let's obtain an API key for your graph.
+Apollo Server can communicate directly with Apollo Studio to register its schema and push useful performance metrics. This communication requires a **graph API key**. Let's obtain one for our graph.
 
 From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
+<img src="../img/register-schema.jpg" class="screenshot" width="600"></img>
 
-TODO copy and paste the key indicated and save it to .env 
+Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
 
-When Apollo Server starts up, it automatically begins communicating with Apollo Studio if it has an API key to use. You give it your API key by setting the `APOLLO_KEY` environment variable.
-
-Conveniently, our `index.js` file already uses the `dotenv` package to read environment variables from a `.env` file.
+You provide your API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable. Conveniently, our example app already uses the `dotenv` package to read environment variables from a `.env` file.
 
 Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so:
 
@@ -47,41 +46,46 @@ APOLLO_KEY=PASTE_YOUR_KEY_HERE
 
 > **Graph API keys are secret credentials.** Never share them outside your organization or commit them to version control. Delete and replace API keys that might be compromised.
 
-Start up your server using `npm start`, then return to your Studio homepage. When you click on your graph now, its full details appear.
+Now, add one extra option to your `ApolloServer` constructor to enable automatic schema reporting:
 
-## Explore free Studio features
+```js:title=index.js
+const server = new ApolloServer({
+  // ...other options...
+  engine {
+    reportSchema: true
+  }
+});
+```
+
+Start up your server using `npm start`, then return to your Studio homepage. After a few seconds, clicking on your graph will now open its full details.
+
+## Try out free Studio features
 
 Connecting your server to Apollo Studio activates a variety of powerful features: 
 
-### Schema explorer
+### Explorer
 
-On startup, Apollo Server automatically registers the latest version of its schema with Studio.
+Your graph's Explorer tab provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
-Open the **Explorer** tab to view all of the types and fields in the latest version of your graph's schema:
-
-The rightmost column of each field shows how many GraphQL operations have included that field in the last 24 hours (more on metrics below), so you can tell which fields are used most:
+[Open the **Explorer** tab](https://studio.apollographql.com/explorer) and complete its Getting Started steps to see what it can do!
 
 ### Schema history
 
 Open the **History** tab to view a full revision history of the schema versions your server pushes over time:
 
-TODO SCREENSHOT
+<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400"></img>
 
 This history helps you identify exactly when a particular type or field was added or removed, which is crucial when diagnosing an issue.
 
-### Metrics reporting
+### Operation metrics
 
-Apollo Server pushes **trace data** to Studio for each GraphQL operation it executes. This data includes a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Apollo Server pushes metrics data to Studio for each GraphQL operation it executes. This data includes a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
-> Apollo Server does _not_ push GraphQL operation results to Studio. For more information, see [Graph Manager data privacy and compliance](https://www.apollographql.com/docs/graph-manager/graph-manager-data-privacy/).
+> Apollo Server does **not** push GraphQL operation results to Studio. For more information, see [Data privacy and compliance](https://www.apollographql.com/docs/graph-manager/data-privacy/).
 
-Open the **Metrics** tab to view performance data based on the last 24 hours of your server's operation traces:
+Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces.
 
-TODO SCREENSHOT
-
-Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan. 
-
-> For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/graph-manager/).
+> Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/graph-manager/).
 
 <hr/>
 
