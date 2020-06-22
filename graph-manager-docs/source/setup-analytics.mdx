@@ -1,12 +1,12 @@
 ---
-title: Pushing trace data to Graph Manager
-sidebar_title: Pushing trace data
-description: Understand your graph's performance with detailed metrics
+title: Pushing metrics to Apollo Studio
+sidebar_title: Setup
+description: Understand your graph's performance with detailed analytics
 ---
 
 import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
 
-Apollo Graph Manager can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Apollo Studio can ingest operation **traces** from your GraphQL server to provide performance metrics for your data graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 Trace reporting enables you to visualize:
 
@@ -17,19 +17,17 @@ Trace reporting enables you to visualize:
 
 ## Pushing traces from Apollo Server
 
-Apollo Server has built-in support for pushing traces to Graph Manager. To set it up, you provide it a **graph API key** from Graph Manager.
-
-> A graph API key is different from a _personal_ API key. It grants access only to the graph it's associated with. Personal API keys do not allow trace reporting.
+Apollo Server has built-in support for pushing traces to Apollo Studio. To set it up, you provide it a **graph API key** from Studio.
 
 <ObtainGraphApiKey />
 
-After you obtain a graph API key, assign it to the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` in `apollo-server` pre-2.13.0) in your production server's environment.
+After you obtain a graph API key, assign it to the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` prior to version 2.13.0 of Apollo Server) in your production server's environment.
 
->Consult your production environment's documentation to learn how to set its environment variables.
+> Consult your production environment's documentation to learn how to set its environment variables.
 
-Now the next time you start your production server, it will automatically begin pushing trace data to Graph Manager:
+Now the next time you start your production server, it will automatically begin pushing trace data to Studio:
 
-<img src="./img//metrics.jpg" class="screenshot" alt="Graph Manager metrics view"></img>
+<img src="./img//metrics.jpg" class="screenshot" alt="Apollo Studio metrics view"></img>
 
 You can also push trace data from environments besides production, such as a staging or beta server. To keep this data separate from your production data, learn how to [create variants of your graph](schema-registry/#managing-environments-with-variants).
 
@@ -38,7 +36,7 @@ For advanced configuration options, see [Metrics and logging](https://www.apollo
 
 ## Third-party support
 
-The following third-party GraphQL servers support Graph Manager trace reporting:
+The following third-party GraphQL servers support Apollo Studio trace reporting:
 
 > These servers and their trace reporting mechanisms are not maintained by Apollo. Apollo does not provide official support for them.
 
@@ -48,13 +46,13 @@ The following third-party GraphQL servers support Graph Manager trace reporting:
 | [`graphene-tornado`](https://github.com/graphql-python/graphene-tornado) (Python) | Provided via the [`apollo-engine-reporting` extension](https://github.com/graphql-python/graphene-tornado#apollo-engine-reporting) |
 
 
-## Pushing traces from other GraphQL servers
+## Adding support to a third-party server (advanced)
 
-You can set up a reporting agent in your GraphQL server to push analytics to Apollo Graph Manager. The agent is responsible for:
+You can set up a reporting agent in your GraphQL server to push metrics to Apollo Studio. The agent is responsible for:
 
 * Translating operation details into the correct [trace format](#tracing-format)
 * Implementing a default **signature function** to identify each executed operation
-* Emitting batches of traces to the Graph Manager reporting endpoint
+* Emitting batches of traces to the Apollo Studio reporting endpoint
 * Optionally defining plugins to enable advanced reporting features
 
 Apollo Server defines its agent for performing these tasks in [`agent.ts`](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts).
@@ -63,7 +61,7 @@ Apollo Server defines its agent for performing these tasks in [`agent.ts`](https
 
 ### Tracing format
 
-Graph Manager's reporting endpoint accepts batches of traces that are encoded in **protocol buffer** format. Each trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Apollo Studio's reporting endpoint accepts batches of traces that are encoded in **protocol buffer** format. Each trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 The schema for this protocol buffer is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L466). 
 
@@ -75,7 +73,7 @@ An example of a `FullTracesReport` message, represented as JSON, is provided [be
 
 ### Operation signing
 
-For Graph Manager to correctly group GraphQL queries, your reporting agent should define a function to generate a  **query signature** for each distinct query. This can be challenging, because two _structurally_ different queries can be _functionally_ equivalent. For instance, all of the following queries request the same information:
+For Apollo Studio to correctly group GraphQL queries, your reporting agent should define a function to generate a  **query signature** for each distinct query. This can be challenging, because two _structurally_ different queries can be _functionally_ equivalent. For instance, all of the following queries request the same information:
 
 ```graphql
 query AuthorForPost($foo: String!) {
@@ -115,7 +113,7 @@ We recommend using the same default signature method for consistency across diff
 
 ### Sending metrics to the reporting endpoint
 
-After your GraphQL server prepares a batch of traces, it should send them to the Graph Manager reporting endpoint, at the following URL:
+After your GraphQL server prepares a batch of traces, it should send them to the Studio reporting endpoint at the following URL:
 
 ```
 https://engine-report.apollodata.com/api/ingress/traces
@@ -126,7 +124,7 @@ Each batch should be sent as an HTTP POST request. The body of the request can b
 * A binary serialization of a `FullTracesReport` message
 * A _gzipped_ binary serialization of a `FullTracesReport` message
 
-To authenticate with Graph Manager, each request must include either:
+To authenticate with Studio, each request must include either:
 
 * An `X-Api-Key` header with a valid API key for your graph
 * An `authtoken` cookie with a valid API key for your graph
@@ -145,11 +143,11 @@ We recommend implementing retries with backoff when you encounter `5xx` response
 
 The reference TypeScript implementation includes several features that you might want to include in your implementation. All of these features are implemented in the agent itself, and are documented in the interface description for the `EngineReportingOptions` of [the agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L48).
 
-For example, you can restrict which information is sent to Graph Manager, particularly to avoid reporting personal data. Because personal data most commonly appears in variables and headers, the TypeScript agent offers options to `sendVariablesValues` and `sendHeaders`.
+For example, you can restrict which information is sent to Studio, particularly to avoid reporting personal data. Because personal data most commonly appears in variables and headers, the TypeScript agent offers options to `sendVariablesValues` and `sendHeaders`.
 
 ### Example `FullTracesReport` message
 
-The `FullTracesReport` message must be provided to the Graph Manager reporting endpoint in protocol buffer format, as described in [Tracing format](#tracing-format). This example is shown in JSON format to illustrate the structure of the message.
+The `FullTracesReport` message must be provided to the Studio reporting endpoint in protocol buffer format, as described in [Tracing format](#tracing-format). This example is shown in JSON format to illustrate the structure of the message.
 
 ```json
   {

@@ -3,13 +3,13 @@ title: Segmenting metrics by client
 description: Understand how each of your clients is using your graph
 ---
 
-Apollo Graph Manager enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your data graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
+Apollo Studio enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your data graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
 
 ![client overview](./img/client-awareness/overview.png)
 
 ## Setup
 
-First, make sure that your GraphQL server is already [pushing analytics to Graph Manager](./setup-analytics).
+First, make sure that your GraphQL server is already [pushing analytics to Studio](./setup-analytics).
 
 ### Using Apollo Server and Apollo Client
 
@@ -33,7 +33,7 @@ const client = new ApolloClient({
 });
 ```
 
-If one or both of these headers are present, Apollo Server automatically extracts their values and includes them in the trace report that it sends to Graph Manager. You can [override this default behavior](#advanced-apollo-server-configuration).
+If one or both of these headers are present, Apollo Server automatically extracts their values and includes them in the trace report that it sends to Apollo Studio. You can [override this default behavior](#advanced-apollo-server-configuration).
 
 #### Advanced Apollo Server configuration
 

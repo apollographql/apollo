@@ -3,11 +3,11 @@ title: Advanced topics for managed federation
 sidebar_title: Advanced topics
 ---
 
-The following sections describe advanced features of managed federation with Apollo Graph Manager.
+The following sections describe advanced features of managed federation with Apollo Studio.
 
 ## Removing an implementing service
 
-To "de-register" an implementing service with Graph Manager, call `apollo service:delete`:
+To "de-register" an implementing service with Apollo Studio, call `apollo service:delete`:
 
 > **This action cannot be reversed!**
 
@@ -25,7 +25,7 @@ apollo service:delete --serviceName=products --variant=staging
 
 ## Inspecting your graph
 
-To view the implementing services that make up your graph, you can use both the Apollo CLI and the [Graph Manager UI](https://engine.apollographql.com/).
+You can view the implementing services that make up your graph with either the Apollo CLI or [Apollo Studio](https://studio.apollographql.com/).
 
 Run `apollo service:list` to see a snapshot of the services that make up your graph, including their endpoints and when they were last updated:
 
@@ -41,7 +41,7 @@ Inventory  http://localhost:4004/graphql  3 July 2019 (2 days ago)
 Products   http://localhost:4003/graphql  3 July 2019 (2 days ago)
 Reviews    http://localhost:4002/graphql  3 July 2019 (2 days ago)
 
-View full details at: https://engine.apollographql.com/graph/service-list-federation-demo/service-list
+View full details at: https://studio.apollographql.com/graph/service-list-federation-demo/service-list
 ```
 
 ## Pushing configuration updates safely
@@ -217,7 +217,7 @@ In particular, along with validating overall schema changes against known operat
 
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
 
-When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
+When you run `apollo service:check` on a federated service, Apollo Studio runs composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
 
 There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
 
@@ -300,13 +300,13 @@ On the other side of the equation sits the gateway. The gateway is constantly li
 
 ### Reliability and security
 
-The gateway's configuration is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, the Apollo Graph Manager provisions a public file accessible via the hash of the API key. In the event that the configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway continues to serve the last known configuration. In the event that Apollo Graph Manager API is down, changes to your configuration will be stalled, but the last-published configuration files will still be accessible via GCS.
+The gateway's configuration is exposed through [Google Cloud Storage](https://cloud.google.com/storage). For all API keys, Apollo Studio provisions a public file accessible via the hash of the API key. In the event that the configuration is inaccessible due to an outage in Google's Cloud Storage service, the gateway continues to serve the last known configuration. In the event that Apollo Studio API is down, changes to your configuration will be stalled, but the last-published configuration files will still be accessible via GCS.
 
 ### Using variants to control rollout
 
 With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema validation](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
 
-For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
+For instance, in order to have a canary deployment, you might maintain two production graphs in Apollo Studio, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 
 1. Check changes in "launches" against `prod` and `prod-canary`:
    ```
@@ -318,4 +318,4 @@ For instance, in order to have a canary deployment, you might maintain two produ
 1. Wait for health checks to pass against the canary, watch dashboards, etc.
 1. After the canary is stable, roll out the changes to the rest of production using `apollo service:push --variant=prod --serviceName=launches`.
 
-Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Graph Manager](https://engine.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.
+Because you can [tag metrics with variants](/schema-registry/#associating-metrics-with-a-variant) as well, you can use [Apollo Studio](https://studio.apollographql.com) to verify a canary's performance before rolling out changes to the rest of the graph. You can also use a similar strategy with variants to support a variety of other advanced deployment workflows, like blue/green deployments.

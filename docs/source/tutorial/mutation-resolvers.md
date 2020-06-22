@@ -164,4 +164,4 @@ Next, paste the following into the HTTP Headers box in the bottom left:
 
 Run the mutation. You should see a success message, along with the `id`s of the trips we just booked.
 
-Running mutations manually in GraphQL Playground is a helpful way to test out our API, but a real-world application should run automated tests so we can safely refactor our code. In the next section, you'll learn about running your graph in production instead of testing your graph locally.
+Running mutations manually in GraphQL Playground is a helpful way to test out our API, but a real-world application needs additional tooling to make sure its data graph grows and changes safely. In the next section, we'll connect our server to Apollo Studio to activate that tooling.

@@ -21,11 +21,11 @@ GraphQL can make a difference in nearly every area of development: from improvin
 
 There are a number of resources available to learn GraphQL. If you're looking to get started learning the basics, check out [GraphQL.org](https://graphql.org).
 
-The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool, Apollo Graph Manager, and a client that manages local and remote data in your apps (`apollo-client`).
+The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool (Apollo Studio), and a client that manages local and remote data in your apps (`apollo-client`).
 
-To get started, read the getting started guides for [`apollo-server`](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Graph Manager](https://engine.apollographql.com), and [`react-apollo`](https://www.apollographql.com/docs/react/essentials/get-started.html) (the react integration for apollo-client).
+To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Studio](https://www.apollographql.com/docs/graph-manager/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/essentials/get-started.html).
 
-This site and the [Apollo blog](https://blog.apollographql.com) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
+This site and the [Apollo blog](https://www.apollographql.com/blog/) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
 
 #### How can I host my schema online?
 
@@ -68,7 +68,7 @@ As with any service, it's important to track errors and their causes. There are 
 
 GraphQL is resilient to some of these errors. Since the schema is strongly typed, the designer has the ability to restrict what type of data users can enter and what type the resolvers can return. This type system catches many errors and requires no manual checks.
 
-For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Graph Manager](https://www.apollographql.com/engine) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
+For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Studio](https://www.apollographql.com/docs/graph-manager/) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
 
 ## Moving a feature to GraphQL
 
@@ -106,9 +106,9 @@ Partial query caching can be achieved by caching the responses from underlying s
 
 Many apps and sites are powered almost completely by an API such as a GraphQL schema, so it's important to make sure the API is healthy at all times. Indicators of an unhealthy service include long response times, high resource usage, and unusual traffic patterns.
 
-[Apollo Graph Manager](https://www.apollographql.com/graph-manager) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
+[Apollo Studio](https://studio.apollographql.com) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
 
-Apollo Graph Manager also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/graph-manager/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [DataDog integration](https://www.apollographql.com/docs/graph-manager/integrations#datadog)) works with existing DataDog accounts, to help teams track schema performance.
+Apollo Studio also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/graph-manager/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [Datadog integration](https://www.apollographql.com/docs/graph-manager/integrations#datadog)) works with existing Datadog accounts, to help teams track schema performance.
 
 ## Moving a product to GraphQL
 
@@ -128,4 +128,4 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
-Additionally, using the [Apollo CLI](../devtools/cli/) with Apollo Graph Manager provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
+Additionally, using the [Apollo CLI](../devtools/cli/) with Apollo Studio provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.

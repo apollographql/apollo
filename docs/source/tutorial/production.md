@@ -1,65 +1,92 @@
 ---
-title: '5. Run your graph in production'
-description: Learn about deployment and essential developer tooling
+title: '5. Connect your graph to Apollo Studio'
+sidebar_title: '5. Connect to Apollo Studio'
+description: Learn about essential developer tooling
 ---
 
-Time to accomplish: _15 Minutes_
+> Time to accomplish: 10 Minutes
 
-Great job for making it this far! We've already learned how to build a GraphQL API with Apollo, connect it to REST and SQL data sources, and send GraphQL queries. Now that we've completed building our graph, it's finally time to deploy it! 🎉
+Great work! We have a running GraphQL server that interacts with data from multiple sources. Now before we jump over to the client side, let's turn on some powerful tooling.
 
-An Apollo GraphQL API can be deployed to any cloud service, such as Heroku, AWS Lambda, or Netlify. If you haven't already created an [Apollo Graph Manager](https://engine.apollographql.com/) account, you will need to sign up for one.
+**Apollo Studio** is a cloud platform that helps you with every phase of GraphQL development, from prototyping to deploying to monitoring.
 
-## Publish your schema to Graph Manager
+Studio's core features are free for everyone. All of the features in this tutorial are free features.
 
-Before we deploy our app, we need to publish our schema to the Apollo Graph Manager cloud service in order to power developer tooling like VSCode and keep track of schema changes. Just like npm is a registry for JavaScript packages, Apollo Graph Manager contains a schema registry that makes it simple to pull the most recent schema from the cloud.
+## Create an Apollo account
 
-In a production application, you should set up this publishing script as part of your CI workflow. For now, we will run a script in our terminal that uses the Apollo CLI to publish our schema to Graph Manager.
+Visit [studio.apollographql.com](https://studio.apollographql.com) and click **Create an account**. You can sign up either with your GitHub account or by setting a username and password.
 
-### Get a Graph Manager API key
+After signing up, you're redirected to your Apollo Studio homepage.
 
-First, we need an Apollo Graph Manager API key. Navigate to [Apollo Graph Manager](https://engine.apollographql.com/), login, and click on _New Graph_ on the sidebar or at the top. The prompt will instruct you to name your graph. When you're finished, click _Create Graph_. You'll receive an API key for use in local development environment and CI. Copy the key for local dev prefixed by `user:` so we can save it as an environment variable.
+## Create your first graph
 
-Let's save our key as an environment variable. It's important to make sure we don't check our Graph Manager API key into version control. Go ahead and make a copy of the `.env.example` file located in `server/` and call it `.env`. Delete the content of the newly created file and add your Graph Manager API key that you copied from the previous step to the file:
+In Apollo Studio, each **graph** is a distinct data graph with a corresponding GraphQL schema. For your first graph, we'll use the schema of the server you just finished building.
 
-```
-APOLLO_KEY=user:<hash-from-apollo-engine>:<hash-from-apollo-engine>
-```
+1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph**. 
+2. Provide a name for your graph and click **Next**.
+3. A dialog appears instructing to you register your schema. We'll do that in the next step.
 
-The entry should basically look like this:
+## Connect your server
 
-```bash:title=.env
-APOLLO_KEY=user:xz.5r134305-88p1-4840-12c1-88rc0xcxe179:E4VSTiXeFWaSSBgFWXOiSA
-```
+Apollo Server can communicate directly with Apollo Studio to register its schema and push useful performance metrics. This communication requires a **graph API key**. Let's obtain one for our graph.
 
-Our key is now stored under the environment variable `APOLLO_KEY`.
+From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
-### Check and publish with the Apollo CLI
+<img src="../img/register-schema.jpg" class="screenshot" width="600"></img>
 
-It's time to publish our schema to Graph Manager! First, start your server in one terminal window by running `npm start`. In another terminal window, run the following command, substituting the name of your graph where indicated:
+Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
 
-```bash
-npx apollo service:push --endpoint=http://localhost:4000 --graph=name-of-graph
-```
+You provide your API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable. Conveniently, our example app already uses the `dotenv` package to read environment variables from a `.env` file.
 
-> npx is a tool bundled with npm for easily running packages that are not installed globally.
+Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so:
 
-This command publishes your schema to the Apollo registry. Once your schema is uploaded, you should be able to see your schema in the [Apollo Graph Manager](https://engine.apollographql.com/) explorer. In future steps, we will pull down our schema from Graph Manager in order to power the Apollo VSCode extension.
-
-For subsequent publishes, we may first want to check for any breaking changes in our new schema against the old version. In a terminal window, run:
-
-```bash
-npx apollo service:check --endpoint=http://localhost:4000 --graph=my-graph
+```none:title=.env
+APOLLO_KEY=PASTE_YOUR_KEY_HERE
 ```
 
-### What are the benefits of Graph Manager?
+> **Graph API keys are secret credentials.** Never share them outside your organization or commit them to version control. Delete and replace API keys that might be compromised.
 
-Publishing your schema to Apollo Graph Manager unlocks many features necessary for running a graph API in production. Some of these features include:
+Now, add one extra option to your `ApolloServer` constructor to enable automatic schema reporting:
 
-- **Schema explorer:** With Graph Manager's powerful schema registry, you can quickly explore all the types and fields in your schema with usage statistics on each field. This metric makes you understand the cost of a field. How expensive is a field? Is a certain field in so much demand?
-- **Schema history:** Apollo Graph Manager schema history allows developers to confidently iterate a graph's schema by validating the new schema against field-level usage data from the previous schema. This empowers developers to avoid breaking changes by providing insights into which clients will be broken by a new schema.
-- **Performance analytics:** Fine-grained insights into every field, resolvers and operations of your graph's execution
-- **Client awareness:** Report client identity (name and version) to your server for insights on client activity.
+```js:title=index.js
+const server = new ApolloServer({
+  // ...other options...
+  engine {
+    reportSchema: true
+  }
+});
+```
 
-We also want to be transparent that the features we just described, such as viewing specific execution traces and validating schema changes against recent operations, are only available on a paid plan. Individual developers just getting started with GraphQL probably don't need these features, but they become incredibly valuable as you're working on a team. Additionally, layering these paid features on top of our free developer tools like Apollo VSCode makes them more intelligent over time.
+Start up your server using `npm start`, then return to your Studio homepage. After a few seconds, clicking on your graph will now open its full details.
 
-We're committed to helping you succeed in building and running an Apollo graph API. This is why features such as publishing and downloading schemas from the registry, our open source offerings like Apollo Client and Apollo Server, and certain developer tools like Apollo VSCode and Apollo DevTools will always be free forever.
+## Try out free Studio features
+
+Connecting your server to Apollo Studio activates a variety of powerful features: 
+
+### The Explorer tab
+
+Your graph's Explorer tab provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
+
+[Open the **Explorer** tab](https://studio.apollographql.com/explorer) and complete its Getting Started steps to see what it can do!
+
+### Schema history
+
+Open the **History** tab to view a full revision history of the schema versions your server pushes over time:
+
+<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400"></img>
+
+This history helps you identify exactly when a particular type or field was added or removed, which is crucial when diagnosing an issue.
+
+### Operation metrics
+
+Apollo Server pushes metrics data to Studio for each GraphQL operation it executes. This data includes a breakdown of the timing and error information for each field that's resolved as part of the operation.
+
+> Apollo Server does **not** push GraphQL operation results to Studio. For more information, see [Data privacy and compliance](https://www.apollographql.com/docs/graph-manager/data-privacy/).
+
+Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces.
+
+> Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/graph-manager/).
+
+<hr/>
+
+Now that our server is connected to Studio, let's start building a client to execute some queries!

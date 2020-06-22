@@ -5,16 +5,17 @@ description: Ensure the safety of changes to your data graph
 
 > If your data graph uses Apollo Federation, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph) instead of this article.
 
-Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Graph Manager provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
+Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
 
-Schema validation is a **paid feature** that is available as part of Graph Manager [Team and Enterprise plans](https://www.apollographql.com/plans/).
+Schema validation is a **paid feature** that is available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 ## Prerequisites
 
 To enable schema validation for your data graph, first do the following:
 
-1. [Set up trace reporting](./setup-analytics/) to Apollo Graph Manager from your GraphQL server.
-2. [Set up schema registration](./schema-registry) in your continuous delivery pipeline.
+1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
+2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
+    * If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
 
 After you complete the above, you can perform a test validation by running the following command from your project's root directory:
@@ -30,9 +31,9 @@ If everything is set up correctly, the command's output looks similar to the out
 
 When you validate your schema with the `apollo service:check` command:
 
-1. Graph Manager generates a diff between your local schema and the schema that you most recently registered.
+1. Apollo Studio generates a diff between your local schema and the schema that you most recently registered.
 2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-validation)).
-3. Graph Manager returns the diff and a list of any breaking changes found.
+3. Studio returns the diff and a list of any breaking changes found.
 4. The Apollo CLI prints the result of the validation and returns a non-zero exit code if at least one breaking change is found.
 
 ### The validation response
@@ -57,17 +58,17 @@ PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.fieldCount` is no longer
 PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.typeCount` is no longer deprecated
 PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
 
-View full details at: https://engine.apollographql.com/service/example-1234/check/<DETAILS>
+View full details at: https://studio.apollographql.com/service/example-1234/check/<DETAILS>
 ```
 
 Each change to the schema is labeled with either `PASS` or `FAIL`.
 
-> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Graph Manager](/setup-analytics/) for schema validation to work. **If there are no operation metrics to compare against, all schema changes are labeled with `PASS`.**
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema validation to work. **If there are no operation metrics to compare against, all schema changes are labeled with `PASS`.**
 
-The CLI output also includes a Graph Manager URL that provides full details on the changes and their impact on existing clients and operations:
+The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 
 
-<img class="screenshot" src="./img/schema-validation/service-check-page.png" alt="Service check page in the Graph Manager UI"></img>
+<img class="screenshot" src="./img/schema-validation/service-check-page.png" alt="Service check page in Apollo Studio"></img>
 
 
 > **Note:** If you've [installed schema validation checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
@@ -121,7 +122,7 @@ jobs:
 
 ### Integrating with GitHub
 
-If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Graph Manager to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
+If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 
 <img class="screenshot" src="./img/schema-validation/github-check.png" alt="GitHub Status View"></img>
@@ -142,12 +143,12 @@ The output of `apollo service:check --markdown` looks like this:
 🔢 Compared **18 schema changes** against **100 operations** seen over the **last 24 hours**.
 ❌ Found **7 breaking changes** that would affect **3 operations** across **2 clients**
 
-🔗 [View your service check details](https://engine.apollographql.com/service/engine/checks?...).
+🔗 [View your service check details](https://studio.apollographql.com/service/engine/checks?...).
 ```
 
 ## Validating against multiple environments
 
-You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Graph Manager, these schemas are represented as [variants](./schema-registry/#managing-environments-with-variants) of a single data graph.
+You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema-registry/#managing-environments-with-variants) of a single data graph.
 
 You can validate your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
 
@@ -163,7 +164,7 @@ If you want to validate your schema against multiple variants, call `apollo serv
 
 You can customize the logic that schema validation uses to classify a schema change as either breaking or non-breaking.
 
-For example, you can provide the `--validationPeriod` option to the `apollo service:check` command to specify how far back in time Graph Manager should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
+For example, you can provide the `--validationPeriod` option to the `apollo service:check` command to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
 
 This command checks your schema changes against the past two weeks of operations:
 
