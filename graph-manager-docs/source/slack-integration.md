@@ -17,17 +17,17 @@ These notifications include:
 
 To set up Slack notifications, you first configure an incoming webhook in Slack, then provide that webhook's URL to Apollo Studio.
 
-### 1. Create an incoming webhook
+### Step 1: Create an incoming webhook
 
 To create an incoming webhook:
 
 1. From the [Incoming WebHooks](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) page of the Slack App Directory, sign in and click **Add to Slack**.
 2. Select the channel that should receive Studio notifications and click **Add Incoming WebHooks integration**.
-3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#2-provide-the-webhook-to-studio).
+3. Copy the **Webhook URL** (has the format `https://hooks.slack.com/services/...`) for use in the [next step](#step-2-provide-the-webhook-to-studio).
 
 You can repeat this process to create webhook URLs for multiple channels.
 
-### 2. Provide the webhook to Studio
+### Step 2: Provide the webhook to Studio
 
 From [Apollo Studio](https://studio.apollographql.com):
 
@@ -39,13 +39,13 @@ From [Apollo Studio](https://studio.apollographql.com):
 
 4. Specify the name of the Slack channel you want to push notifications to.
 
-5. In the Slack Webhook URL field, paste the webhook URL you obtained in [Create an incoming webhook](#1-create-an-incoming-webhook).
+5. In the Slack Webhook URL field, paste the webhook URL you obtained in [Create an incoming webhook](#step-1-create-an-incoming-webhook).
 6. Click **Done**.
 7. Verify that your selected Slack channel receives a confirmation notification from Studio.
 
 To configure notifications for multiple Slack channels, repeat this process with a different corresponding webhook URL each time.
 
-### 3. Configure individual notification types
+### Step 3: Configure individual notification types
 
 After you provide at least one Slack webhook to Studio, you can configure individual notification types from the other sections of your graph's Integrations page:
 
