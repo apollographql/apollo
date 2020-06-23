@@ -51,7 +51,7 @@ Now, add one extra option to your `ApolloServer` constructor to enable automatic
 ```js:title=index.js
 const server = new ApolloServer({
   // ...other options...
-  engine {
+  engine: {
     reportSchema: true
   }
 });
