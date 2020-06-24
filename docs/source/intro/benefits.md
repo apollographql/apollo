@@ -83,17 +83,13 @@ Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-
 * Compose new operations with live validation and autocomplete
 * Register your schema with a management service that tracks and validates changes
 
-### GraphQL Playground
-
-[GraphQL Playground](https://github.com/prismagraphql/graphql-playground) by Prisma is an IDE for exploring a GraphQL schema and writing queries against it. At a glance, you can see all of the data available in your API, without needing to dive into back-end code or know which data stores are being used:
-
-<img src="../assets/graphql-playground.png" alt="GraphQL Playground" class="screenshot"></img>
-
-[Apollo Server](https://www.apollographql.com/docs/apollo-server) includes GraphQL Playground out of the box. As soon as you start up a server on your local machine, you can start exploring your schema and composing client queries.
-
 ### Apollo Studio
 
-The Apollo platform provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/graph-manager/).
+Apollo provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/graph-manager/).
+
+After registering your GraphQL schema, you can use Studio's **Explorer tab** to inspect all of its types and fields. You can also build and run queries against your running server:
+
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
 
 ### Apollo Client DevTools
 
