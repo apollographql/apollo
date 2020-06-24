@@ -1,0 +1,61 @@
+---
+title: Schema registration via the Apollo CLI
+sidebar_title: Using the Apollo CLI
+---
+
+import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
+import RegisterCli from '../../shared/register-cli.mdx';
+import RegisterFederatedCli from '../../shared/register-federated-cli.mdx'
+
+
+If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [schema reporting](./automatic-registration/), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
+
+> **Do not use both schema reporting and the Apollo CLI to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
+
+## Registering a non-federated schema
+
+<RegisterCli />
+
+## Registering federated schemas
+
+<RegisterFederatedCli />
+
+## Registering with continuous delivery
+
+To get the most out of Studio, you should **register each update to your production schema as soon as it occurs**. Consequently, schema registration should be part of your continuous delivery pipeline.
+
+Here's a sample continuous delivery configuration for CLI-based schema registration using CircleCI:
+
+```yaml{13,29-31}
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+
+      - run: npm install
+      # CircleCI needs global installs to be sudo
+      - run: sudo npm install --global apollo
+
+      # Start the GraphQL server.  If a different command is used to
+      # start the server, use it in place of `npm start` here.
+      - run:
+          name: Starting server
+          command: npm start
+          background: true
+
+      # make sure the server has enough time to start up before running
+      # commands against it
+      - run: sleep 5
+
+      # When running on the 'master' branch, push the latest version
+      # of the schema to Apollo Studio.
+      - run: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            apollo service:push --variant=master
+          fi
+```

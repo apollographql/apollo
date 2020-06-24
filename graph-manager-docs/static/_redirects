@@ -1,5 +1,9 @@
 / /docs/graph-manager/
 
+/docs/graph-manager/graph-manager-data-privacy/ /docs/graph-manager/data-privacy/
+/docs/graph-manager/schema-registry/ /docs/graph-manager/schema/registry/
+/docs/graph-manager/accounts-organizations/ /docs/graph-manager/org/account/
+
 /docs/graph-manager/federation/ /docs/graph-manager/managed-federation/overview/
 
 /docs/graph-manager/integrations/ /docs/graph-manager/github-integration/

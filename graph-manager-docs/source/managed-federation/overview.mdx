@@ -3,11 +3,11 @@ title: Managed federation overview
 sidebar_title: Overview
 ---
 
-Apollo Graph Manager provides free **managed federation** features for data graphs that use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+Apollo Studio provides free **managed federation** features for data graphs that use [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
-With managed federation, your [gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) is no longer responsible for fetching schemas from your [implementing services](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) on startup. Instead, your implementing services push their schemas to Graph Manager, which verifies that they successfully **compose** into a federated schema.
+With managed federation, your [gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) is no longer responsible for fetching schemas from your [implementing services](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) on startup. Instead, your implementing services push their schemas to the Apollo schema registry, which verifies that they successfully **compose** into a federated schema.
 
-On composition success, Graph Manager updates a dedicated configuration file that's stored in Google Cloud Services, which your gateway regularly polls for updates:
+On composition success, Studio updates a dedicated configuration file that's stored in Google Cloud Services, which your gateway regularly polls for updates:
 
 ```mermaid
 graph BT;
@@ -16,12 +16,12 @@ graph BT;
   serviceB[Reviews service];
   gateway([Gateway]);
   end
-  graphManager{{Apollo Graph Manager}};
+  registry{{Apollo Schema Registry}};
   gcs{{GCS}}
-  serviceA & serviceB -. Pushes schema .-> graphManager;
-  graphManager -. Updates config .-> gcs;
+  serviceA & serviceB -. Pushes schema .-> registry;
+  registry -. Updates config .-> gcs;
   gateway -. Polls for config changes .-> gcs;
-  class graphManager secondary;
+  class registry secondary;
   class gcs secondary;
 ```
 
@@ -33,11 +33,11 @@ You can modify service schemas (and even add or remove entire services from your
 
 ### Composition stability
 
-Whenever your gateway obtains an updated configuration from Graph Manager, it knows that the updated set of schemas will compose, because Graph Manager has already successfully composed them.
+Whenever your gateway obtains an updated configuration from Studio, it knows that the updated set of schemas will compose, because Studio has already successfully composed them.
 
 The gateway _also_ knows that your implementing services are prepared to handle operations against the updated set of schemas. This is because your services should register their updated schemas as part of their deployment, meaning they're definitely running by the time the gateway is aware of the configuration change.
 
-And whenever an implementing service accidentally pushes a schema change that _doesn't_ compose, Graph Manager continues to provide the most recent _valid_ configuration to your gateway.
+And whenever an implementing service accidentally pushes a schema change that _doesn't_ compose, Studio continues to provide the most recent _valid_ configuration to your gateway.
 
 
 ### Schema flexibility

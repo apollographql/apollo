@@ -7,7 +7,7 @@ import { ExpansionPanel } from 'gatsby-theme-apollo-docs';
 
 ## Overview
 
-> **Note:** Operation safelisting is an Apollo Platform feature that is only available to subscribers of the [_Apollo Team_ and _Enterprise_ plans](https://www.apollographql.com/plans/). Visit [this guide](https://www.apollographql.com/docs/intro/platform) to learn more about the Apollo Platform.
+> Operation safelisting is a **paid feature** that is available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 Any API requires security and confidence prior to going to production. During development, GraphQL offers front-end engineers the ability to explore all the data available to them and fetch exactly what they need for the components they're building. However, in production, it can be unnecessary and undesirable to provide this flexibility.
 
@@ -17,15 +17,15 @@ The Apollo Platform comes with an **operation registry** and **safelisting** mec
 - Permit the exact operations necessary for their client applications.
 - Eliminate the risk of unexpected, and possibly costly, operations being executed against their graph.
 
-Operations defined within client applications can be extracted and uploaded to Apollo Graph Manager using the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/). Apollo Server then fetches a manifest of these operations from Apollo Graph Manager and forbids the execution of any operations that were not in that manifest.
+Operations defined within client applications can be extracted and uploaded to Apollo Studio using the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/). Apollo Server then fetches a manifest of these operations from Apollo Studio and forbids the execution of any operations that were not in that manifest.
 
 ### Prerequisites
 
 - [Apollo Server 2.2.x](https://www.apollographql.com/docs/apollo-server/) (or newer).
   - To get started with Apollo Server, visit [its documentation](https://www.apollographql.com/docs/apollo-server/).
 - A client application which utilizes `gql` tagged template literals for its operations or, alternatively, stores operations in `.graphql` files.
-- An Apollo Graph Manager API key.
-  - To obtain an API key, visit [Apollo Graph Manager](https://engine.apollographql.com) and create a service. You will need a Graph Manager account with a Team or Enterprise subscription to be able to upload to the operation registry.
+- An Apollo Studio API key.
+  - To obtain an API key, visit [Apollo Studio](https://studio.apollographql.com) and create a service. You will need a Studio account with a Team or Enterprise subscription to be able to upload to the operation registry.
 
 ### Limitations
 
@@ -37,8 +37,8 @@ Please [contact the Apollo sales team](https://www.apollographql.com/contact-sal
 
 Setting up operation registration and safelisting is a full-stack process, so you will need to have access to the client code containing the operations you want to register, and to the server within which you want to enforce the safelist.
 
-- The **Apollo CLI** is used to search the client codebase for GraphQL operations and upload them to Apollo Graph Manager.
-- **Apollo Server** is then configured with a plugin which fetches the manifest from Apollo Graph Manager and enforces safelisting using that manifest.
+- The **Apollo CLI** is used to search the client codebase for GraphQL operations and upload them to Apollo Studio.
+- **Apollo Server** is then configured with a plugin which fetches the manifest from Apollo Studio and enforces safelisting using that manifest.
 
 The following steps will walk through the steps necessary for both the client and server codebases.
 
@@ -47,7 +47,7 @@ The following steps will walk through the steps necessary for both the client an
 3. [Register operations from your client bundle](#3-register-operations-from-your-client-bundle)
 4. [Disable subscription support on Apollo Server](#4-disable-subscription-support-on-apollo-server)
 5. [Add the operation registry plugin to Apollo Server](#5-add-the-operation-registry-plugin-to-apollo-server)
-6. [Start Apollo Server with Apollo Graph Manager enabled](#6-start-apollo-server-with-apollo-graph-manager-enabled)
+6. [Start Apollo Server with Apollo Studio enabled](#6-start-apollo-server-with-apollo-studio-enabled)
 7. [Verify](#7-verification)
 
 ### 1. Install the `apollo` command line tool
@@ -64,7 +64,7 @@ npm install apollo --save-dev
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
-Next, using the following command as a reference, replace the `<APOLLO_KEY>` with the Apollo Graph Manager API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
+Next, using the following command as a reference, replace the `<APOLLO_KEY>` with the Apollo Studio API key from the appropriate service and specify the correct server endpoint with the `--endpoint` flag:
 
 ```
 npx apollo service:push               \
@@ -97,7 +97,7 @@ The `apollo client:push` command:
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 - By default, includes the `__typename` fields which are added by Apollo Client at runtime.  (Add the `--no-addTypeName` flag to disable this behavior.)
 
-To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Graph Manager API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
+To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Studio API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
 ```
 npx apollo client:push \
@@ -145,7 +145,7 @@ const server = new ApolloServer({
 
 ### 5. Add the operation registry plugin to Apollo Server
 
-Enable demand control by adding the operation registry to Apollo Server. To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Graph Manager.
+Enable demand control by adding the operation registry to Apollo Server. To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Studio.
 
 First, add the appropriate plugin to the Apollo Server's `package.json`:
 
@@ -228,11 +228,11 @@ const server = new ApolloServer({
 });
 ```
 
-### 6. Start Apollo Server with Apollo Graph Manager enabled
+### 6. Start Apollo Server with Apollo Studio enabled
 
-If the server was already configured to use Apollo Graph Manager, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
+If the server was already configured to use Apollo Studio, no additional changes are necessary, but it's important to make sure that the server is configured to use the same service as the operations were registered with in step 3.
 
-If the server was not previously configured with Apollo Graph Manager, be sure to start the server with the `APOLLO_KEY` variable set to the appropriate API key. For example:
+If the server was not previously configured with Apollo Studio, be sure to start the server with the `APOLLO_KEY` variable set to the appropriate API key. For example:
 
 ```
 APOLLO_KEY=<APOLLO_KEY> npm start
@@ -248,7 +248,7 @@ const server = new ApolloServer({
 });
 ```
 
-> **Note:** For security, it's recommended to pass the Graph Manager API key as an environment variable so it will not be checked into version control (VCS).
+> **Note:** For security, it's recommended to pass the Studio API key as an environment variable so it will not be checked into version control.
 
 ### 7. Verification
 

@@ -30,8 +30,9 @@ Now, our dependencies are installed. Here are the packages we will be using to b
 
 While Apollo VSCode is not required to successfully complete the tutorial, setting it up unlocks a lot of helpful features such as autocomplete for operations, jump to fragment definitions, and more.
 
-First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Graph Manager API key that you already created in step #4 to the file:
-> Note: You may need to upgrade your plugin version, which relies on the former `ENGINE_API_KEY` environment variable
+First, make a copy of the `.env.example` file located in `client/` and call it `.env`. Add your Apollo Studio API key that you already created in step #4 to the file:
+
+> **Note:** You may need to upgrade your plugin version, which relies on the now-deprecated `ENGINE_API_KEY` environment variable.
 
 ```bash:title=.env
 APOLLO_KEY=service:<your-service-name>:<hash-from-apollo-engine>
@@ -64,9 +65,7 @@ Great, we're all set up! Let's dive into building our first client.
 
 Now that we have installed the necessary packages, let's create an `ApolloClient` instance.
 
-Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass in is the graph endpoint from the service you deployed in step 4.
-
-If you didn't complete the server portion, you can use the `uri` from the code below. Otherwise, use your own deployment's URL, which may be different than the one below. Navigate to `src/index.tsx` and copy the code below:
+Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass in is the URL of the server you created in the first half of the tutorial. (If you didn't complete the server portion, you can still use the code below.)
 
 <MultiCodeBlock>
 
