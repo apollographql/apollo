@@ -61,8 +61,14 @@ The Apollo [schema registry](https://www.apollographql.com/docs/graph-manager/sc
 
 ### Free for all Apollo users
 
-* A powerful **schema explorer** that helps your team build and run queries against your registered schema
-* [Metrics reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for up to the last 24 hours
+* A powerful **schema explorer** that helps your team build and run queries against your registered schema:
+
+    <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+
+* [Metrics reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for up to the last 24 hours:
+
+    <img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+
 * Team collaboration via [organizations](https://www.apollographql.com/docs/graph-manager/org/organizations/)
 * [Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/) for schema changes and daily metrics reports
 * [Management of a federated data graph](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/)

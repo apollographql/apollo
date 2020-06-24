@@ -22,7 +22,7 @@ After signing up, you're redirected to your Apollo Studio homepage.
 
 In Apollo Studio, each **graph** is a distinct data graph with a corresponding GraphQL schema. For your first graph, we'll use the schema of the server you just finished building.
 
-1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph**. 
+1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
 2. Provide a name for your graph and click **Next**.
 3. A dialog appears instructing to you register your schema. We'll do that in the next step.
 
@@ -67,6 +67,8 @@ Connecting your server to Apollo Studio activates a variety of powerful features
 
 Your graph's Explorer tab provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+
 [Open the **Explorer** tab](https://studio.apollographql.com/explorer) and complete its Getting Started steps to see what it can do!
 
 ### Schema history
@@ -83,7 +85,9 @@ Apollo Server pushes metrics data to Studio for each GraphQL operation it execut
 
 > Apollo Server does **not** push GraphQL operation results to Studio. For more information, see [Data privacy and compliance](https://www.apollographql.com/docs/graph-manager/data-privacy/).
 
-Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces.
+Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces:
+
+<img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
 
 > Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/graph-manager/).
 
