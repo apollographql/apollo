@@ -112,7 +112,7 @@ module.exports = {
 
 ### `client.excludes`
 
-_Optional_ –– by default, Apollo tools will exclude `**/node_modules` and `**/__tests___` when looking for your queries and schema files.
+_Optional_ –– by default, Apollo tools will exclude `**/node_modules` and `**/__tests__` when looking for your queries and schema files.
 
 If you want Apollo to ignore any of your other folders when looking for queries and schema definitions, adjust your config like so:
 
