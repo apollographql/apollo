@@ -83,13 +83,13 @@ This history helps you identify exactly when a particular type or field was adde
 
 Apollo Server pushes metrics data to Studio for each GraphQL operation it executes. This data includes a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
-> Apollo Server does **not** push GraphQL operation results to Studio. For more information, see [Data privacy and compliance](https://www.apollographql.com/docs/graph-manager/data-privacy/).
+> Apollo Server does **not** push GraphQL operation results to Studio. For more information, see [Data privacy and compliance](https://www.apollographql.com/docs/studio/data-privacy/).
 
 Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces:
 
 <img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
 
-> Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/graph-manager/).
+> Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/studio/).
 
 <hr/>
 

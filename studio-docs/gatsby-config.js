@@ -1,14 +1,14 @@
 const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
-  pathPrefix: '/docs/graph-manager',
+  pathPrefix: '/docs/studio',
   plugins: [
     {
       resolve: 'gatsby-theme-apollo-docs',
       options: {
         ...themeOptions,
         root: __dirname,
-        baseDir: 'graph-manager-docs',
+        baseDir: 'studio-docs',
         subtitle: 'Studio',
         description: 'How to use Apollo Studio',
         githubRepo: 'apollographql/apollo',
