@@ -23,7 +23,7 @@ There are a number of resources available to learn GraphQL. If you're looking to
 
 The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool (Apollo Studio), and a client that manages local and remote data in your apps (`apollo-client`).
 
-To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Studio](https://www.apollographql.com/docs/graph-manager/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/essentials/get-started.html).
+To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Studio](https://www.apollographql.com/docs/studio/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/essentials/get-started.html).
 
 This site and the [Apollo blog](https://www.apollographql.com/blog/) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
 
@@ -68,7 +68,7 @@ As with any service, it's important to track errors and their causes. There are 
 
 GraphQL is resilient to some of these errors. Since the schema is strongly typed, the designer has the ability to restrict what type of data users can enter and what type the resolvers can return. This type system catches many errors and requires no manual checks.
 
-For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Studio](https://www.apollographql.com/docs/graph-manager/) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
+For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Studio](https://www.apollographql.com/docs/studio/) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
 
 ## Moving a feature to GraphQL
 
@@ -108,7 +108,7 @@ Many apps and sites are powered almost completely by an API such as a GraphQL sc
 
 [Apollo Studio](https://studio.apollographql.com) is a great tool to track many of these things. It allows close inspection of fields to make it easy to see both total response times as well as how long each field took to execute.
 
-Apollo Studio also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/graph-manager/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [Datadog integration](https://www.apollographql.com/docs/graph-manager/integrations#datadog)) works with existing Datadog accounts, to help teams track schema performance.
+Apollo Studio also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/studio/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [Datadog integration](https://www.apollographql.com/docs/studio/integrations#datadog)) works with existing Datadog accounts, to help teams track schema performance.
 
 ## Moving a product to GraphQL
 
@@ -126,6 +126,6 @@ Keeping all schema code together makes sense for smaller projects, but once a pr
 
 #### How can I safely make changes to the schema?
 
-Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](https://www.apollographql.com/docs/graph-manager/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
+Schemas naturally evolve over time. GraphQL schemas are more resilient to change than other APIs, but there are still occasions where breaking changes will need to happen to support new functionality. The [versioning guide](https://www.apollographql.com/docs/studio/schema-registry/#registering-a-schema) explains in more detail what kinds of changes are safe to make, and what kinds could break existing clients.
 
 Additionally, using the [Apollo CLI](../devtools/cli/) with Apollo Studio provides the tools needed to [validate schema changes](https://www.apollographql.com/docs/engine/features/schema-history.html) over time. This makes collaboration easier and more transparent.
