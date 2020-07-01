@@ -78,7 +78,7 @@ For example, the following value for `engine.overrideReportedSchema` provides a 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  engine {
+  engine: {
     reportSchema: true
     overrideReportedSchema: typeDefs.loc && typeDefs.loc.source.body
   }
