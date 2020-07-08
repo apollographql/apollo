@@ -8,7 +8,7 @@ import RegisterCli from '../../shared/register-cli.mdx';
 import RegisterFederatedCli from '../../shared/register-federated-cli.mdx'
 
 
-If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [schema reporting](./automatic-registration/), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
+If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [schema reporting](./schema-reporting/), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
 
 > **Do not use both schema reporting and the Apollo CLI to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
 

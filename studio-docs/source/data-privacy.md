@@ -12,7 +12,13 @@ This article describes which data is and is _not_ sent to Apollo as part of its 
 
 You can configure Apollo Server to trace the execution of each GraphQL operation and [push those metrics to Apollo Studio](./setup-analytics/). Studio uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in Studio.
 
-**Apollo Server never forwards the `data` field of an operation response to Apollo Studio.** It _does_ forward:
+You can also configure Apollo Server to [report its schema to the Apollo registry](./schema/schema-reporting).
+
+_All_ data sent from Apollo Server to Studio is transmitted using HTTPS on port 443, and HTTP traffic on port 80 is disabled.
+
+### Per-operation data
+
+**Apollo Server never sends the `data` field of an operation response to Apollo Studio.** It _does_ send:
 
 * Several fields _besides_ `data` from every operation response
 
