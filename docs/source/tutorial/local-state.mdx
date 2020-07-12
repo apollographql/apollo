@@ -153,7 +153,7 @@ import React, { Fragment } from 'react'; // preserve-line
 import { useQuery } from '@apollo/react-hooks'; // preserve-line
 import gql from 'graphql-tag';
 
-import { Header, Loading } from '../components'; // preserve-line
+import { Header } from '../components'; // preserve-line
 import { CartItem, BookTrips } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import * as GetCartItemsTypes from './__generated__/GetCartItems';
@@ -175,11 +175,10 @@ Next, we call `useQuery` and bind it to our `GetCartItems` query:
 interface CartProps extends RouteComponentProps {}
 
 const Cart: React.FC<CartProps> = () => {
-  const { data, loading, error } = useQuery<
+  const { data, error } = useQuery<
     GetCartItemsTypes.GetCartItems
   >(GET_CART_ITEMS);
   
-  if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
 
   return (
