@@ -7,9 +7,9 @@ The **Apollo Datadog integration** enables you to forward Studio performance met
 
 ## Setup
 
-To integrate with Datadog, you provide your Datadog API key to Studio. A Datadog account with administrator privileges is required to obtain an API key.
+To integrate with Datadog, you provide your Datadog API key and region to Studio. A Datadog account with administrator privileges is required to obtain an API key.
 
-1. Go to your [Datadog Integrations page](https://app.datadoghq.com/account/settings) and select **Apollo Engine** from the list: 
+1. Go to your [Datadog Integrations page](https://app.datadoghq.com/account/settings) and select **Apollo Engine** from the list:
 
     ![DatadogIntegrationTile](./img/datadog/integration-tile.png)
 
@@ -19,17 +19,19 @@ To integrate with Datadog, you provide your Datadog API key to Studio. A Datadog
 
     ![DatadogApiKey](./img/datadog/api-key.png)
 
-3. In Studio, go to your graph's Integrations page:
+3. To determine your API region, look at your browser's address bar. If the domain name is `app.datadoghq.com`, then your API region is `US`; if the domain name is `app.datadoghq.eu`, then your API region is `EU`.
+
+4. In Studio, go to your graph's Integrations page:
 
     ![IntegrationsPage](./img/datadog/settings-link.png)
 
-4. Toggle the Datadog integration to turn it on. Paste your API key and click **Save**. 
+5. In the Datadog Forwarding section, click **Configure**. Provide your API key and region, and click **Enable**.
 
     ![IntegrationsToggle](./img/datadog/settings-toggle.png)
 
     You can use the same Datadog API key for all of your graphs, because all forwarded metrics are tagged with the corresponding graph's ID (`service:<graph-id>`).
 
-5. That's it! After about five minutes, your Datadog metrics explorer will begin showing metrics forwarded from Studio.
+6. That's it! After about five minutes, your Datadog metrics explorer will begin showing metrics forwarded from Studio.
 
 ## Forwarded metrics
 
