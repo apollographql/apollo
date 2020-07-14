@@ -7,9 +7,9 @@ The **Apollo Datadog integration** enables you to forward Studio performance met
 
 ## Setup
 
-To integrate with Datadog, you provide your Datadog API key to Studio. A Datadog account with administrator privileges is required to obtain an API key.
+To integrate with Datadog, you provide your Datadog API key and region to Studio. A Datadog account with administrator privileges is required to obtain an API key.
 
-1. Go to your [Datadog Integrations page](https://app.datadoghq.com/account/settings) and select **Apollo Engine** from the list: 
+1. Go to your [Datadog Integrations page](https://app.datadoghq.com/account/settings) and select **Apollo Engine** from the list:
 
     ![DatadogIntegrationTile](./img/datadog/integration-tile.png)
 
@@ -19,17 +19,22 @@ To integrate with Datadog, you provide your Datadog API key to Studio. A Datadog
 
     ![DatadogApiKey](./img/datadog/api-key.png)
 
-3. In Studio, go to your graph's Integrations page:
+3. Determine your Datadog API region by looking at your browser's address bar:
+
+    * If the domain name is `app.datadoghq.com`, then your API region is `US`.
+    * If the domain name is `app.datadoghq.eu`, then your API region is `EU`.
+
+4. In Studio, go to your graph's Integrations page:
 
     ![IntegrationsPage](./img/datadog/settings-link.png)
 
-4. Toggle the Datadog integration to turn it on. Paste your API key and click **Save**. 
+5. In the Datadog Forwarding section, click **Configure**. Provide your API key and region, then click **Enable**.
 
     ![IntegrationsToggle](./img/datadog/settings-toggle.png)
 
     You can use the same Datadog API key for all of your graphs, because all forwarded metrics are tagged with the corresponding graph's ID (`service:<graph-id>`).
 
-5. That's it! After about five minutes, your Datadog metrics explorer will begin showing metrics forwarded from Studio.
+6. That's it! After about five minutes, your Datadog metrics explorer will begin showing metrics forwarded from Studio.
 
 ## Forwarded metrics
 
@@ -51,7 +56,7 @@ These metrics are also tagged with both the associated Studio graph ID (as `serv
 
 In the [Datadog metrics explorer](http://app.datadoghq.com/metric/explorer?exp_metric=apollo.engine.operations.count&exp_group=service&exp_agg=sum&exp_row_type=metric), all Studio metrics are [tagged](https://www.datadoghq.com/blog/the-power-of-tagged-metrics/) with the graph ID (`service:<graph-id>`), the variant name (`variant:<variant-name>`), and the operation name (`operation:<query-name>`). These values are normalized according to Datadog naming requirements (all letters are lowercase, and illegal symbols are converted to underscores).
 
-Tagging enables you to see data at any level of granularity, whether you want to aggregate across all operations or zoom in to a particular operation. You can control granularity by choosing a relevant set of operation tags for filtering, along with appropriate functions for [time aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-time-aggregation) and [space aggregation](https://docs.datadoghq.com/graphing/functions/#proceed-to-space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
+Tagging enables you to see data at any level of granularity, whether you want to aggregate across all operations or zoom in to a particular operation. You can control granularity by choosing a relevant set of operation tags for filtering, along with appropriate functions for [time aggregation](https://docs.datadoghq.com/metrics/introduction/#time-aggregation) and [space aggregation](https://docs.datadoghq.com/metrics/introduction/#space-aggregation). Similarly, if you want to compare metrics across staging and production environments, you can filter with the appropriate variant tags.
 
 ### Example
 
@@ -77,11 +82,11 @@ You can configure complex alerts with [Datadog monitors](https://docs.datadoghq.
 
 Studio's Notifications feature supports alerts that trigger when the percentage of requests with an error in the last 5 minutes exceeds some threshold for a specific operation. Suppose that instead of alerting on a specific operation in the last 5 minutes, we want to alert on the error percentage over _all_ operations in some graph in the last 10 minutes, such as when the percentage exceeds 1% for a graph `mygraph` with variant `staging`.
 
-The [Datadog metric alert query](https://docs.datadoghq.com/api/?lang=curl#metric-alert-query) needed here is:
+The [Datadog metric alert query](https://docs.datadoghq.com/api/v1/monitors/#query-types) needed here is:
 ```
 sum(last_10m):sum:apollo.engine.operations.error_count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) / sum:apollo.engine.operations.count{service:mygraph,variant:staging}.as_count().rollup(sum).fill(null) > 0.01
 ```
-The `.rollup(sum).fill(null)` is necessary because `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/), which means it [defaults to using `avg` for time aggregation](https://docs.datadoghq.com/dashboards/functions/rollup/#rollup-interval-enforced-vs-custom) and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
+The `.rollup(sum).fill(null)` is necessary because `apollo.engine.operations.count` is a [Datadog gauge](https://docs.datadoghq.com/developers/metrics/types/?tab=gauge#metric-types), which means it [defaults to using `avg` for time aggregation](https://docs.datadoghq.com/dashboards/functions/rollup/#rollup-interval-enforced-vs-custom) and [defaults to linear interpolation during space aggregation and query arithmetic](https://docs.datadoghq.com/monitors/guide/monitor-arithmetic-and-sparse-metrics/). The `.as_count()` is necessary to ensure that [operation counts are summed before the division and not after](https://docs.datadoghq.com/monitors/guide/as-count-in-monitor-evaluations/).
 
 ### Example #2
 
