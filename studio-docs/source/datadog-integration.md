@@ -19,13 +19,16 @@ To integrate with Datadog, you provide your Datadog API key and region to Studio
 
     ![DatadogApiKey](./img/datadog/api-key.png)
 
-3. To determine your API region, look at your browser's address bar. If the domain name is `app.datadoghq.com`, then your API region is `US`; if the domain name is `app.datadoghq.eu`, then your API region is `EU`.
+3. Determine your Datadog API region by looking at your browser's address bar:
+
+    * If the domain name is `app.datadoghq.com`, then your API region is `US`.
+    * If the domain name is `app.datadoghq.eu`, then your API region is `EU`.
 
 4. In Studio, go to your graph's Integrations page:
 
     ![IntegrationsPage](./img/datadog/settings-link.png)
 
-5. In the Datadog Forwarding section, click **Configure**. Provide your API key and region, and click **Enable**.
+5. In the Datadog Forwarding section, click **Configure**. Provide your API key and region, then click **Enable**.
 
     ![IntegrationsToggle](./img/datadog/settings-toggle.png)
 
