@@ -1,0 +1,18 @@
+---
+title: Schema check configurations
+description: Configure your data graph's check rules by filtering clients and including variants.
+---
+
+> Before configuring check configurations make sure that schema checks are enabled for your data graph. See [Schema checks](/schema-validation/) to get set up.
+
+While **Schema checks** is a powerful tool to help you identify breaking changes before you make them, we recognize that there are occasions when you might not care if there are breaking changes for a client that, for example, is used for ad hoc operations. Check configurations allow you to exclude clients you don't necessarily care about so that you can focus on the clients that do matter. Additionally, schema check configurations can also enable you to check against other variants of your data graph so that you can determine if your changes will break on other variants.
+
+## Setting up schema check configurations
+
+You can easily set up schema check configurations through Apollo Studio in the Checks view under the Configuration tab.
+
+The currently available configurations options are:
+1. **Time range** -  Schema checks will run against operations that have been seen within this specified time range.
+2. **Operation count threshold** - Exclude operations that have run fewer times than specified threshold.
+3. **Variant inclusions** - All operations seen on the variants selected will be checked against changes to the schema.
+4. **Client exclusions** - Any operations sent by excluded clients will _not_ be checked against changes to the schema. 
