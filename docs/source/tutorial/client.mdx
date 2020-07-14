@@ -20,11 +20,9 @@ For this half of the tutorial, we will be working in the `client/` folder of the
 cd start/client && npm install
 ```
 
-Now, our dependencies are installed. Here are the packages we will be using to build out our frontend:
+Now, our dependencies are installed. Here are the main packages we will be using to build out our frontend:
 
-- `apollo-client`: A complete data management solution with an intelligent cache. In this tutorial, we will be using the Apollo Client 3.0 preview since it includes local state management capabilities and sets your cache up for you.
-- `react-apollo`: The view layer integration for React that exports components such as `Query` and `Mutation`
-- `graphql-tag`: The tag function `gql` that we use to wrap our query strings in order to parse them into an AST
+- `@apollo/client`: A complete data management solution with an intelligent cache.
 
 ### Configure Apollo VSCode
 
@@ -61,7 +59,7 @@ Great, we're all set up! Let's dive into building our first client.
 
 ## Create an Apollo Client
 
-<Disclaimer /> 
+<Disclaimer />
 
 Now that we have installed the necessary packages, let's create an `ApolloClient` instance.
 
@@ -70,18 +68,15 @@ Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass 
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-
-const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: 'http://localhost:4000/'
-});
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject
+} from '@apollo/client';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache,
-  link
+  uri: 'http://localhost:4000/',
+  cache: new InMemoryCache()
 });
 ```
 
@@ -94,13 +89,13 @@ In just a few lines of code, our client is ready to fetch data! Let's try making
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
-With a `client.query()` call, we can query our graph's API. Add the following line of code to your imports in `src/index.tsx`.
+With a `client.query()` call, we can query our graph's API. Adjust your `@apollo/client` import to include `gql` in `src/index.tsx`.
 
 
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import gql from 'graphql-tag'; // highlight-line
+import { gql, ApolloClient, InMemoryCache } from '@apollo/client'; // highlight-line
 ```
 
 </MultiCodeBlock>
@@ -139,19 +134,21 @@ Go ahead and delete the `client.query()` call you just made and the `gql` import
 
 Connecting Apollo Client to our React app with Apollo's hooks allows us to easily bind GraphQL operations to our UI.
 
-To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/react-hooks` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
+To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/client` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
 Open `src/index.tsx` and add the following lines of code:
 
 <MultiCodeBlock>
 
-```tsx{4-8,12-18}:title=src/index.tsx
-import { ApolloClient } from 'apollo-client'; // preserve-line
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
-import { HttpLink } from 'apollo-link-http'; // preserve-line
-import { ApolloProvider } from '@apollo/react-hooks';
+```tsx:title=src/index.tsx
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+  ApolloProvider
+} from '@apollo/client';
 import React from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
 import Pages from './pages';
 import injectStyles from './styles';
 
@@ -161,7 +158,7 @@ injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Pages />
-  </ApolloProvider>, 
+  </ApolloProvider>,
   document.getElementById('root')
 );
 ```
