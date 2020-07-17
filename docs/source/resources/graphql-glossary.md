@@ -370,7 +370,7 @@ A development approach for designing and building modern UIs that involves the f
 
 ## Schema registry
 
-The central source of truth for your schema. It enables schema registration, schema validation, tracking of detailed schema changes (such types added, fields added, and fields deprecated), and looking up previous versions of a schema.
+The central source of truth for your schema. It enables schema registration, schema checks, tracking of detailed schema changes (such types added, fields added, and fields deprecated), and looking up previous versions of a schema.
 
 ## Schema versioning
 
