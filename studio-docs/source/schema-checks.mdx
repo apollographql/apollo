@@ -18,27 +18,27 @@ To enable schema checks for your data graph, first do the following:
     * If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
 
-After you complete the above, you can perform a test validation by running the following command from your project's root directory:
+After you complete the above, you can perform a test check by running the following command from your project's root directory:
 
 ```bash
 # Omit 'npx' if you installed the Apollo CLI globally
-$ npx apollo service:check
+$ npx apollo service:check --variant production
 ```
 
-If everything is set up correctly, the command's output looks similar to the output shown in [The validation response](#the-validation-response).
+Try changing something in your schema and see what happens! If everything is set up correctly, the command's output looks similar to the output shown in [The check response](#the-check-response).
 
-## The validation process
+## The check process
 
-When you validate your schema with the `apollo service:check` command:
+When you check your schema with the `apollo service:check` command:
 
-1. Apollo Studio generates a diff between your local schema and the schema that you most recently registered.
-2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-validation)).
+1. Apollo Studio generates a diff between your local schema and the schema active on the variant you are checking against (`current`, by default).
+2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-checks)).
 3. Studio returns the diff and a list of any breaking changes found.
-4. The Apollo CLI prints the result of the validation and returns a non-zero exit code if at least one breaking change is found.
+4. The Apollo CLI prints the result of the check and returns a non-zero exit code if at least one breaking change is found.
 
-### The validation response
+### The check response
 
-Running `apollo service:check` outputs the diff of all detected schema changes  and highlights breaking changes:
+Running `apollo service:check` outputs the diff of all detected schema changes and highlights breaking changes:
 
 ```console
 $ npx apollo service:check
@@ -63,7 +63,7 @@ View full details at: https://studio.apollographql.com/service/example-1234/chec
 
 Each change to the schema is labeled with either `PASS` or `FAIL`.
 
-> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, all schema changes are labeled with `PASS`.**
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, dangerous schema changes are labeled with `FAIL`.**
 
 The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 
@@ -73,15 +73,15 @@ The CLI output also includes a Studio URL that provides full details on the chan
 
 > **Note:** If you've [installed schema checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
-### Validating a federated schema
+### Checking a federated schema
 
-If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema checks process differs slightly. For details, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph).
+If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
 
 ## Using with continuous integration
 
-Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain validation results and display them directly on your team's pull requests.
+Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain results and display them directly on your team's pull requests.
 
-We recommend defining a separate CI job for each [variant of your schema ](#validating-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when validation fails.
+We recommend defining a separate CI job for each [variant of your schema](#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
 
 ### Example configuration
 
@@ -130,7 +130,7 @@ If you're using GitHub, you can install the [Apollo Engine GitHub app](https://g
 
 ### Integrating with other version control services
 
-If you're using GitHub Enterprise, Bitbucket, or another version control service, we recommend setting up your CI tool to post a comment on each pull request with the results of schema checks. By surfacing schema diffs and breaking changes directly in your PR, you can avoid having to search your CI logs to check why validation failed.
+If you're using GitHub Enterprise, Bitbucket, or another version control service, we recommend setting up your CI tool to post a comment on each pull request with the results of schema checks. By surfacing schema diffs and breaking changes directly in your PR, you can avoid having to search your CI logs to check why a check failed.
 
 The `apollo service:check` supports a `--markdown` flag, which outputs the results of a schema check in markdown format. You can pipe this output directly into a comment to your source control tool, like in [this example of posting a comment with the results of a schema check to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
@@ -146,21 +146,21 @@ The output of `apollo service:check --markdown` looks like this:
 🔗 [View your service check details](https://studio.apollographql.com/service/engine/checks?...).
 ```
 
-## Validating against multiple environments
+## Checking against multiple environments
 
-You might want to validate your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema/registry/#managing-environments-with-variants) of a single data graph.
+You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema/registry/#managing-environments-with-variants) of a single data graph.
 
-You can validate your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
+You can check your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
 
 ```
 $ apollo service:check --variant=staging
 ```
 
-If you want to validate your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
+If you want to check your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
 
 ![multiple service checks](./img/schema-checks/multi-github-check.png)
 
-## Customizing validation
+## Customizing checks
 
 You can customize which operations schema checks will check against to classify schema changes as breaking or non-breaking.
 
