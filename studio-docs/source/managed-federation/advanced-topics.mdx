@@ -46,7 +46,7 @@ View full details at: https://studio.apollographql.com/graph/service-list-federa
 
 ## Pushing configuration updates safely
 
-Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. The single best way to do this is to minimize the number of [breaking changes](../schema-validation/#potentially-breaking-changes) you make to your schemas.
+Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. The single best way to do this is to minimize the number of [breaking changes](../schema-checks/#potentially-breaking-changes) you make to your schemas.
 
 Additionally, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
 
@@ -255,7 +255,7 @@ The reasoning behind this functionality is that the service registry should alwa
 
 You might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following workflow:
 
-1. Run validation on every commit through CI using `apollo service:check`.
+1. Run a check on every commit through CI using `apollo service:check`.
 2. Merge in a backward-compatible PR that has passed a schema check.
 3. Deploy changes to the federated service in your infrastructure.
 4. Wait until all replicas finish deploying.
@@ -304,7 +304,7 @@ The gateway's configuration is exposed through [Google Cloud Storage](https://cl
 
 ### Using variants to control rollout
 
-With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema checks](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](../schema/registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
+With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema checks](/schema-checks/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](../schema/registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in Apollo Studio, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 

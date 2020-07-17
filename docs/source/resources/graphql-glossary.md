@@ -374,7 +374,7 @@ The central source of truth for your schema. It enables schema registration, sch
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Studio. Read more in our article about [schema change validation](https://www.apollographql.com/docs/studio/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by checking schema changes for breaking changes using Apollo Studio. Read more in our article about [schema checks](https://www.apollographql.com/docs/studio/schema-checks/#set-up-schema-checks).
 
 ## Schema stitching
 

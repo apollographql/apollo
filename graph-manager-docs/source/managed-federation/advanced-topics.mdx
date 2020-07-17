@@ -46,7 +46,7 @@ View full details at: https://engine.apollographql.com/graph/service-list-federa
 
 ## Pushing configuration updates safely
 
-Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. The single best way to do this is to minimize the number of [breaking changes](../schema-validation/#potentially-breaking-changes) you make to your schemas.
+Whenever possible, you should update your service configuration in a way that is backward compatible to avoid downtime. The single best way to do this is to minimize the number of [breaking changes](../schema-checks/#potentially-breaking-changes) you make to your schemas.
 
 Additionally, **call `apollo service:push` for an implementing service only after all replicas of that service are deployed**. This ensures that resolvers are in place for all operations that are executable against your graph, and operations can't access fields that do not yet exist.
 
@@ -206,19 +206,19 @@ Traces will be reported in the shape of the query plan, with each unique fetch t
   <img src="./img//federated_trace.png" alt="Federated Trace" />
 </div>
 
-Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` validation workflow.
+Operation-level statistics will still be collected over the operations sent by the client, and those operations will be validated as part of the `service:check` workflow.
 
 ## Validating changes to the graph
 
 Federation allows teams to work independently on federated services without needing to coordinate over an all-encompassing schema. However, this increase in autonomy requires control to ensure that teams that operate on different services are respecting [defined dependencies](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/) and not breaking the ability for the graph to compose. The Apollo platform provides tools to help ensure that this increase in autonomy doesn't come at a cost to stability.
 
-In particular, along with [validating overall schema changes against known operations](/schema-validation/), running `apollo service:check` for a federated service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
+In particular, along with [validating overall schema changes against known operations](/schema-checks/), running `apollo service:check` for a federated service will ensure that the overall graph still composes to a valid schema, and will output any violated dependencies if present.
 
 With a federated graph, use the `apollo service:check` command to validate individual service changes by adding the `--serviceName` flag.
 
-When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then validation ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
+When running `apollo service:check` on a federated service, Apollo Graph Manager will run composition on the proposed capabilities with the current list of federated services and their capabilities, making sure that the composition is successful. That composed schema will then be diff'ed against the most recently registered schema and validate that those changes are safe. If composition fails, then the check ends and the results will be returned to the user. Note that running `apollo service:check` will never update the graph.
 
-There are two types of failures that can occur during validation: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
+There are two types of failures that can occur during a schema check: failed usage checks and failed composition. Failed usage checks are failures due to breaking changes, like removing a field that an active client is querying. Failed composition, on the other hand, is a failure due to inability to compose the graph, like missing an `@key` for an extended type.
 
 ### Handling composition failure
 
@@ -254,7 +254,7 @@ The reasoning behind this functionality is that the service registry should alwa
 
 You might wonder how to guarantee that the changes you're making to your service are safe changes for the graph as a whole. When rolling out changes to a federated service, we recommend the following workflow:
 
-1. Run validation on every commit through CI using `apollo service:check`.
+1. Run a check on every commit through CI using `apollo service:check`.
 2. Merge in a backward-compatible PR that has passed a schema check.
 3. Deploy changes to the federated service in your infrastructure.
 4. Wait until all replicas finish deploying.
@@ -303,7 +303,7 @@ The gateway's configuration is exposed through [Google Cloud Storage](https://cl
 
 ### Using variants to control rollout
 
-With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema checks](/schema-validation/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
+With managed federation, you can control which version of your graph a fleet of gateways are running with. For the majority of deployments, rolling over all of your gateways to a new schema version is a good strategy, since changes should be checked to be backward compatible using [schema checks](/schema-checks/). However, changes at the gateway level may involve a variety of different updates, like transferring type ownership from one service to another. In the case that your infrastructure requires more advanced deployment strategies, we recommend using [graph variants](/schema-registry/#registering-a-schema-to-a-variant) to manage different fleets of gateways running with different configurations.
 
 For instance, in order to have a canary deployment, you might maintain two production graphs in the graph manager, one called `prod` and one called `prod-canary`. Your deployment of a change to some federated service named "launches" might look something like this:
 

@@ -5,13 +5,13 @@ description: Ensure the safety of changes to your data graph
 
 > If your data graph uses Apollo Federation, see [checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph) instead of this article.
 
-Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema validation** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
+Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
 
-Schema validation is a **paid feature** that is available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
+Schema checks is a **paid feature** that is available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 ## Prerequisites
 
-To enable schema validation for your data graph, first do the following:
+To enable schema checks for your data graph, first do the following:
 
 1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
 2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
@@ -63,29 +63,29 @@ View full details at: https://studio.apollographql.com/service/example-1234/chec
 
 Each change to the schema is labeled with either `PASS` or `FAIL`.
 
-> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema validation to work. **If there are no operation metrics to compare against, all schema changes are labeled with `PASS`.**
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, all schema changes are labeled with `PASS`.**
 
 The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 
 
-<img class="screenshot" src="./img/schema-validation/service-check-page.png" alt="Service check page in Apollo Studio"></img>
+<img class="screenshot" src="./img/schema-checks/service-check-page.png" alt="Service check page in Apollo Studio"></img>
 
 
-> **Note:** If you've [installed schema validation checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
+> **Note:** If you've [installed schema checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
 ### Validating a federated schema
 
-If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema validation process differs slightly. For details, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph).
+If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema checks process differs slightly. For details, see [Validating changes to a federated graph](/managed-federation/advanced-topics/#validating-changes-to-a-federated-graph).
 
 ## Using with continuous integration
 
-Schema validation is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain validation results and display them directly on your team's pull requests.
+Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain validation results and display them directly on your team's pull requests.
 
 We recommend defining a separate CI job for each [variant of your schema ](#validating-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when validation fails.
 
 ### Example configuration
 
-The following config defines a schema validation job for a CircleCI pipeline. Your config's syntax varies depending on your CI tool, but the job's steps are the same.
+The following config defines a schema check job for a CircleCI pipeline. Your config's syntax varies depending on your CI tool, but the job's steps are the same.
 
 ```yaml{30}:title=config.yml
 version: 2
@@ -95,7 +95,7 @@ jobs:
   # ...other jobs...
 
   # Define a separate job for each environment you validate against.
-  validate_against_staging:
+  check_against_staging:
     docker:
       - image: circleci/node:8
 
@@ -125,14 +125,14 @@ jobs:
 If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 
-<img class="screenshot" src="./img/schema-validation/github-check.png" alt="GitHub Status View"></img>
+<img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View"></img>
 
 
 ### Integrating with other version control services
 
-If you're using GitHub Enterprise, Bitbucket, or another version control service, we recommend setting up your CI tool to post a comment on each pull request with the results of schema validation. By surfacing schema diffs and breaking changes directly in your PR, you can avoid having to search your CI logs to check why validation failed.
+If you're using GitHub Enterprise, Bitbucket, or another version control service, we recommend setting up your CI tool to post a comment on each pull request with the results of schema checks. By surfacing schema diffs and breaking changes directly in your PR, you can avoid having to search your CI logs to check why validation failed.
 
-The `apollo service:check` supports a `--markdown` flag, which outputs the results of schema validation in markdown format. You can pipe this output directly into a comment to your source control tool, like in [this example of posting a comment with the results of schema validation to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
+The `apollo service:check` supports a `--markdown` flag, which outputs the results of a schema check in markdown format. You can pipe this output directly into a comment to your source control tool, like in [this example of posting a comment with the results of a schema check to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
 
 The output of `apollo service:check --markdown` looks like this:
 
@@ -158,11 +158,11 @@ $ apollo service:check --variant=staging
 
 If you want to validate your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
 
-![multiple service checks](./img/schema-validation/multi-github-check.png)
+![multiple service checks](./img/schema-checks/multi-github-check.png)
 
 ## Customizing validation
 
-You can customize the logic that schema validation uses to classify a schema change as either breaking or non-breaking.
+You can customize which operations schema checks will check against to classify schema changes as breaking or non-breaking.
 
 For example, you can provide the `--validationPeriod` option to the `apollo service:check` command to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
 
@@ -178,7 +178,7 @@ Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wi
 
 ### Threshold values
 
-You can also customize the behavior of schema validation by specifying **threshold values** to the `service:check` command. These values tell schema validation to ignore all historical operations that do not exceed the threshold(s) you specify.
+You can also customize the behavior of schema checks by specifying **threshold values** to the `service:check` command. These values tell checks to ignore all historical operations that do not exceed the threshold(s) you specify.
 
 For example, you might want to discontinue support for an old version of your client that uses deprecated fields. You can set threshold values to determine when an acceptably small number of users are using the outdated client, thus reducing the impact of discontinuing support.
 
@@ -187,7 +187,7 @@ Provide threshold values with the following flags:
 - `--queryCountThreshold` - Validate your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
 - `--queryCountThresholdPercentage` - Validate your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
 
-> **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema validation to include it.
+> **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
 
 Here's an example of running `service:check` with threshold values:
 
@@ -262,7 +262,7 @@ These changes add a required input to a schema element. If an operation is activ
 
 These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
 
-> **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema validation still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
+> **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 
 <ul>
   <li id="FIELD_CHANGED_TYPE">

@@ -3,15 +3,15 @@ title: Connecting Apollo Studio to GitHub
 sidebar_title: Connecting to GitHub
 ---
 
-To make [schema change validation](/schema-validation/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
+To make [schema checks](/schema-checks/) as easy to set up as possible, we've built an Apollo app for GitHub that provides status checks on pull requests when schema changes are proposed.
 
-![GitHub Status View](./img/schema-validation/github-check.png)
+![GitHub Status View](./img/schema-checks/github-check.png)
 
 ## Install the GitHub application
 
 Go to [https://github.com/apps/apollo-engine](https://github.com/apps/apollo-engine) and click the `Configure` button to install the Apollo Studio integration on the GitHub profile or organization that you want to set up checks for.
 
-## Run validation on each commit
+## Run a check on each commit
 
 Next, make sure your CI has a step to run the schema check command. This is accomplished by adding the `apollo service:check` command directly as a step in your CI. For CircleCI it could look something like this:
 

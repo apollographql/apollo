@@ -68,7 +68,7 @@ Each change to the schema is labeled with either `PASS` or `FAIL`.
 The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 
 
-<img class="screenshot" src="./img/schema-validation/service-check-page.png" alt="Service check page in Apollo Studio"></img>
+<img class="screenshot" src="./img/schema-checks/service-check-page.png" alt="Service check page in Apollo Studio"></img>
 
 
 > **Note:** If you've [installed schema checks checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
@@ -125,7 +125,7 @@ jobs:
 If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 
-<img class="screenshot" src="./img/schema-validation/github-check.png" alt="GitHub Status View"></img>
+<img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View"></img>
 
 
 ### Integrating with other version control services
@@ -158,7 +158,7 @@ $ apollo service:check --variant=staging
 
 If you want to validate your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
 
-![multiple service checks](./img/schema-validation/multi-github-check.png)
+![multiple service checks](./img/schema-checks/multi-github-check.png)
 
 ## Customizing validation
 

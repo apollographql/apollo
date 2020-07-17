@@ -81,7 +81,7 @@ Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-
 
 * Explore the full structure of a schema, complete with docstrings
 * Compose new operations with live validation and autocomplete
-* Register your schema with a management service that tracks and validates changes
+* Register your schema with a management service that tracks and checks changes
 
 ### Apollo Studio
 
@@ -124,7 +124,7 @@ Consider the following trade-offs when using GraphQL:
 
 GraphQL introduces a new conceptual model for representing and interacting with data. An organization that's comfortable with this model can design, implement, and ship features quickly. However, the process of _becoming_ comfortable with this model takes time.
 
-* Front-end developers must come up to speed with a new API for fetching and manipulating data. 
+* Front-end developers must come up to speed with a new API for fetching and manipulating data.
 * Back-end developers must come up to speed with how to handle incoming requests from the frontend.
 * Developers across the organization must collaborate on a single, product-driven GraphQL schema and appoint individuals as the official maintainers of that schema.
 
