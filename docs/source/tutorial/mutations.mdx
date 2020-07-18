@@ -99,7 +99,7 @@ We're almost done completing our login feature! Before we do, we need to attach 
 
 <MultiCodeBlock>
 
-```tsx{5-7}:title=src/index.tsx
+```tsx{5-7,11-16}:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
   link: new HttpLink({
