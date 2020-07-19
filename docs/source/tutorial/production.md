@@ -10,7 +10,7 @@ Great work! We have a running GraphQL server that interacts with data from multi
 
 **Apollo Studio** is a cloud platform that helps you with every phase of GraphQL development, from prototyping to deploying to monitoring.
 
-Studio's core features are free for everyone. All of the features in this tutorial are free features.
+Studio's core features are free for everyone. All of the features in this tutorial are free features. This is not free unless you create an organization and plan!
 
 ## Create an Apollo account
 
