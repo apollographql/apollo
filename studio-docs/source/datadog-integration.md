@@ -44,7 +44,7 @@ Studio forwards the following metrics to Datadog:
 | ------- | --------- |
 | `apollo.engine.operations.count` | The number of GraphQL operations that were executed. This includes queries, mutations, and operations that resulted in an error. |
 | `apollo.engine.operations.error_count` | The number of GraphQL operations that resulted in an error. This includes both GraphQL execution errors and HTTP errors if Studio failed to connect to your server. |
-| `apollo.engine.operations.cache_hit_count` | The number of GraphQL queries for which the result was served from Studio's full query cache. |
+| `apollo.engine.operations.cache_hit_count` | The number of GraphQL queries for which the result was served from Apollo Server's full query cache. |
 |`apollo.engine.operations.latency.min`<br/>`apollo.engine.operations.latency.median`<br/>`apollo.engine.operations.latency.95percentile`<br/>`apollo.engine.operations.latency.99percentile`<br/>`apollo.engine.operations.latency.max`<br/>`apollo.engine.operations.latency.avg`| A histogram of GraphQL operation response times, measured in milliseconds. Because of Studio's aggregation method (logarithmic binning), these values are accurate to +/- 5%. |
 
 
