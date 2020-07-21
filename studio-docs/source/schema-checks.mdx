@@ -122,7 +122,7 @@ jobs:
 
 ### Integrating with GitHub
 
-If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
+If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-studio). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 
 <img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View"></img>
@@ -200,6 +200,7 @@ npx apollo service:check \
 # Only validate against operations that account for at least 3% of total operation volume
 --queryCountThresholdPercentage=3
 ```
+You can also set these threshold customizations more permanently using [Check Configurations](#check-configurations) in [Apollo Studio](https://studio.apollographql.com/service/engine/checks?...).
 
 If you have any requests for other filtering or threshold mechanisms, please get in touch with us on the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repository.
 
