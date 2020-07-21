@@ -77,7 +77,7 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 * [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for arbitrary timeframes
 * [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/studio/client-awareness/)
-* [Schema change validation](https://www.apollographql.com/docs/studio/schema-validation/)
+* [Schema checks](https://www.apollographql.com/docs/studio/schema-checks/)
 * [Operation safelisting](https://www.apollographql.com/docs/studio/operation-registry/)
 * [Resolver-level query tracing](https://www.apollographql.com/docs/studio/performance/)
 * [Integration with Datadog](https://www.apollographql.com/docs/studio/datadog-integration/)

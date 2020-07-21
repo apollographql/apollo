@@ -14,7 +14,7 @@
 # Redirect Removed Guides to Platform Features
 /docs/guides/security.html /docs/platform/operation-registry
 /docs/guides/monitoring.html /docs/platform/integrations
-/docs/guides/versioning.html /docs/platform/schema-validation#versioning
+/docs/guides/versioning.html /docs/platform/schema-checks#versioning
 
 # This lived here for a short period of time.
 /docs/resources/apollo-config.html /docs/devtools/apollo-config
@@ -31,8 +31,8 @@
 # Move our Apollo config docs to the References section
 /docs/platform/apollo-config.html /docs/devtools/apollo-config
 /docs/platform/setup-analytics.html /docs/references/setup-analytics
-/docs/platform/schema-validation.html /docs/graph-manager/schema-validation
+/docs/platform/schema-checks.html /docs/studio/schema-checks
 
 # Move Graph Manager docs to their own website
-/docs/platform/* /docs/graph-manager/:splat
-/docs/references/graph-manager-data-privacy/ /docs/graph-manager/graph-manager-data-privacy/
+/docs/platform/* /docs/studio/:splat
+/docs/references/graph-manager-data-privacy/ /docs/studio/data-privacy/

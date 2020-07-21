@@ -35,7 +35,7 @@ module.exports = {
             // operation usage
           ],
           'Continuous Integration': [
-            'schema-validation',
+            'schema-checks',
             'github-integration',
           ],
           'Managed Federation': [
