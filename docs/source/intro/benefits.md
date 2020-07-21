@@ -81,25 +81,15 @@ Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-
 
 * Explore the full structure of a schema, complete with docstrings
 * Compose new operations with live validation and autocomplete
-* Register your schema with a management service that tracks and validates changes
+* Register your schema with a management service that tracks and checks changes
 
-### GraphQL Playground
+### Apollo Studio
 
-[GraphQL Playground](https://github.com/prismagraphql/graphql-playground) by Prisma is an IDE for exploring a GraphQL schema and writing queries against it. At a glance, you can see all of the data available in your API, without needing to dive into back-end code or know which data stores are being used:
+Apollo provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/studio/).
 
-<img src="../assets/graphql-playground.png" alt="GraphQL Playground" class="screenshot"></img>
+After registering your GraphQL schema, you can use Studio's **Explorer tab** to inspect all of its types and fields. You can also build and run queries against your running server:
 
-[Apollo Server](https://www.apollographql.com/docs/apollo-server) includes GraphQL Playground out of the box. As soon as you start up a server on your local machine, you can start exploring your schema and composing client queries.
-
-### Apollo Graph Manager
-
-The Apollo platform provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Graph Manager**](https://www.apollographql.com/docs/graph-manager/).
-
-This video covers several of Graph Manager's core features:
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-For more information on _all_ of Graph Manager's features, [see the docs](https://www.apollographql.com/docs/graph-manager/).
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
 
 ### Apollo Client DevTools
 
@@ -134,7 +124,7 @@ Consider the following trade-offs when using GraphQL:
 
 GraphQL introduces a new conceptual model for representing and interacting with data. An organization that's comfortable with this model can design, implement, and ship features quickly. However, the process of _becoming_ comfortable with this model takes time.
 
-* Front-end developers must come up to speed with a new API for fetching and manipulating data. 
+* Front-end developers must come up to speed with a new API for fetching and manipulating data.
 * Back-end developers must come up to speed with how to handle incoming requests from the frontend.
 * Developers across the organization must collaborate on a single, product-driven GraphQL schema and appoint individuals as the official maintainers of that schema.
 
@@ -146,7 +136,7 @@ Your [GraphQL schema](https://www.apollographql.com/docs/apollo-server/schema/sc
 
 Depending on your schema and your resolver definitions, your server might inadvertently support GraphQL operations that execute very slowly, or even max out your server's resources.
 
-Consequently, it's important to design your schema such that it supports the operations your clients need, _without_ supporting unnecessary operations that affect performance. It's also helpful to set up [trace reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for your GraphQL server, enabling you to identify and improve slow operations.
+Consequently, it's important to design your schema such that it supports the operations your clients need, _without_ supporting unnecessary operations that affect performance. It's also helpful to set up [trace reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for your GraphQL server, enabling you to identify and improve slow operations.
 
 [Learn about query-driven schema design](https://www.apollographql.com/docs/apollo-server/schema/schema/#query-driven-schema-design)
 

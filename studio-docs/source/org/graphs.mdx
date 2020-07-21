@@ -1,0 +1,37 @@
+---
+title: Managing graphs and variants
+sidebar_title: Graphs and variants
+---
+
+A **graph** in Apollo Studio represents the entirety of a connected data graph. Every graph has its own associated GraphQL schema.
+
+## Creating a graph
+
+To create a graph in Studio, first select the Studio organization that the graph will belong to. Then click **New Graph** in the upper right and proceed through the creation flow.
+
+Note that every graph in Studio has a globally unique **graph name**. We recommend that you prefix your graph names with the name of your company or organization to avoid naming collisions.
+
+## Viewing graph information
+
+After selecting an organization in Studio, click on a particular graph
+to view its data and settings. All of a Studio organization's members can access the data and settings for every graph that belongs to that organization.
+
+## Managing variants
+
+Every graph in Studio should correspond to a connected data graph. However, a single data graph might run in multiple _environments_ (such as development, staging, and production).
+
+To distinguish between graph activity in different environments, you can define [**variants**](../schema/registry/#managing-environments-with-variants) for a graph. Each variant has its own schema.
+
+When your server sends data to Studio, it can associate that data with a particular variant. Variants appear as separate items in your organization's graph list, allowing you to view analytics for each environment in isolation.
+
+## Transferring graph ownership
+
+You can transfer a graph to a different Studio organization you belong to
+by visiting the graph's Settings page and changing the **graph owner**.
+
+## Deleting a graph
+
+> **Deleting a graph cannot be undone!**
+
+You can delete a graph from Studio by visiting its Settings page and clicking
+**Delete**.

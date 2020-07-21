@@ -7,7 +7,7 @@ When you start diving into the GraphQL ecosystem, you'll probably encounter some
 
 ## Apollo
 
-An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Client](https://www.apollographql.com/docs/react/), and [Graph Manager](https://www.apollographql.com/docs/engine/)).
+An open-source implementation of GraphQL that helps you manage data between the cloud and your UI. The Apollo platform is pluggable into your existing architecture and features production-ready tooling that helps you scale GraphQL across your organization ([Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Client](https://www.apollographql.com/docs/react/), and [Studio](https://www.apollographql.com/docs/studio/)).
 
 ## Automatic Persisted Queries (APQ)
 
@@ -262,7 +262,7 @@ query getHuman {
 
 Representation of a GraphQL operation(query, mutation, or subscription). These operations can be directly executable or normalized to a more simplified form. Normalization transforms an operation deterministically to reduce the number of possible forms it could take. For example, many normalization algorithms sort the fields of the operation to remove field order from the possible representations of an operation. Other normalization algorithms replace in-line variables(literals) with empty, null, or zero values, sort fragments, remove whitespace, or remove aliases.
 
-The following example shows the [default signature algorithm for performance monitoring](https://www.apollographql.com/docs/graph-manager/performance/#operation-signatures). The first signature is before and the second is after normalization, which hides literal, sorts fields, removes aliases, and removes whitespace:
+The following example shows the [default signature algorithm for performance monitoring](https://www.apollographql.com/docs/studio/performance/#operation-signatures). The first signature is before and the second is after normalization, which hides literal, sorts fields, removes aliases, and removes whitespace:
 
 ```
 query getHuman {
@@ -370,11 +370,11 @@ A development approach for designing and building modern UIs that involves the f
 
 ## Schema registry
 
-A central source of truth for your schema in Apollo Graph Manager. It enables schema registration, schema validation, tracking of detailed schema changes e.g. types added, fields added, fields deprecated and looking up previous versions of schema.
+The central source of truth for your schema. It enables schema registration, schema checks, tracking of detailed schema changes (such types added, fields added, and fields deprecated), and looking up previous versions of a schema.
 
 ## Schema versioning
 
-Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by validating schema changes and checking for breaking changes using Apollo Graph Manager. Read more in our article about [schema change validation](https://www.apollographql.com/docs/graph-manager/schema-validation/#set-up-schema-validation).
+Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by checking schema changes for breaking changes using Apollo Studio. Read more in our article about [schema checks](https://www.apollographql.com/docs/studio/schema-checks/#set-up-schema-checks).
 
 ## Schema stitching
 

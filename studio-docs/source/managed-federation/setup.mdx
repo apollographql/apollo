@@ -1,0 +1,59 @@
+---
+title: Setting up managed federation
+sidebar_title: Setup
+---
+
+import ObtainGraphApiKey from '../../shared/obtain-graph-api-key.mdx';
+
+import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
+
+This article describes how to set up Apollo Studio for a data graph that uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+
+> As with all changes, you should first set up managed federation in a non-production environment, such as staging. To support this, you can use [variants](../schema/registry/#managing-environments-with-variants), which are distinct versions of the same data graph for different environments.
+
+## 1. Get started
+
+Complete at least the first three steps of [Get started with Apollo Studio](../getting-started/) (we recommend completing all of them!), then return here.
+
+> In the [Register your schema](../getting-started/#3-register-your-schema) step, make sure you follow the instructions for a GraphQL server that uses Apollo Federation.
+
+## 2. Modify the gateway (if necessary)
+
+> This section assumes you are using Apollo Server with the `@apollo/gateway` library as your gateway.
+
+If you've already set up Apollo Federation _without_ Apollo Studio, the constructor of your `ApolloGateway` instance probably includes a `serviceList` option, like this:
+
+```js
+const gateway = new ApolloGateway({
+  serviceList: [
+    { name: 'Products', url: 'http://products-graphql.svc.cluster.local:4001/' },
+    // Additional services defined here
+  ],
+});
+```
+
+This option specifies the name and URL for each of your graph's implementing services. With managed federation, this information is no longer hardcoded in the gateway's constructor! Instead, the gateway regularly polls Apollo for this information. This enables you to add and remove implementing services from your graph _without_ needing to restart your gateway.
+
+Remove the `serviceList` argument from your `ApolloGateway` constructor entirely:
+
+```js
+const gateway = new ApolloGateway();
+```
+
+## 3. Connect the gateway to Studio
+
+Like your implementing services, your gateway uses an API key to identify itself to Studio.
+
+<ObtainGraphApiKey />
+
+Provide your API key to your gateway by setting it as the value of the `APOLLO_KEY` environment variable (`ENGINE_API_KEY` in `apollo-server` pre-2.13.0) in your gateway's environment. Apollo Server will automatically read this environment variable on startup.
+
+Note that if you specify the API key in a `.env` file, the gateway does _not_ automatically read this file. Use a library such as [`dotenv`](https://www.npmjs.com/package/dotenv).
+
+> When running your gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
+
+## 4. Deploy the modified gateway
+
+You can now deploy your modified gateway to begin fetching your federated schema from Studio instead of directly from your services.
+
+On startup, your gateway will use its API key to access its federation config from Google Cloud Storage. After it completes schema composition based on the config, the gateway can begin executing operations across your implementing services.

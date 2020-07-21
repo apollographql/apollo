@@ -1,0 +1,24 @@
+1. <a href="https://www.apollographql.com/docs/devtools/cli/" target="_blank">Install the Apollo CLI</a> if you haven't yet.
+
+2. Decide how you'll provide your server's schema to the Apollo CLI. The CLI can either:
+
+    * Use a `.gql` or `.graphql` file saved on your local machine, or
+    * Perform an introspection query on your running server to fetch the schema
+
+2. Run the `apollo service:push` command, providing the following options (documented below):
+
+    ```bash
+    apollo service:push \
+      --localSchemaFile=./schema.gql \ # (or --endpoint)
+      --key=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
+      --graph=docs-example-graph \
+      --variant=local-development \
+    ```
+
+| Name | Description  |
+|---|---|
+| `--endpoint` | <p>The URL of the running service to perform an introspection query on.</p><p>**Provide this only if the CLI should obtain your schema via introspection.**</p> |
+| `--localSchemaFile` | <p>The path of the schema file to register.</p><p>**Provide this only if the CLI should obtain your schema via a local file.**</p> |
+| `--key` | <p>The graph API key that the CLI should use to authenticate with the schema registry.</p><p>By default, the CLI uses the value of the `APOLLO_KEY` environment variable.</p> |
+| `--graph` | The name of your graph in Apollo Studio (e.g., `docs-example-graph`) |
+| `--variant` | <p>The [variant of your graph](./schema/registry/#managing-environments-with-variants) to register the schema with.</p><p>The default value is `current`.</p> |

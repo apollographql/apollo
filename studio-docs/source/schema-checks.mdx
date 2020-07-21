@@ -1,0 +1,363 @@
+---
+title: Schema checks
+description: Ensure the safety of changes to your data graph
+---
+
+> If your data graph uses Apollo Federation, see [checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph) instead of this article.
+
+Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
+
+Schema checks are a **paid feature** that's available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
+
+## Prerequisites
+
+To enable schema checks for your data graph, first do the following:
+
+1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
+2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
+    * If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.
+3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
+
+After you complete the above, you can perform a test check by running the following command from your project's root directory:
+
+```bash
+# Omit 'npx' if you installed the Apollo CLI globally
+$ npx apollo service:check --variant production
+```
+
+Try changing something in your schema and see what happens! If everything is set up correctly, the command's output looks similar to the output shown in [The check response](#the-check-response).
+
+## The check process
+
+When you check your schema with the `apollo service:check` command:
+
+1. Apollo Studio generates a diff between your local schema and the schema active on the variant you are checking against (`current`, by default).
+2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-checks)).
+3. Studio returns the diff and a list of any breaking changes found.
+4. The Apollo CLI prints the result of the check and returns a non-zero exit code if at least one breaking change is found.
+
+### The check response
+
+Running `apollo service:check` outputs the diff of all detected schema changes and highlights breaking changes:
+
+```console
+$ npx apollo service:check
+  ✔ Loading Apollo Project
+  ✔ Validated local schema against variant prod on service engine
+  ✔ Compared 8 schema changes against 110 operations over the last 24 hours
+  ✖ Found 3 breaking changes and 5 compatible changes
+    → breaking changes found
+
+FAIL    ARG_REMOVED                `ServiceMutation.checkSchema` arg `gitContext` was removed
+FAIL    FIELD_REMOVED              `Schema.fieldCount` was removed
+FAIL    FIELD_REMOVED              `Schema.typeCount` was removed
+
+PASS    FIELD_ADDED                `SchemaTag.schemaRepoID` was added
+PASS    FIELD_CHANGED_TYPE         `ServiceMutation.uploadPartialSchema` changed type from `UploadPartialSchemaResponse!` to `CompositionResult!`
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.fieldCount` is no longer deprecated
+PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.typeCount` is no longer deprecated
+PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
+
+View full details at: https://studio.apollographql.com/service/example-1234/check/<DETAILS>
+```
+
+Each change to the schema is labeled with either `PASS` or `FAIL`.
+
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, dangerous schema changes are labeled with `FAIL`.**
+
+The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
+
+
+<img class="screenshot" src="./img/schema-checks/service-check-page.png" alt="Service check page in Apollo Studio"></img>
+
+
+> **Note:** If you've [installed schema checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
+
+### Checking a federated schema
+
+If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
+
+## Using with continuous integration
+
+Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain results and display them directly on your team's pull requests.
+
+We recommend defining a separate CI job for each [variant of your schema](#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
+
+### Example configuration
+
+The following config defines a schema check job for a CircleCI pipeline. Your config's syntax varies depending on your CI tool, but the job's steps are the same.
+
+```yaml{30}:title=config.yml
+version: 2
+
+jobs:
+
+  # ...other jobs...
+
+  # Define a separate job for each environment you validate against.
+  check_against_staging:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+
+      - run: npm install
+
+      # Start the GraphQL server. If a different command is used to
+      # start the server, use it in place of `npm start` here.
+      - run:
+          name: Starting server
+          command: npm start
+          background: true
+
+      # Make sure the server has enough time to start up before running
+      # commands against it.
+      - run: sleep 5
+
+      # This command authenticates using the `APOLLO_KEY` environment
+      # variable. Specify your GraphQL endpoint's URL in your Apollo config.
+      - run: npx apollo service:check --variant=staging
+```
+
+### Integrating with GitHub
+
+If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
+
+
+<img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View"></img>
+
+
+### Integrating with other version control services
+
+If you're using GitHub Enterprise, Bitbucket, or another version control service, we recommend setting up your CI tool to post a comment on each pull request with the results of schema checks. By surfacing schema diffs and breaking changes directly in your PR, you can avoid having to search your CI logs to check why a check failed.
+
+The `apollo service:check` supports a `--markdown` flag, which outputs the results of a schema check in markdown format. You can pipe this output directly into a comment to your source control tool, like in [this example of posting a comment with the results of a schema check to GitHub](https://gist.github.com/daniman/e53d0589d18b778878bd8ef32d2e793c).
+
+The output of `apollo service:check --markdown` looks like this:
+
+```md
+### Apollo Service Check
+
+🔄 Validated your local schema against `engine@staging`.
+🔢 Compared **18 schema changes** against **100 operations** seen over the **last 24 hours**.
+❌ Found **7 breaking changes** that would affect **3 operations** across **2 clients**
+
+🔗 [View your service check details](https://studio.apollographql.com/service/engine/checks?...).
+```
+
+## Checking against multiple environments
+
+You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema/registry/#managing-environments-with-variants) of a single data graph.
+
+You can check your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
+
+```
+$ apollo service:check --variant=staging
+```
+
+If you want to check your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
+
+![multiple service checks](./img/schema-checks/multi-github-check.png)
+
+## Customizing checks
+
+You can customize which operations schema checks will check against to classify schema changes as breaking or non-breaking.
+
+For example, you can provide the `--validationPeriod` option to the `apollo service:check` command to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
+
+This command checks your schema changes against the past two weeks of operations:
+
+```bash
+apollo service:check --validationPeriod=P2W
+```
+
+Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
+
+> **Note:** If you specify a `validationPeriod` that exceeds your organization's operation retention period, the `service:check` command fails with an error.
+
+### Threshold values
+
+You can also customize the behavior of schema checks by specifying **threshold values** to the `service:check` command. These values tell checks to ignore all historical operations that do not exceed the threshold(s) you specify.
+
+For example, you might want to discontinue support for an old version of your client that uses deprecated fields. You can set threshold values to determine when an acceptably small number of users are using the outdated client, thus reducing the impact of discontinuing support.
+
+Provide threshold values with the following flags:
+
+- `--queryCountThreshold` - Validate your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
+- `--queryCountThresholdPercentage` - Validate your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
+
+> **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
+
+Here's an example of running `service:check` with threshold values:
+
+```bash
+npx apollo service:check \
+# Validate the schema against operations that have run in the last 5 days
+--validationPeriod=P5D \
+# Only validate against operations that have run at least 5 times during the 5 day duration
+--queryCountThreshold=5 \
+# Only validate against operations that account for at least 3% of total operation volume
+--queryCountThresholdPercentage=3
+```
+
+If you have any requests for other filtering or threshold mechanisms, please get in touch with us on the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repository.
+
+## Types of schema changes
+
+Not every change to a schema is a potentially breaking change. Additive changes (such as adding a field to a type) are typically safe and do not affect active clients. Deletions and modifications (such as removing a field or changing a return type), however, can break clients that use affected types and fields.
+
+### Potentially breaking changes
+
+#### Removals
+
+These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
+
+<ul>
+  <li id="FIELD_REMOVED">
+    <code>FIELD_REMOVED</code>: Field used by at least one operation was removed
+  </li>
+  <li id="TYPE_REMOVED">
+    <code>TYPE_REMOVED</code>: Type(scalar, object) used by at least one
+    operation was removed
+  </li>
+  <li id="ARG_REMOVED">
+    <code>ARG_REMOVED</code>: Argument was removed from a field used by at least
+    one operation
+  </li>
+  <li id="TYPE_REMOVED_FROM_UNION">
+    <code>TYPE_REMOVED_FROM_UNION</code>: Type was removed from a union used by
+    at least one operation
+  </li>
+  <li id="INPUT_FIELD_REMOVED">
+    <code>INPUT_FIELD_REMOVED</code>: Field removed from an input type
+    referenced by an argument on a field used by at least one operation
+  </li>
+  <li id="VALUE_REMOVED_FROM_ENUM">
+    <code>VALUE_REMOVED_FROM_ENUM</code>: A value removed from an enum used by
+    at least one operation
+  </li>
+  <li id="TYPE_REMOVED_FROM_INTERFACE">
+    <code>TYPE_REMOVED_FROM_INTERFACE</code>: An object removed from an
+    interface used by at least one operation
+  </li>
+</ul>
+
+#### Addition of required arguments
+
+These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
+
+<ul>
+  <li id="REQUIRED_ARG_ADDED">
+    <code>REQUIRED_ARG_ADDED</code>: Non-nullable argument added to field used
+    by at least one operation
+  </li>
+  <li id="NON_NULL_INPUT_FIELD_ADDED">
+    <code>NON_NULL_INPUT_FIELD_ADDED</code>: Non-null field added to an input
+    object used by at least one operation
+  </li>
+</ul>
+
+#### In-place updates
+
+These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
+
+> **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
+
+<ul>
+  <li id="FIELD_CHANGED_TYPE">
+    <code>FIELD_CHANGED_TYPE</code>: Field used by at least one operation
+    changed return type
+  </li>
+  <li id="INPUT_FIELD_CHANGED_TYPE">
+    <code>INPUT_FIELD_CHANGED_TYPE</code>: Field in input object changed type
+    and is referenced by argument on field used by at least one operation
+  </li>
+  <li id="TYPE_CHANGED_KIND">
+    <code>TYPE_CHANGED_KIND</code>: Type used by at least one operation changed,
+    ex: scalar to object or enum to union
+  </li>
+  <li id="ARG_CHANGED_TYPE">
+    <code>ARG_CHANGED_TYPE</code>: Argument changed type on field used by at
+    least one operation
+  </li>
+</ul>
+
+#### Default arguments
+
+These changes update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation might get an unexpected result when the schema is updated if it was relying on the original default value.
+
+<ul>
+  <li id="ARG_DEFAULT_VALUE_CHANGE">
+    <code>ARG_DEFAULT_VALUE_CHANGE</code>: Default value added or changed for
+    argument on a field used by at least one operation
+  </li>
+</ul>
+
+### Non-breaking changes
+
+These changes are detected by the `apollo service:check` command, but they are "safe." They will never affect the behavior of any existing clients if deployed.
+
+<ul>
+  <li>
+    Optional arguments
+    <ul>
+      <li id="OPTIONAL_ARG_ADDED">
+        <code>OPTIONAL_ARG_ADDED</code> Nullable argument added to a field
+      </li>
+      <li id="NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT">
+        <code>NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT</code> Nullable field added
+        to an input object
+      </li>
+    </ul>
+  </li>
+  <li>
+    Additions
+    <ul>
+      <li id="FIELD_ADDED">
+        <code>FIELD_ADDED</code> Field added to a type
+      </li>
+      <li id="TYPE_ADDED">
+        <code>TYPE_ADDED</code> Type added to the schema
+      </li>
+      <li id="VALUE_ADDED_TO_ENUM">
+        <code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients
+        contain a switch case on the enum and do not include the `default`, this
+        change could cause unexpected behavior
+      </li>
+      <li id="TYPE_ADDED_TO_UNION">
+        <code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least
+        one operation
+      </li>
+      <li id="TYPE_ADDED_TO_INTERFACE">
+        <code>TYPE_ADDED_TO_INTERFACE</code> Interface added to an object used
+        by at least one operation
+      </li>
+    </ul>
+  </li>
+  <li>
+    Deprecations
+    <ul>
+      <li id="FIELD_DEPRECATED">
+        <code>FIELD_DEPRECATED</code> Field deprecated
+      </li>
+      <li id="FIELD_DEPRECATION_REMOVED">
+        <code>FIELD_DEPRECATION_REMOVED</code> Field no longer deprecated
+      </li>
+      <li id="FIELD_DEPRECATED_REASON_CHANGE">
+        <code>FIELD_DEPRECATED_REASON_CHANGE</code> Reason for deprecation
+        changed
+      </li>
+      <li id="ENUM_DEPRECATED">
+        <code>ENUM_DEPRECATED</code> Enum deprecated
+      </li>
+      <li id="ENUM_DEPRECATION_REMOVED">
+        <code>ENUM_DEPRECATION_REMOVED</code> Enum no longer deprecated
+      </li>
+      <li id="ENUM_DEPRECATED_REASON_CHANGE">
+        <code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation
+        changed
+      </li>
+    </ul>
+  </li>
+</ul>

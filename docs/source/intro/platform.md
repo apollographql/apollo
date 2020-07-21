@@ -3,7 +3,7 @@ title: The Apollo platform
 description: Bring your data graph from prototype to production
 ---
 
-The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-graph-manager) a **data graph**: a unified data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
+The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-studio) a **data graph**: a unified data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
 
 A data graph sits between application clients and back-end services, facilitating the flow of data between them:
 
@@ -49,35 +49,39 @@ Apollo Client includes official support for React, and there are community-maint
 
 A Swift implementation of Apollo Client is officially supported for [iOS](https://www.apollographql.com/docs/ios/), and there is a community-maintained [Android library](https://www.apollographql.com/docs/android/).
 
-## 3. Manage your graph with Apollo Graph Manager
+## 3. Manage your graph with Apollo Studio
 
-In addition to its open-source libraries, the Apollo platform provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Graph Manager**](https://www.apollographql.com/docs/graph-manager/).
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yZ3_Yvlmy78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+In addition to its open-source libraries, the Apollo platform provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/studio/).
 
 ### The schema registry
 
-The [schema registry](https://www.apollographql.com/docs/graph-manager/schema-registry/) sits at the heart of Graph Manager. By registering your graph's schema with Graph Manager, you can explore its structure, track its change history, and lay the foundation for many other powerful features.
+The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-registry/) powers many development tools, including Apollo Studio. By registering your graph's schema, you can use Studio to explore your schema's structure, track its change history, and lay the foundation for many other powerful features.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/duwM95RsiBs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+### Apollo Studio features
 
-### Graph Manager features
+### Free for all Apollo users
 
-In addition to the schema registry and explorer, **Graph Manager provides the following features to all Apollo users for free:**
+* A powerful **schema explorer** that helps your team build and run queries against your registered schema:
 
-* [Metrics reporting](https://www.apollographql.com/docs/graph-manager/setup-analytics/) for up to the last 24 hours
-* Team collaboration via [organizations](https://www.apollographql.com/docs/graph-manager/accounts-organizations/)
-* [Slack notifications](https://www.apollographql.com/docs/graph-manager/slack-integration/) for schema changes and daily metrics reports
-* [Management of a federated data graph](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/)
+    <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
 
-**These features are available to organizations with a subscription to an [Apollo Team or Enterprise plan](https://www.apollographql.com/pricing/):**
+* [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for up to the last 24 hours:
 
-* Metrics reporting for arbitrary timeframes
-* [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/graph-manager/client-awareness/)
-* [Schema change validation](https://www.apollographql.com/docs/graph-manager/schema-validation/) to help ensure that schema updates don't break production clients
-* [Operation safelisting](https://www.apollographql.com/docs/graph-manager/operation-registry/) to restrict certain clients to certain parts of your data graph
-* [Resolver-level query tracing](https://www.apollographql.com/docs/graph-manager/performance/)
-* [Integration with Datadog](https://www.apollographql.com/docs/graph-manager/datadog-integration/)
+    <img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+
+* Team collaboration via [organizations](https://www.apollographql.com/docs/studio/org/organizations/)
+* [Slack notifications](https://www.apollographql.com/docs/studio/slack-integration/) for schema changes and daily metrics reports
+* [Management of a federated data graph](https://www.apollographql.com/docs/studio/managed-federation/overview/)
+
+### Available with an Apollo Team or Enterprise plan
+
+* [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for arbitrary timeframes
+* [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/studio/client-awareness/)
+* [Schema checks](https://www.apollographql.com/docs/studio/schema-checks/)
+* [Operation safelisting](https://www.apollographql.com/docs/studio/operation-registry/)
+* [Resolver-level query tracing](https://www.apollographql.com/docs/studio/performance/)
+* [Integration with Datadog](https://www.apollographql.com/docs/studio/datadog-integration/)
+* Longer data retention
 
 ## 4. Federate your graph with Apollo Federation
 
@@ -130,4 +134,4 @@ The gateway is a GraphQL server, _and so is each implementing service_. Each imp
 
 When a client request comes in, the gateway knows which requested fields are owned by which service. It intelligently executes operations across whichever combination of services is needed to fully complete the operation.
 
-Apollo Server includes extension libraries that enable it to act as either a gateway or an implementing service. And Apollo Graph Manager provides free [managed federation](https://www.apollographql.com/docs/graph-manager/managed-federation/overview/) features that help you maximize your graph's uptime.
+Apollo Server includes extension libraries that enable it to act as either a gateway or an implementing service. And Apollo Studio provides free [managed federation](https://www.apollographql.com/docs/studio/managed-federation/overview/) features that help you maximize your graph's uptime.
