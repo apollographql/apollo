@@ -58,10 +58,10 @@ jobs:
 ```
 name: Check
 
-# Controls when the action will run. Triggers schema validation on every pull request against master
+# Controls when the action will run. Triggers schema validation on every pull request against main
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     
 jobs:
   schema-check:
