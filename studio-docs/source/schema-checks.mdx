@@ -122,7 +122,7 @@ jobs:
 
 ### Integrating with GitHub
 
-If you're using GitHub, you can install the [Apollo Engine GitHub app](https://github.com/apps/apollo-engine). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
+If you're using GitHub, you can install the [Apollo Studio GitHub app](https://github.com/apps/apollo-studio). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `apollo service:check`, providing built-in pass/fail status checks on your pull requests:
 
 
 <img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View"></img>
@@ -161,6 +161,8 @@ If you want to check your schema against multiple variants, call `apollo service
 ![multiple service checks](./img/schema-checks/multi-github-check.png)
 
 ## Customizing checks
+
+> This section describes customizing a single call to `apollo service:check`. To customize default behavior for _all_ of a graph's schema checks, see [Configuring schema checks](./check-configurations).
 
 You can customize which operations schema checks will check against to classify schema changes as breaking or non-breaking.
 
