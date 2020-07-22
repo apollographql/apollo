@@ -1,5 +1,8 @@
 / /docs/studio/
 
+# Migrate schema validation to schema checks
+/docs/studio/schema-validation/ /docs/studio/schema-checks/
+
 /docs/studio/graph-manager-data-privacy/ /docs/studio/data-privacy/
 /docs/studio/schema-registry/ /docs/studio/schema/registry/
 /docs/studio/accounts-organizations/ /docs/studio/org/account/
