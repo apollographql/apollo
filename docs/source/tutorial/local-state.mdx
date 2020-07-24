@@ -25,11 +25,13 @@ Navigate to `src/resolvers.tsx` and copy the following code to create your clien
 <MultiCodeBlock>
 
 ```tsx:title=src/resolvers.tsx
-import gql from 'graphql-tag';
-import { ApolloCache } from 'apollo-cache';
+import {
+  ApolloCache,
+  gql,
+  Resolvers,
+} from '@apollo/client';
 import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
 import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
-import { Resolvers } from 'apollo-client'
 
 export const typeDefs = gql`
   extend type Query {
@@ -113,8 +115,11 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 <MultiCodeBlock>
 
 ```tsx{8-12,15}:title=src/index.tsx
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';  // preserve-line
-import gql from 'graphql-tag'; // preserve-line
+import {
+  ApolloProvider,
+  gql,
+  useQuery,
+} from '@apollo/client'; // preserve-line
 
 import Pages from './pages'; // preserve-line
 import Login from './pages/login'; // preserve-line
@@ -150,8 +155,7 @@ Let's look at another example of a component that queries local state in `src/pa
 
 ```tsx:title=src/pages/cart.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { Header, Loading } from '../components'; // preserve-line
 import { CartItem, BookTrips } from '../containers'; // preserve-line
@@ -215,7 +219,7 @@ To add a virtual field, first extend the type of the data you're adding the fiel
 <MultiCodeBlock>
 
 ```ts:title=src/resolvers.tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const schema = gql`
   extend type Launch {
@@ -294,7 +298,7 @@ Direct cache writes are convenient when you want to write a simple field, like a
 ```tsx:title=src/containers/logout-button.tsx
 import React from 'react';
 import styled from 'react-emotion';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 
 import { menuItemClassName } from '../components/menu-item';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
@@ -333,8 +337,7 @@ We can also perform direct writes within the `update` function of the `useMutati
 
 ```tsx{39-41}:title=src/containers/book-trips.tsx
 import React from 'react'; // preserve-line
-import { useMutation } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client'; // preserve-line
 
 import Button from '../components/button'; // preserve-line
 import { GET_LAUNCH } from './cart-item'; // preserve-line
@@ -392,8 +395,7 @@ export default BookTrips;
 
 ```jsx:title=src/containers/book-trips.jsx
 import React from 'react'; // preserve-line
-import { useMutation } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client'; // preserve-line
 
 import Button from '../components/button'; // preserve-line
 import { GET_LAUNCH } from './cart-item'; // preserve-line
@@ -499,7 +501,7 @@ Let's see how we call the `addOrRemoveFromCart` mutation in a component:
 <MultiCodeBlock>
 
 ```tsx:title=src/containers/action-button.tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 const TOGGLE_CART = gql`
   mutation addOrRemoveFromCart($launchId: ID!) {
@@ -518,8 +520,7 @@ Now that our local mutation is complete, let's build out the rest of the `Action
 
 ```tsx:title=src/containers/action-button.tsx
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';

@@ -70,9 +70,12 @@ Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass 
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { 
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from '@apollo/client';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -100,7 +103,7 @@ With a `client.query()` call, we can query our graph's API. Add the following li
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import gql from 'graphql-tag'; // highlight-line
+import { gql } from '@apollo/client'; // highlight-line
 ```
 
 </MultiCodeBlock>
@@ -146,14 +149,20 @@ Open `src/index.tsx` and add the following lines of code:
 <MultiCodeBlock>
 
 ```tsx{4-8,12-18}:title=src/index.tsx
-import { ApolloClient } from 'apollo-client'; // preserve-line
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
-import { HttpLink } from 'apollo-link-http'; // preserve-line
-import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
-import ReactDOM from 'react-dom'; 
+import ReactDOM from 'react-dom';
+import {
+  ApolloClient,
+  ApolloProvider,
+  gql,
+  NormalizedCacheObject,
+  useQuery,
+} from '@apollo/client';
+
 import Pages from './pages';
+import Login from './pages/login';
 import injectStyles from './styles';
+import { cache } from './cache';
 
 // previous variable declarations
 

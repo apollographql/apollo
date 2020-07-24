@@ -28,8 +28,7 @@ First, we're going to build a GraphQL query that fetches a list of launches. We'
 
 ```tsx:title=src/pages/launches.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';  // preserve-line
 
 import { LaunchTile, Header, Button, Loading } from '../components'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
@@ -214,8 +213,7 @@ Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we
 
 ```tsx:title=src/pages/launch.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag'; 
+import { gql, useQuery } from '@apollo/client';  // preserve-line
 
 import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
 import { ActionButton } from '../containers'; // preserve-line
@@ -372,8 +370,7 @@ First, let's navigate to `src/pages/profile.tsx` and write our query:
 
 ```tsx:title=src/pages/profile.tsx
 import React, { Fragment } from 'react'; // preserve-line
-import { useQuery } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag'; // preserve-line
+import { gql, useQuery } from '@apollo/client';  // preserve-line
 
 import { Loading, Header, LaunchTile } from '../components'; // preserve-line
 import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
