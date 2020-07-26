@@ -1,0 +1,21 @@
+---
+title: Configuring schema checks
+description: Define exactly what schema changes are checked against
+---
+
+After you [enable schema checks](./schema-checks/) for your graph, you can define rules to customize their behavior. For example, you can:
+
+* Exclude past operations that were executed by a particular client, such as a client that you only use for testing
+* Check schema changes against multiple graph variants simultaneously
+
+You define these rules in [Apollo Studio](https://studio.apollographql.com), from the Configuration tab of your graph's Checks page:
+
+<img class="screenshot" src="./img/check-configurations/check-configuration-page.png" alt="Check configuration page in Apollo Studio"></img>
+
+## Configuration options
+
+* **Time range**: _Include_ all distinct operations that were executed within this range. The default value is 7 days ("Within the last week").
+* **Operation count threshold**: _Exclude_ all operations that were executed fewer than this number of times within the specified **time range**.
+* **Variants**: _Include_ all distinct operations that were executed against each selected variant of your graph. The default value is "Base variant" (i.e., whichever variant schema checks are being run against).
+* **Client exclusions**: _Exclude_ all operations that were executed by particular clients, such as clients used exclusively for development and testing.
+    <img class="screenshot" src="./img/check-configurations/excluded-clients.png" alt="Excluded clients configuration in Apollo Studio"></img>
