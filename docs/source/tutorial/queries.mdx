@@ -8,7 +8,7 @@ import Disclaimer from '../../shared/disclaimer.mdx';
 
 Time to accomplish: _15 Minutes_
 
-Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/react-hooks` to fetch more complex queries and execute features like pagination.
+Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/client` to fetch more complex queries and execute features like pagination.
 
 ## The useQuery hook
 
@@ -20,7 +20,7 @@ The `useQuery` hook leverages React's [Hooks API](https://reactjs.org/docs/hooks
 
 <Disclaimer />
 
-To create a component with `useQuery`, import `useQuery` from `@apollo/react-hooks`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
+To create a component with `useQuery`, import `useQuery` from `@apollo/client`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
 
 First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.tsx` to get started and copy the code below into the file.
 
