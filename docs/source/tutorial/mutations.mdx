@@ -112,13 +112,6 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     }, 
   }),
 });
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
-  },
-});
 ```
 
 
@@ -129,13 +122,6 @@ const client = new ApolloClient({
     headers: { authorization: localStorage.getItem('token') },
     uri: "http://localhost:4000/graphql",
   }),
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
-  },
 });
 ```
 
