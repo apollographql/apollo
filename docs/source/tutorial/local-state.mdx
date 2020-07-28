@@ -84,21 +84,14 @@ import { resolvers, typeDefs } from './resolvers';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  }),
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+    'client-name': 'Space Explorer [web]',
+    'client-version': '1.0.0',
+  },
   typeDefs,
   resolvers,
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
-  },
 });
 ```
 
@@ -116,15 +109,20 @@ Let's look at an example where we query the `isLoggedIn` field we wrote to the c
 
 ```tsx{8-12,15}:title=src/index.tsx
 import {
+  ApolloClient,
   ApolloProvider,
   gql,
+  InMemoryCache,
+  NormalizedCacheObject,
   useQuery,
 } from '@apollo/client'; // preserve-line
 
 import Pages from './pages'; // preserve-line
 import Login from './pages/login'; // preserve-line
 import injectStyles from './styles'; // preserve-line
-
+  
+// previous variable declarations  
+  
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
     isLoggedIn @client

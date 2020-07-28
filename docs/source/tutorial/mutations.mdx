@@ -105,12 +105,12 @@ We're almost done completing our login feature! Before we do, we need to attach 
 ```tsx{5-7}:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    }, 
-  }),
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+    'client-name': 'Space Explorer [web]',
+    'client-version': '1.0.0',
+  },
 });
 ```
 
@@ -118,10 +118,12 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 ```jsx{4}:title=src/index.jsx
 const client = new ApolloClient({
   cache,
-  link: new HttpLink({
-    headers: { authorization: localStorage.getItem('token') },
-    uri: "http://localhost:4000/graphql",
-  }),
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+    'client-name': 'Space Explorer [web]',
+    'client-version': '1.0.0',
+  },
 });
 ```
 

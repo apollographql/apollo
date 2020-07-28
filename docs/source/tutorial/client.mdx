@@ -72,19 +72,15 @@ Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass 
 ```tsx:title=src/index.tsx
 import { 
   ApolloClient,
-  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
 
 const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: 'http://localhost:4000/'
-});
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link
+  uri: 'http://localhost:4000/'
 });
 ```
 
@@ -155,6 +151,7 @@ import {
   ApolloClient,
   ApolloProvider,
   gql,
+  InMemoryCache,
   NormalizedCacheObject,
   useQuery,
 } from '@apollo/client';
@@ -162,10 +159,9 @@ import {
 import Pages from './pages';
 import Login from './pages/login';
 import injectStyles from './styles';
-import { cache } from './cache';
-
+  
 // previous variable declarations
-
+  
 injectStyles();
 ReactDOM.render(
   <ApolloProvider client={client}>
