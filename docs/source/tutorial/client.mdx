@@ -70,8 +70,11 @@ Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass 
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject
+} from '@apollo/client';
 import { HttpLink } from 'apollo-link-http';
 
 const cache = new InMemoryCache();
@@ -94,13 +97,18 @@ In just a few lines of code, our client is ready to fetch data! Let's try making
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
-With a `client.query()` call, we can query our graph's API. Add the following line of code to your imports in `src/index.tsx`.
+With a `client.query()` call, we can query our graph's API. Import the `gql` function from `@apollo/client` in `src/index.tsx`.
 
 
 <MultiCodeBlock>
 
-```tsx:title=src/index.tsx
-import gql from 'graphql-tag'; // highlight-line
+```diff
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
++  gql
+} from '@apollo/client';
 ```
 
 </MultiCodeBlock>
@@ -146,8 +154,12 @@ Open `src/index.tsx` and add the following lines of code:
 <MultiCodeBlock>
 
 ```tsx{4-8,12-18}:title=src/index.tsx
-import { ApolloClient } from 'apollo-client'; // preserve-line
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+  gql
+} from '@apollo/client';
 import { HttpLink } from 'apollo-link-http'; // preserve-line
 import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
