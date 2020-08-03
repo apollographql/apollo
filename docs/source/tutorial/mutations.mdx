@@ -105,8 +105,10 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000/graphql',
     headers: {
-      authorization: localStorage.getItem('token'),
-    }, 
+      get authorization() {
+        return localStorage.getItem('token')
+      },
+    },
   }),
 });
 
@@ -123,7 +125,11 @@ cache.writeData({
 const client = new ApolloClient({
   cache,
   link: new HttpLink({
-    headers: { authorization: localStorage.getItem('token') },
+    headers: {
+      get authorization() {
+        return localStorage.getItem('token')
+      },
+    },
     uri: "http://localhost:4000/graphql",
   }),
 });
