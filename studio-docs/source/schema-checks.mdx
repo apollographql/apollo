@@ -146,64 +146,9 @@ The output of `apollo service:check --markdown` looks like this:
 🔗 [View your service check details](https://studio.apollographql.com/service/engine/checks?...).
 ```
 
-## Checking against multiple environments
+## Customizing checks
 
-You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema/registry/#managing-environments-with-variants) of a single data graph.
-
-You can check your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
-
-```
-$ apollo service:check --variant=staging
-```
-
-If you want to check your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
-
-![multiple service checks](./img/schema-checks/multi-github-check.png)
-
-## Customizing checks with CLI flags
-
-> **Important Note:** This section describes customizing a single call to `apollo service:check` using CLI flags; however, **we highly recommend** [configuring schema checks](./check-configurations) with Apollo Studio to customize default behavior for _all_ of a graph's schema checks.
-
-You can customize which operations schema checks will check against to classify schema changes as breaking or non-breaking.
-
-For example, you can provide the `--validationPeriod` option to the `apollo service:check` command to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
-
-This command checks your schema changes against the past two weeks of operations:
-
-```bash
-apollo service:check --validationPeriod=P2W
-```
-
-Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
-
-> **Note:** If you specify a `validationPeriod` that exceeds your organization's operation retention period, the `service:check` command fails with an error.
-
-### Threshold values
-
-You can also customize the behavior of schema checks by specifying **threshold values** to the `service:check` command. These values tell checks to ignore all historical operations that do not exceed the threshold(s) you specify.
-
-For example, you might want to discontinue support for an old version of your client that uses deprecated fields. You can set threshold values to determine when an acceptably small number of users are using the outdated client, thus reducing the impact of discontinuing support.
-
-Provide threshold values with the following flags:
-
-- `--queryCountThreshold` - Validate your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
-- `--queryCountThresholdPercentage` - Validate your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
-
-> **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
-
-Here's an example of running `service:check` with threshold values:
-
-```bash
-npx apollo service:check \
-# Validate the schema against operations that have run in the last 5 days
---validationPeriod=P5D \
-# Only validate against operations that have run at least 5 times during the 5 day duration
---queryCountThreshold=5 \
-# Only validate against operations that account for at least 3% of total operation volume
---queryCountThresholdPercentage=3
-```
-
-If you have any requests for other filtering or threshold mechanisms, please get in touch with us on the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repository.
+See [Configuring schema checks](./check-configurations/).
 
 ## Types of schema changes
 
