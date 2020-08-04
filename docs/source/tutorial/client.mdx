@@ -20,9 +20,7 @@ For this half of the tutorial, we will be working in the `client/` folder of the
 cd start/client && npm install
 ```
 
-Now, our dependencies are installed. Here are the main packages we will be using to build out our frontend:
-
-- `@apollo/client`: A complete data management solution with an intelligent cache.
+Along with other dependencies, this installs the `@apollo/client` package, which includes all of the Apollo Client features we'll use.
 
 ### Configure Apollo VSCode
 
@@ -89,7 +87,7 @@ In just a few lines of code, our client is ready to fetch data! Let's try making
 
 Before we show you how to use the React integration for Apollo, let's send a query with vanilla JavaScript.
 
-With a `client.query()` call, we can query our graph's API. Adjust your `@apollo/client` import to include `gql` in `src/index.tsx`.
+With a `client.query()` call, we can query our graph's API. Adjust your `@apollo/client` import to include `gql` in `src/index.tsx`:
 
 
 <MultiCodeBlock>
