@@ -70,9 +70,7 @@ Navigate to `src/index.tsx` so we can create our client. The `uri` that we pass 
 <MultiCodeBlock>
 
 ```tsx:title=src/index.tsx
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache, NormalizedCacheObject, ApolloClient, HttpLink } from '@apollo/client';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -129,7 +127,13 @@ client
 
 </MultiCodeBlock>
 
-Open up your console and run `npm start`. This will compile your client app. Once it is finished, your browser should open to `http://localhost:3000/` automatically. When the index page opens, open up your [Developer Tools console](https://developers.google.com/web/tools/chrome-devtools/console/) and you should see an object with a `data` property containing the result of our query. You'll also see some other properties, like `loading` and `networkStatus`. This is because Apollo Client tracks the loading state of your query for you.
+Open up your console and go to your server directory and start it. If you follow the server setup tutorial here you can simply do this:
+```
+cd ../server && npm start
+```
+The server needs to be up and running in order for the client app to fetch some data.
+
+Now, go back to your client directory and run `npm start`. This will compile your client app. Once it is finished, your browser should open to `http://localhost:3000/` automatically. When the index page opens, open up your [Developer Tools console](https://developers.google.com/web/tools/chrome-devtools/console/) and you should see an object with a `data` property containing the result of our query. You'll also see some other properties, like `loading` and `networkStatus`. This is because Apollo Client tracks the loading state of your query for you.
 
 Apollo Client is designed to fetch graph data from any JavaScript frontend. No frameworks needed. However, there are view layer integrations for different frameworks that makes it easier to bind queries to the UI.
 
@@ -139,17 +143,20 @@ Go ahead and delete the `client.query()` call you just made and the `gql` import
 
 Connecting Apollo Client to our React app with Apollo's hooks allows us to easily bind GraphQL operations to our UI.
 
-To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/react-hooks` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
+To connect Apollo Client to React, we will wrap our app in the `ApolloProvider` component exported from the `@apollo/client` package and pass our client to the `client` prop. The `ApolloProvider` component is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
 Open `src/index.tsx` and add the following lines of code:
 
 <MultiCodeBlock>
 
 ```tsx{4-8,12-18}:title=src/index.tsx
-import { ApolloClient } from 'apollo-client'; // preserve-line
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'; // preserve-line
-import { HttpLink } from 'apollo-link-http'; // preserve-line
-import { ApolloProvider } from '@apollo/react-hooks';
+import {
+  InMemoryCache,
+  ApolloClient,
+  NormalizedCacheObject,
+  HttpLink,
+  ApolloProvider,
+} from "@apollo/client";
 import React from 'react';
 import ReactDOM from 'react-dom'; 
 import Pages from './pages';
