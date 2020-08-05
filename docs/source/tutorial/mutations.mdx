@@ -14,7 +14,7 @@ With Apollo Client, updating data from a graph API is as simple as calling a fun
 
 The `useMutation` hook is another important building block in an Apollo app. It leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to provide a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
 
-Updating data with a `useMutation` hook from `@apollo/react-hooks` is very similar to fetching data with a `useQuery` hook. The main difference is that the first value in the `useMutation` result tuple is a **mutate function** that actually triggers the mutation when it is called. The second value in the result tuple is a result object that contains loading and error state, as well as the return value from the mutation. Let's see an example:
+Updating data with a `useMutation` hook from `@apollo/client` is very similar to fetching data with a `useQuery` hook. The main difference is that the first value in the `useMutation` result tuple is a **mutate function** that actually triggers the mutation when it is called. The second value in the result tuple is a result object that contains loading and error state, as well as the return value from the mutation. Let's see an example:
 
 ## Update data with useMutation
 
@@ -26,11 +26,9 @@ The first step is defining our GraphQL mutation. To start, navigate to `src/page
 
 ```tsx:title=src/pages/login.tsx
 import React from 'react'; // preserve-line
-import { useApolloClient, useMutation } from '@apollo/react-hooks'; // preserve-line
-import gql from 'graphql-tag';
+import { gql, ApolloClient, useApolloClient, useMutation } from '@apollo/client'; // preserve-line
 
 import { LoginForm, Loading } from '../components'; // preserve-line
-import ApolloClient from 'apollo-client'; // preserve-line
 import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
@@ -61,7 +59,7 @@ To create a better experience for our users, we want to persist the login betwee
 
 ### Expose Apollo Client with useApolloClient
 
-One of the main functions of React Apollo is that it puts your `ApolloClient` instance on React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `@apollo/react-hooks` helper components. The `useApolloClient` hook can help us access the client.
+Apollo Client ensures that your `ApolloClient` instance is available through React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `@apollo/client` helper components. The `useApolloClient` hook can help us access the client.
 
 Let's call `useApolloClient` to get the currently configured client instance. Next, we want to pass an `onCompleted` callback to `useMutation` that will be called once the mutation is complete with its return value. This callback is where we will save the login token to `localStorage`.
 
@@ -106,7 +104,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
     headers: {
       authorization: localStorage.getItem('token'),
-    }, 
+    },
   }),
 });
 
