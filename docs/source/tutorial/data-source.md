@@ -98,8 +98,8 @@ Using a reducer like this enables the `getAllLaunches` method to remain concise 
 Our schema also supports fetching an individual launch by its ID. To support this, let's add _two_ methods to the `LaunchAPI` class: `getLaunchById` and `getLaunchesByIds` :
 
 ```js:title=src/datasources/launch.js
-async getLaunchById({ launchId }) {
-  const response = await this.get('launches', { flight_number: launchId });
+async getLaunchById({ launchID }) {
+  const response = await this.get('launches', { flight_number: launchID });
   return this.launchReducer(response[0]);
 }
 
