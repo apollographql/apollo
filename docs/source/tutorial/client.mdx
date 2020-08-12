@@ -28,7 +28,7 @@ Along with installing other dependencies, this installs the `@apollo/client` pac
 
 ### Install the Apollo extension for VSCode (optional)
 
-Apollo provides an extension for Visual Studio Code that includes loads of helpful features, such as syntax highlighting, GraphQL operation autocomplete, and in-line performance estimates.
+Apollo provides an extension for Visual Studio Code that includes loads of helpful features, such as syntax highlighting, GraphQL field suggestions via IntelliSense, and in-line performance estimates.
 
 1. Most of the VSCode extension's features are powered by Apollo Studio. To get the most out of the extension, make sure to first complete [Connect to Apollo Studio](./production/).
 
@@ -104,7 +104,7 @@ Before we integrate Apollo Client with a React view layer, let's try sending a q
     client
       .query({
         query: gql`
-          query GetLaunch {
+          query TestQuery {
             launch(id: 56) {
               id
               mission {
@@ -140,7 +140,7 @@ Now, let's integrate our client with React.
 
 By adding Apollo Client to our React app, we can use Apollo hooks to bind the results of GraphQL operations directly to our UI.
 
-To connect Apollo Client to React, we wrap our app in the `ApolloProvider` component exported from the `@apollo/client` package. We pass the component our `ApolloClient` instance via the `client` prop.
+To connect Apollo Client to React, we wrap our app in the `ApolloProvider` component included in the `@apollo/client` package. We pass the component our `ApolloClient` instance via the `client` prop.
 
 > The `ApolloProvider` component is similar to React’s context provider: it wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
 
