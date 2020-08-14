@@ -23,7 +23,7 @@ There are a number of resources available to learn GraphQL. If you're looking to
 
 The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool (Apollo Studio), and a client that manages local and remote data in your apps (`apollo-client`).
 
-To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Studio](https://www.apollographql.com/docs/studio/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/essentials/get-started.html).
+To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started.html), [Apollo Studio](https://www.apollographql.com/docs/studio/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/v2.5/essentials/get-started/).
 
 This site and the [Apollo blog](https://www.apollographql.com/blog/) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
 
