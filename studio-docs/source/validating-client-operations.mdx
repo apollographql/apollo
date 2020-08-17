@@ -28,6 +28,16 @@ By combining your registered graph's schema with your client-side schema extensi
 
 > Make sure that your project [provides a graph API key](https://www.apollographql.com/docs/devtools/cli/#provide-an-api-key) to the Apollo CLI. This both authenticates the CLI with Studio and specifies which graph's schema you're checking against.
 
+## Checking against a particular variant
+
+During development, your application might be executing GraphQL operations against a locally running server with a schema that differs somewhat from your _production_ server's schema. Because schemas can differ, it's important to always check your operations against the current schema for a particular environment _before_ you push client changes to that environment.
+
+If you represent each of your server's environments with a separate [graph variant](./schema/registry/#managing-environments-with-variants) (recommended), you can check your operations against a particular variant's schema like so:
+
+```
+$ apollo client:check --variant=production
+```
+
 ## Command options
 
 You can view all available options for `apollo client:check` by running the following command:
@@ -66,6 +76,9 @@ jobs:
       - checkout
 
       - run: npm install
+
+      # CircleCI needs global installs to be sudo
+      - run: sudo npm install --global apollo
 
       # This command authenticates using the `APOLLO_KEY` environment variable. 
       # Don't forget to provide your API key in it.
