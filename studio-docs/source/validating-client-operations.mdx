@@ -38,22 +38,6 @@ If you represent each of your server's environments with a separate [graph varia
 $ apollo client:check --variant=production
 ```
 
-## Command options
-
-You can view all available options for `apollo client:check` by running the following command:
-
-```
-apollo help client:check
-```
-
-The most commonly useful options are:
-
-| Name | Description |
-|------|-------------|
-| `--variant` | The name of the [graph variant](./schema/registry/#managing-environments-with-variants) to check your application's operations against. The default value is `current`. |
-| `--endpoint` | Provide the URL of a running GraphQL server to this option to check operations against that server's schema instead of a schema registered with Apollo. |
-| `--includes` / `--excludes` | File paths to specifically include or exclude when scanning your project for GraphQL operations and schema extensions. By default, the command recursively scans all files starting from the directory you run it in. |
-
 ## Using with continuous integration
 
 Your application can incorporate `client:check` into its continuous delivery pipeline to help ensure that new and modified operations are valid before they go live.
