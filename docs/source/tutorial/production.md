@@ -52,7 +52,8 @@ Now, add one extra option to your `ApolloServer` constructor to enable automatic
 const server = new ApolloServer({
   // ...other options...
   engine: {
-    reportSchema: true
+    reportSchema: true,
+    graphVariant: "current"
   }
 });
 ```
