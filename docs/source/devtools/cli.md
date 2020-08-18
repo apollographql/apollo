@@ -26,6 +26,20 @@ You can install the CLI globally in your development environment with the follow
 npm install -g apollo
 ```
 
+## Provide an API key
+
+Like all other tools, the Apollo CLI requires an API key to communicate with Apollo Studio. For each of your projects, [obtain a graph API key](https://www.apollographql.com/docs/studio/api-keys/#graph-api-keys) for the project's associated graph, and set that key as the value of `APOLLO_KEY` in your application's `.env` file:
+
+```js:title=.env
+APOLLO_KEY=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
+```
+
+Alternatively, you can provide an API key to individual CLI commands with the `--key` option:
+
+```
+apollo client:check --graph=MyGraph --key=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
+```
+
 ## Supported commands
 
 Most of the Apollo CLI's commands are in the following namespaces:
