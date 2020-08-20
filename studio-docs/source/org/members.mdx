@@ -18,58 +18,108 @@ Each organization member has one of the following roles:
 | Name | Description |
 |------|-------------|
 | `Admin` | Has management access to the entire organization, including its members, graphs, and configuration. |
-| `Contributor` | Has management access to the organization's graphs, but not to members or configuration. Intended for back-end developers who make changes to graphs. |
-| `Observer` | Has view-only access to the organization's graph data, such as schemas and metrics. Intended for analysts interested in back-end performance data. |
-| `Consumer` | Has view-only access to the organization's graph _schemas_, but not metrics. Intended for developers building client applications against a graph. |
-| `Billing Manager` | Has management access to the organization's configuration and billing. Can also remove members (but not invite them). No access to graphs.  |
+| `Contributor` | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for back-end developers who are authorized to make changes to graphs. |
+| `Observer` | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. |
+| `Consumer` | Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph. |
+| `Billing Manager` | Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs. |
 
 Only admins can assign roles to other members. You can see which role you have in a particular organization from your [user settings page](https://studio.apollographql.com/user-settings), or from that organization's Members tab.
 
 ### Role permissions
 
 <table>
-<thead>
-<tr>
-<th>Action</th>
-<th>Admin</th>
-<th>Billing Manager</th>
-<th>Contributor</th>
-<th>Observer</th>
-<th>Consumer</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Invite members</td><td align="center">✓</td><td></td><td></td><td></td><td></td>
-</tr>
-<tr>
-<td>Remove members</td><td align="center">✓</td><td align="center">✓</td><td></td><td></td><td></td>
-</tr>
-<tr>
-<td>View and edit billing information</td><td align="center">✓</td><td align="center">✓</td><td></td><td></td><td></td>
-</tr>
-<tr>
-<td>Manage organization configuration (name, avatar, etc.)</td><td align="center">✓</td><td align="center">✓</td><td></td><td></td><td></td>
-</tr>
-<tr>
-<td>Create, rename, and delete graphs</td><td align="center">✓</td><td></td><td align="center">✓</td><td></td><td></td>
-</tr>
-<tr>
-<td>Manage graph integrations (Datadog, Slack, etc.)</td><td align="center">✓</td><td></td><td align="center">✓</td><td></td><td></td>
-</tr>
-<tr>
-<td>View and manage graph API keys</td><td align="center">✓</td><td></td><td align="center">✓</td><td></td><td></td>
-</tr>
-<tr>
-<td>View graph usage metrics</td><td align="center">✓</td><td></td><td align="center">✓</td><td align="center">✓</td><td></td>
-</tr>
-<tr>
-<td>View graph schemas and changelogs</td><td align="center">✓</td><td></td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td>
-</tr>
-<tr>
-<td>Query graphs with the Explorer</td><td align="center">✓</td><td></td><td align="center">✓</td><td align="center">✓</td><td align="center">✓</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Admin</th>
+      <th>Billing Manager</th>
+      <th>Contributor</th>
+      <th>Observer</th>
+      <th>Consumer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Invite members</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>Remove members</td>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>View and edit billing information</td>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>Manage organization configuration (name, avatar, etc.)</td>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>Create, rename, and delete graphs</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>Manage graph integrations (Datadog, Slack, etc.)</td>
+      <td align="center">✅</td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>View and manage graph API keys</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td>View graph usage metrics</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td/>
+    </tr>
+    <tr>
+      <td>View graph schemas and changelogs</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+    </tr>
+    <tr>
+      <td>Query graphs with the Explorer</td>
+      <td align="center"> ✅ </td>
+      <td/>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+      <td align="center"> ✅ </td>
+    </tr>
+  </tbody>
 </table>
 
 ## Inviting members
