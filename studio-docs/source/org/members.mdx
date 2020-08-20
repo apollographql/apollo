@@ -1,19 +1,46 @@
 ---
 title: Managing organization members
-sidebar_title: Members
+sidebar_title: Members and roles
 ---
 
 ## Inviting members
 
-Invite individual members by email address from your organization's Members tab.
+**Admins** can invite individual members by email address from your organization's Members tab.
 
-You can also create an **invite link** from your organization's Settings tab. Any number of individuals can use the same invite link.
+**Admins** can also create an *invite link* from your organization's Settings tab, which can be used and re-used multiple times for individuals to join the organization.
 
-> **Do not share your invite link publicly.** Anyone with the link can join your organization. If your invite link becomes compromised, you can replace or disable it from the Settings tab.
+> *Do not share your invite link publicly.* Anyone with the link can join your organization. If your invite link becomes compromised, you can replace or disable it from the Settings tab.
+
+If your organization has user roles enabled, **Admins** will be able to control which role is attached to each invitation and which role your invitation link is for.
 
 ## Removing members
 
-Remove members from your organization's Members tab.
+**Billing Managers** and **Admins** can remove members from your organization from your organization's Members tab.
 
-> Currently, any member of an organization can remove any _other_ member
-from the organization.
+## User roles
+
+> User roles is currently an invite-only capability in Studio.
+Please contact support@apollographql.com if you're interested in access for your organization.
+If user roles is not enabled on your organization, every member of your organization is an **Admin** by default.
+
+You can see which role you have in an organization on your [user settings page](https://studio.apollographql.com/user-settings) and on the organization's Members tab.
+Studio supports five roles for users in organizations:
+
+- **Billing Managers** have full admin access to the organization's configuration, billing, and members, but no access to graphs.
+- **Consumers** can access schema docs and write queries in the Schema and Explorer pages, but can't use Studio's observability features or see any administrative information about the organization.
+- **Observers** can use everything in Studio in a *read-only* capacity, but cannot see any administrative information about the organization.
+- **Contributors** can push schemas to graphs, set up integrations, and change graph configurations, but cannot see any administrative information about the organization.
+- **Admins** have full access to the organization's configuration and all graphs within the organization. Admins can invite other users to the organization, change the roles of members within the organization, transfer and delete graphs, etc.
+
+| Action | Billing Manager | Consumer | Observer | Contributor | Admin |
+|:--|:--|:--|:--|:--|:--|
+| Invite members to an organization |  |  |  |  | ✓ |
+| Remove members from an organization | ✓ |  |  |  | ✓ |
+| View and edit billing information | ✓ |  |  |  | ✓ |
+| Manage organization configuration (eg. name, avatar) | ✓ |  |  |  | ✓ |
+| Create, rename, and delete graphs |  |  |  | ✓ | ✓ |
+| Manage graph integrations (Datadog, Slack) |  |  |  | ✓ | ✓ |
+| View and manage API keys for a graph |  |  |  | ✓ | ✓ |
+| View usage metrics for a graph (use the Fields, Clients, and Operations pages) |  |  | ✓ | ✓ | ✓ |
+| View a graph's schema reference and changelog on the Schema page |  | ✓ | ✓ | ✓ | ✓ |
+| Query a graph with the Explorer |  | ✓ | ✓ | ✓ | ✓ |
