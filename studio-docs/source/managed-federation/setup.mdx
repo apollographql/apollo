@@ -4,8 +4,8 @@ sidebar_title: Setup
 ---
 
 import ObtainGraphApiKey from '../../shared/obtain-graph-api-key.mdx';
-
 import ProjectConfigPanel from 'gatsby-theme-apollo-docs/shared/project-config-panel.mdx';
+import RegisterFederatedCli from '../../shared/register-federated-cli.mdx';
 
 This article describes how to set up Apollo Studio for a data graph that uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
@@ -13,11 +13,18 @@ This article describes how to set up Apollo Studio for a data graph that uses [A
 
 ## 1. Get started
 
-Complete at least the first three steps of [Get started with Apollo Studio](../getting-started/) (we recommend completing all of them!), then return here.
+If you haven't yet, complete the first two steps from the Apollo Studio getting started guide:
+
+1. [Create your account](../getting-started/#1-create-your-account)
+2. [Create your first graph](../getting-started/#2-create-your-first-graph)
 
 > In the [Register your schema](../getting-started/#3-register-your-schema) step, make sure you follow the instructions for a GraphQL server that uses Apollo Federation.
 
-## 2. Modify the gateway (if necessary)
+## 2. Register all implementing service schemas
+
+<RegisterFederatedCli />
+
+## 3. Modify the gateway (if necessary)
 
 > This section assumes you are using Apollo Server with the `@apollo/gateway` library as your gateway.
 
@@ -40,7 +47,7 @@ Remove the `serviceList` argument from your `ApolloGateway` constructor entirely
 const gateway = new ApolloGateway();
 ```
 
-## 3. Connect the gateway to Studio
+## 4. Connect the gateway to Studio
 
 Like your implementing services, your gateway uses an API key to identify itself to Studio.
 
@@ -52,7 +59,7 @@ Note that if you specify the API key in a `.env` file, the gateway does _not_ au
 
 > When running your gateway in an environment where outbound traffic to the internet is restricted, consult the [directions for configuring a proxy](https://www.apollographql.com/docs/apollo-server/proxy-configuration/) within Apollo Server.
 
-## 4. Deploy the modified gateway
+## 5. Deploy the modified gateway
 
 You can now deploy your modified gateway to begin fetching your federated schema from Studio instead of directly from your services.
 
