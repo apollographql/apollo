@@ -47,7 +47,7 @@ Apollo Client's cache locally replicates the parts of your data graph that your 
 
 Apollo Client includes official support for React, and there are community-maintained libraries for [other popular view layers](https://www.apollographql.com/docs/react/integrations/integrations/).
 
-A Swift implementation of Apollo Client is officially supported for [iOS](https://www.apollographql.com/docs/ios/), and there is a community-maintained [Android library](https://www.apollographql.com/docs/android/).
+Apollo Client is also officially supported on mobile with a Swift client for [iOS](https://www.apollographql.com/docs/ios/) and a Java/Kotlin one for [Android](https://www.apollographql.com/docs/android/).
 
 ## 3. Manage your graph with Apollo Studio
 
