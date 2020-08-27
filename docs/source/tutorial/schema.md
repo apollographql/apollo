@@ -3,6 +3,8 @@ title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
+> Time to accomplish: 15 minutes
+
 Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might define the following types:
 
 ```graphql

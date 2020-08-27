@@ -67,7 +67,7 @@ In our `onCompleted` handler, we also call `client.writeData` to write local dat
 
 <MultiCodeBlock>
 
-```tsx{2,6-9}:title=src/pages/login.tsx
+```tsx{2-3,5-10,13-14}:title=src/pages/login.tsx
 export default function Login() {
   const client: ApolloClient<any> = useApolloClient();
   const [login, { loading, error }] = useMutation<LoginTypes.login, LoginTypes.loginVariables>(
@@ -97,7 +97,7 @@ We're almost done completing our login feature! Before we do, we need to attach 
 
 <MultiCodeBlock>
 
-```tsx{5-7}:title=src/index.tsx
+```tsx{5-7,11-16}:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
   link: new HttpLink({
