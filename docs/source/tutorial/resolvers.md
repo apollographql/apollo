@@ -41,9 +41,9 @@ As `src/schema.js` shows, our schema's `Query` type defines three fields: `launc
 module.exports = {
   Query: {
     launches: (_, __, { dataSources }) =>
-      dataSources.launchAPI.getAllLaunches(),
+      dataSources.LaunchAPI.getAllLaunches(),
     launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
+      dataSources.LaunchAPI.getLaunchById({ launchId: id }),
     me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
   }
 };
