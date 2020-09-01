@@ -36,6 +36,8 @@ The two packages you need to get started with Apollo Server are `apollo-server` 
 Now, let's navigate to `src/index.js` so we can create our server. Paste the code below into the file:
 
 ```js:title=src/index.js
+require('dotenv').config();
+
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 
