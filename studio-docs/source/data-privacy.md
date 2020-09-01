@@ -8,6 +8,31 @@ This article describes which data is and is _not_ sent to Apollo as part of its 
 
 > Most importantly, result data from GraphQL operations that your server executes is **never** sent to Apollo.
 
+## What technology sends data to Apollo Studio
+
+In particular, the open source tools that are covered in this document include the [Apollo CLI](https://github.com/apollographql/apollo-tooling/tree/master/packages/apollo) and [Apollo Server](https://github.com/apollographql/apollo-server/). User data is sent to Apollo on an opt-in basis, and we strive to keep the privacy and security of your data top-of-mind, with more sensitive data requiring further opt-in.
+
+All data is collecting at one of the following endpoints. In some case, there is additional public documentation to enable reporting data directly to these Apollo APIs.
+
+* [Usage Reporting](https://www.apollographql.com/docs/studio/setup-analytics/#adding-support-to-a-third-party-server-advanced): https://usage-reporting.api.apollographql.com
+* [Schema Reporting](https://www.apollographql.com/docs/studio/schema/schema-reporting-protocol/) (server): https://engine-graphql.api.apollographql.com
+* [Schema Publishing](https://github.com/apollographql/apollo-tooling/tree/master/packages/apollo-language-server/src/engine/operations) (CLI): https://graphql.api.apollographql.com
+
+If your setup includes a corporate proxy or firewall, you may need to allow traffic to exit your infrastructure or development machine to these domains. See below for a table on different versions of Apollo Server and the Apollo CLI to see which domain each sends data to. Please note that only hostnames are included; data may be sent to particular endpoints of these domains.
+
+|               | Apollo Server (usage)                     | Apollo Server (schemas)                             |
+|---------------|-------------------------------------------|-----------------------------------------------------|
+| pre - 2.0     | n/a                                       | n/a                                                 |
+| 2.0-2.15.0    | https://engine-report.apollodata.com      | n/a                                                 |
+| 2.15.0-2.17.x | https://engine-report.apollodata.com      | https://edge-server-reporting.api.apollographql.com |
+| 2.17.0 +      | https://usage-reporting.api.apollographql.com | https://schema-reporting.apollographql.com          |
+
+
+|                  |        Apollo CLI                                     |
+|------------------|-------------------------------------------------------|
+| Pre - 2.31.0     | https://engine-graphql.apollographql.com              |
+| 2.32 +           | https://graphql.api.apollographql.com                 |
+
 ## What data does Apollo Server send to Apollo Studio?
 
 You can configure Apollo Server to trace the execution of each GraphQL operation and [push those metrics to Apollo Studio](./setup-analytics/). Studio uses this trace data to reconstruct both operation-level timing data for given query shapes and field-level timing data for your overall schema. This data is available for you to explore and visualize in Studio.
