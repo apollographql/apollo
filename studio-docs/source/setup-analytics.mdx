@@ -101,7 +101,7 @@ query AuthorForPost {
 }
 ```
 
-It's important to decide how to group such queries when tracking metrics. The [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts) does the following to every query before generating its signature to better group functionally equivalent operations:
+It's important to decide how to group such queries when tracking metrics. The [TypeScript reference implementation](https://github.com/apollographql/apollo-tooling/blob/master/packages/apollo-graphql/src/operationId.ts) does the following to every query before generating its signature to better group functionally equivalent operations:
 
 * Drop unused fragments and/or operations
 * Hide string literals
