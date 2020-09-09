@@ -270,7 +270,7 @@ const Launch: React.FC<LaunchProps> = ({ launchId }) => {
   return (
     <Fragment>
       <Header image={data.launch && data.launch.mission && data.launch.mission.missionPatch}>
-        {data && data.launch && data.launch.mission && data.launch.mission.name}
+        {data.launch && data.launch.mission && data.launch.mission.name}
       </Header>
       <LaunchDetail {...data.launch} />
       <ActionButton {...data.launch} />
