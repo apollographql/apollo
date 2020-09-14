@@ -59,7 +59,7 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 ### Apollo Studio features
 
-### Free for all Apollo users
+#### Free for all Apollo users
 
 * A powerful **schema explorer** that helps your team build and run queries against your registered schema:
 
@@ -73,7 +73,7 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 * [Slack notifications](https://www.apollographql.com/docs/studio/slack-integration/) for schema changes and daily metrics reports
 * [Management of a federated data graph](https://www.apollographql.com/docs/studio/managed-federation/overview/)
 
-### Available with an Apollo Team or Enterprise plan
+#### Available with an Apollo Team or Enterprise plan
 
 * [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for arbitrary timeframes
 * [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/studio/client-awareness/)
