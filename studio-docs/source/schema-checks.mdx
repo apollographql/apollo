@@ -81,7 +81,7 @@ If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/a
 
 Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain results and display them directly on your team's pull requests.
 
-We recommend defining a separate CI job for each [variant of your schema](#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
+We recommend defining a separate CI job for each [variant of your schema](./check-configurations#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
 
 ### Example configuration
 
