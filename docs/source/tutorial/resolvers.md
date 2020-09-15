@@ -269,6 +269,13 @@ type LaunchConnection { # add this below the Query type as an additional type.
   hasMore: Boolean!
   launches: [Launch]!
 }
+
+type User {
+  id: ID!
+  email: String!
+  profileImage: String
+  trips: [Launch]! // highlight-line
+}
 ```
 
 Now, `Query.launches` takes in two parameters (`pageSize` and `after`) and returns a `LaunchConnection` object. The `LaunchConnection` includes:
