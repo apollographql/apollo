@@ -56,7 +56,7 @@ Before we begin, make sure you have the following installed:
 - [git](https://git-scm.com/) v2.14.1 or later
 
 Although it isn't required, we also recommend using [VS Code](https://code.visualstudio.com/)
-as your editor so you can use Apollo's helpful VS Code extension.
+as your editor so you can use Apollo's helpful [VS Code extension](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo).
 
 ## Clone the example app
 
