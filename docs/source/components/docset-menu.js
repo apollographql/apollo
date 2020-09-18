@@ -6,7 +6,6 @@ import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
 import {
   NavItemsContext,
-  NavItemDescription
 } from 'gatsby-theme-apollo-docs';
 import { colors } from '@apollo/space-kit/colors';
 import { size } from 'polished';
@@ -45,15 +44,23 @@ const StyledLink = styled.a({
   }
 });
 
+const MenuItemDescription = styled.p({
+  marginBottom: 0,
+  fontSize: 14,
+  lineHeight: 1.5,
+  color: colors.text3,
+  transition: 'color 150ms ease-in-out'
+});
+
 const icons = [
-  <IconSatellite3 weight="thin" />,
   <ReactLogo />,
-  <IconSchema weight="thin" />,
   <AppleLogo style={{
     padding: 1,
     paddingTop: 0,
     paddingBottom: 2
   }} />,
+  <IconSatellite3 weight="thin" />,
+  <IconSchema weight="thin" />,
 ];
 
 export default function DocsetMenu() {
@@ -72,11 +79,11 @@ export default function DocsetMenu() {
           )}
           title={(
             <StyledLink href={navItem.url}>
-              {navItem.title}
+              {navItem.name}
             </StyledLink>
           )}
         >
-          <NavItemDescription>{navItem.description}</NavItemDescription>
+          <MenuItemDescription>{navItem.description}</MenuItemDescription>
         </MenuItem>
       ))}
     </MenuWrapper>

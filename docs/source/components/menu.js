@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { NavItemTitle } from 'gatsby-theme-apollo-docs';
 import { size } from 'polished';
 import { colors } from '@apollo/space-kit/colors';
 
@@ -9,6 +8,12 @@ export const MenuWrapper = styled.div({
   gridTemplateColumns: `repeat(auto-fill, minmax(270px, 1fr))`,
   gridGap: 24,
   paddingTop: 8
+});
+
+const MenuItemTitle = styled.h4({
+  marginBottom: 8,
+  fontWeight: 600,
+  color: 'inherit'
 });
 
 const MenuItemWrapper = styled.div({
@@ -30,9 +35,9 @@ export function MenuItem({icon, title, children, ...props}) {
     <MenuItemWrapper {...props}>
       <IconWrapper>{icon}</IconWrapper>
       <TextWrapper>
-        <NavItemTitle>
+        <MenuItemTitle>
           {title}
-        </NavItemTitle>
+        </MenuItemTitle>
         {children}
       </TextWrapper>
     </MenuItemWrapper>
