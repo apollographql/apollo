@@ -70,7 +70,7 @@ APOLLO_SCHEMA_REPORTING=true
 
 Now whenever your server starts up, it automatically registers its schema with the Apollo schema registry _and_ begins pushing metrics to Apollo Studio!
 
-> We would love for other GraphQL servers to support schema reporting too! If you're interested in implementing support, [the protocol is documented here.](./schema-reporting-protocol/)
+> We would love for other GraphQL servers to support schema reporting too! If you're interested in implementing support, [the protocol is documented here.](./schema/schema-reporting-protocol/)
 
 </ExpansionPanel>
 
@@ -118,7 +118,7 @@ However, to get the most out of Studio, you need to _re_-register your server's 
 
 **If you set up schema reporting** in [Step 3](#3-register-your-schema) (the first schema registration option), Apollo Server automatically registers your schema every time it starts up, and no additional setup is required.
 
-**If you registered your schema with the Apollo CLI**, see [Registering with continuous delivery](./schema/manual-registration/#registering-with-continuous-delivery) for an example.
+**If you registered your schema with the Apollo CLI**, see [Registering with continuous delivery](./schema/cli-registration/#registering-with-continuous-delivery) for an example.
 
 ## Next steps
 

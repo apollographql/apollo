@@ -4,9 +4,34 @@ sidebar_title: Data privacy and compliance
 description: Understand what Studio ingests and learn about GDPR
 ---
 
-This article describes which data is and is _not_ sent to Apollo as part of its platform's data management tools.
+This article describes which data is and is _not_ sent to Apollo Studio by the other components of the Apollo platform.
+
+Apollo Studio's top priority is ensuring the privacy and security of your data and your customers' data. No Apollo tool sends _any_ data to Apollo Studio unless you configure it to do so. Features that potentially send highly sensitive data require additional opt-in.
 
 > Most importantly, result data from GraphQL operations that your server executes is **never** sent to Apollo.
+
+## Which tools send data to Apollo Studio?
+
+Both [Apollo Server](https://www.apollographql.com/docs/apollo-server/) and the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) have **opt-in features** that send data to Apollo Studio. Neither tool sends any data to Studio unless you configure it to do so.
+
+Apollo Client does **not** send data to Apollo Studio.
+
+## Where is data sent?
+
+All data sent to Apollo Studio is sent to an endpoint with one of the following base URLs:
+
+| Base URL | Used by |
+|----------|---------|
+| **Latest URLs** |
+| `https://usage-reporting.api.apollographql.com` | Metrics reporting from [Apollo Server](https://www.apollographql.com/docs/studio/setup-analytics/#pushing-traces-from-apollo-server) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/setup-analytics/#third-party-support) |
+| `https://schema-reporting.apollographql.com` | Schema registration via schema reporting in [Apollo Server](https://www.apollographql.com/docs/studio/schema/schema-reporting/#apollo-server-setup) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/schema/schema-reporting/#other-graphql-servers) |
+| `https://graphql.api.apollographql.com` | All [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) (v2.31+) commands that communicate with Studio |
+| **Active legacy URLs** |
+| `https://engine-report.apollodata.com` | Metrics reporting from Apollo Server (v2.0-2.17.x) |
+| `https://edge-server-reporting.api.apollographql.com` | Schema registration via schema reporting in Apollo Server (v2.15.0-2.17.x) |
+| `https://engine-graphql.apollographql.com` | All Apollo CLI (v2.30 and earlier) commands that communicate with Studio |
+
+If your environment uses a corporate proxy or firewall, you might need to configure it to allow outbound traffic to these domains. Note that data might be sent to multiple endpoints in a given domain.
 
 ## What data does Apollo Server send to Apollo Studio?
 
