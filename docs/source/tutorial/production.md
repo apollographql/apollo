@@ -32,7 +32,7 @@ Apollo Server can communicate directly with Apollo Studio to register its schema
 
 From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
-<img src="../img/register-schema.jpg" class="screenshot" width="600"></img>
+<img src="../img/register-schema.png" class="screenshot" width="600"></img>
 
 Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
 
