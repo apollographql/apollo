@@ -58,24 +58,15 @@ Once you have your API key, select the registration method that corresponds  to 
 
 Apollo Server supports a feature called **schema reporting** that enables it to register its schema automatically on startup.
 
-1. Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment.
+Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment, and set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`.
 
-    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
 
-    ```none:title=.env
-    APOLLO_KEY=YOUR_KEY_HERE
-    ```
+```none:title=.env
+APOLLO_KEY=YOUR_KEY_HERE
+APOLLO_SCHEMA_REPORTING=true
+```
 
-2. Set the `engine.reportSchema` option to `true` in your `ApolloServer` constructor, like so:
-
-    ```js
-    const server = new ApolloServer({
-      // ...other options...
-      engine: {
-        reportSchema: true
-      }
-    });
-    ```
 
 Now whenever your server starts up, it automatically registers its schema with the Apollo schema registry _and_ begins pushing metrics to Apollo Studio!
 
