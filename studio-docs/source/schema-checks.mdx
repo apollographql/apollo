@@ -81,7 +81,7 @@ If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/a
 
 Schema checks is especially useful when you add it to your continuous integration pipeline (such as Jenkins or CircleCI). By doing so, you can obtain results and display them directly on your team's pull requests.
 
-We recommend defining a separate CI job for each [variant of your schema](#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
+We recommend defining a separate CI job for each [variant of your schema](./check-configurations#checking-against-multiple-environments) (production, staging, etc.) you want to validate your changes against. The `apollo service:check` command returns a non-zero exit code when it detects a breaking change, meaning the job will fail when the check fails.
 
 ### Example configuration
 
@@ -304,6 +304,23 @@ These changes are detected by the `apollo service:check` command, but they are "
       <li id="ENUM_DEPRECATED_REASON_CHANGE">
         <code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation
         changed
+      </li>
+    </ul>
+  </li>
+  <li>
+    Descriptions
+    <ul>
+      <li id ="TYPE_DESCRIPTION_CHANGE">
+        <code>TYPE_DESCRIPTION_CHANGE</code> Description added, removed, or updated for a type.
+      </li>
+      <li id ="FIELD_DESCRIPTION_CHANGE">
+        <code>FIELD_DESCRIPTION_CHANGE</code> Description added, removed, or updated for a field.
+      </li>
+      <li id ="ENUM_VALUE_DESCRIPTION_CHANGE">
+        <code>ENUM_VALUE_DESCRIPTION_CHANGE</code> Description added, removed, or updated for an enum value.
+      </li>
+      <li id ="ARG_DESCRIPTION_CHANGE">
+        <code>ARG_DESCRIPTION_CHANGE</code> Description added, removed, or updated for an argument.
       </li>
     </ul>
   </li>

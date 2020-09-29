@@ -60,11 +60,14 @@ USAGE
 
 COMMANDS
   client:check            Check a client project against a pushed service
-  client:codegen          Generate static types for GraphQL queries. Can use the published
-                          schema in Apollo Studio or a downloaded schema.
-  client:download-schema  Download a schema from Apollo Engine or a GraphQL endpoint.
+  client:codegen          Generate static types for GraphQL queries. Can use the
+                          published schema in the Apollo registry or a
+                          downloaded schema.
+  client:download-schema  Download a schema from Apollo or a GraphQL endpoint in
+                          JSON or SDL format
   client:extract          Extract queries from a client
-  client:push             Register operations with Apollo, adding them to the safelist
+  client:push             Register operations with Apollo, adding them to the
+                          safelist
 ```
 
 You can also obtain the full set of options for an individual command like so:

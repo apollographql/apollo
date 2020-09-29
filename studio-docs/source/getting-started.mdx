@@ -58,28 +58,19 @@ Once you have your API key, select the registration method that corresponds  to 
 
 Apollo Server supports a feature called **schema reporting** that enables it to register its schema automatically on startup.
 
-1. Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment.
+Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment, and set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`.
 
-    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
 
-    ```none:title=.env
-    APOLLO_KEY=YOUR_KEY_HERE
-    ```
+```none:title=.env
+APOLLO_KEY=YOUR_KEY_HERE
+APOLLO_SCHEMA_REPORTING=true
+```
 
-2. Set the `engine.reportSchema` option to `true` in your `ApolloServer` constructor, like so:
-
-    ```js
-    const server = new ApolloServer({
-      // ...other options...
-      engine: {
-        reportSchema: true
-      }
-    });
-    ```
 
 Now whenever your server starts up, it automatically registers its schema with the Apollo schema registry _and_ begins pushing metrics to Apollo Studio!
 
-> We would love for other GraphQL servers to support schema reporting too! If you're interested in implementing support, [the protocol is documented here.](./schema-reporting-protocol/)
+> We would love for other GraphQL servers to support schema reporting too! If you're interested in implementing support, [the protocol is documented here.](./schema/schema-reporting-protocol/)
 
 </ExpansionPanel>
 
@@ -127,7 +118,7 @@ However, to get the most out of Studio, you need to _re_-register your server's 
 
 **If you set up schema reporting** in [Step 3](#3-register-your-schema) (the first schema registration option), Apollo Server automatically registers your schema every time it starts up, and no additional setup is required.
 
-**If you registered your schema with the Apollo CLI**, see [Registering with continuous delivery](./schema/manual-registration/#registering-with-continuous-delivery) for an example.
+**If you registered your schema with the Apollo CLI**, see [Registering with continuous delivery](./schema/cli-registration/#registering-with-continuous-delivery) for an example.
 
 ## Next steps
 

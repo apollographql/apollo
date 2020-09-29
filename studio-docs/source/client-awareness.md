@@ -37,26 +37,28 @@ If one or both of these headers are present, Apollo Server automatically extract
 
 #### Advanced Apollo Server configuration
 
-You can configure Apollo Server to use a different method to determine the `name` and `version` of the client associated with a request. To do so, provide a `generateClientInfo` function to the `ApolloServer` constructor.
+You can configure Apollo Server to use a different method to determine the `name` and `version` of the client associated with a request. To do so, install the [usage reporting plugin](https://www.apollographql.com/docs/apollo-server/api/plugin/usage-reporting/) explicitly and provide it with a `generateClientInfo` function.
 
 In the following example, the `generateClientInfo` function calls a `userSuppliedLogic` function, which can return values for the client's name and version based on the details of the `request`.
 
 ```js{8-14}
 const { ApolloServer } = require("apollo-server");
+const { ApolloServerPluginUsageReporting } = require("apollo-server-core");
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  engine: {
-    apiKey: 'YOUR API KEY HERE',
-    generateClientInfo: ({ request }) => {
-      const { clientName, clientVersion } = userSuppliedLogic(request);
-      return {
-        clientName,
-        clientVersion
-      };
-    }
-  }
+  plugins: [
+    ApolloServerPluginUsageReporting({
+      generateClientInfo: ({ request }) => {
+        const { clientName, clientVersion } = userSuppliedLogic(request);
+        return {
+          clientName,
+          clientVersion
+        };
+      }
+    })
+  ],
 });
 
 server.listen().then(({ url }) => {
