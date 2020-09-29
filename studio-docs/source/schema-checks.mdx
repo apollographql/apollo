@@ -33,7 +33,7 @@ When you check your schema with the `apollo service:check` command:
 
 1. Apollo Studio generates a diff between your local schema and the active schema for the variant you're checking against (the default variant is `current`).
 2. Studio uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-checks)).
-3. Studio returns the diff, along with a list of any breaking changes found.
+3. Studio returns the diff, along with a list of the operations that are affected by the changes.
 4. The Apollo CLI prints the result of the check and returns a non-zero exit code if at least one breaking change is found.
 
 ### The check response
