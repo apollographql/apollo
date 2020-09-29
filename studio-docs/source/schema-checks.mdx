@@ -73,6 +73,16 @@ The CLI output also includes a Studio URL that provides full details on the chan
 
 > **Note:** If you've [installed schema checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
 
+### Approving behavior changes
+<img class="screenshot" src="./img/schema-checks/mark-operation.png" alt="Service check page in Apollo Studio"></img>
+
+While it's important for every potentially dangerous change to be flagged, it's also equally important to make room for exceptions. There might be times when a check is failing because of a behavior change that is not actually dangerous. For example, changing a variable from null to non-null is a behavior change that might be perfectly acceptable. In these scenarios, you can "approve" behavior changes for an affected operation by clicking on the "Override" button, and then choosing "Mark behavior changes as safe". In subsequent checks, the operation will no longer fail checks and will move into the "Ignored Operations" section. It is possible to unmark an operation as safe too if it done by mistake.
+
+> **Note:** When marking behavior changes as safe for an operation, the entire set of changes for that operation will be approved. For example, if you approve changes (A,B,C) for operation X, and in the next check, operation X appears as affected with changes (A,B,C,D) this will still surface as an affected operation since D was not previously approved.
+
+### Ignoring operations 
+You might also want to ignore operations from unsupported clients/client versions. In these cases, you can ignore the operation entirely. Similar to approving behavior changes for an operation, on the next check, the affected operation will appear under the "Ignored Operations" section and will not cause subsequent checks to fail. You can ignore an operation by clicking on "Override" and then choosing "Mark operation as unsupported" to achieve this.
+
 ### Checking a federated schema
 
 If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
