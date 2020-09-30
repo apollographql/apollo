@@ -48,8 +48,9 @@ const server = new ApolloServer({
 
     // find a user by their email
     const users = await store.users.findOrCreate({ where: { email } });
-    const user = users && users[0] || null;
+    const user = users && users[0];
 
+    if (!user) return { user: null };
     return { user: { ...user.dataValues } };
   },
   // Additional constructor options
