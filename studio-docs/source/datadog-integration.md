@@ -50,9 +50,9 @@ Studio forwards the following metrics to Datadog:
 
 These metrics are aggregated in 60-second intervals and tagged with the GraphQL operation name as `operation:<query-name>`. Unique query signatures with the same operation name are merged, and queries without an operation name are ignored.
 
-These metrics are also tagged with both the associated Studio graph ID (as `graph:<graph-id>`) and the associated variant name (as `variant:<variant-name>`). If you haven't set a variant name, then `current` is used.
+These metrics are also tagged with both the associated Apollo graph ID (as `graph:<graph-id>`) and the associated variant name (as `variant:<variant-name>`). If you haven't set a variant name, then `current` is used.
 
-If you set up your integration before October 2020, the metric names start with `apollo.engine.operations` instead of `apollo.operations`, and used a `service:<graph-id>` tag instead of `graph:<graph-id>`. This is called "legacy mode". You may transition your graph to modern mode by clicking the "Transition to modern mode" button on your graph's Integrations page. This is a one-way change; you should be prepared to update any dashboards and metrics to use the new metric and tag names when you click the button.
+> If you set up your integration before October 2020, the metric names start with `apollo.engine.operations` instead of `apollo.operations`, and used a `service:<graph-id>` tag instead of `graph:<graph-id>`. This is called "legacy mode". You may transition your graph to modern mode by clicking the "Transition to modern mode" button on your graph's Integrations page. This is a one-way change; you should be prepared to update any dashboards and metrics to use the new metric and tag names when you click the button.
 
 ## Exploring metrics
 
