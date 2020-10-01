@@ -85,9 +85,8 @@ You override flagged changes on an operation-by-operation basis. For each operat
 
 * **Mark the changes as safe.** In this case, schema checks will _not_ flag these exact changes for the operation in any future execution. This effectively "approves" the changes for the operation.
     * If a future check detects approved changes along with _new_ unsafe changes to the operation, the new unsafe changes _will_ be flagged.
-* **Mark the operation as unsupported.** In this case, schema checks will completely ignore the operation when checking _all_ changes in any future execution.
+* **Ignore the operation.** In this case, schema checks will completely ignore the operation when checking _all_ changes in any future execution.
   * This option is useful when you know an operation originates _only_ from clients or client versions that you don't actively support.
-  * You can view all ignored operations for your graph on its [check configuration page](./check-configurations/).
 
 ### Checking a federated schema
 
