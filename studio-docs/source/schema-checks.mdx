@@ -5,7 +5,7 @@ description: Ensure the safety of changes to your data graph
 
 > If your data graph uses Apollo Federation, see [checking changes to a federated graph](/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph) instead of this article.
 
-Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a change _won't_ break anything.
+Certain changes to your GraphQL schema (such as removing a field or type) can potentially **break one of your application's clients**. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a potentially dangerous change _won't_ break anything.
 
 Schema checks are a **paid feature** that's available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
@@ -15,7 +15,7 @@ To enable schema checks for your data graph, first do the following:
 
 1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
 2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
-    * If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.
+    * (If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.)
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
 
 After you complete the above, you can perform a test check by running the following command from your project's root directory:
@@ -31,9 +31,9 @@ Try changing something in your schema and see what happens! If everything is set
 
 When you check your schema with the `apollo service:check` command:
 
-1. Apollo Studio generates a diff between your local schema and the schema active on the variant you are checking against (`current`, by default).
-2. It uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-checks)).
-3. Studio returns the diff and a list of any breaking changes found.
+1. Apollo Studio generates a diff between your local schema and the active schema for the variant you're checking against (the default variant is `current`).
+2. Studio uses this diff to determine whether the changes affect any operations that have been executed against your graph recently (you can [customize this time window](#customizing-checks)).
+3. Studio returns the diff, along with a list of the operations that are affected by the changes.
 4. The Apollo CLI prints the result of the check and returns a non-zero exit code if at least one breaking change is found.
 
 ### The check response
@@ -61,9 +61,9 @@ PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
 View full details at: https://studio.apollographql.com/service/example-1234/check/<DETAILS>
 ```
 
-Each change to the schema is labeled with either `PASS` or `FAIL`.
+Each change to the schema is labeled either `PASS` or `FAIL`.
 
-> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, dangerous schema changes are labeled with `FAIL`.**
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, all potentially dangerous schema changes are labeled `FAIL`.**
 
 The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 
@@ -71,7 +71,22 @@ The CLI output also includes a Studio URL that provides full details on the chan
 <img class="screenshot" src="./img/schema-checks/service-check-page.png" alt="Service check page in Apollo Studio"></img>
 
 
-> **Note:** If you've [installed schema checks on your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub checks will take you to the same details link in this output.
+> **Note:** If you've [integrated schema checks with your GitHub PRs](#integrating-with-github), the "Details" link in your GitHub check takes you to this same details page.
+
+### Overriding flagged changes
+
+Occasionally, schema checks might flag a change that you know is safe. For example, you might change an input type's field from nullable to non-null when you are certain that none of your clients ever provides a null value for that field.
+
+In cases like this, you can **override** a flagged change in Apollo Studio from the associated check's details page:
+
+<img class="screenshot" src="./img/schema-checks/mark-operation.png" alt="Service check page in Apollo Studio"></img>
+
+You override flagged changes on an operation-by-operation basis. For each operation with flagged changes, you can override those changes in the following ways:
+
+* **Mark the changes as safe.** In this case, schema checks will _not_ flag these exact changes for the operation in any future execution. This effectively "approves" the changes for the operation.
+    * If a future check detects approved changes along with _new_ unsafe changes to the operation, the new unsafe changes _will_ be flagged.
+* **Ignore the operation.** In this case, schema checks will completely ignore the operation when checking _all_ changes in any future execution.
+  * This option is useful when you know an operation originates _only_ from clients or client versions that you don't actively support.
 
 ### Checking a federated schema
 
@@ -145,6 +160,7 @@ The output of `apollo service:check --markdown` looks like this:
 
 🔗 [View your service check details](https://studio.apollographql.com/service/engine/checks?...).
 ```
+> For most providers, the `apollo` CLI will automatically deduce the git branch and author information from environment variables. To supply these values manually, we recommend using the `--branch` and `--author` command line arguments.
 
 ## Customizing checks
 
@@ -160,50 +176,24 @@ Not every change to a schema is a potentially breaking change. Additive changes 
 
 These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
 
-<ul>
-  <li id="FIELD_REMOVED">
-    <code>FIELD_REMOVED</code>: Field used by at least one operation was removed
-  </li>
-  <li id="TYPE_REMOVED">
-    <code>TYPE_REMOVED</code>: Type(scalar, object) used by at least one
-    operation was removed
-  </li>
-  <li id="ARG_REMOVED">
-    <code>ARG_REMOVED</code>: Argument was removed from a field used by at least
-    one operation
-  </li>
-  <li id="TYPE_REMOVED_FROM_UNION">
-    <code>TYPE_REMOVED_FROM_UNION</code>: Type was removed from a union used by
-    at least one operation
-  </li>
-  <li id="INPUT_FIELD_REMOVED">
-    <code>INPUT_FIELD_REMOVED</code>: Field removed from an input type
-    referenced by an argument on a field used by at least one operation
-  </li>
-  <li id="VALUE_REMOVED_FROM_ENUM">
-    <code>VALUE_REMOVED_FROM_ENUM</code>: A value removed from an enum used by
-    at least one operation
-  </li>
-  <li id="TYPE_REMOVED_FROM_INTERFACE">
-    <code>TYPE_REMOVED_FROM_INTERFACE</code>: An object removed from an
-    interface used by at least one operation
-  </li>
-</ul>
+| Name | Description |
+|------|-------------|
+| `FIELD_REMOVED` | A field used by at least one operation was removed. |
+| `TYPE_REMOVED` | A scalar or object used by at least one operation was removed. |
+| `ARG_REMOVED` | An argument used by at least one operation was removed from a field. |
+| `TYPE_REMOVED_FROM_UNION` | A type was removed from a union used by at least one operation. |
+| `INPUT_FIELD_REMOVED` | A field was removed from an input type. That field is referenced by an argument on _another_ field that's used by at least one operation. |
+| `VALUE_REMOVED_FROM_ENUM` | A value was removed from an enum used by at least one operation. |
+| `TYPE_REMOVED_FROM_INTERFACE` | An object was removed from an interface used by at least one operation. |
 
 #### Addition of required arguments
 
 These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
 
-<ul>
-  <li id="REQUIRED_ARG_ADDED">
-    <code>REQUIRED_ARG_ADDED</code>: Non-nullable argument added to field used
-    by at least one operation
-  </li>
-  <li id="NON_NULL_INPUT_FIELD_ADDED">
-    <code>NON_NULL_INPUT_FIELD_ADDED</code>: Non-null field added to an input
-    object used by at least one operation
-  </li>
-</ul>
+| Name | Description |
+|------|-------------|
+| `REQUIRED_ARG_ADDED` |  A non-nullable argument was added to field that's used by at least one operation. |
+| `NON_NULL_INPUT_FIELD_ADDED` | A non-nullable field was added to an input object used by at least one operation. | 
 
 #### In-place updates
 
@@ -211,117 +201,53 @@ These changes update an existing schema element. If an operation is actively usi
 
 > **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 
-<ul>
-  <li id="FIELD_CHANGED_TYPE">
-    <code>FIELD_CHANGED_TYPE</code>: Field used by at least one operation
-    changed return type
-  </li>
-  <li id="INPUT_FIELD_CHANGED_TYPE">
-    <code>INPUT_FIELD_CHANGED_TYPE</code>: Field in input object changed type
-    and is referenced by argument on field used by at least one operation
-  </li>
-  <li id="TYPE_CHANGED_KIND">
-    <code>TYPE_CHANGED_KIND</code>: Type used by at least one operation changed,
-    ex: scalar to object or enum to union
-  </li>
-  <li id="ARG_CHANGED_TYPE">
-    <code>ARG_CHANGED_TYPE</code>: Argument changed type on field used by at
-    least one operation
-  </li>
-</ul>
+| Name | Description |
+|------|-------------|
+| `FIELD_CHANGED_TYPE` | An existing field used by at least one operation changed its type. |
+| `INPUT_FIELD_CHANGED_TYPE` | An existing field of an input object changed its type. That field is referenced by an argument on _another_ field that's used by at least one operation. |
+| `TYPE_CHANGED_KIND` | An existing type used by at least one operation changed its "kind." For example, an object type was changed to a union type. |
+| `ARG_CHANGED_TYPE` | An existing argument on a field used by at least one operation changed its type. |
 
 #### Default arguments
 
 These changes update the default value for an argument. If an operation is using an element of your graph and does not specify a value for this argument, the operation might get an unexpected result when the schema is updated if it was relying on the original default value.
 
-<ul>
-  <li id="ARG_DEFAULT_VALUE_CHANGE">
-    <code>ARG_DEFAULT_VALUE_CHANGE</code>: Default value added or changed for
-    argument on a field used by at least one operation
-  </li>
-</ul>
+| Name | Description |
+|------|-------------|
+| `ARG_DEFAULT_VALUE_CHANGE` | An existing field used by at least one operation had a default value added or changed. |
 
 ### Non-breaking changes
 
-These changes are detected by the `apollo service:check` command, but they are "safe." They will never affect the behavior of any existing clients if deployed.
+These changes are detected by schema checks, but they are "safe." They never affect the behavior of any existing clients if deployed.
 
-<ul>
-  <li>
-    Optional arguments
-    <ul>
-      <li id="OPTIONAL_ARG_ADDED">
-        <code>OPTIONAL_ARG_ADDED</code> Nullable argument added to a field
-      </li>
-      <li id="NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT">
-        <code>NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT</code> Nullable field added
-        to an input object
-      </li>
-    </ul>
-  </li>
-  <li>
-    Additions
-    <ul>
-      <li id="FIELD_ADDED">
-        <code>FIELD_ADDED</code> Field added to a type
-      </li>
-      <li id="TYPE_ADDED">
-        <code>TYPE_ADDED</code> Type added to the schema
-      </li>
-      <li id="VALUE_ADDED_TO_ENUM">
-        <code>VALUE_ADDED_TO_ENUM</code> Value added to an enum. If clients
-        contain a switch case on the enum and do not include the `default`, this
-        change could cause unexpected behavior
-      </li>
-      <li id="TYPE_ADDED_TO_UNION">
-        <code>TYPE_ADDED_TO_UNION</code> Type added to a union used by at least
-        one operation
-      </li>
-      <li id="TYPE_ADDED_TO_INTERFACE">
-        <code>TYPE_ADDED_TO_INTERFACE</code> Interface added to an object used
-        by at least one operation
-      </li>
-    </ul>
-  </li>
-  <li>
-    Deprecations
-    <ul>
-      <li id="FIELD_DEPRECATED">
-        <code>FIELD_DEPRECATED</code> Field deprecated
-      </li>
-      <li id="FIELD_DEPRECATION_REMOVED">
-        <code>FIELD_DEPRECATION_REMOVED</code> Field no longer deprecated
-      </li>
-      <li id="FIELD_DEPRECATED_REASON_CHANGE">
-        <code>FIELD_DEPRECATED_REASON_CHANGE</code> Reason for deprecation
-        changed
-      </li>
-      <li id="ENUM_DEPRECATED">
-        <code>ENUM_DEPRECATED</code> Enum deprecated
-      </li>
-      <li id="ENUM_DEPRECATION_REMOVED">
-        <code>ENUM_DEPRECATION_REMOVED</code> Enum no longer deprecated
-      </li>
-      <li id="ENUM_DEPRECATED_REASON_CHANGE">
-        <code>ENUM_DEPRECATED_REASON_CHANGE</code> Reason for enum deprecation
-        changed
-      </li>
-    </ul>
-  </li>
-  <li>
-    Descriptions
-    <ul>
-      <li id ="TYPE_DESCRIPTION_CHANGE">
-        <code>TYPE_DESCRIPTION_CHANGE</code> Description added, removed, or updated for a type.
-      </li>
-      <li id ="FIELD_DESCRIPTION_CHANGE">
-        <code>FIELD_DESCRIPTION_CHANGE</code> Description added, removed, or updated for a field.
-      </li>
-      <li id ="ENUM_VALUE_DESCRIPTION_CHANGE">
-        <code>ENUM_VALUE_DESCRIPTION_CHANGE</code> Description added, removed, or updated for an enum value.
-      </li>
-      <li id ="ARG_DESCRIPTION_CHANGE">
-        <code>ARG_DESCRIPTION_CHANGE</code> Description added, removed, or updated for an argument.
-      </li>
-    </ul>
-  </li>
-</ul>
+#### Schema additions
+
+| Name | Description |
+|------|-------------|
+| `FIELD_ADDED` | A field was added to an existing type. |
+| `TYPE_ADDED` | A type was added to the schema. |
+| `VALUE_ADDED_TO_ENUM` | A value was added to an enum. If clients contain a switch statement on the enum's value and do not include a `default` case, this change might cause unexpected behavior. |
+| `TYPE_ADDED_TO_UNION` | A type was added to a union used by at least one operation. |
+| `TYPE_ADDED_TO_INTERFACE` | An interface was applied to an object used by at least one operation. |
+| `OPTIONAL_ARG_ADDED` | A nullable argument was added to an existing field. |
+| `NULLABLE_FIELD_ADDED_TO_INPUT_OBJECT` | A nullable field was added to an existing input object. |
+
+#### Deprecations
+
+| Name | Description |
+|------|-------------|
+| `FIELD_DEPRECATED` | An existing field was deprecated. |
+| `FIELD_DEPRECATION_REMOVED` | A previously deprecated field is no longer deprecated. |
+| `FIELD_DEPRECATED_REASON_CHANGE` | The specified reason for a field's deprecation changed. |
+| `ENUM_DEPRECATED`| An existing enum was deprecated. |
+| `ENUM_DEPRECATION_REMOVED`| A previously deprecated enum is no longer deprecated. |
+| `ENUM_DEPRECATED_REASON_CHANGE` | The specified reason for an enum's deprecation changed. |
+
+#### Descriptions
+
+| Name | Description |
+|------|-------------|
+| `TYPE_DESCRIPTION_CHANGE` | An existing type's description changed. |
+| `FIELD_DESCRIPTION_CHANGE` | An existing field's description changed. |
+| `ENUM_VALUE_DESCRIPTION_CHANGE` | An existing enum value's description changed. |
+| `ARG_DESCRIPTION_CHANGE` | An existing argument's description changed. |
