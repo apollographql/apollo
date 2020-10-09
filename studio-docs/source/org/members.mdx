@@ -5,9 +5,11 @@ sidebar_title: Members and roles
 
 A Studio organization can have any number of members, and each member can be assigned a **role** that defines their capabilities within the organization.
 
-## Member roles (available by request)
+## Member roles
 
-> **Member roles are a new feature that is currently available by request.** Please contact support@apollographql.com to enable member roles for your organization.
+> **Member roles are available for Enterprise accounts.**
+>
+> Apollo Support can also grant access to the Billing Manager role for Team accounts on request. Please contact support@apollographql.com for more information.
 >
 > If you're using member roles, [please let us know what you think!](https://docs.google.com/forms/d/10C4_ETX5Xb60RfnJjBC2xBVK9gjr6A644AYKA-27T-E/viewform) Your feedback will help us improve the feature before we roll it out to all organizations.
 >
@@ -15,33 +17,34 @@ A Studio organization can have any number of members, and each member can be ass
 
 Each organization member has one of the following roles:
 
-| Name | Description |
-|------|-------------|
-| `Admin` | Has management access to the entire organization, including its members, graphs, and configuration. |
-| `Contributor` | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for back-end developers who are authorized to make changes to graphs. |
-| `Observer` | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. |
-| `Consumer` | Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph. |
-| `Billing Manager` | Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs. |
+| Name              | Description                                                                                                                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Admin`           | Has management access to the entire organization, including its members, graphs, and configuration.                                                                                                                |
+| `Contributor`     | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for back-end developers who are authorized to make changes to graphs.                         |
+| `Observer`        | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. |
+| `Consumer`        | Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph.                       |
+| `Billing Manager` | Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs.                                                                         |
 
 Only admins can assign roles to other members. You can see which role you have in a particular organization from your [user settings page](https://studio.apollographql.com/user-settings), or from that organization's Members tab.
 
 ### Role permissions
 
-| Action | Admin | Billing Manager | Contributor | Observer | Consumer |
-| :----------------------------------------------------- |:-:|:-:|:-:|:-:|:-:|
-| Invite members                                         | ✓ |   |   |   |   |
-| Remove members                                         | ✓ | ✓ |   |   |   |
-| View and edit billing information	                     | ✓ | ✓ |   |   |   |
-| Manage organization configuration (name, avatar, etc.)  | ✓ | ✓ |   |   |   |
-| Delete         graphs                                  | ✓ |   |   |   |   |
-| Create, rename graphs                                  | ✓ |   | ✓ |   |   |
-| Manage graph integrations (Datadog, Slack, etc.)       | ✓ |   | ✓ |   |   |
-| View and manage graph API keys                         | ✓ |   | ✓ |   |   |
-| Modify schema checks configuration                      | ✓ |   | ✓ |   |   |
-| Run schema checks                                      | ✓ |   | ✓ | ✓ |   |
-| View graph usage metrics                               | ✓ |   | ✓ | ✓ |   |
-| View graph schemas and changelogs                      | ✓ |   | ✓ | ✓ | ✓ |
-| Query graphs with the Explorer                         | ✓ |   | ✓ | ✓ | ✓ |
+| Action                                                 | Admin | Billing Manager | Contributor | Observer | Consumer |
+| :----------------------------------------------------- | :---: | :-------------: | :---------: | :------: | :------: |
+| Invite members                                         |   ✓   |                 |             |          |          |
+| Remove members                                         |   ✓   |        ✓        |             |          |          |
+| View and edit billing information                      |   ✓   |        ✓        |             |          |          |
+| Manage organization configuration (name, avatar, etc.) |   ✓   |        ✓        |             |          |          |
+| Delete graphs                                          |   ✓   |                 |             |          |          |
+| Create, rename graphs                                  |   ✓   |                 |      ✓      |          |          |
+| Manage graph integrations (Datadog, Slack, etc.)       |   ✓   |                 |      ✓      |          |          |
+| View and manage graph API keys                         |   ✓   |                 |      ✓      |          |          |
+| Modify schema checks configuration                     |   ✓   |                 |      ✓      |          |          |
+| Push schemas to your graph                             |   ✓   |                 |      ✓      |          |          |
+| Run schema checks                                      |   ✓   |                 |      ✓      |    ✓     |          |
+| View graph usage metrics                               |   ✓   |                 |      ✓      |    ✓     |          |
+| View graph schemas and changelogs                      |   ✓   |                 |      ✓      |    ✓     |    ✓     |
+| Query graphs with the Explorer                         |   ✓   |                 |      ✓      |    ✓     |    ✓     |
 
 ## Inviting members
 

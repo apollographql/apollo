@@ -32,30 +32,21 @@ Apollo Server can communicate directly with Apollo Studio to register its schema
 
 From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
-<img src="../img/register-schema.jpg" class="screenshot" width="600"></img>
+<img src="../img/register-schema.png" class="screenshot" width="600"></img>
 
 Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
 
 You provide your API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable. Conveniently, our example app already uses the `dotenv` package to read environment variables from a `.env` file.
 
-Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so:
+Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so, and add `APOLLO_SCHEMA_REPORTING=true` as well:
 
 ```none:title=.env
 APOLLO_KEY=PASTE_YOUR_KEY_HERE
+APOLLO_SCHEMA_REPORTING=true
 ```
 
 > **Graph API keys are secret credentials.** Never share them outside your organization or commit them to version control. Delete and replace API keys that might be compromised.
 
-Now, add one extra option to your `ApolloServer` constructor to enable automatic schema reporting:
-
-```js:title=index.js
-const server = new ApolloServer({
-  // ...other options...
-  engine: {
-    reportSchema: true
-  }
-});
-```
 
 Start up your server using `npm start`, then return to your Studio homepage. After a few seconds, clicking on your graph will now open its full details.
 
