@@ -64,9 +64,9 @@ Let's build the page in our app that shows a list of available SpaceX launches. 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
-import React, { Fragment, useState }  from 'react';
+import React, { Fragment, useState }  from 'react'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client' // preserve-line
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
@@ -343,12 +343,12 @@ Now replace the contents of `launch.tsx` with the following:
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launch.tsx
-import React, { Fragment } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import React, { Fragment } from 'react'; // preserve-line
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
 import { LAUNCH_TILE_DATA } from './launches';
-import { Loading, Header, LaunchDetail } from '../components';
-import { ActionButton } from '../containers';
+import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
+import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import * as LaunchDetailsTypes from './__generated__/LaunchDetails';
 
@@ -413,11 +413,11 @@ We want a user's profile page to display a list of launches that they've booked 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/profile.tsx
-import React, { Fragment } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import React, { Fragment } from 'react'; // preserve-line
+import { gql, useQuery } from '@apollo/client'; // preserve-line
 
-import { Loading, Header, LaunchTile } from '../components';
-import { LAUNCH_TILE_DATA } from './launches';
+import { Loading, Header, LaunchTile } from '../components'; // preserve-line
+import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import * as GetMyTripsTypes from './__generated__/GetMyTrips';
 
@@ -443,7 +443,7 @@ const Profile: React.FC<ProfileProps> = () => {
     error
   } = useQuery<GetMyTripsTypes.GetMyTrips>(
     GET_MY_TRIPS,
-    { fetchPolicy: "network-only" } //highlight-line
+    { fetchPolicy: "network-only" } // highlight-line
   );
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
