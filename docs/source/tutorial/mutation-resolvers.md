@@ -124,17 +124,29 @@ GraphQL mutations are structured exactly like queries, except they use the `muta
 
 ```graphql
 mutation LoginUser {
-  login(email: "daisy@apollographql.com")
+  login(email: "daisy@apollographql.com") {
+    email
+    token
+  }
 }
 ```
 
-The server should respond with a string that looks like this: 
+The server will respond like this: 
 
+```
+  "data": {
+    "login": {
+      "email": "daisy@apollographql.com",
+      "token": "ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20="
+      }               
+     }
+```
+
+The string below is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
 ```
 ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
 ```
 
-This is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
 
 ### Book trips
 
