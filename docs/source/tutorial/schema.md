@@ -1,5 +1,6 @@
 ---
-title: '1. Build a schema'
+title: 'Build a schema'
+sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
