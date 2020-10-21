@@ -1,6 +1,6 @@
 ---
-title: "Write mutation resolvers"
-sidebar_title: "4. Write mutation resolvers"
+title: 'Write mutation resolvers'
+sidebar_title: '4. Write mutation resolvers'
 description: Learn how a GraphQL mutation modifies data
 ---
 

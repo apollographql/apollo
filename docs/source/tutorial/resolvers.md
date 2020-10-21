@@ -1,6 +1,6 @@
 ---
-title: "Write query resolvers"
-sidebar_title: "3. Write query resolvers"
+title: 'Write query resolvers'
+sidebar_title: '3. Write query resolvers'
 description: Learn how a GraphQL query fetches data
 ---
 

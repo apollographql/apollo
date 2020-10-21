@@ -1,6 +1,6 @@
 ---
-title: "Set up Apollo Client"
-sidebar_title: "6. Set up Apollo Client"
+title: 'Set up Apollo Client'
+sidebar_title: '6. Set up Apollo Client'
 description: Connect to your API from your frontend
 ---
 
@@ -77,8 +77,8 @@ import {
 import { cache } from './cache';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: cache
+  cache,
+  uri: 'http://localhost:4000/'
 });
 ```
 

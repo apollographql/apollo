@@ -1,6 +1,6 @@
 ---
-title: "Fetch data with queries"
-sidebar_title: "7. Fetch data with queries"
+title: 'Fetch data with queries'
+sidebar_title: '7. Fetch data with queries'
 description: Working with the useQuery React Hook
 ---
 
@@ -35,8 +35,8 @@ import injectStyles from './styles';
 
 // Initialize ApolloClient
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
   uri: 'http://localhost:4000/',
-  cache: cache
 });
 
 injectStyles();
