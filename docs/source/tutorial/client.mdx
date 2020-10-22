@@ -1,5 +1,6 @@
 ---
-title: "6. Set up Apollo Client"
+title: 'Set up Apollo Client'
+sidebar_title: '6. Set up Apollo Client'
 description: Connect to your API from your frontend
 ---
 
@@ -70,14 +71,14 @@ Let's create our instance of `ApolloClient` by pasting the following into `src/i
 ```tsx:title=src/index.tsx
 import {
   ApolloClient,
-  InMemoryCache,
   gql,
   NormalizedCacheObject
 } from '@apollo/client';
+import { cache } from './cache';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: new InMemoryCache()
+  cache,
+  uri: 'http://localhost:4000/graphql'
 });
 ```
 
@@ -85,8 +86,8 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 The `ApolloClient` constructor requires two parameters:
 
-* The `uri` of our GraphQL server (in this case `localhost:4000`)
-* An instance of `InMemoryCache` to use as the client's `cache`
+* The `uri` of our GraphQL server (in this case `localhost:4000`).
+* An instance of `InMemoryCache` to use as the client's `cache`. We import this instance from the `cache.ts` file.
 
 In just these few lines of code, our client is ready to fetch data!
 
@@ -135,45 +136,3 @@ Before we integrate Apollo Client with a React view layer, let's try sending a q
 5. Go ahead and delete the `client.query()` call you just added, along with import of `gql` that's no longer needed.
 
 Now, let's integrate our client with React.
-
-## Integrate with React
-
-By adding Apollo Client to our React app, we can use Apollo hooks to bind the results of GraphQL operations directly to our UI.
-
-To connect Apollo Client to React, we wrap our app in the `ApolloProvider` component included in the `@apollo/client` package. We pass the component our `ApolloClient` instance via the `client` prop.
-
-> The `ApolloProvider` component is similar to React’s context provider: it wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
-
-Open `src/index.tsx` and update it to match the following:
-
-<MultiCodeBlock>
-
-```tsx:title=src/index.tsx
-import {
-  ApolloClient,
-  InMemoryCache,
-  NormalizedCacheObject,
-  ApolloProvider
-} from '@apollo/client';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Pages from './pages';
-import injectStyles from './styles';
-
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: new InMemoryCache()
-});
-
-injectStyles();
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Pages />
-  </ApolloProvider>,
-  document.getElementById('root')
-);
-```
-
-</MultiCodeBlock>
-
-Now, we're ready to start building our first component with the `useQuery` hook in the next section.
