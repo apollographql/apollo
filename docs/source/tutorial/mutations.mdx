@@ -11,7 +11,7 @@ Time to accomplish: _10 Minutes_
 
 Now that we've [added multiple queries](./queries/) to our React app, let's add a **mutation**. The process is similar, with a few important differences.
 
-As a reminder, mutations are operations that can modify back-end data (unlike queries). Our server's schema supports the following mutations:
+As a reminder, mutations are GraphQL operations that can modify back-end data (unlike queries). Our server's schema supports the following mutations:
 
 ```graphql
 # YOU DON'T NEED TO COPY THIS.
@@ -109,7 +109,7 @@ const [login, { loading, error }] = useMutation<
 );
 ```
 
-Our `onCompleted` callback stores the user's unique ID and session token in `localStorage`, so we can load these values into the in-memory cache the next time the user visits our application. We'll add that functionality in the next section.
+Our `onCompleted` callback stores the user's unique ID and session token in `localStorage`, so we can load these values into the in-memory cache the next time the user visits our application. We'll add that functionality in the next chapter.
 
 ### Add `Authorization` headers to all requests
 
