@@ -37,6 +37,8 @@ The `RESTDataSource` class automatically caches responses from REST resources wi
 
 Our `LaunchAPI` data source needs methods that enable it to fetch the data that incoming queries will request. 
 
+*Remember, we are creating a class here. Be sure to add these methods to the `LaunchAPI` class, pasting them before the closing curly brace.*
+
 #### The `getAllLaunches` method
 
 According to our schema, we'll need a method to get a list of all SpaceX launches. Let's add a `getAllLaunches` method to our `LaunchAPI` class:
