@@ -88,6 +88,14 @@ You override flagged changes on an operation-by-operation basis. For each operat
 * **Ignore the operation.** In this case, schema checks will completely ignore the operation when checking _all_ changes in any future execution.
   * This option is useful when you know an operation originates _only_ from clients or client versions that you don't actively support.
 
+### Rerunning a check
+
+You can also rerun checks from inside Studio. When you rerun a check, the latest check configuration is applied. The new check uses an updated time window for operations.  In addition, any changes made to excluded / included clients, checked variants, and any operations already marked safe / ignored are incorporated when rerunning.
+
+> **Note:** If you've [integrated schema checks with your GitHub PRs](#integrating-with-github), a rerun of the check also updates the status of the check in Github.
+
+<img class="screenshot" src="./img/schema-checks/rerun-check.png" alt="Rerun check in Apollo Studio"></img>
+
 ### Checking a federated schema
 
 If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/federation/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](https://www.apollographql.com/docs/federation/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
@@ -193,7 +201,7 @@ These changes add a required input to a schema element. If an operation is activ
 | Name | Description |
 |------|-------------|
 | `REQUIRED_ARG_ADDED` |  A non-nullable argument was added to field that's used by at least one operation. |
-| `NON_NULL_INPUT_FIELD_ADDED` | A non-nullable field was added to an input object used by at least one operation. | 
+| `NON_NULL_INPUT_FIELD_ADDED` | A non-nullable field was added to an input object used by at least one operation. |
 
 #### In-place updates
 
