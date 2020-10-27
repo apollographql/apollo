@@ -6,14 +6,16 @@ description: Create the blueprint for your data graph
 
 > Time to accomplish: 15 minutes
 
-Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might define the following types:
+Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
 
 ```graphql
+# A book has a title and an author
 type Book {
   title: String
   author: Author
 }
 
+# An author has a name and a list of books
 type Author {
   name: String
   books: [Book]
@@ -200,7 +202,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-After saving, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
+After saving, run `npm start` to start your server! 🎉 Apollo Server is now available on port 4000.
 
 ### Explore your schema
 
