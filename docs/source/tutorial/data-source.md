@@ -1,5 +1,6 @@
 ---
-title: '2. Connect to data sources'
+title: 'Connect to data sources'
+sidebar_title: '2. Connect to data sources'
 description: Fetch data from multiple locations
 ---
 

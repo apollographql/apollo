@@ -1,5 +1,5 @@
 ---
-title: '5. Connect your graph to Apollo Studio'
+title: 'Connect your graph to Apollo Studio'
 sidebar_title: '5. Connect to Apollo Studio'
 description: Learn about essential developer tooling
 ---

@@ -18,6 +18,7 @@ module.exports = {
             'index',
             'getting-started',
             '[Explorer](https://studio.apollographql.com/explorer)',
+            '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)',
           ],
           'Registering your Schema': [
             'schema/schema-reporting',
@@ -39,11 +40,6 @@ module.exports = {
             'check-configurations',
             'validating-client-operations',
             'github-integration',
-          ],
-          'Managed Federation': [
-            'managed-federation/overview',
-            'managed-federation/setup',
-            'managed-federation/advanced-topics',
           ],
           'Security': [
             'api-keys',
