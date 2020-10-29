@@ -190,7 +190,7 @@ To be able to fetch and store _all_ launches, we need to modify our code to use 
 
 ### Add pagination support
 
-> Apollo Client 3 provides a new API for Relay-style pagination that is not yet documented. For details, see [this pull request](https://github.com/apollographql/apollo-client/pull/6465).
+> Apollo Client 3 provides new pagination helper functions for [offset-based](https://www.apollographql.com/docs/react/pagination/offset-based/#the-offsetlimitpagination-helper) and [Relay-style](https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination) pagination that are not yet reflected in this tutorial.
 
 Apollo Client provides a `fetchMore` helper function to assist with paginated queries. It enables you to execute the same query with different values for variables (such as the current cursor).
 

@@ -1,5 +1,10 @@
 / /docs/studio/
 
+# Move managed federation docs into Federation docset
+/docs/studio/managed-federation/overview/ /docs/federation/managed-federation/overview/
+/docs/studio/managed-federation/setup/ /docs/federation/managed-federation/setup/
+/docs/studio/managed-federation/advanced-topics/ /docs/federation/managed-federation/advanced-topics/
+
 # Migrate schema validation to schema checks
 /docs/studio/schema-validation/ /docs/studio/schema-checks/
 
