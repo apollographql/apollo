@@ -1,20 +1,27 @@
 ---
-title: Explorer
-sidebar_title: Explorer
+title: The Apollo Studio Explorer
+sidebar_title: The Explorer
 ---
 
-The Explorer in Studio is a GraphQL client for authoring and managing your operations.
+The Apollo Studio Explorer is an interface for creating, running, and managing GraphQL operations:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/j8b0Bda_TIw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 It provides a rich workspace, complete with all the basics of query editing (syntax highlighting, autocomplete, etc.) and a significant number of additive features that are entirely unique to the Explorer.
 
-We know how important it is that your developer tools _stay out of your way_, and the Explorer has been designed and built with great care for the small details and nuance of editing environments.
+> Operations in the Explorer are sent directly from your browser to your GraphQL server, _without_ passing through Apollo's systems. Apollo does not ever see your request headers or response data.
 
-## Editor basics
+## Setup
 
-The Explorer’s operation editor is built on Monaco, and includes all the usual conventions we expect from query-building tools (such as ⌘+Enter to run, state persistence across sessions, and panels for providing headers and variables). The editor also provides full IntelliSense support for GraphQL, including query linting, autocomplete, peek definitions on hover, jump-to-definition with a command-click, and more.
+To get started with the Explorer, [create a graph](./getting-started/#2-create-your-first-graph) in Studio and navigate to the Explorer tab. The Explorer will ask you for the URL of your running GraphQL server when you try to run your first query. You can change this URL at any time from the Explorer's Settings tab.
+
+## The operation editor
+
+The Explorer’s operation editor is built on [Monaco](https://microsoft.github.io/monaco-editor/), and includes all the usual conventions we expect from query-building tools (such as ⌘+Enter to run, state persistence across sessions, and panels for providing headers and variables). The editor also provides full IntelliSense support for GraphQL, including query linting, autocomplete, peek definitions on hover, jump-to-definition with a command-click, and more.
 
 The editor is also able to manage multiple operations and reason about those operations individually. As you're working, the editor will shift focus to whichever operation you've clicked in to. Each operation has its own context menu where you can copy its contents to CURL, copy a link to share, format it, etc.
 
-## Query building
+## Building a query
 
 The Explorer's three column layout lets you keep your schema's documentation open at all times if you'd like.
 
@@ -42,47 +49,82 @@ After you identify which type-field pair you want, the Explorer runs a breadth-f
 
 Step 2 of search walks you through the available paths one step at a time to narrow down your options before choosing your final path. There can sometimes be thousands of path options to a single location in the graph, and some filtering at that point is very helpful.
 
-## Features
+## Additional features
 
 Beyond the basics of query editing, query building, and search, the Explorer has a number of other rich features. Most of these features are unique to the Explorer and not available in other GraphQL clients.
 
-### Dark mode
+### Authentication
 
-The Explorer comes in both light mode and dark mode, because we don't think we could have lived without both.
+The Explorer currently provides the following options for authentication. If your graph has authentication requirements that aren't covered by these options, please contact us at **support@apollographql.com** with questions or feedback.
 
-### Subscriptions support
+#### Request headers
 
-The Explorer comes with first-class support for running subscriptions. You can run queries, mutations, and subscriptions all within the same workspace (no need for separate tabs). You can start and stop listening to your subscriptions at will and see new information as it comes in and old information as it goes stale. You can set your websocket endpoint independently from your http endpoint.
+The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
 
-### Operation history
+For example, you can provide a bearer token in an `Authentication` header like so:
 
-The Explorer will save a small history of the queries and variables you've run recently to your local storage and provide you with access to them via the History tab. This is helpful when trying to recover previous work and keep your workspace clean while retaining past operations.
+```json
+{
+  "Authentication": "bearer <TOKEN>"
+}
+```
 
-### Mocked responses
+> **Beta feature:** You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer. To request access to this beta feature, please contact **support@apollographql.com**.
 
-You can turn on the "Mock responses" option in the Explorer Settings page. This will naively mock responses based on the types in your schema, rather then sending your operations over the wire to your endpoint. This can be helpful if you want to get a feel for what your query responses will be without having an endpoint available, or if you want to get a mocked response to use as a sample or put in a test.
+#### Cookies
 
-### Download responses
+If your graph authenticates using cookies, you can configure your endpoint to share those cookies with https://studio.apollographql.com.
 
-You can copy responses from your operations with a button or download any given response to a local JSON file.
+Once configured, requests sent from https://studio.apollographql.com will carry the cookies from your domain when you run queries with the Explorer. If you're logged in on your domain, requests from the Explorer will also be logged in. If you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
 
-### Response hints
+To set this up, your [cookie's value must contain `SameSite=None; Secure`](https://www.chromium.org/updates/same-site). Additionally, these CORS headers must be present in your server's response to Studio:
 
-You can turn on the "Use response hints" option in the Explorer Settings. As you build your query, the Explorer will run partial queries under the hood and show you their results inlined in the editor. This is helpful when trying to get a sense of the data you'll get back in your full operation response, and can also be really helpful to get quick answers from queries without having to even hit the Run button.
+```bash
+Access-Control-Allow-Origin: https://studio.apollographql.com
+Access-Control-Allow-Credentials: true
+```
 
-The Explorer will not show hints for mutations (we don't want to be running partial mutations).
+#### Preflight Scripts (beta)
 
-### Field latency hints
+> To request access to preflight scripts, contact **support@apollographql.com**.
 
-As an alternative to response hints, the Explorer can also show you hints for the general latency of the fields in your query. This is an option that's available if you've set your graph up to also report field usage and tracing data to Studio.
+[Much like Postman](https://learning.postman.com/docs/writing-scripts/pre-request-scripts/), we have an ability for you to execute JavaScript before your request runs.
+This capability can be used to facilitate parts of the OAuth flow. In particular, preflight scripts are very useful for using refresh tokens to keep your authentication tokens valid without constant manual intervention.
 
-The Explorer will show you the 95th percentile response times for the fields in your query to help you get a sense of "how expensive" your query is and what the bottlenecks in response time will be.
+Preflight scripts can also be persisted to users across your account, so you can set up an authentication script for your graph and other members of your team will be able to use it as well.
 
-### `graphql-lodash` integration
+We have [detailed documentation on how preflight scripts work](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
+If this would be useful to you, please get in touch with support@apollographql.com to request access for your account.
 
-The Explorer [extends your schema with `graphql-lodash`](https://github.com/APIs-guru/graphql-lodash) on the client side, so you can write queries that include lodash directives and they will resolve correctly. This is quite helfpul if you want to manipulate your response data into into a specific format for exporting, or of if you want to do some quick analysis without needing to export.
+### Building operations
 
-Here's an example of a query using `graphql-lodash`. You can try pasting this in the Explorer embedded at http://apollographql.com/studio/develop:
+#### Mocked responses
+
+> Enable **Mock responses** from the Explorer's Settings tab.
+
+This feature naively mocks operation responses based on your schema's types, instead of sending your operations over the wire to your endpoint.
+
+Mocked responses are helpful if you want to get a feel for the shape of a query's response when your endpoint isn't available, or if you need a quick response to use in a code sample or a unit test.
+
+#### Response hints
+
+> Enable **Use response hints** from the Explorer's Settings tab.
+
+As you build your query, the Explorer runs partial queries under the hood and shows their results in-line. This is helpful when you want to get a sense of the data you'll get back in your full operation response. It can also help you retrieve a quick answer to a query without needing to click the Run button.
+
+The Explorer does not show response hints for mutations (this requires running partial mutations, which is unsafe).
+
+#### Field latency hints
+
+As an alternative to [response hints](#response-hints), the Explorer can show you hints for the latency of the fields in your query. This option is available only if you've configured your graph to [report field usage and tracing data to Studio](./setup-analytics/).
+
+The Explorer shows you the 95th-percentile response times for the fields in your query to help you get a sense of "how expensive" your query is and what the bottlenecks in response time will be.
+
+#### `graphql-lodash` integration
+
+The Explorer [extends your schema with `graphql-lodash`](https://github.com/APIs-guru/graphql-lodash) on the client side, so you can write queries that include lodash directives and they will resolve correctly. This is helfpul if you want to manipulate your response data into into a specific format for exporting, or if you want to do some quick analysis without needing to export.
+
+Here's an example of a query that uses `graphql-lodash`. You can try pasting this in the Explorer embedded at http://apollographql.com/studio/develop:
 
 ```graphql:title=example.graphql
 query StarWarsGenderStats {
@@ -96,11 +138,7 @@ query StarWarsGenderStats {
 }
 ```
 
-### View responses in table form
-
-You can view any response from a query or mutation as either JSON or a table. If you turn on table mode, the Explorer will do its best to render your data in table form. This is extremely useful when trying to read arrays of data and generally makes your data more readable, especially to folks who aren't developers.
-
-### Inline/Extract variables
+#### Inline/Extract variables
 
 At any point when editing your operations, you can switch between inlined or extracted variable notation with the click of one button. This is an option in "..." context menu next to each of your operations.
 
@@ -132,77 +170,65 @@ query($id: ID!) {
 }
 ```
 
-### Query plans for federated graphs
+### Local development
+
+Unline similar GraphQL clients, the Explorer obtains your server's schema from Apollo Studio by default, _not_ by introspecting your server. This has the following benefits:
+
+* The Explorer can provide documentation and schema IntelliSense, even if your endpoint has disabled introspection (this is common for production graphs).
+* The Explorer can provide information about directives, which introspection does not support.
+
+You can still use the Explorer for local development. To do so, create a [development graph](https://studio.apollographql.com/dev) in Studio.
+
+A dev graph uses introspection to fetch your schema from your local endpoint, and it also polls regularly for changes. Whenever a new schema is detected, the dev graph pulls this change and updates itself automatically. You can also pause introspection polling at any time.
+
+### Saving operations
+
+#### Operation history
+
+> View your operation history from the Explorer's **Run history** tab.
+
+The Explorer saves the history of your recently run operations (and the variable values for those operations) to your browser's local storage. Access your history to retain and recover previous work without cluttering your editor.
+
+#### Downloading responses
+
+You can copy responses from your operations with a button or download any given response to a local JSON file.
+
+### Networking
+
+#### CORS policies
+
+Requests from the Explorer go straight from your browser to your GraphQL server, so your endpoint will see requests coming from the `https://studio.apollographql.com` domain.
+
+It's common for public endpoints to have CORS policies that restrict which domains can query them. If your endpoint has CORS protections enabled, you probably need to safe-list https://studio.apollographql.com in your CORS policy to use the Explorer.
+
+If you can't change your CORS policy, you might be able to write a small proxy to your endpoint and point the Explorer to the proxy instead. CORS policies are enforced by browsers, and the proxy won't have the same issues communicating to your endpoint.
+
+### Federation
+
+#### Query plans for federated graphs
 
 If you're working with a federated graph in Studio, the Explorer will dynamically calculate query plans for your in the right panel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
 
-## Setup
 
-To use the Explorer, create a graph in Studio and navigate to the Explorer page. The Explorer will ask you where your graph is running when you try to run your first query. You can change the URL the Explorer makes requests to at any time under the Explorer Settings tab.
+### Display
 
-Queries in the Explorer are sent directly from your browser to your endpoint and do not pass through Apollo's systems. Apollo does not ever see your request headers or your response data.
+#### Dark mode
 
-### CORS policies
+Toggle between light and dark mode from the Explorer's Settings tab.
 
-Requests from the Explorer go straight from your browser to your endpoint, so your endpoint will see requests coming from https://studio.apollographql.com domain.
+#### Table layout for response data
 
-It is common for public endpoints to have CORS policies that restrict which domains are allowed to query them. If your endpoint has CORS protections enabled, you will likely need to safe-list https://studio.apollographql.com in your CORS policy to use the Explorer.
+You can view an operation's response as JSON or as a table. Table layout is especially useful when your response includes an array, or when you want to share a query's results with someone who isn't familiar with JSON.
 
-If changing your CORS policy is not possible, another option is to write a small proxy to your endpoint, and to point the Explorer to your proxy instead. CORS policies are enforced by browsers, and your proxy will not have the same issues communicating to your endpoint.
 
-## Local development
+## FAQ
 
-Unline other GraphQL clients, the Explorer will is load its schema context from what you register to Studio by default, not from introspecting your graph. The benefits of this approach are that:
+### Does the Explorer support subscription operations?
 
-- We can provide documentation and schema intellisense even when your endpoint may have introspection turned off (common in production).
-- We can provide information about directives, which introspection does not support.
+Yes. You can run queries, mutations, and subscriptions all from the same Explorer page. You can start and stop listening to subscriptions, and you can see new subscription data as it comes in and old information as it becomes stale. 
 
-If you want to use the Explorer for local development and to have it actively listen for changes and update itself, you should create a "Development" graph in Studio (https://studio.apollographql.com/dev).
+You can also set your server's subscription websocket endpoint independently from the HTTP endpoint for queries and mutations.
 
-Dev graphs will introspect your local endpoint and poll for changes. If a new schema is detected, dev graphs will pull this change and update themselves automatically without you having to refresh anything. Dev graphs have a setting where you can pause introspection polling if you want to.
+### Is the Explorer available for on-prem distribution?
 
-## Authentication
-
-There are a few basic options for setting up authentication with the Explorer right now.
-We are very open to hearing about your authentication requirements and to working with you direction to set up authentication to your graph from within the Explorer.
-Please don't hesitate to reach out to support@apollographql.com with questions on authentication – we'll be in touch.
-
-### Headers
-
-There is a headers section of the Explorer editor where you can set authentication headers. It is common to authenticate by setting tokens in that area directly:
-
-```json
-{
-  "Authentication": "bearer <TOKEN>"
-}
-```
-
-> **Note:** If you would like to configure your graph to add default headers for any request from the Explorer (across all users in your account), this feature is available in beta form. Please get in touch with support@apollographql.com to request access. This can be useful if you need to send a consistent identifier or override for requests coming from the Explorer, for example.
-
-### Cookies
-
-If your graph authenticates using cookies, you can configure your endpoint to share those cookies with https://studio.apollographql.com.
-
-Once set up, requests sent from https://studio.apollographql.com will carry the cookies from your domain when you run queries with the Explorer.
-If you're logged in on your domain, requests from the Explorer will be logged in. Once you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
-
-To set this up, your [cookie's value must contain `SameSite=None; Secure`](https://www.chromium.org/updates/same-site) and these CORS headers must be present in your server's response to Studio:
-
-```bash
-Access-Control-Allow-Origin: https://studio.apollographql.com
-Access-Control-Allow-Credentials: true
-```
-
-### Preflight Scripts (beta, available on request)
-
-[Much like Postman](https://learning.postman.com/docs/writing-scripts/pre-request-scripts/), we have an ability for you to execute JavaScript before your request runs.
-This capability can be used to facilitate parts of the OAuth flow. In particular, preflight scripts are very useful for using refresh tokens to keep your authentication tokens valid without constant manual intervention.
-
-Preflight scripts can also be persisted to users across your account, so you can set up an authentication script for your graph and other members of your team will be able to use it as well.
-
-We have [detailed documentation on how preflight scripts work](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
-If this would be useful to you, please get in touch with support@apollographql.com to request access for your account.
-
-## Distribution
-
-Right now the Explorer is available for free, unlimited use in Apollo Studio. It is not available for download or on-prem distribution at this time. This is something we have given considerable thought to and may do in the future, but our goal for now is to build the best possible Explorer experience for you from within Studio.
+Not at this time. The Explorer is available for free, unlimited use in Apollo Studio, but it is not available for download or on-prem distribution. This might change in the future, but for now our goal is to provide the best possible Explorer experience from within Studio.
