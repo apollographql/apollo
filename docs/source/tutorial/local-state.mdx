@@ -1,72 +1,38 @@
 ---
 title: 'Manage local state'
 sidebar_title: '9. Manage local state'
-description: How to store and query local data in the Apollo cache
+description: Store and query local data in the Apollo cache
 ---
 
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
 import Disclaimer from '../../shared/disclaimer.mdx';
 
-> **This chapter is currently out of date.** We will update it as soon as possible to reflect new local state APIs in Apollo Client 3.
->
-> To learn more about local state, please see the "final" version of the application client in [`final/client/src`](https://github.com/apollographql/fullstack-tutorial/tree/master/final/client/src), along with [Managing local state](https://www.apollographql.com/docs/react/local-state/local-state-management/).
-
 Time to accomplish: _15 Minutes_
 
-In almost every app we build, we display a combination of remote data from our graph API and local data such as network status, form state, and more. What's awesome about Apollo Client is that it allows us to store local data inside the Apollo cache and query it alongside our remote data with GraphQL.
-
-We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
-
-Managing local data with Apollo Client is very similar to how you've already managed remote data in this tutorial. You'll write a client schema and resolvers for your local data. You'll also learn to query it with GraphQL just by specifying the `@client` directive. Let's dive in!
-
-### Write a local schema
+Most web apps use a combination of remotely fetched data and locally stored data. We can use Apollo Client's cache to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
 
 <Disclaimer />
 
-Just like how a schema is the first step toward defining our data model on the server, writing a local schema is the first step we take on the client.
+## Write a client-side schema
 
-Navigate to `src/resolvers.tsx` and copy the following code to create your client schema (as well as blank client resolvers for later):
+First, let's define a **client-side GraphQL schema** that's specific to our application client. This isn't _required_ for managing local state, but it enables some useful developer tooling and helps us reason about our data.
+
+Add the following definition to `src/index.tsx`:
 
 <MultiCodeBlock>
 
 ```tsx:title=src/resolvers.tsx
-import { gql, ApolloCache, Resolvers } from '@apollo/client';
-import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
-import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
-
 export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
     cartItems: [ID!]!
   }
-
-  extend type Launch {
-    isInCart: Boolean!
-  }
-
-  extend type Mutation {
-    addOrRemoveFromCart(id: ID!): [ID!]!
-  }
 `;
-
-type ResolverFn = (
-  parent: any,
-  args: any,
-  { cache } : { cache: ApolloCache<any> }
-) => any;
-
-interface ResolverMap {
-  [field: string]: ResolverFn;
-}
-
-interface AppResolvers extends Resolvers {
-  // We will update this with our app's resolvers later
-}
-
-export const resolvers = {};
 ```
 
 </MultiCodeBlock>
+
+As you might expect, this looks a lot like the schema definition for our server, with one difference: we **extend** the `Query` type.
 
 To build a client schema, we **extend** the types of our server schema and wrap it with the `gql` function. Using the extend keyword allows us to combine both schemas inside developer tooling like Apollo VSCode and Apollo DevTools.
 
