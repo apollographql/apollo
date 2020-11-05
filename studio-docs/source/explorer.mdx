@@ -3,55 +3,67 @@ title: The Apollo Studio Explorer
 sidebar_title: The Explorer
 ---
 
-The Apollo Studio Explorer is an interface for creating, running, and managing GraphQL operations:
+The Apollo Studio Explorer is a powerful web IDE for creating, running, and managing GraphQL operations:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/j8b0Bda_TIw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-It provides a rich workspace, complete with all the basics of query editing (syntax highlighting, autocomplete, etc.) and a significant number of additive features that are entirely unique to the Explorer.
-
-> Operations in the Explorer are sent directly from your browser to your GraphQL server, _without_ passing through Apollo's systems. Apollo does not ever see your request headers or response data.
+The Explorer is free for all Apollo Studio organizations. It supports all GraphQL operation types (`Query`, `Mutation`, and `Subscription`).
 
 ## Setup
 
-To get started with the Explorer, [create a graph](./getting-started/#2-create-your-first-graph) in Studio and navigate to the Explorer tab. The Explorer will ask you for the URL of your running GraphQL server when you try to run your first query. You can change this URL at any time from the Explorer's Settings tab.
+To get started with the Explorer, [create a graph](./getting-started/#2-create-your-first-graph) in Apollo Studio and then navigate to the graph's Explorer tab.
 
-## The operation editor
+The Getting Started tab _within_ the Explorer helps you get up and running with core features.
 
-The Explorer’s operation editor is built on [Monaco](https://microsoft.github.io/monaco-editor/), and includes all the usual conventions we expect from query-building tools (such as ⌘+Enter to run, state persistence across sessions, and panels for providing headers and variables). The editor also provides full IntelliSense support for GraphQL, including query linting, autocomplete, peek definitions on hover, jump-to-definition with a command-click, and more.
-
-The editor is also able to manage multiple operations and reason about those operations individually. As you're working, the editor will shift focus to whichever operation you've clicked in to. Each operation has its own context menu where you can copy its contents to CURL, copy a link to share, format it, etc.
+When you execute your first query, the Explorer prompts you for the URL of your running GraphQL server. You can then change this URL at any time from the Explorer's Settings tab.
 
 ## Building a query
 
-The Explorer's three column layout lets you keep your schema's documentation open at all times if you'd like.
+### The operation editor
 
-The documentation in the Explorer is designed to let you "step into your schema". As you step further, it keeps track of your current path. This path helps you navigate back up your schema via breadcrumbs, and it tells Explorer exactly how to reach your current location from the root.
+The Explorer’s operation editor is built on [Monaco](https://microsoft.github.io/monaco-editor/). It provides common features of query-building tools, including:
 
-At any point, you can click the (+) button next to a field in the documentation and the Explorer will add that field to your query along the path you've walked through the docs. The Explorer will also automatically generate variables for you (a preference you can turn on/off, but variable notation is sometimes tedious to write out).
+* Panels for specifying headers and variables
+* Persistence across sessions
+* Keyboard shortcuts (click the keyboard icon in the bottom-right corner of the operation editor to view all available shortcuts)
 
-The query builder will help you build variables just as it helps you build queries. Clicking the (+) next to input objects will help you generate JSON in your Variables editor just as easily as it helps you build your operations.
+The editor also provides full IntelliSense support for GraphQL, including:
 
-## Search
+* Query linting
+* Autocomplete
+* Peek definitions on mouse hover
+* Jump-to-definition with command-click
 
-The Explorer comes with a two-step search that helps you both identify what you're looking for in your schema, and then **a path to get to there**. The second step here is especially crucial because search mechanisms are not complete in the context of query building if they do not help you find _how_ to get what you want once you've identified what you're looking for.
+The editor can manage multiple operations and reason about those operations individually. As you work, the editor shifts focus to whichever operation you click into. Each operation has its own context menu ("**...**") that enables you to format it, copy a link to share, or generate a `curl` command.
 
-This is one of the things we felt was most lacking in GraphQL tooling before the Explorer.
+### The Documentation tab
 
-### Step 1: Identify a field
+The Explorer's Documentation tab enables you to step into your schema, beginning at one of its entry points. As you step into a field and its subfields, the Explorer keeps track of your current path within the schema.
 
-The first step of search helps you identify exactly which type-field pairing you’re looking for.
+You can click the **⊕** button next to any field in the Documentation tab to add that field to the operation editor, at your current path. By default, the Explorer automatically generates variables for that field's arguments.
 
-If you know you’re looking for a field named `email`, the Explorer helps you identify whether you want `User.email` or `Organization.email`. And if you’re less sure about the field’s name, Explorer uses a fuzzy search, so you can get it a little wrong. You can also include a `.` modifier to search both type and field names simultaneously, which can help you narrow in on the perfect match.
+## Searching your schema
 
-### Step 2: Find a path to the field
+The Explorer provides a two-step schema search (shortcut `⌘+K`):
 
-After you identify which type-field pair you want, the Explorer runs a breadth-first search from your schema’s entry points (`Query`, `Mutation` and `Subscription`) to the chosen field. It lists all of the paths it finds, ordered by length. After you select which path you want, the Explorer opens it for you in the Documentation panel, and you can add it to your query with a click.
+1. Find the schema field you're looking for
+2. Find the ideal _path_ to that field from your schema's entry points
 
-Step 2 of search walks you through the available paths one step at a time to narrow down your options before choosing your final path. There can sometimes be thousands of path options to a single location in the graph, and some filtering at that point is very helpful.
+### 1. Find a field
+
+First, you search for a field by its name (e.g., `email`). The interface helps you differentiate between fields with the same name (e.g., `User.email` versus `Organization.email`). The search is "fuzzy", so it works even if you don't know a field's exact spelling.
+
+If you know exactly which type and which field you're looking for, you can separate those values with a period (e.g., `User.email`).
+
+### 2. Find a path to the field
+
+After you identify a type-field pair, the Explorer lists all of the _paths_ to that field that start at your schema's entry points (`Query`, `Mutation` and `Subscription`). These paths are ordered by depth.
+
+> Finding the path to a field is particularly important with GraphQL, because you can only query a field if that field's position within your query is valid. 
+
+After you select which path you want, the Explorer opens that path in its Documentation tab. You can then click the **⊕** button to add that path to your query.
 
 ## Additional features
-
-Beyond the basics of query editing, query building, and search, the Explorer has a number of other rich features. Most of these features are unique to the Explorer and not available in other GraphQL clients.
 
 ### Authentication
 
@@ -88,15 +100,98 @@ Access-Control-Allow-Credentials: true
 
 > To request access to preflight scripts, contact **support@apollographql.com**.
 
-[Much like Postman](https://learning.postman.com/docs/writing-scripts/pre-request-scripts/), we have an ability for you to execute JavaScript before your request runs.
-This capability can be used to facilitate parts of the OAuth flow. In particular, preflight scripts are very useful for using refresh tokens to keep your authentication tokens valid without constant manual intervention.
+[Similar to Postman](https://learning.postman.com/docs/writing-scripts/pre-request-scripts/), the Explorer can execute custom JavaScript before your request runs. This feature is especially useful for managing OAuth, for example by refreshing an access token automatically.
 
-Preflight scripts can also be persisted to users across your account, so you can set up an authentication script for your graph and other members of your team will be able to use it as well.
+You can save preflight scripts to your organization, meaning all users in your organization can use them.
 
-We have [detailed documentation on how preflight scripts work](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
-If this would be useful to you, please get in touch with support@apollographql.com to request access for your account.
+For more information, see the [documentation for preflight scripts](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
 
-### Building operations
+### Display
+
+#### Dark mode
+
+> Toggle between light and dark mode from the Explorer's Settings tab.
+
+#### Table layout for response data
+
+> Toggle between table and JSON layout from the top of the Explorer's Response panel.
+
+You can view an operation's response as JSON or as a table. Table layout is especially useful when your response includes an array, or when you want to share a query's results with someone who isn't familiar with JSON.
+
+#### Inline/Extract variables
+
+> Click the "**...**" menu next to an operation in the editor to select a notation for variables.
+
+While editing your operations, you can toggle between inline or extracted notation for variables. This is useful when you want to switch notations to copy and paste something, or when you're drafting a query in the editor and want to move it to your code.
+
+##### Inline variable
+
+```graphql:title=query.graphql
+query {
+  user(id: "Beth Harmon") {
+    name
+  }
+}
+```
+
+##### Extracted variable
+
+```graphql:title=query.graphql
+query($id: ID!) {
+  user(id: $id) {
+    name
+  }
+}
+```
+
+```json:title=variables.json
+{
+  "id": "Beth Harmon"
+}
+```
+
+### Federation
+
+#### Query plans for federated graphs
+
+If you're working with a federated graph in Studio, the Explorer dynamically calculates query plans for your operations in the right-jpanel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
+
+
+
+### Local development
+
+Unline similar GraphQL clients, the Explorer obtains your server's schema from Apollo Studio by default, _not_ by introspecting your server. This has the following benefits:
+
+* The Explorer can provide documentation and schema IntelliSense, even if your endpoint has disabled introspection (this is common for production graphs).
+* The Explorer can provide information about directives, which introspection does not support.
+
+You can still use the Explorer for local development. To do so, create a [development graph](https://studio.apollographql.com/dev) in Studio.
+
+A dev graph uses introspection to fetch your schema from your local endpoint, and it also polls regularly for changes. Whenever a new schema is detected, the dev graph pulls this change and updates itself automatically. You can also pause introspection polling at any time.
+
+### Networking
+
+#### CORS policies
+
+Requests from the Explorer go straight from your browser to your GraphQL server, so your endpoint will see requests coming from the `https://studio.apollographql.com` domain.
+
+It's common for public endpoints to have CORS policies that restrict which domains can query them. If your endpoint has CORS protections enabled, you probably need to safe-list https://studio.apollographql.com in your CORS policy to use the Explorer.
+
+If you can't change your CORS policy, you might be able to write a small proxy to your endpoint and point the Explorer to the proxy instead. CORS policies are enforced by browsers, and the proxy won't have the same issues communicating to your endpoint.
+
+### Saving operations
+
+#### Operation history
+
+> View your operation history from the Explorer's **Run history** tab.
+
+The Explorer saves the history of your recently run operations (and the variable values for those operations) to your browser's local storage. Access your history to retain and recover previous work without cluttering your editor.
+
+#### Downloading responses
+
+You can copy responses from your operations with a button or download any given response to a local JSON file.
+
+### Testing operations
 
 #### Mocked responses
 
@@ -118,7 +213,7 @@ The Explorer does not show response hints for mutations (this requires running p
 
 As an alternative to [response hints](#response-hints), the Explorer can show you hints for the latency of the fields in your query. This option is available only if you've configured your graph to [report field usage and tracing data to Studio](./setup-analytics/).
 
-The Explorer shows you the 95th-percentile response times for the fields in your query to help you get a sense of "how expensive" your query is and what the bottlenecks in response time will be.
+The Explorer shows you the 95th-percentile response times for the fields in your query to help you get a sense of how "expensive" your query is and what the bottlenecks in response time will be.
 
 #### `graphql-lodash` integration
 
@@ -138,89 +233,6 @@ query StarWarsGenderStats {
 }
 ```
 
-#### Inline/Extract variables
-
-At any point when editing your operations, you can switch between inlined or extracted variable notation with the click of one button. This is an option in "..." context menu next to each of your operations.
-
-This is extremely useful when you want to switch modes to quickly copy and paste something, or when you are drafting a query in the editor and wanting to move it to code.
-
-Inlined variable:
-
-```graphql:title=query.graphql
-query {
-  user(id: "Beth Harmon") {
-    name
-  }
-}
-```
-
-Extraced variable:
-
-```graphql:title=query.graphql
-query($id: ID!) {
-  user(id: $id) {
-    name
-  }
-}
-```
-
-```json:title=variables.json
-{
-  "id": "Beth Harmon"
-}
-```
-
-### Local development
-
-Unline similar GraphQL clients, the Explorer obtains your server's schema from Apollo Studio by default, _not_ by introspecting your server. This has the following benefits:
-
-* The Explorer can provide documentation and schema IntelliSense, even if your endpoint has disabled introspection (this is common for production graphs).
-* The Explorer can provide information about directives, which introspection does not support.
-
-You can still use the Explorer for local development. To do so, create a [development graph](https://studio.apollographql.com/dev) in Studio.
-
-A dev graph uses introspection to fetch your schema from your local endpoint, and it also polls regularly for changes. Whenever a new schema is detected, the dev graph pulls this change and updates itself automatically. You can also pause introspection polling at any time.
-
-### Saving operations
-
-#### Operation history
-
-> View your operation history from the Explorer's **Run history** tab.
-
-The Explorer saves the history of your recently run operations (and the variable values for those operations) to your browser's local storage. Access your history to retain and recover previous work without cluttering your editor.
-
-#### Downloading responses
-
-You can copy responses from your operations with a button or download any given response to a local JSON file.
-
-### Networking
-
-#### CORS policies
-
-Requests from the Explorer go straight from your browser to your GraphQL server, so your endpoint will see requests coming from the `https://studio.apollographql.com` domain.
-
-It's common for public endpoints to have CORS policies that restrict which domains can query them. If your endpoint has CORS protections enabled, you probably need to safe-list https://studio.apollographql.com in your CORS policy to use the Explorer.
-
-If you can't change your CORS policy, you might be able to write a small proxy to your endpoint and point the Explorer to the proxy instead. CORS policies are enforced by browsers, and the proxy won't have the same issues communicating to your endpoint.
-
-### Federation
-
-#### Query plans for federated graphs
-
-If you're working with a federated graph in Studio, the Explorer will dynamically calculate query plans for your in the right panel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
-
-
-### Display
-
-#### Dark mode
-
-Toggle between light and dark mode from the Explorer's Settings tab.
-
-#### Table layout for response data
-
-You can view an operation's response as JSON or as a table. Table layout is especially useful when your response includes an array, or when you want to share a query's results with someone who isn't familiar with JSON.
-
-
 ## FAQ
 
 ### Does the Explorer support subscription operations?
@@ -232,3 +244,7 @@ You can also set your server's subscription websocket endpoint independently fro
 ### Is the Explorer available for on-prem distribution?
 
 Not at this time. The Explorer is available for free, unlimited use in Apollo Studio, but it is not available for download or on-prem distribution. This might change in the future, but for now our goal is to provide the best possible Explorer experience from within Studio.
+
+### Do my Explorer operations pass through Apollo servers?
+
+No. Operations you run in the Explorer are sent directly from your browser to your GraphQL server, _without_ passing through Apollo's systems. Apollo never sees your request headers or response data. For more information, see [Apollo Studio data privacy and compliance](./data-privacy).
