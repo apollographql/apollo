@@ -17,7 +17,7 @@ module.exports = {
           null: [
             'index',
             'getting-started',
-            '[Explorer](https://studio.apollographql.com/explorer)',
+            'explorer',
             '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)',
           ],
           'Registering your Schema': [

@@ -134,9 +134,9 @@ In versions of Apollo Server 2 _prior_ to 2.7.0, **all** of an operation's HTTP 
 If you're using an earlier version of Apollo Server, it's recommended that you
 update. If you can't update for whatever reason, you can use the [`privateHeaders` reporting option](https://www.apollographql.com/docs/apollo-server/migration-engine-plugins/#options-for-apolloserverpluginusagereporting) to specify the names of variables that should _not_ be sent to Studio. You can also set this option to `false` to prevent all headers from being sent. This reporting option is deprecated and will not be available in future versions of Apollo Server.
 
-## What data does Apollo Studio log about operations executed in its Explorer tab?
+## What data does Apollo Studio log about operations executed in the Explorer?
 
-**Only front-end usage metrics for improving the product.** The Explorer tab in Apollo Studio enables you to build and execute operations against your GraphQL server. These operations are sent directly from your browser and **do not** pass through Studio servers.
+**Only front-end usage metrics for improving the product.** The [Apollo Studio Explorer](./explorer/) enables you to build and execute operations against your GraphQL server. These operations are sent directly from your browser and **do not** pass through Studio servers.
 
 ## GDPR
 
