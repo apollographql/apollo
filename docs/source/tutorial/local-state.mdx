@@ -9,19 +9,19 @@ import Disclaimer from '../../shared/disclaimer.mdx';
 
 Time to accomplish: _15 Minutes_
 
-Most web apps use a combination of remotely fetched data and locally stored data. We can use Apollo Client's cache to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
+Most web apps rely on a combination of remotely fetched data and locally stored data. We can use Apollo Client to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
 
 <Disclaimer />
 
-## Write a client-side schema
+## Define a client-side schema
 
-First, let's define a **client-side GraphQL schema** that's specific to our application client. This isn't _required_ for managing local state, but it enables some useful developer tooling and helps us reason about our data.
+First, let's define a **client-side GraphQL schema** that's specific to our application client. This isn't _required_ for managing local state, but it enables useful developer tooling and helps us reason about our data.
 
 Add the following definition to `src/index.tsx`:
 
 <MultiCodeBlock>
 
-```tsx:title=src/resolvers.tsx
+```tsx:title=src/index.tsx
 export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
@@ -32,62 +32,144 @@ export const typeDefs = gql`
 
 </MultiCodeBlock>
 
-As you might expect, this looks a lot like the schema definition for our server, with one difference: we **extend** the `Query` type.
+As you might expect, this looks a lot like a definition from our _server's_ schema, with one difference: we **extend** the `Query` type. You can extend a GraphQL type that's defined in another location to add fields to that type.
 
-To build a client schema, we **extend** the types of our server schema and wrap it with the `gql` function. Using the extend keyword allows us to combine both schemas inside developer tooling like Apollo VSCode and Apollo DevTools.
+In this case, we're adding two fields to `Query`:
 
-We can also add local fields to server data by extending types from our server. Here, we're adding the `isInCart` local field to the `Launch` type we receive back from our graph API.
+* `isLoggedIn`, to track whether the user has an active session
+* `cartItems`, to track which launches the user has added to their cart
 
-## Initialize the store
-
-Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
-
-Jump back to `src/index.tsx` and notice we had already added a `cache.writeData` call to prepare the cache in the last section. While we're here, make sure to also import the `typeDefs` and `resolvers` that we just created so we can use them later:
+Also modify the constructor of `ApolloClient` to provide your client-side schema:
 
 <MultiCodeBlock>
 
-```tsx{1,11-12,15-20}:title=src/index.tsx
-import { resolvers, typeDefs } from './resolvers';
-
+```ts:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  }),
-  typeDefs,
-  resolvers,
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
   },
+  typeDefs, // highlight-line
 });
 ```
 
 </MultiCodeBlock>
 
-Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
+Next, we need to define how we store the values of these local fields on the client.
 
-## Query local data
+## Initialize reactive variables
 
-Querying local data from the Apollo cache is almost the same as querying remote data from a graph API. The only difference is that you add a `@client` directive to a local field to tell Apollo Client to pull it from the cache.
+Just like on the server, we can populate client-side schema fields with data from any source we want. Apollo Client provides a couple of useful built-in options for this:
 
-Let's look at an example where we query the `isLoggedIn` field we wrote to the cache in the last mutation exercise.
+* The same in-memory cache where all data from remote queries is stored
+* **Reactive variables**, which can store arbitrary data _outside_ the cache while still updating queries that depend on them
+
+Both of these options work for most use cases. We'll use reactive variables because they're faster to get started with.
+
+Open `src/cache.ts`. Update its `import` statement to include the `makeVar` function:
+
+```js:title=src/cache.ts
+import { InMemoryCache, Reference, makeVar } from '@apollo/client';
+```
+
+Then, add the following to the bottom of the file:
 
 <MultiCodeBlock>
 
-```tsx{8-12,15}:title=src/index.tsx
-import { gql, ApolloProvider, useQuery } from '@apollo/client';  // preserve-line
+```ts:title=src/cache.ts
+// Initializes to true if localStorage includes a 'token' key,
+// false otherwise
+export const isLoggedInVar = cache.makeVar<boolean>(!!localStorage.getItem('token'));
 
-import Pages from './pages'; // preserve-line
-import Login from './pages/login'; // preserve-line
-import injectStyles from './styles'; // preserve-line
+// Initializes to an empty array
+export const cartItemsVar = cache.makeVar<string[]>([]);
+```
 
+</MultiCodeBlock>
+
+Here we define two reactive variables, one for each of our client-side schema fields. The value we provide to each `makeVar` call sets the variable's initial value.
+
+The values of `isLoggedInVar` and `cartItemsVar` are  _functions_:
+
+* If you call a reactive variable function with zero arguments (e.g., `isLoggedInVar()`), it returns the variable's current value.
+* If you call the function with _one_ argument (e.g., `isLoggedInVar(false)`), it _replaces_ the variable's current value with the provided value.
+
+We now have our client-side schema and our client-side data sources. On the server side, next we would define resolvers to connect the two. On the client side, however, we define **field policies** instead.
+
+## Define client-side field policies
+
+A field policy specifies how a single GraphQL field in the Apollo Client cache is read and written. Most server-side schema fields don't need a field policy, because the default policy does the right thing: it writes query results directly to the cache and returns those results without any modifications.
+
+However, our client-side fields aren't _stored_ in the cache! We need to define field policies to tell Apollo Client how to query those fields.
+
+In `src/cache.ts`, look at the constructor of `InMemoryCache`:
+
+<MultiCodeBlock>
+
+```ts:title=src/cache.ts
+export const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        launches: {
+          // ...field policy definitions...
+        }
+      }
+    }
+  }
+});
+```
+
+</MultiCodeBlock>
+
+You might remember that we've _already_ defined a field policy here, specifically for the `Query.launches` field when we [added pagination support](./queries/#add-pagination-support) to our `GET_LAUNCHES` query.
+
+Let's add field policies for `Query.isLoggedIn` and `Query.cartItems`:
+
+<MultiCodeBlock>
+
+```ts{5-14}:title=src/cache.ts
+export const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        isLoggedIn: {
+          read() {
+            return isLoggedInVar();
+          } 
+        },
+        cartItems: {
+          read() {
+            return cartItemsVar();
+          } 
+        },
+        launches: {
+          // ...field policy definitions...
+        }
+      }
+    }
+  }
+});
+```
+
+</MultiCodeBlock>
+
+Our two field policies each include a single field: a **`read` function**. Apollo Client calls a field's `read` function whenever that field is queried. The query result uses the function's return value as the _field's_ value, regardless of any value in the cache or on your GraphQL server.
+
+Now, whenever we query one of our client-side schema fields, the value of our corresponding reactive variable is returned. Let's write a query to try it!
+
+## Query local fields
+
+You can include client-side fields in any GraphQL query you write. To do so, you add the `@client` directive to every client-side field in your query. This tells Apollo Client _not_ to fetch that field's value from your server.
+
+### Login status
+
+Let's define a query that includes our new `isLoggedIn` field. Add the following definitions to `index.tsx`:
+
+<MultiCodeBlock>
+
+```tsx:title=src/index.tsx
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
     isLoggedIn @client
@@ -98,19 +180,18 @@ function IsLoggedIn() {
   const { data } = useQuery(IS_LOGGED_IN);
   return data.isLoggedIn ? <Pages /> : <Login />;
 }
-
-injectStyles();
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <IsLoggedIn />
-  </ApolloProvider>,
-  document.getElementById('root'),
-);
 ```
 
 </MultiCodeBlock>
 
-First, we create our `IsUserLoggedIn` local query by adding the `@client` directive to the `isLoggedIn` field. Then, we render a component with `useQuery`, pass our local query in, and based on the response render either a login screen or the homepage depending if the user is logged in. Since cache reads are synchronous, we don't have to account for any loading state.
+The `isLoggedIn` component executes the `IS_LOGGED_IN` query:
+
+* If the user _isn't_ logged in, the component displays our application's login screen.
+* Otherwise, the component displays our application's home page.
+
+Because all of this query's fields are local fields, we don't need to worry about displaying any loading state.
+
+### Cart items
 
 Let's look at another example of a component that queries local state in `src/pages/cart.tsx`. Just like before, we create our query:
 
