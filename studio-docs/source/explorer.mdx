@@ -197,9 +197,7 @@ You can copy responses from your operations with a button or download any given 
 
 > Enable **Inlined traces** from the Explorer's Settings tab.
 
-If you are using Apollo Server 2.18+, you can see traces from your responses inlined in the Explorer by adding the `ApolloServerPluginInlineTrace` plugin to your server's configuration.
-
-Turning on the **Inlined traces** feature in the Explorer's settings will tell the Explorer to forward a special header to your server to request that it returns a protobuf with tracing information along with its response.
+If you are using Apollo Server 2.18+, you can see traces from your responses inlined in the Explorer by adding the `ApolloServerPluginInlineTrace` plugin to your server's configuration:
 
 ```
 import { ApolloServerPluginInlineTrace } from "apollo-server-core";
@@ -209,6 +207,8 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginInlineTrace()],
 })
 ```
+
+Turning on the inlined traces feature in the Explorer's settings tells the Explorer to forward a special header to your server to request that it return tracing information along with its response.
 
 #### Mocked responses
 
