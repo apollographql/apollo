@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" viewBox="0 0 140 140"><g transform="matrix(5.833333333333333,0,0,5.833333333333333,0,0)"><path d="M2.25,21.75a1.5,1.5,0,0,1-1.5-1.5V3.865A1.62,1.62,0,0,1,2.365,2.25H21.643A1.612,1.612,0,0,1,23.25,3.857V20.135a1.62,1.62,0,0,1-1.615,1.615Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M23.25 6.75L0.75 6.75" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M12.75 14.25L17.25 14.25" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M6.75 11.25L9.75 14.25 6.75 17.25" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></svg>
+<svg viewBox="0 0 140 124" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9.125,113.875 C4.29250844,113.875 0.375,109.957492 0.375,105.125 L0.375,9.54583333 C0.391013473,4.3494982 4.5994982,0.141013473 9.79583333,0.125 L122.250833,0.125 C127.421395,0.141013004 131.608987,4.3286047 131.625,9.49916667 L131.625,104.454167 C131.608987,109.650502 127.400502,113.858987 122.204167,113.875 L9.125,113.875 Z"></path>
+  <line x1="131.625" y1="26.375" x2="0.375" y2="26.375"></line>
+  <line x1="70.375" y1="70.125" x2="96.625" y2="70.125"></line>
+  <polyline points="35.375 52.625 52.875 70.125 35.375 87.625"></polyline>
+</svg>

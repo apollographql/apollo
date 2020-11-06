@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as AppleLogo } from '../assets/apple-logo.svg';
+import { ReactComponent as AndroidLogo } from '../assets/android-logo.svg';
+import { ReactComponent as FederationIcon } from '../assets/federation.svg';
 import { IconSatellite3 } from '@apollo/space-kit/icons/IconSatellite3';
 import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
@@ -47,38 +49,36 @@ const StyledLink = styled.a({
 
 const icons = [
   <ReactLogo />,
-  <AppleLogo style={{
-    padding: 1,
-    paddingTop: 0,
-    paddingBottom: 2
-  }} />,
+  <AppleLogo style={{paddingBottom: 1}} />,
+  <AndroidLogo />,
   <IconSatellite3 weight="thin" />,
-  <IconSchema weight="thin" />,
+  <FederationIcon />,
+  <IconSchema weight="thin" />
 ];
 
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
     <MenuWrapper>
-      {navItems.filter((navItem) => {
-        return !(navItem.omitLandingPage);
-      }).map((navItem, index) => (
-        <MenuItem
-          key={navItem.url}
-          icon={(
-            <AppIcon>
-              {icons[index]}
-            </AppIcon>
-          )}
-          title={(
-            <StyledLink href={navItem.url}>
-              {navItem.title}
-            </StyledLink>
-          )}
-        >
-          <NavItemDescription>{navItem.description}</NavItemDescription>
-        </MenuItem>
-      ))}
+      {navItems
+        .filter((navItem) => !navItem.omitLandingPage)
+        .map((navItem, index) => (
+          <MenuItem
+            key={navItem.url}
+            icon={(
+              <AppIcon>
+                {icons[index]}
+              </AppIcon>
+            )}
+            title={(
+              <StyledLink href={navItem.url}>
+                {navItem.title}
+              </StyledLink>
+            )}
+          >
+            <NavItemDescription>{navItem.description}</NavItemDescription>
+          </MenuItem>
+        ))}
     </MenuWrapper>
   );
 }
