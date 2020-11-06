@@ -16,7 +16,8 @@ Go to [https://github.com/apps/apollo-studio](https://github.com/apps/apollo-stu
 Next, make sure your CI has a step to run the schema check command. This is accomplished by adding the `apollo service:check` command directly as a step in your CI. For CircleCI it could look something like this:
 
 ### Circle-CI
-```yaml{13,29,33-36}
+
+```yaml{13,29,33-36}:title=.circleci/config.yml
 version: 2
 
 jobs:
@@ -54,15 +55,17 @@ jobs:
             apollo service:push
           fi
 ```
+
 ### Github Actions
-```
+
+```yaml:title=.github/workflows/schema_check.yaml
 name: Check
 
 # Controls when the action will run. Triggers schema validation on every pull request against main
 on:
   pull_request:
-    branches: [ main ]
-    
+    branches: [main]
+
 jobs:
   schema-check:
     # The type of runner that the job will run on any runner with node will work
@@ -70,14 +73,25 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          # Needed along with --commitId=… when the merge commit is checked out;
+          # alternatively check out the head of the branch with:
+          # ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
 
-    - name: Run schema check
-      env: # Apollo Key is supplied as an env var from github secrets
-        APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
-      run: npx apollo service:check --branch=${GITHUB_REF#refs/heads/} --author=$GITHUB_ACTOR
+      - name: Run schema check
+        env:
+          # Apollo Key is supplied as an env var from github secrets
+          APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
+        run: |
+          npx apollo service:check \
+            --branch=${GITHUB_REF#refs/heads/} \
+            --author=$GITHUB_ACTOR \
+            --commitId=$(git rev-parse $GITHUB_SHA^2)
 ```
-> **Note:** Your `apollo service:check` command needs a source to from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [The schema registry](./schema/registry/) for other options.
+
+> **Note:** Your `apollo service:check` command needs a source from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [The schema registry](./schema/registry/) for other options.
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Apollo Studio. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 
