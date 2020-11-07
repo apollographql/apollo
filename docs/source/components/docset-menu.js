@@ -71,12 +71,11 @@ export default function DocsetMenu() {
               </AppIcon>
             )}
             title={(
-              <StyledLink href={navItem.url}>
+              <StyledLink href={navItem.url} title={navItem.description}>
                 {navItem.title}
               </StyledLink>
             )}
           >
-            <NavItemDescription>{navItem.description}</NavItemDescription>
           </MenuItem>
         ))}
     </MenuWrapper>

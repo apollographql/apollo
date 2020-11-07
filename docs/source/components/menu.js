@@ -30,7 +30,7 @@ export function MenuItem({icon, title, children, ...props}) {
     <MenuItemWrapper {...props}>
       <IconWrapper>{icon}</IconWrapper>
       <TextWrapper>
-        <NavItemTitle>
+        <NavItemTitle style={{paddingTop: 4}}>
           {title}
         </NavItemTitle>
         {children}
