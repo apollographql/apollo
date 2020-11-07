@@ -45,10 +45,7 @@ import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
   mutation login($email: String!) {
-    login(email: $email) {
-      id
-      token
-    }
+    login(email: $email)
   }
 `;
 ```
@@ -102,8 +99,7 @@ const [login, { loading, error }] = useMutation<
   LOGIN_USER,
   {
     onCompleted({ login }) {
-      localStorage.setItem('token', login.token as string);
-      localStorage.setItem('userId', login.id as string);
+      localStorage.setItem('token', login as string);
     }
   }
 );
