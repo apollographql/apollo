@@ -10,9 +10,9 @@ import {
   ExpansionPanel,
 } from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 
-Time to accomplish: _15 Minutes_
+Time to accomplish: _20 Minutes_
 
-Most web apps rely on a combination of remotely fetched data and locally stored data. We can use Apollo Client to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
+Like most web apps, our app relies on a combination of remotely fetched data and locally stored data. We can use Apollo Client to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
 
 <Disclaimer />
 
@@ -20,7 +20,7 @@ Most web apps rely on a combination of remotely fetched data and locally stored 
 
 First, let's define a **client-side GraphQL schema** that's specific to our application client. This isn't _required_ for managing local state, but it enables useful developer tooling and helps us reason about our data.
 
-Add the following definition to `src/index.tsx`:
+Add the following definition to `src/index.tsx`, before the initialization of `ApolloClient`:
 
 <MultiCodeBlock>
 
@@ -35,6 +35,17 @@ export const typeDefs = gql`
 
 </MultiCodeBlock>
 
+Also add `gql` to the list of symbols imported from `@apollo/client`:
+
+```js:title=index.tsx
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider,
+  gql // highlight-line
+} from '@apollo/client';
+```
+
 As you might expect, this looks a lot like a definition from our _server's_ schema, with one difference: we **extend** the `Query` type. You can extend a GraphQL type that's defined in another location to add fields to that type.
 
 In this case, we're adding two fields to `Query`:
@@ -42,7 +53,7 @@ In this case, we're adding two fields to `Query`:
 * `isLoggedIn`, to track whether the user has an active session
 * `cartItems`, to track which launches the user has added to their cart
 
-Also modify the constructor of `ApolloClient` to provide your client-side schema:
+Finally, let's modify the constructor of `ApolloClient` to provide our client-side schema:
 
 <MultiCodeBlock>
 
@@ -97,6 +108,25 @@ The values of `isLoggedInVar` and `cartItemsVar` are  _functions_:
 
 * If you call a reactive variable function with zero arguments (e.g., `isLoggedInVar()`), it returns the variable's current value.
 * If you call the function with _one_ argument (e.g., `isLoggedInVar(false)`), it _replaces_ the variable's current value with the provided value.
+
+### Update login logic
+
+Now that we're representing login status with a reactive variable, we need to _update_ that variable whenever the user logs in.
+
+Let's return to `login.tsx` and import our new variable:
+
+```tsx:title=src/pages/login.tsx
+import { isLoggedInVar } from '../cache';
+```
+
+Now, let's also update that variable whenever a user logs in. Modify the `onCompleted` callback for the `LOGIN_USER` mutation to set `isLoggedInVar` to `true`:
+
+```tsx:title=src/pages/login.tsx
+onCompleted({ login }) {
+  localStorage.setItem('token', login as string);
+  isLoggedInVar(true); // highlight-line
+}
+```
 
 We now have our client-side schema and our client-side data sources. On the server side, next we would define resolvers to connect the two. On the client side, however, we define **field policies** instead.
 
@@ -187,12 +217,36 @@ function IsLoggedIn() {
 
 </MultiCodeBlock>
 
-The `isLoggedIn` component executes the `IS_LOGGED_IN` query:
+Also add the missing imports highlighted below:
+
+```tsx:title=index.tsx
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider,
+  gql,
+  useQuery // highlight-line
+} from '@apollo/client';
+import Login from './pages/login'; // highlight-line
+```
+
+The `isLoggedIn` component executes the `IS_LOGGED_IN` query and renders different components depending on the result:
 
 * If the user _isn't_ logged in, the component displays our application's login screen.
 * Otherwise, the component displays our application's home page.
 
 Because all of this query's fields are local fields, we don't need to worry about displaying any loading state.
+
+Finally, let's update the `ReactDOM.render` call to use our new `isLoggedIn` component:
+
+```tsx:title=index.tsx
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <IsLoggedIn />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
+```
 
 ### Cart items
 
@@ -328,7 +382,7 @@ Because of this, when a user clicks the logout button, our `isLoggedIn` componen
 
 ### Enable trip booking
 
-Let's enable our users to book trips in the client. We've waited so long to implement this core feature because it requires interacting with both local data (the user's cart) and remote data. Now we know how to do both.
+Let's enable our users to book trips in the client. We've waited so long to implement this core feature because it requires interacting with both local data (the user's cart) and remote data. Now we know how to do both!
 
 Open `src/containers/book-trips.tsx`. Replace its contents with the following:
 
@@ -438,8 +492,8 @@ const CancelTripButton: React.FC<ActionButtonProps> = ({ id }) => {
     {
       variables: { launchId: id },
       update(cache, { data: { cancelTrip } }) {
-        // Update the users list of trips in the cache to remove the trip that
-        // was just cancelled.
+        // Update the user's cached list of trips to remove the trip that
+        // was just canceled.
         const launch = cancelTrip.launches[0];
         cache.modify({
           id: `User:${localStorage.getItem('userId')}`,
@@ -525,101 +579,31 @@ Let's cover each separately.
 
 #### Canceling a trip
 
-The `CancelTripButton` executes the `CANCEL_TRIP` mutation, which takes a `launchId` as a variable (indicating which trip to cancel).
+The `CancelTripButton` component executes the `CANCEL_TRIP` mutation, which takes a `launchId` as a variable (indicating which previously booked trip to cancel).
+
+In our call to `useMutation`, we include an **`update` function**. This function is called after the mutation completes, enabling us to update the cache to reflect the server-side cancellation.
+
+Our `update` function obtains the canceled trip from the mutation result, which is passed to the function. It then uses the `modify` method of `InMemoryCache` to filter that trip out of the `trips` field of our cached `User` object.
+
+> The `cache.modify` method is a powerful and flexible tool for interacting with cached data. To learn more about it, see [`cache.modify`](https://www.apollographql.com/docs/react/caching/cache-interaction/#cachemodify)
 
 #### Adding and removing cart items
 
-Let's see how we call the `addOrRemoveFromCart` mutation in a component:
+The `ToggleTripButton` component doesn't execute any GraphQL operations, because it can instead interact directly with the `cartItemsVar` reactive variable.
 
-<MultiCodeBlock>
+On click, the button adds its associated trip to the cart if it's missing, or removes it if it's present.
 
-```tsx:title=src/containers/action-button.tsx
-import { gql } from '@apollo/client';
+## Finish up
 
-const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($launchId: ID!) {
-    addOrRemoveFromCart(id: $launchId) @client
-  }
-`;
-```
+Our application is complete! If you haven't yet, start up your server and client and test out all of the functionality we just added, including:
 
-</MultiCodeBlock>
+* Logging in and out
+* Adding and removing trips from the cart
+* Booking trips
+* Canceling a booked trip
 
-Just like before, the only thing we need to add to our mutation is a `@client` directive to tell Apollo to resolve this mutation from the cache instead of a remote server.
-
-Now that our local mutation is complete, let's build out the rest of the `ActionButton` component so we can finish building the cart:
-
-<MultiCodeBlock>
-
-```tsx:title=src/containers/action-button.tsx
-import React from 'react';
-import { gql, useMutation } from '@apollo/client';
-
-import { GET_LAUNCH_DETAILS } from '../pages/launch';
-import Button from '../components/button';
-import * as LaunchDetailTypes from '../pages/__generated__/LaunchDetails';
-
-export const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($launchId: ID!) {
-    addOrRemoveFromCart(id: $launchId) @client
-  }
-`;
-
-export const CANCEL_TRIP = gql`
-  mutation cancel($launchId: ID!) {
-    cancelTrip(launchId: $launchId) {
-      success
-      message
-      launches {
-        id
-        isBooked
-      }
-    }
-  }
-`;
-
-interface ActionButtonProps extends Partial<LaunchDetailTypes.LaunchDetails_launch> {}
-
-const ActionButton: React.FC<ActionButtonProps> = ({ isBooked, id, isInCart }) => {
-  const [mutate, { loading, error }] = useMutation(
-    isBooked ? CANCEL_TRIP : TOGGLE_CART,
-    {
-      variables: { launchId: id },
-      refetchQueries: [
-        {
-          query: GET_LAUNCH_DETAILS,
-          variables: { launchId: id },
-        },
-      ]
-    }
-  );
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>An error occurred</p>;
-
-  return (
-    <div>
-      <Button
-        onClick={() => mutate()}
-        data-testid={'action-button'}
-      >
-        {isBooked
-          ? 'Cancel This Trip'
-          : isInCart
-            ? 'Remove from Cart'
-            : 'Add to Cart'}
-      </Button>
-    </div>
-  );
-}
-
-export default ActionButton;
-```
-
-</MultiCodeBlock>
-
-In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` hook.
+You can also start up the version of the client in `final/client` to compare it to your version.
 
 ---
 
-Congratulations! 🎉 You've officially made it to the end of the Apollo platform tutorial. In the final section, we're going to recap what we just learned and give you guidance on what you should learn next.
+Congratulations! 🎉 You've completed the Apollo full-stack tutorial. You're ready to dive into each individual part of the Apollo platform. Return to the [documentation homepage](/) for quick links to each part's documentation, along with "recommended workouts" to get you going.
