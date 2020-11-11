@@ -14,6 +14,8 @@ Studio's core features are free for everyone. All of the features in this tutori
 
 ## Create an Apollo account
 
+> Skip this if you already created an account to use the Apollo Studio Explorer.
+
 Visit [studio.apollographql.com](https://studio.apollographql.com) and click **Create an account**. You can sign up either with your GitHub account or by setting a username and password.
 
 After signing up, you're redirected to your Apollo Studio homepage.
@@ -54,13 +56,11 @@ Start up your server using `npm start`, then return to your Studio homepage. Aft
 
 Connecting your server to Apollo Studio activates a variety of powerful features: 
 
-### The Explorer tab
+### The Explorer
 
-Your graph's Explorer tab provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
+As shown [earlier in the tutorial](./schema/#explore-your-schema) the Apollo Studio Explorer provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
-<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
-
-[Open the **Explorer** tab](https://studio.apollographql.com/explorer) and complete its Getting Started steps to see what it can do!
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" /></img>
 
 ### Schema history
 
