@@ -101,7 +101,7 @@ By providing your resolver map to Apollo Server like so, it knows how to call re
 
 Let's run a test query on our server! Start it up with `npm start` and open whichever tool you previously used to [explore your schema](./schema/#explore-your-schema):
 
-* The Explorer in [Apollo Studio](https://studio.apollographql.com/)
+* The Explorer in [Apollo Studio](https://studio.apollographql.com/dev)
 * GraphQL Playground at `localhost:4000`
 
 Paste the following query into the tool's editor panel:

@@ -216,7 +216,7 @@ The **Apollo Studio Explorer** is a powerful free web IDE for exploring your Gra
 
 <img class="screenshot" src="../img/explorer-tab.jpg" />
 
-To use the Explorer with your locally running server, you register a **dev graph** with Apollo Studio, like so:
+To use the Explorer with your locally running server, you create a **dev graph** in Apollo Studio, like so:
 
 1. Visit [studio.apollographql.com/dev](https://studio.apollographql.com/dev).
 
@@ -238,9 +238,9 @@ Your schema's root types (`Query` and `Mutation`) appear. You can click any type
 
 ### With GraphQL Playground
 
-With your server running, visit `localhost:4000` in your browser to open [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
+[GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/) is an open-source tool for querying your GraphQL server. It provides fewer features than the Apollo Studio Explorer, but it does everything we need for this tutorial. It's also included in every Apollo Server installation.
 
-To introspect your server's schema, click the **Schema** button on the right side of GraphQL Playground:
+With your server running, visit `localhost:4000` in your browser to open GraphQL Playground. To introspect your server's schema, click the **Schema** button on the right side:
 
 <img src="../images/schematab.png" alt="Schema button">
 
