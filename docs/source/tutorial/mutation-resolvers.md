@@ -115,13 +115,13 @@ To match our schema, these two resolvers both return an object that conforms to 
 
 > The `bookTrips` resolver needs to account for the possibility of a **partial success**, where some launches are booked successfully and others fail. The code above indicates a partial success in the `message` field.
 
-## Run mutations in GraphQL Playground
+## Run test mutations
 
-We're ready to test out our mutations! Restart your server and return to GraphQL Playground in your browser.
+We're ready to test out our mutations! Restart your server and return to the Apollo Studio Explorer or GraphQL Playground in your browser.
 
 ### Obtain a login token
 
-GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it in GraphQL Playground:
+GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it:
 
 ```graphql
 mutation LoginUser {
@@ -138,16 +138,16 @@ The server will respond like this:
 ```
 
 The string below is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
+
 ```
 ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
 ```
-
 
 ### Book trips
 
 Let's try booking some trips. Only authenticated users are allowed to book trips, so we'll include our login token in our request.
 
-First, paste the mutation below into GraphQL playground:
+First, paste the mutation below into your tool's query editor:
 
 ```graphql
 mutation BookTrips {
@@ -161,7 +161,7 @@ mutation BookTrips {
 }
 ```
 
-Next, paste the following into the HTTP Headers box in the bottom left:
+Next, paste the following into the tool's Headers panel:
 
 ```json:title=HTTP_HEADERS
 {
