@@ -189,16 +189,15 @@ Our example app's schema is now complete!
 
 ## Run your server
 
-Return to `src/index.js` and add a call to `server.listen()`, like so:
+Return to `src/index.js` and add the following call to the bottom of the file:
 
-```js{6-8}:title=src/index.js
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-
-const server = new ApolloServer({ typeDefs });
-
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+```js:title=src/index.js
+server.listen().then(() => {
+  console.log(`
+    Server is running!
+    Listening on port 4000
+    Explore at https://studio.apollographql.com/dev
+  `);
 });
 ```
 
