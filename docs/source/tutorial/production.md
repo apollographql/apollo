@@ -25,7 +25,10 @@ After signing up, you're redirected to your Apollo Studio homepage.
 In Apollo Studio, each **graph** is a distinct data graph with a corresponding GraphQL schema. For your first graph, we'll use the schema of the server you just finished building.
 
 1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
-2. Provide a name for your graph and click **Next**.
+2. Provide a name for your graph and make sure **Graph Type** is set to **Deployed** as shown, then click **Next**.
+
+<img src="../img/prod-graph.png" class="screenshot" width="600"></img>
+
 3. A dialog appears instructing to you register your schema. We'll do that in the next step.
 
 ## Connect your server
