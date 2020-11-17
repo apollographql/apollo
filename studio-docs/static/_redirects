@@ -1,5 +1,7 @@
 / /docs/studio/
 
+/docs/studio/schema/registry/ /docs/studio/org/graphs/
+
 # Move managed federation docs into Federation docset
 /docs/studio/managed-federation/overview/ /docs/federation/managed-federation/overview/
 /docs/studio/managed-federation/setup/ /docs/federation/managed-federation/setup/

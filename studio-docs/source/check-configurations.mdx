@@ -67,7 +67,7 @@ If you have any requests for other filtering or threshold mechanisms, please get
 
 ### Checking against multiple environments
 
-You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./schema/registry/#managing-environments-with-variants) of a single data graph.
+You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./org/graphs/#managing-variants) of a single data graph.
 
 You can check your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
 
