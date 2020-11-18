@@ -4,18 +4,16 @@ sidebar_title: Local development (dev graphs)
 description: Use Studio features in your development environment
 ---
 
-Development graphs (or **dev graphs**) are a special type of graph in Apollo Studio. Unlike a _deployed_ graph (which represents your data graph in deployed environments like staging and production), a dev graph represents your data graph in your own development environment. It's only visible to you, and because it's separate from your deployed graph, you can quickly and safely iterate on its schema without affecting other clients.
+Development graphs (or **dev graphs**) are a special type of graph in Apollo Studio. Unlike a _deployed_ graph (which represents your data graph in deployed environments like staging and production), a dev graph represents your data graph in your own development environment.
 
-Dev graphs provide the subset of Studio features that are most useful for development, specifically:
+Your dev graphs are only visible to you, so you can prototype and iterate on schema changes quickly and safely, without creating noise for your teammates.
+
+Currently, dev graphs support the following Apollo Studio features:
 
 * [The Apollo Studio Explorer](./explorer/)
-* Schema changelog
+* [Schema changelog](./org/graphs/#tracking-schema-changes)
 
-Among other Studio features, dev graphs do _not_ currently support:
-
-* [Variants](./org/graphs/#managing-variants)
-* Metrics reporting
-* Graph API keys
+Other Apollo Studio features (such as metrics reporting and graph API keys) are not yet supported.
 
 ## Creating a dev graph
 
