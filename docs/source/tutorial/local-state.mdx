@@ -42,7 +42,7 @@ import {
   ApolloClient,
   NormalizedCacheObject,
   ApolloProvider,
-  gql // highlight-line
+  gql, // highlight-line
 } from '@apollo/client';
 ```
 
@@ -344,8 +344,8 @@ const LogoutButton = () => {
         client.cache.evict({ fieldName: 'me' });
         client.cache.gc();
 
-        // Clear localStorage
-        localStorage.clear();
+        // Remove token from localStorage
+        localStorage.removeItem('token');
 
         // Set the logged-in status to false
         isLoggedInVar(false);
@@ -461,7 +461,7 @@ Open `src/containers/action-button.tsx`. Replace its contents with the following
 <MultiCodeBlock>
 
 ```tsx:title=src/containers/action-button.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { gql, useMutation, Reference } from '@apollo/client';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
@@ -496,7 +496,10 @@ const CancelTripButton: React.FC<ActionButtonProps> = ({ id }) => {
         // was just canceled.
         const launch = cancelTrip.launches[0];
         cache.modify({
-          id: `User:${localStorage.getItem('userId')}`,
+          id: cache.identify({
+            __typename: 'User',
+            id: localStorage.getItem('userId'),
+          }),
           fields: {
             trips(existingTrips) {
               const launchRef = cache.writeFragment({
@@ -533,9 +536,8 @@ const CancelTripButton: React.FC<ActionButtonProps> = ({ id }) => {
 };
 
 const ToggleTripButton: React.FC<ActionButtonProps> = ({ id }) => {
-  const cartItems = cartItemsVar();
+  const cartItems = useReactiveVar(cartItemsVar);
   const isInCart = id ? cartItems.includes(id) : false;
-  const [, toggleTrip] = useState(isInCart);
   return (
     <div>
       <Button
@@ -543,11 +545,9 @@ const ToggleTripButton: React.FC<ActionButtonProps> = ({ id }) => {
           if (id) {
             cartItemsVar(
               isInCart
-                ? cartItems.filter((i) => i !== id)
+                ? cartItems.filter(itemId => itemId !== id)
                 : [...cartItems, id]
             );
-            // Trigger a re-render to pick up the `cartItemsVar` changes.
-            toggleTrip(!isInCart);
           }
         }}
         data-testid={'action-button'}
@@ -585,7 +585,7 @@ In our call to `useMutation`, we include an **`update` function**. This function
 
 Our `update` function obtains the canceled trip from the mutation result, which is passed to the function. It then uses the `modify` method of `InMemoryCache` to filter that trip out of the `trips` field of our cached `User` object.
 
-> The `cache.modify` method is a powerful and flexible tool for interacting with cached data. To learn more about it, see [`cache.modify`](https://www.apollographql.com/docs/react/caching/cache-interaction/#cachemodify)
+> The `cache.modify` method is a powerful and flexible tool for interacting with cached data. To learn more about it, see [`cache.modify`](https://www.apollographql.com/docs/react/caching/cache-interaction/#cachemodify).
 
 #### Adding and removing cart items
 
