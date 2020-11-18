@@ -166,14 +166,9 @@ If you're working with a federated graph in Studio, the Explorer dynamically cal
 
 ### Local development
 
-Unline similar GraphQL clients, the Explorer obtains your server's schema from Apollo Studio by default, _not_ by introspecting your server. This has the following benefits:
+You can use the Explorer for local development by creating a [development graph](./dev-graphs/) in Studio.
 
-* The Explorer can provide documentation and schema IntelliSense, even if your endpoint has disabled introspection (this is common for production graphs).
-* The Explorer can provide information about directives, which introspection does not support.
-
-You can still use the Explorer for local development. To do so, create a [development graph](https://studio.apollographql.com/dev) in Studio.
-
-A dev graph uses introspection to fetch your schema from your local endpoint, and it also polls regularly for changes. Whenever a new schema is detected, the dev graph pulls this change and updates itself automatically. You can also pause introspection polling at any time.
+Unlike _deployed_ graphs, dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever a dev graph detects schema changes, it pulls those changes and updates itself automatically. You can pause introspection polling at any time.
 
 ### Networking
 

@@ -22,6 +22,7 @@ module.exports = {
           'Working with Graphs': [
             'org/graphs',
             'explorer',
+            'dev-graphs',
           ],
           'Registering your Schema': [
             'schema/schema-reporting',

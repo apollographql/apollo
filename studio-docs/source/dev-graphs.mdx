@@ -1,0 +1,54 @@
+---
+title: Development graphs
+sidebar_title: Local development (dev graphs)
+description: Use Studio features in your development environment
+---
+
+Development graphs (or **dev graphs**) are a special type of graph in Apollo Studio. Unlike a _deployed_ graph (which represents your data graph in deployed environments like staging and production), a dev graph represents your data graph in your own development environment. It's only visible to you, and because it's separate from your deployed graph, you can quickly and safely iterate on its schema without affecting other clients.
+
+Dev graphs provide the subset of Studio features that are most useful for development, specifically:
+
+* [The Apollo Studio Explorer](./explorer/)
+* Schema changelog
+
+Among other Studio features, dev graphs do _not_ currently support:
+
+* [Variants](./org/graphs/#managing-variants)
+* Metrics reporting
+* Graph API keys
+
+## Creating a dev graph
+
+1. Make sure your GraphQL server is running in your development environment, and that introspection is enabled.
+    > Unlike deployed graphs, dev graphs use introspection to obtain your server's schema. Deployed graphs use the schema you register with Studio so you can disable introspection in your production environments.
+
+2. Open [Apollo Studio](https://studio.apollographql.com/) and click **New Graph** in the upper right. The following form appears:
+
+    <img class="screenshot" src="./img/dev-graph.jpg" width="500" />
+
+3. In the form, specify:
+
+    * The dev graph's associated Studio organization
+    * A name for the graph
+    * The **Development** graph type
+    * Your development GraphQL server's endpoint (by default this is `localhost:4000` when running Apollo Server locally)
+
+4. Click **Create Graph**.
+    * _If the **Create Graph** button is disabled, Studio can't reach your server's endpoint. Double check that your server is running._
+
+After your graph is created, Studio automatically opens the Explorer so you can begin querying your server.
+
+## Using the Explorer with dev graphs
+
+You can use the [Apollo Studio Explorer](./explorer) to explore and query dev graphs just like you use it with deployed graphs.
+
+When you're exploring a dev graph, Studio's top nav displays a special **Dev Graph** dropdown menu:
+
+<img class="screenshot" src="./img/dev-graph-dropdown.jpg" width="400" />
+
+The dropdown displays a green dot if the Explorer is successfully connected to your running GraphQL server.
+
+Click the dropdown to configure the following options that are specific to dev graphs:
+
+* **Endpoint URL**: If your development server's endpoint changes (for example, if you run the server on a different port), update it here.
+* **Auto update**: By default, the Explorer regularly polls your development server for updates to your schema. If you change your schema and restart your server, the Explorer detects and reflects these changes automatically. You can disable that automatic behavior here.
