@@ -91,7 +91,7 @@ jobs:
             --commitId=$(git rev-parse $GITHUB_SHA^2)
 ```
 
-> **Note:** Your `apollo service:check` command needs a source from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it. See [The schema registry](./schema/registry/) for other options.
+> **Note:** Your `apollo service:check` command needs a source from which to fetch your schema. This is most commonly provided as a URL to a running server (with introspection enabled), but can also be provided as a path to a file with your schema in it.
 
 The `apollo schema:check` command checks for differences in your schema between what's on your current branch and the last version you uploaded to Apollo Studio. If you've removed or changed any types or fields, it will validate that those changes won't break any of the queries that your clients have made recently. If your changes do break any queries, the check will fail.
 
