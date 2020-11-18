@@ -16,8 +16,6 @@ There are two types of graphs in Studio:
 * **Deployed graphs** are shared with other members of your organization. Create a deployed graph for every use case _except_ local development.
 * **Development graphs** (**dev graphs** for short) are only visible to you. Use them to help you iterate on your graph in your development environment.
 
-Note that every graph in Studio has a **globally unique name**. We recommend that you prefix your graph names with the name of your organization to avoid naming collisions.
-
 ## Registering a schema
 
 You can register your schema to a Studio graph with one of the following methods:
@@ -48,7 +46,9 @@ The History view in Apollo Studio lets you view the timeline of changes made to 
 
 ## Managing variants
 
-To distinguish between instances of the same graph running in different environments (such as staging and production), you can define **variants** for a graph. Each variant has its own schema, along with its own change history, metrics, and operation registry.
+To distinguish between instances of the same graph running in different environments (such as staging and production), you can define **variants** for a deployed graph. Each variant has its own schema, along with its own change history, metrics, and operation registry.
+
+> Development graphs do **not** support variants.
 
 ### Adding a variant
 
