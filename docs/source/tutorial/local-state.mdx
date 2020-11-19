@@ -123,7 +123,8 @@ Now, let's also update that variable whenever a user logs in. Modify the `onComp
 
 ```tsx:title=src/pages/login.tsx
 onCompleted({ login }) {
-  localStorage.setItem('token', login as string);
+  localStorage.setItem('token', login.token as string);
+  localStorage.setItem('userId', login.id as string);
   isLoggedInVar(true); // highlight-line
 }
 ```
@@ -344,8 +345,9 @@ const LogoutButton = () => {
         client.cache.evict({ fieldName: 'me' });
         client.cache.gc();
 
-        // Remove token from localStorage
+        // Remove user details from localStorage
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
 
         // Set the logged-in status to false
         isLoggedInVar(false);

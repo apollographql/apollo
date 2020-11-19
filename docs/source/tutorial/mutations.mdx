@@ -45,14 +45,20 @@ import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
   mutation login($email: String!) {
-    login(email: $email)
+    login(email: $email) {
+      id
+      token
+    }
   }
 `;
 ```
 
 </MultiCodeBlock>
 
-Our `LOGIN_USER` definition looks just like our queries from the previous section, except it replaces the word `query` with `mutation`. We receive a server-generated `token` in the response from `login`, which represents the user's active session.
+Our `LOGIN_USER` definition looks just like our queries from the previous section, except it replaces the word `query` with `mutation`. We receive a `User` object in the response from `login`, which includes two fields that we'll use:
+
+* The user's `id`, which we'll use to fetch user-specific data in future queries
+* A session `token`, which we'll use to "authenticate" future GraphQL operations
 
 ### Apply the `useMutation` hook
 
