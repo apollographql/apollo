@@ -231,14 +231,14 @@ import {
 import Login from './pages/login'; // highlight-line
 ```
 
-The `isLoggedIn` component executes the `IS_LOGGED_IN` query and renders different components depending on the result:
+The `IsLoggedIn` component executes the `IS_LOGGED_IN` query and renders different components depending on the result:
 
 * If the user _isn't_ logged in, the component displays our application's login screen.
 * Otherwise, the component displays our application's home page.
 
 Because all of this query's fields are local fields, we don't need to worry about displaying any loading state.
 
-Finally, let's update the `ReactDOM.render` call to use our new `isLoggedIn` component:
+Finally, let's update the `ReactDOM.render` call to use our new `IsLoggedIn` component:
 
 ```tsx:title=index.tsx
 ReactDOM.render(
@@ -464,7 +464,12 @@ Open `src/containers/action-button.tsx`. Replace its contents with the following
 
 ```tsx:title=src/containers/action-button.tsx
 import React from 'react';
-import { gql, useMutation, Reference } from '@apollo/client';
+import {
+  gql,
+  useMutation,
+  useReactiveVar,
+  Reference
+} from '@apollo/client';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';

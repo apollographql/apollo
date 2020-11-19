@@ -44,7 +44,7 @@ import { LoginForm, Loading } from '../components'; // preserve-line
 import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
-  mutation login($email: String!) {
+  mutation Login($email: String!) {
     login(email: $email) {
       id
       token
@@ -91,9 +91,9 @@ return <LoginForm login={login} />;
 
 Now whenever a user submits the login form, our `login` mutation is called. The user's `token` is stored in the in-memory cache, _however_ we want that token to be available across multiple visits in the same browser. Let's tackle that next.
 
-#### Persist the user token
+#### Persist the user's token and ID
 
-In our call to `useMutation`, we can include an `onCompleted` callback. This enables us to interact with the mutation's result data as soon as it's available. We'll use this callback to persist the user's `token`.
+In our call to `useMutation`, we can include an `onCompleted` callback. This enables us to interact with the mutation's result data as soon as it's available. We'll use this callback to persist the user's `token` and `id`.
 
 Modify the `useMutation` call in `login.tsx` to match the following:
 
@@ -105,7 +105,8 @@ const [login, { loading, error }] = useMutation<
   LOGIN_USER,
   {
     onCompleted({ login }) {
-      localStorage.setItem('token', login as string);
+      localStorage.setItem('token', login.token as string);
+      localStorage.setItem('userId', login.id as string);
     }
   }
 );

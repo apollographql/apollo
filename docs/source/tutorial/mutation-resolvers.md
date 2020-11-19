@@ -70,7 +70,7 @@ By creating this `context` object at the beginning of each operation's execution
 
 ## `bookTrips` and `cancelTrip`
 
-Now let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
+Now back in `resolvers.js`, let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
 
 ```js:title=src/resolvers.js
 //Mutation: {
@@ -142,11 +142,7 @@ The server will respond like this:
  }
 ```
 
-The string below is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
-
-```
-ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
-```
+The value of the `token` field is our login token (which is just the Base64 encoding of the email address we provided). We'll use this value in the next mutation.
 
 ### Book trips
 
