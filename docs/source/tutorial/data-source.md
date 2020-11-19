@@ -145,7 +145,7 @@ Now that we've built our two data sources, we need to add them to Apollo Server.
 
 Pass a `dataSources` option to the `ApolloServer` constructor. This option is a function that returns an object containing newly instantiated data sources. 
 
-Navigate to `src/index.js` and add the code highlighted below:
+Navigate to `src/index.js` and add the code highlighted below (or replace the entire file with the entire code block):
 
 ```js{3,5,6,8,12-15}:title=src/index.js
 const { ApolloServer } = require('apollo-server');
@@ -165,8 +165,12 @@ const server = new ApolloServer({
   })
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+server.listen().then(() => {
+  console.log(`
+    Server is running!
+    Listening on port 4000
+    Explore at https://studio.apollographql.com/dev
+  `);
 });
 ```
 

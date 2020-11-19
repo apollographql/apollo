@@ -86,7 +86,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 The `ApolloClient` constructor requires two parameters:
 
-* The `uri` of our GraphQL server (in this case `localhost:4000`).
+* The `uri` of our GraphQL server (in this case `localhost:4000/graphql`).
 * An instance of `InMemoryCache` to use as the client's `cache`. We import this instance from the `cache.ts` file.
 
 In just these few lines of code, our client is ready to fetch data!
@@ -133,6 +133,6 @@ Before we integrate Apollo Client with a React view layer, let's try sending a q
 
     You can also open the Network tab in your browser's developer tools and refresh the page to view the shape of the request that Apollo Client makes to execute your query (it's a POST request to `localhost:4000`).
 
-5. Go ahead and delete the `client.query()` call you just added, along with import of `gql` that's no longer needed.
+5. Go ahead and delete the `client.query()` call you just added, along with the import of `gql` that's no longer needed.
 
 Now, let's integrate our client with React.

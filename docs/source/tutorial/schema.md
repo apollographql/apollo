@@ -114,6 +114,7 @@ type User {
   id: ID!
   email: String!
   trips: [Launch]!
+  token: String
 }
 
 type Mission {
@@ -161,7 +162,7 @@ The `Mutation` type is a special type that's similar in structure to the `Query`
 type Mutation {
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
   cancelTrip(launchId: ID!): TripUpdateResponse!
-  login(email: String): String # login token
+  login(email: String): User
 }
 ```
 
