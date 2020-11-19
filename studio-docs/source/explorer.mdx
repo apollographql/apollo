@@ -118,6 +118,8 @@ For more information, see the [documentation for preflight scripts](https://gith
 
 You can view an operation's response as JSON or as a table. Table layout is especially useful when your response includes an array, or when you want to share a query's results with someone who isn't familiar with JSON.
 
+When looking at arrays of data in table mode, you can click the header of any column of data to sort your array by that column's values.
+
 #### Inline/Extract fragments
 
 > Right-click any fragment name to inline that fragment in queries where it is used. Right-click any selection of fields to extract those fields into a fragment.
@@ -162,7 +164,7 @@ query($id: ID!) {
 
 If you're working with a federated graph in Studio, the Explorer dynamically calculates query plans for your operations in the right-jpanel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
 
-
+There are two display modes for query plans. You can switch between the "text" and "chart" display modes in the response panel's header menu.
 
 ### Local development
 
@@ -191,6 +193,8 @@ The Explorer saves the history of your recently run operations (and the variable
 #### Downloading responses
 
 You can copy responses from your operations with a button or download any given response to a local JSON file.
+
+If you are looking at your data [in the table layout](#table-layout-for-response-data), you will also be able to download arrays in your response to CSV files.
 
 ### Testing operations
 
@@ -231,7 +235,8 @@ The Explorer does not show response hints for mutations (this requires running p
 
 As an alternative to [response hints](#response-hints), the Explorer can show you hints for the latency of the fields in your query. This option is available only if you've configured your graph to [report field usage and tracing data to Studio](./setup-analytics/).
 
-The Explorer shows you the 95th-percentile response times for the fields in your query to help you get a sense of how "expensive" your query is and what the bottlenecks in response time will be.
+The Explorer shows you the 95th-percentile (default) response times for the fields in your query to help you get a sense of how "expensive" your query is and what the bottlenecks in response time will be.
+You can change which percentile you want to see hints from at any time in the Explorer settings.
 
 #### `graphql-lodash` integration
 
