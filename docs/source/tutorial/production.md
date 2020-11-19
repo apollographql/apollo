@@ -26,7 +26,8 @@ In Apollo Studio, each **graph** is a distinct data graph with a corresponding G
 
 1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
 2. Provide a name for your graph and click **Next**.
-3. A dialog appears instructing to you register your schema. We'll do that in the next step.
+3. Select **Deployed** as the Graph type
+4. A dialog appears instructing to you register your schema. We'll do that in the next step.
 
 ## Connect your server
 
