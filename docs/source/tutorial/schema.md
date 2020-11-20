@@ -3,7 +3,7 @@ title: 'Build a schema'
 sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
-
+testtest
 > Time to accomplish: 15 minutes
 
 Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
