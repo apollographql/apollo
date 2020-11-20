@@ -1,122 +1,209 @@
 ---
-title: '9. Manage local state'
-description: How to store and query local data in the Apollo cache
+title: 'Manage local state'
+sidebar_title: '9. Manage local state'
+description: Store and query local data in the Apollo cache
 ---
 
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
 import Disclaimer from '../../shared/disclaimer.mdx';
+import {
+  ExpansionPanel,
+} from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 
-Time to accomplish: _15 Minutes_
+Time to accomplish: _20 Minutes_
 
-In almost every app we build, we display a combination of remote data from our graph API and local data such as network status, form state, and more. What's awesome about Apollo Client is that it allows us to store local data inside the Apollo cache and query it alongside our remote data with GraphQL.
-
-We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
-
-Managing local data with Apollo Client is very similar to how you've already managed remote data in this tutorial. You'll write a client schema and resolvers for your local data. You'll also learn to query it with GraphQL just by specifying the `@client` directive. Let's dive in!
-
-### Write a local schema
+Like most web apps, our app relies on a combination of remotely fetched data and locally stored data. We can use Apollo Client to manage _both_ types of data, making it a single source of truth for our application's state. We can even interact with both types of data in a single operation. Let's learn how!
 
 <Disclaimer />
 
-Just like how a schema is the first step toward defining our data model on the server, writing a local schema is the first step we take on the client.
+## Define a client-side schema
 
-Navigate to `src/resolvers.tsx` and copy the following code to create your client schema (as well as blank client resolvers for later):
+First, let's define a **client-side GraphQL schema** that's specific to our application client. This isn't _required_ for managing local state, but it enables useful developer tooling and helps us reason about our data.
+
+Add the following definition to `src/index.tsx`, before the initialization of `ApolloClient`:
 
 <MultiCodeBlock>
 
-```tsx:title=src/resolvers.tsx
-import { gql, ApolloCache, Resolvers } from '@apollo/client';
-import * as GetCartItemTypes from './pages/__generated__/GetCartItems';
-import * as LaunchTileTypes from './pages/__generated__/LaunchTile';
-
+```tsx:title=src/index.tsx
 export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
     cartItems: [ID!]!
   }
-
-  extend type Launch {
-    isInCart: Boolean!
-  }
-
-  extend type Mutation {
-    addOrRemoveFromCart(id: ID!): [ID!]!
-  }
 `;
-
-type ResolverFn = (
-  parent: any,
-  args: any,
-  { cache } : { cache: ApolloCache<any> }
-) => any;
-
-interface ResolverMap {
-  [field: string]: ResolverFn;
-}
-
-interface AppResolvers extends Resolvers {
-  // We will update this with our app's resolvers later
-}
-
-export const resolvers = {};
 ```
 
 </MultiCodeBlock>
 
-To build a client schema, we **extend** the types of our server schema and wrap it with the `gql` function. Using the extend keyword allows us to combine both schemas inside developer tooling like Apollo VSCode and Apollo DevTools.
+Also add `gql` to the list of symbols imported from `@apollo/client`:
 
-We can also add local fields to server data by extending types from our server. Here, we're adding the `isInCart` local field to the `Launch` type we receive back from our graph API.
+```js:title=index.tsx
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider,
+  gql, // highlight-line
+} from '@apollo/client';
+```
 
-## Initialize the store
+As you might expect, this looks a lot like a definition from our _server's_ schema, with one difference: we **extend** the `Query` type. You can extend a GraphQL type that's defined in another location to add fields to that type.
 
-Now that we've created our client schema, let's learn how to initialize the store. Since queries execute as soon as the component mounts, it's important for us to warm the Apollo cache with some default state so those queries don't error out. We will need to write initial data to the cache for both `isLoggedIn` and `cartItems`:
+In this case, we're adding two fields to `Query`:
 
-Jump back to `src/index.tsx` and notice we had already added a `cache.writeData` call to prepare the cache in the last section. While we're here, make sure to also import the `typeDefs` and `resolvers` that we just created so we can use them later:
+* `isLoggedIn`, to track whether the user has an active session
+* `cartItems`, to track which launches the user has added to their cart
+
+Finally, let's modify the constructor of `ApolloClient` to provide our client-side schema:
 
 <MultiCodeBlock>
 
-```tsx{1,11-12,15-20}:title=src/index.tsx
-import { resolvers, typeDefs } from './resolvers';
-
+```ts:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  }),
-  typeDefs,
-  resolvers,
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
   },
+  typeDefs, // highlight-line
 });
 ```
 
 </MultiCodeBlock>
 
-Now that we've added default state to the Apollo cache, let's learn how to query local data from within our React components.
+Next, we need to define how we store the values of these local fields on the client.
 
-## Query local data
+## Initialize reactive variables
 
-Querying local data from the Apollo cache is almost the same as querying remote data from a graph API. The only difference is that you add a `@client` directive to a local field to tell Apollo Client to pull it from the cache.
+Just like on the server, we can populate client-side schema fields with data from any source we want. Apollo Client provides a couple of useful built-in options for this:
 
-Let's look at an example where we query the `isLoggedIn` field we wrote to the cache in the last mutation exercise.
+* The same in-memory cache where the results from server-side queries are stored
+* **Reactive variables**, which can store arbitrary data _outside_ the cache while still updating queries that depend on them
+
+Both of these options work for most use cases. We'll use reactive variables because they're faster to get started with.
+
+Open `src/cache.ts`. Update its `import` statement to include the `makeVar` function:
+
+```js:title=src/cache.ts
+import { InMemoryCache, Reference, makeVar } from '@apollo/client';
+```
+
+Then, add the following to the bottom of the file:
 
 <MultiCodeBlock>
 
-```tsx{8-12,15}:title=src/index.tsx
-import { gql, ApolloProvider, useQuery } from '@apollo/client';  // preserve-line
+```ts:title=src/cache.ts
+// Initializes to true if localStorage includes a 'token' key,
+// false otherwise
+export const isLoggedInVar = makeVar<boolean>(!!localStorage.getItem('token'));
 
-import Pages from './pages'; // preserve-line
-import Login from './pages/login'; // preserve-line
-import injectStyles from './styles'; // preserve-line
+// Initializes to an empty array
+export const cartItemsVar = makeVar<string[]>([]);
+```
 
+</MultiCodeBlock>
+
+Here we define two reactive variables, one for each of our client-side schema fields. The value we provide to each `makeVar` call sets the variable's initial value.
+
+The values of `isLoggedInVar` and `cartItemsVar` are  _functions_:
+
+* If you call a reactive variable function with zero arguments (e.g., `isLoggedInVar()`), it returns the variable's current value.
+* If you call the function with _one_ argument (e.g., `isLoggedInVar(false)`), it _replaces_ the variable's current value with the provided value.
+
+### Update login logic
+
+Now that we're representing login status with a reactive variable, we need to _update_ that variable whenever the user logs in.
+
+Let's return to `login.tsx` and import our new variable:
+
+```tsx:title=src/pages/login.tsx
+import { isLoggedInVar } from '../cache';
+```
+
+Now, let's also update that variable whenever a user logs in. Modify the `onCompleted` callback for the `LOGIN_USER` mutation to set `isLoggedInVar` to `true`:
+
+```tsx:title=src/pages/login.tsx
+onCompleted({ login }) {
+  localStorage.setItem('token', login.token as string);
+  localStorage.setItem('userId', login.id as string);
+  isLoggedInVar(true); // highlight-line
+}
+```
+
+We now have our client-side schema and our client-side data sources. On the server side, next we would define resolvers to connect the two. On the client side, however, we define **field policies** instead.
+
+## Define field policies
+
+A field policy specifies how a single GraphQL field in the Apollo Client cache is read and written. Most server-side schema fields don't need a field policy, because the default policy does the right thing: it writes query results directly to the cache and returns those results without any modifications.
+
+However, our client-side fields aren't _stored_ in the cache! We need to define field policies to tell Apollo Client how to query those fields.
+
+In `src/cache.ts`, look at the constructor of `InMemoryCache`:
+
+<MultiCodeBlock>
+
+```ts:title=src/cache.ts
+export const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        launches: {
+          // ...field policy definitions...
+        }
+      }
+    }
+  }
+});
+```
+
+</MultiCodeBlock>
+
+You might remember that we've _already_ defined a field policy here, specifically for the `Query.launches` field when we [added pagination support](./queries/#add-pagination-support) to our `GET_LAUNCHES` query.
+
+Let's add field policies for `Query.isLoggedIn` and `Query.cartItems`:
+
+<MultiCodeBlock>
+
+```ts{5-14}:title=src/cache.ts
+export const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        isLoggedIn: {
+          read() {
+            return isLoggedInVar();
+          } 
+        },
+        cartItems: {
+          read() {
+            return cartItemsVar();
+          } 
+        },
+        launches: {
+          // ...field policy definitions...
+        }
+      }
+    }
+  }
+});
+```
+
+</MultiCodeBlock>
+
+Our two field policies each include a single field: a **`read` function**. Apollo Client calls a field's `read` function whenever that field is queried. The query result uses the function's return value as the _field's_ value, regardless of any value in the cache or on your GraphQL server.
+
+Now, whenever we query one of our client-side schema fields, the value of our corresponding reactive variable is returned. Let's write a query to try it!
+
+## Query local fields
+
+You can include client-side fields in any GraphQL query you write. To do so, you add the `@client` directive to every client-side field in your query. This tells Apollo Client _not_ to fetch that field's value from your server.
+
+### Login status
+
+Let's define a query that includes our new `isLoggedIn` field. Add the following definitions to `index.tsx`:
+
+<MultiCodeBlock>
+
+```tsx:title=src/index.tsx
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
     isLoggedIn @client
@@ -127,53 +214,72 @@ function IsLoggedIn() {
   const { data } = useQuery(IS_LOGGED_IN);
   return data.isLoggedIn ? <Pages /> : <Login />;
 }
-
-injectStyles();
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <IsLoggedIn />
-  </ApolloProvider>,
-  document.getElementById('root'),
-);
 ```
 
 </MultiCodeBlock>
 
-First, we create our `IsUserLoggedIn` local query by adding the `@client` directive to the `isLoggedIn` field. Then, we render a component with `useQuery`, pass our local query in, and based on the response render either a login screen or the homepage depending if the user is logged in. Since cache reads are synchronous, we don't have to account for any loading state.
+Also add the missing imports highlighted below:
 
-Let's look at another example of a component that queries local state in `src/pages/cart.tsx`. Just like before, we create our query:
+```tsx:title=index.tsx
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider,
+  gql,
+  useQuery // highlight-line
+} from '@apollo/client';
+import Login from './pages/login'; // highlight-line
+```
+
+The `IsLoggedIn` component executes the `IS_LOGGED_IN` query and renders different components depending on the result:
+
+* If the user _isn't_ logged in, the component displays our application's login screen.
+* Otherwise, the component displays our application's home page.
+
+Because all of this query's fields are local fields, we don't need to worry about displaying any loading state.
+
+Finally, let's update the `ReactDOM.render` call to use our new `IsLoggedIn` component:
+
+```tsx:title=index.tsx
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <IsLoggedIn />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
+```
+
+### Cart items
+
+Next, let's implement a client-side cart for storing the launches that a user wants to book.
+
+Open `src/pages/cart.tsx` and replace its contents with the following:
+
+<ExpansionPanel title="Click to expand">
 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/cart.tsx
-import React, { Fragment } from 'react'; // preserve-line
-import { gql, useQuery } from '@apollo/client'; // preserve-line
+import React, { Fragment } from 'react';
+import { gql, useQuery } from '@apollo/client';
 
-import { Header, Loading } from '../components'; // preserve-line
-import { CartItem, BookTrips } from '../containers'; // preserve-line
+import { Header, Loading } from '../components';
+import { CartItem, BookTrips } from '../containers';
 import { RouteComponentProps } from '@reach/router';
-import * as GetCartItemsTypes from './__generated__/GetCartItems';
+import { GetCartItems } from './__generated__/GetCartItems';
 
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
     cartItems @client
   }
 `;
-```
 
-</MultiCodeBlock>
-
-Next, we call `useQuery` and bind it to our `GetCartItems` query:
-
-<MultiCodeBlock>
-
-```tsx:title=src/pages/cart.tsx
 interface CartProps extends RouteComponentProps {}
 
 const Cart: React.FC<CartProps> = () => {
-  const { data, loading, error } = useQuery<
-    GetCartItemsTypes.GetCartItems
-  >(GET_CART_ITEMS);
+  const { data, loading, error } = useQuery<GetCartItems>(
+    GET_CART_ITEMS
+  );
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
@@ -181,14 +287,14 @@ const Cart: React.FC<CartProps> = () => {
   return (
     <Fragment>
       <Header>My Cart</Header>
-      {!data || !!data && data.cartItems.length === 0 ? (
+      {data?.cartItems.length === 0 ? (
         <p data-testid="empty-message">No items in your cart</p>
       ) : (
         <Fragment>
-          {!!data && data.cartItems.map((launchId: any) => (
+          {data?.cartItems.map((launchId: any) => (
             <CartItem key={launchId} launchId={launchId} />
           ))}
-          <BookTrips cartItems={!!data ? data.cartItems : []} />
+          <BookTrips cartItems={data?.cartItems || []} />
         </Fragment>
       )}
     </Fragment>
@@ -200,108 +306,51 @@ export default Cart;
 
 </MultiCodeBlock>
 
-It's important to note that you can mix local queries with remote queries in a single GraphQL document. Now that you're a pro at querying local data with GraphQL, let's learn how to add local fields to server data.
+</ExpansionPanel>
 
-### Adding virtual fields to server data
+Once again, we query a client-side field and use that query's result to populate our UI. The `@client` directive is the only thing that differentiates this code from code that queries a remote field.
 
-One of the unique advantages of managing your local data with Apollo Client is that you can add **virtual fields** to data you receive back from your graph API. These fields only exist on the client and are useful for decorating server data with local state. In our example, we're going to add an `isInCart` virtual field to our `Launch` type.
+> Although both of the queries above _only_ query client-side fields, a single query can query both client-side and server-side fields.
 
-To add a virtual field, first extend the type of the data you're adding the field to in your client schema. Here, we're extending the `Launch` type:
+## Modify local fields
 
-<MultiCodeBlock>
+When we want to modify a server-side schema field, we execute a mutation that's handled by our server's resolvers. Modifying a _local_ field is more straightforward, because we can directly access the field's source data (in this case, a reactive variable).
 
-```ts:title=src/resolvers.tsx
-import { gql } from '@apollo/client';
+### Enable logout
 
-export const schema = gql`
-  extend type Launch {
-    isInCart: Boolean!
-  }
-`;
-```
+A logged-in user needs to be able to log out of our client as well. Our example app can perform a logout entirely locally, because logged-in status is determined by the presence of a `token` key in `localStorage`.
 
-</MultiCodeBlock>
+Open `src/containers/logout-button.tsx`. Replace its contents with the following:
 
-Next, specify a client resolver on the `Launch` type to tell Apollo Client how to resolve your virtual field:
+<ExpansionPanel title="Click to expand">
 
 <MultiCodeBlock>
 
-```tsx:title=src/resolvers.tsx
-// previous imports
-import { GET_CART_ITEMS } from './pages/cart';
-
-// type defs and other previous variable declarations
-
-interface AppResolvers extends Resolvers {
-  Launch: ResolverMap; // highlight-line
-}
-
-export const resolvers: AppResolvers = { // highlight-line
-  Launch: {
-    isInCart: (launch: LaunchTileTypes.LaunchTile, _, { cache }): boolean => {
-      const queryResult = cache.readQuery<GetCartItemTypes.GetCartItems>({
-        query: GET_CART_ITEMS
-      });
-      if (queryResult) {
-        return queryResult.cartItems.includes(launch.id)
-      }
-      return false;
-    }
-  },
-};
-```
-
-</MultiCodeBlock>
-
-We're going to learn more about client resolvers in the section below. The important thing to note is that the resolver API on the client is the same as the resolver API on the server.
-
-Now, you're ready to query your virtual field on the launch detail page! Similar to the previous examples, just add your virtual field to a query and specify the `@client` directive.
-
-<MultiCodeBlock>
-
-```tsx{4}:title=src/pages/launch.tsx
-export const GET_LAUNCH_DETAILS = gql`
-  query LaunchDetails($launchId: ID!) {
-    launch(id: $launchId) {
-      isInCart @client
-      site
-      rocket {
-        type
-      }
-      ...LaunchTile
-    }
-  }
-  ${LAUNCH_TILE_DATA}
-`;
-```
-
-</MultiCodeBlock>
-
-## Update local data
-
-Up until now, we've focused on querying local data from the Apollo cache. Apollo Client also lets you update local data in the cache with either **direct cache writes** or **client resolvers**. Direct writes are typically used to write simple booleans or strings to the cache whereas client resolvers are for more complicated writes such as adding or removing data from a list.
-
-### Direct cache writes
-
-Direct cache writes are convenient when you want to write a simple field, like a boolean or a string, to the Apollo cache. We perform a direct write by calling `client.writeData()` and passing in an object with a data property that corresponds to the data we want to write to the cache. We've already seen an example of a direct write, when we called `client.writeData` in the `onCompleted` handler for the login `useMutation` based component. Let's look at a similar example, where we copy the code below to create a logout button:
-
-<MultiCodeBlock>
-
-```tsx:title=src/containers/logout-button.tsx
+```tsx{14-25}:title=src/containers/logout-button.tsx
 import React from 'react';
 import styled from 'react-emotion';
 import { useApolloClient } from '@apollo/client';
 
 import { menuItemClassName } from '../components/menu-item';
+import { isLoggedInVar } from '../cache';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
 
-export default function LogoutButton() {
+const LogoutButton = () => {
   const client = useApolloClient();
   return (
     <StyledButton
+      data-testid="logout-button"
       onClick={() => {
-        client.writeData({ data: { isLoggedIn: false } }); // highlight-line
-        localStorage.clear();
+        // Evict and garbage-collect the cached user object
+        client.cache.evict({ fieldName: 'me' });
+        client.cache.gc();
+
+        // Remove user details from localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+
+        // Set the logged-in status to false
+        isLoggedInVar(false);
       }}
     >
       <ExitIcon />
@@ -309,6 +358,8 @@ export default function LogoutButton() {
     </StyledButton>
   );
 }
+
+export default LogoutButton;
 
 const StyledButton = styled('button')(menuItemClassName, {
   background: 'none',
@@ -319,20 +370,34 @@ const StyledButton = styled('button')(menuItemClassName, {
 
 </MultiCodeBlock>
 
-When we click the button, we perform a direct cache write by calling `client.writeData` and passing in a data object that sets the `isLoggedIn` boolean to false.
+</ExpansionPanel>
 
-We can also perform direct writes within the `update` function of the `useMutation` hook. The `update` function allows us to manually update the cache after a mutation occurs without refetching data. Let's look at an example in `src/containers/book-trips.tsx`:
+The important part of this code is the logout button's `onClick` handler. It does the following:
+
+1. It uses the [`evict` and `gc` methods](https://www.apollographql.com/docs/react/caching/garbage-collection/) to purge the `Query.me` field from our in-memory cache. This field includes data that's specific to the logged-in user, all of which should be removed on logout.
+2. It clears `localStorage`, where we persist the logged-in user's ID and session token between visits.
+3. It sets the value of our `isLoggedInVar` reactive variable to `false`. 
+
+When the reactive variable's value changes, that change is automatically broadcast to every query that depends on the variable's value (specifically, the `IS_LOGGED_IN` query we [defined earlier](#login-status)).
+
+Because of this, when a user clicks the logout button, our `isLoggedIn` component updates to display the login screen.
+
+### Enable trip booking
+
+Let's enable our users to book trips in the client. We've waited so long to implement this core feature because it requires interacting with both local data (the user's cart) and remote data. Now we know how to do both!
+
+Open `src/containers/book-trips.tsx`. Replace its contents with the following:
+
+<ExpansionPanel title="Click to expand">
 
 <MultiCodeBlock>
 
-<!-- TODO: make this more brief after a fix lands -->
+```tsx{25-33,40-41}:title=src/containers/book-trips.tsx
+import React from 'react';
+import { gql, useMutation } from '@apollo/client';
 
-```tsx{38-40}:title=src/containers/book-trips.tsx
-import React from 'react'; // preserve-line
-import { gql, useMutation } from '@apollo/client'; // preserve-line
-
-import Button from '../components/button'; // preserve-line
-import { GET_LAUNCH } from './cart-item'; // preserve-line
+import Button from '../components/button';
+import { cartItemsVar } from '../cache';
 import * as GetCartItemsTypes from '../pages/__generated__/GetCartItems';
 import * as BookTripsTypes from './__generated__/BookTrips';
 
@@ -352,22 +417,13 @@ export const BOOK_TRIPS = gql`
 interface BookTripsProps extends GetCartItemsTypes.GetCartItems {}
 
 const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
-  const [
-    bookTrips, { data }
-  ] = useMutation<
+  const [bookTrips, { data }] = useMutation<
     BookTripsTypes.BookTrips,
     BookTripsTypes.BookTripsVariables
-  > (
+  >(
     BOOK_TRIPS,
     {
       variables: { launchIds: cartItems },
-      refetchQueries: cartItems.map(launchId => ({
-        query: GET_LAUNCH,
-        variables: { launchId },
-      })),
-      update(cache) {
-        cache.writeData({ data: { cartItems: [] } });
-      }
     }
   );
 
@@ -375,8 +431,12 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
     ? <p data-testid="message">{data.bookTrips.message}</p>
     : (
       <Button
-        onClick={() => bookTrips()}
-        data-testid="book-button">
+        onClick={async () => {
+          await bookTrips();
+          cartItemsVar([]);
+        }}
+        data-testid="book-button"
+      >
         Book All
       </Button>
     );
@@ -384,145 +444,39 @@ const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
 
 export default BookTrips;
 ```
-
-```jsx:title=src/containers/book-trips.jsx
-import React from 'react'; // preserve-line
-import { gql, useMutation } from '@apollo/client'; // preserve-line
-
-import Button from '../components/button'; // preserve-line
-import { GET_LAUNCH } from './cart-item'; // preserve-line
-import * as GetCartItemsTypes from '../pages/__generated__/GetCartItems';
-import * as BookTripsTypes from './__generated__/BookTrips';
-
-export const BOOK_TRIPS = gql`
-  mutation BookTrips($launchIds: [ID]!) {
-    bookTrips(launchIds: $launchIds) {
-      success
-      message
-      launches {
-        id
-        isBooked
-      }
-    }
-  }
-`;
-
-interface BookTripsProps extends GetCartItemsTypes.GetCartItems {}
-
-const BookTrips: React.FC<BookTripsProps> = ({ cartItems }) => {
-  const [
-    bookTrips, { data }
-  ] = useMutation<
-    BookTripsTypes.BookTrips,
-    BookTripsTypes.BookTripsVariables
-  > (
-    BOOK_TRIPS,
-    {
-      variables: { launchIds: cartItems },
-      refetchQueries: cartItems.map(launchId => ({
-        query: GET_LAUNCH,
-        variables: { launchId },
-      })),
-      update(cache) { // highlight-line
-        cache.writeData({ data: { cartItems: [] } }); // highlight-line
-      } // highlight-line
-    }
-  );
-
-  return data && data.bookTrips && !data.bookTrips.success
-    ? <p data-testid="message">{data.bookTrips.message}</p>
-    : (
-      <Button
-        onClick={() => bookTrips()}
-        data-testid="book-button">
-        Book All
-      </Button>
-    );
-}
-
-export default BookTrips;
-```
-
 </MultiCodeBlock>
 
-In this example, we're directly calling `cache.writeData` to reset the state of the `cartItems` after the `BookTrips` mutation is sent to the server. This direct write is performed inside of the update function, which is passed our Apollo Client instance.
+</ExpansionPanel>
 
-### Local resolvers
+This component executes the `BOOK_TRIPS` mutation when the **Book All** button is clicked. The mutation requires a list of `launchIds`, which it obtains from the user's locally stored cart (passed as a prop).
 
-We're not done yet! What if we wanted to perform a more complicated local data update such as adding or removing items from a list? For this situation, we'll use a local resolver. Local resolvers have the same function signature as remote resolvers (`(parent, args, context, info) => data`). The only difference is that the Apollo cache is already added to the context for you. Inside your resolver, you'll use the cache to read and write data.
+After the `bookTrips` function returns, we call `cartItemsVar([])` to clear the user's cart because the trips in the cart have been booked.
 
-Let's write the local resolver for the `addOrRemoveFromCart` mutation. You should place this resolver underneath the `Launch` resolver we wrote earlier.
+A user can now book all the trips in their cart, but they can't yet _add_ any trips to their cart! Let's apply that last touch.
 
-<MultiCodeBlock>
+### Enable cart and booking modifications
 
-```tsx:title=src/resolvers.tsx
-interface AppResolvers extends Resolvers {
-  Launch: ResolverMap;
-  Mutation: ResolverMap; // highlight-line
-}
+Open `src/containers/action-button.tsx`. Replace its contents with the following:
 
-export const resolvers = {
-  Mutation: {
-    addOrRemoveFromCart: (_, { id }: { id: string }, { cache }): string[] => {
-      const queryResult = cache
-        .readQuery<GetCartItemTypes.GetCartItems, any>({
-          query: GET_CART_ITEMS
-        });
-      if (queryResult) {
-        const { cartItems } = queryResult;
-        const data = {
-          cartItems: cartItems.includes(id)
-            ? cartItems.filter((i) => i !== id)
-            : [...cartItems, id],
-        };
-        cache.writeQuery({ query: GET_CART_ITEMS, data });
-        return data.cartItems;
-      }
-      return [];
-    },
-  },
-};
-```
-
-</MultiCodeBlock>
-
-In this resolver, we destructure the Apollo `cache` from the context in order to read the query that fetches cart items. Once we have our cart data, we either remove or add the cart item's `id` passed into the mutation to the list. Finally, we return the updated list from the mutation.
-
-Let's see how we call the `addOrRemoveFromCart` mutation in a component:
-
-<MultiCodeBlock>
-
-```tsx:title=src/containers/action-button.tsx
-import { gql } from '@apollo/client';
-
-const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($launchId: ID!) {
-    addOrRemoveFromCart(id: $launchId) @client
-  }
-`;
-```
-
-</MultiCodeBlock>
-
-Just like before, the only thing we need to add to our mutation is a `@client` directive to tell Apollo to resolve this mutation from the cache instead of a remote server.
-
-Now that our local mutation is complete, let's build out the rest of the `ActionButton` component so we can finish building the cart:
+<ExpansionPanel title="Click to expand">
 
 <MultiCodeBlock>
 
 ```tsx:title=src/containers/action-button.tsx
 import React from 'react';
-import { gql, useMutation } from '@apollo/client';
+import {
+  gql,
+  useMutation,
+  useReactiveVar,
+  Reference
+} from '@apollo/client';
 
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';
+import { cartItemsVar } from '../cache';
 import * as LaunchDetailTypes from '../pages/__generated__/LaunchDetails';
 
-export const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($launchId: ID!) {
-    addOrRemoveFromCart(id: $launchId) @client
-  }
-`;
+export { GET_LAUNCH_DETAILS };
 
 export const CANCEL_TRIP = gql`
   mutation cancel($launchId: ID!) {
@@ -539,17 +493,37 @@ export const CANCEL_TRIP = gql`
 
 interface ActionButtonProps extends Partial<LaunchDetailTypes.LaunchDetails_launch> {}
 
-const ActionButton: React.FC<ActionButtonProps> = ({ isBooked, id, isInCart }) => {
+const CancelTripButton: React.FC<ActionButtonProps> = ({ id }) => {
   const [mutate, { loading, error }] = useMutation(
-    isBooked ? CANCEL_TRIP : TOGGLE_CART,
+    CANCEL_TRIP,
     {
       variables: { launchId: id },
-      refetchQueries: [
-        {
-          query: GET_LAUNCH_DETAILS,
-          variables: { launchId: id },
-        },
-      ]
+      update(cache, { data: { cancelTrip } }) {
+        // Update the user's cached list of trips to remove the trip that
+        // was just canceled.
+        const launch = cancelTrip.launches[0];
+        cache.modify({
+          id: cache.identify({
+            __typename: 'User',
+            id: localStorage.getItem('userId'),
+          }),
+          fields: {
+            trips(existingTrips) {
+              const launchRef = cache.writeFragment({
+                data: launch,
+                fragment: gql`
+                  fragment RemoveLaunch on Launch {
+                    id
+                  }
+                `
+              });
+              return existingTrips.filter(
+                (tripRef: Reference) => tripRef === launchRef
+              );
+            }
+          }
+        });
+      }
     }
   );
 
@@ -562,23 +536,81 @@ const ActionButton: React.FC<ActionButtonProps> = ({ isBooked, id, isInCart }) =
         onClick={() => mutate()}
         data-testid={'action-button'}
       >
-        {isBooked
-          ? 'Cancel This Trip'
-          : isInCart
-            ? 'Remove from Cart'
-            : 'Add to Cart'}
+        Cancel This Trip
+      </Button>
+    </div>
+  );
+};
+
+const ToggleTripButton: React.FC<ActionButtonProps> = ({ id }) => {
+  const cartItems = useReactiveVar(cartItemsVar);
+  const isInCart = id ? cartItems.includes(id) : false;
+  return (
+    <div>
+      <Button
+        onClick={() => {
+          if (id) {
+            cartItemsVar(
+              isInCart
+                ? cartItems.filter(itemId => itemId !== id)
+                : [...cartItems, id]
+            );
+          }
+        }}
+        data-testid={'action-button'}
+      >
+        {isInCart ? 'Remove from Cart' : 'Add to Cart'}
       </Button>
     </div>
   );
 }
+
+const ActionButton: React.FC<ActionButtonProps> =
+  ({ isBooked, id }) => (
+    isBooked ? <CancelTripButton id={id} /> : <ToggleTripButton id={id} />
+  );
 
 export default ActionButton;
 ```
 
 </MultiCodeBlock>
 
-In this example, we're using the `isBooked` prop passed into the component to determine which mutation we should fire. Just like remote mutations, we can pass in our local mutations to the same `useMutation` hook.
+</ExpansionPanel>
+
+This code defines two complex components: 
+
+* A `CancelTripButton`, which is displayed only for trips that the user has already booked
+* A `ToggleTripButton`, which enables the user to add or remove a trip from their cart
+
+Let's cover each separately.
+
+#### Canceling a trip
+
+The `CancelTripButton` component executes the `CANCEL_TRIP` mutation, which takes a `launchId` as a variable (indicating which previously booked trip to cancel).
+
+In our call to `useMutation`, we include an **`update` function**. This function is called after the mutation completes, enabling us to update the cache to reflect the server-side cancellation.
+
+Our `update` function obtains the canceled trip from the mutation result, which is passed to the function. It then uses the `modify` method of `InMemoryCache` to filter that trip out of the `trips` field of our cached `User` object.
+
+> The `cache.modify` method is a powerful and flexible tool for interacting with cached data. To learn more about it, see [`cache.modify`](https://www.apollographql.com/docs/react/caching/cache-interaction/#cachemodify).
+
+#### Adding and removing cart items
+
+The `ToggleTripButton` component doesn't execute any GraphQL operations, because it can instead interact directly with the `cartItemsVar` reactive variable.
+
+On click, the button adds its associated trip to the cart if it's missing, or removes it if it's present.
+
+## Finish up
+
+Our application is complete! If you haven't yet, start up your server and client and test out all of the functionality we just added, including:
+
+* Logging in and out
+* Adding and removing trips from the cart
+* Booking trips
+* Canceling a booked trip
+
+You can also start up the version of the client in `final/client` to compare it to your version.
 
 ---
 
-Congratulations! 🎉 You've officially made it to the end of the Apollo platform tutorial. In the final section, we're going to recap what we just learned and give you guidance on what you should learn next.
+Congratulations! 🎉 You've completed the Apollo full-stack tutorial. You're ready to dive into each individual part of the Apollo platform. Return to the [documentation homepage](/) for quick links to each part's documentation, along with "recommended workouts" to get you going.

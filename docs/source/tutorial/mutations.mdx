@@ -1,142 +1,141 @@
 ---
-title: '8. Update data with mutations'
+title: 'Update data with mutations'
+sidebar_title: '8. Update data with mutations'
 description: Learn how to update data with the useMutation hook
 ---
 
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
 import Disclaimer from '../../shared/disclaimer.mdx';
 
-Time to accomplish: _12 Minutes_
+Time to accomplish: _10 Minutes_
 
-With Apollo Client, updating data from a graph API is as simple as calling a function. Additionally, the Apollo Client cache is smart enough to automatically update in most cases. In this section, we'll learn how to use the `useMutation` hook to login a user.
+Now that we've [added multiple queries](./queries/) to our React app, let's add a **mutation**. The process is similar, with a few important differences.
 
-## What is the useMutation hook?
+As a reminder, mutations are GraphQL operations that can modify back-end data (unlike queries). Our server's schema supports the following mutations:
 
-The `useMutation` hook is another important building block in an Apollo app. It leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to provide a function to execute a GraphQL mutation. Additionally, it tracks the loading, completion, and error state of that mutation.
+```graphql
+# YOU DON'T NEED TO COPY THIS.
+type Mutation {
+  bookTrips(launchIds: [ID]!): TripUpdateResponse!
+  cancelTrip(launchId: ID!): TripUpdateResponse!
+  login(email: String): String # login token
+}
+```
 
-Updating data with a `useMutation` hook from `@apollo/client` is very similar to fetching data with a `useQuery` hook. The main difference is that the first value in the `useMutation` result tuple is a **mutate function** that actually triggers the mutation when it is called. The second value in the result tuple is a result object that contains loading and error state, as well as the return value from the mutation. Let's see an example:
-
-## Update data with useMutation
+We'll start by implementing the ability to log in. Notice that this mutation accepts a single variable, `email`. 
 
 <Disclaimer />
 
-The first step is defining our GraphQL mutation. To start, navigate to `src/pages/login.tsx` and copy the code below so we can start building out the login screen:
+## Support user login
+
+> **Note:** For simplicity, our example application doesn't implement actual user accounts with password-based authentication. Instead, a user unsecurely "logs in" by submitting their email address and receiving a corresponding session token from the server.
+
+### Define the mutation
+
+ To start, navigate to `src/pages/login.tsx` and replace its contents with the following:
 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/login.tsx
 import React from 'react'; // preserve-line
-import { gql, ApolloClient, useApolloClient, useMutation } from '@apollo/client'; // preserve-line
+import { gql, useMutation } from '@apollo/client'; // preserve-line
 
 import { LoginForm, Loading } from '../components'; // preserve-line
 import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
-  mutation login($email: String!) {
-    login(email: $email)
+  mutation Login($email: String!) {
+    login(email: $email) {
+      id
+      token
+    }
   }
 `;
 ```
 
 </MultiCodeBlock>
 
-Just like before, we're using the `gql` function to wrap our GraphQL mutation so it can be parsed into an AST. We're also importing some components that we'll use in the next steps. Now, let's bind this mutation to our component by passing it to the `useMutation` hook:
+Our `LOGIN_USER` definition looks just like our queries from the previous section, except it replaces the word `query` with `mutation`. We receive a `User` object in the response from `login`, which includes two fields that we'll use:
+
+* The user's `id`, which we'll use to fetch user-specific data in future queries
+* A session `token`, which we'll use to "authenticate" future GraphQL operations
+
+### Apply the `useMutation` hook
+
+We'll use Apollo Client's `useMutation` [React Hook](https://reactjs.org/docs/hooks-intro.html) to execute our `LOGIN_USER` mutation. As with `useQuery`, the hook's result provides properties that help us populate and render our component throughout the mutation's execution.
+
+_Unlike_ `useQuery`, `useMutation` doesn't execute its operation as soon as its component renders. Instead, the hook returns a **mutate function** that we call to execute the mutation whenever we want (such as when the user submits a form).
+
+Add the following to the bottom of `login.tsx`:
 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/login.tsx
 export default function Login() {
-  const [login, { data }] = useMutation<LoginTypes.login, LoginTypes.loginVariables>(LOGIN_USER);
-  return <LoginForm login={login} />;
+const [login, { loading, error }] = useMutation<
+  LoginTypes.Login,
+  LoginTypes.LoginVariables
+>(LOGIN_USER);
+
+if (loading) return <Loading />;
+if (error) return <p>An error occurred</p>;
+
+return <LoginForm login={login} />;
 }
 ```
 
 </MultiCodeBlock>
 
-Our `useMutation` hook returns a mutate function (`login`) and the data object returned from the mutation that we destructure from the tuple. Finally, we pass our login function to the `LoginForm` component.
+* The first object in `useMutation`'s result tuple (`login`) is the mutate function we call to execute the mutation. We pass this function to our `LoginForm` component.
+* The second object in the tuple is similar to the result object returned by `useQuery`, including fields for the operation's `loading` and `error` states and the operation's result `data`.
 
-To create a better experience for our users, we want to persist the login between sessions. In order to do that, we need to save our login token to `localStorage`. Let's learn how we can use the `onCompleted` handler of `useMutation` to persist our login:
+Now whenever a user submits the login form, our `login` mutation is called. The user's `token` is stored in the in-memory cache, _however_ we want that token to be available across multiple visits in the same browser. Let's tackle that next.
 
-### Expose Apollo Client with useApolloClient
+#### Persist the user's token and ID
 
-Apollo Client ensures that your `ApolloClient` instance is available through React's context. Sometimes, we need to access the `ApolloClient` instance to directly call a method that isn't exposed by the `@apollo/client` helper components. The `useApolloClient` hook can help us access the client.
+In our call to `useMutation`, we can include an `onCompleted` callback. This enables us to interact with the mutation's result data as soon as it's available. We'll use this callback to persist the user's `token` and `id`.
 
-Let's call `useApolloClient` to get the currently configured client instance. Next, we want to pass an `onCompleted` callback to `useMutation` that will be called once the mutation is complete with its return value. This callback is where we will save the login token to `localStorage`.
+Modify the `useMutation` call in `login.tsx` to match the following:
 
-In our `onCompleted` handler, we also call `client.writeData` to write local data to the Apollo cache indicating that the user is logged in. This is an example of a **direct write** that we'll explore further in the next section on local state management.
-
-<MultiCodeBlock>
-
-```tsx{2-3,5-10,13-14}:title=src/pages/login.tsx
-export default function Login() {
-  const client: ApolloClient<any> = useApolloClient();
-  const [login, { loading, error }] = useMutation<LoginTypes.login, LoginTypes.loginVariables>(
-    LOGIN_USER,
-    {
-      onCompleted({ login }) {
-        localStorage.setItem('token', login as string);
-        client.writeData({ data: { isLoggedIn: true } });
-      }
+```tsx:title=src/pages/login.tsx
+const [login, { loading, error }] = useMutation<
+  LoginTypes.Login,
+  LoginTypes.LoginVariables
+>(
+  LOGIN_USER,
+  {
+    onCompleted({ login }) {
+      localStorage.setItem('token', login.token as string);
+      localStorage.setItem('userId', login.id as string);
     }
-  );
-
-  if (loading) return <Loading />;
-  if (error) return <p>An error occurred</p>;
-
-  return <LoginForm login={login} />;
-}
+  }
+);
 ```
 
-</MultiCodeBlock>
+Our `onCompleted` callback stores the user's unique ID and session token in `localStorage`, so we can load these values into the in-memory cache the next time the user visits our application. We'll add that functionality in the next chapter.
 
-### Attach authorization headers to the request
+### Add `Authorization` headers to all requests
 
-We're almost done completing our login feature! Before we do, we need to attach our token to the GraphQL request's headers so our server can authorize the user. To do this, navigate to `src/index.tsx` where we create our `ApolloClient` and replace the code below for the constructor:
+Our client should provide the user's token with each GraphQL operation it sends to our server. This enables the server to verify that the user has permission to do what they're trying to do.
 
-<!-- TODO: make this more brief after a fix lands -->
+In `index.tsx`, let's modify the constructor of `ApolloClient` to define a default set of `headers` that are applied to every GraphQL request: 
 
 <MultiCodeBlock>
 
-```tsx{5-7,11-16}:title=src/index.tsx
+```tsx{4-6}:title=src/index.tsx
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  }),
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
-  },
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+  }
 });
 ```
-
-
-```jsx{4}:title=src/index.jsx
-const client = new ApolloClient({
-  cache,
-  link: new HttpLink({
-    headers: { authorization: localStorage.getItem('token') },
-    uri: "http://localhost:4000/graphql",
-  }),
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    cartItems: [],
-  },
-});
-```
-
 
 </MultiCodeBlock>
 
-Specifying the `headers` option on `HttpLink` allows us to read the token from `localStorage` and attach it to the request's headers each time a GraphQL operation is made.
+Our server can ignore the token when resolving operations that don't require it (such as fetching the list of launches), so it's fine for our client to include the token in every request.
 
-In the next section, we'll add the `<Login>` form to the user interface. For that, we need to learn how Apollo allows us to manage local state in our app.
+### Enable the login form
+
+We're finished defining our `login` mutation, but we don't yet display the form that enables a user to execute it. Because we're storing the user token locally, we'll use Apollo Client's local state APIs to power some of the form's logic in the next section.

@@ -1,96 +1,93 @@
 ---
-title: "7. Fetch data with queries"
-description: Learn how to fetch data with the useQuery hook
+title: 'Fetch data with queries'
+sidebar_title: '7. Fetch data with queries'
+description: Working with the useQuery React Hook
 ---
 
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
 import Disclaimer from '../../shared/disclaimer.mdx';
 
-Time to accomplish: _15 Minutes_
+Time to accomplish: _20 Minutes_
 
-Apollo Client simplifies fetching data from a graph API because it intelligently caches your data, as well as tracks loading and error state. In the previous section, we learned how to fetch a sample query with Apollo Client without using a view integration. In this section, we'll learn how to use the `useQuery` hook from `@apollo/client` to fetch more complex queries and execute features like pagination.
-
-## The useQuery hook
-
-The `useQuery` hook is one of the most important building blocks of an Apollo app. It's a React Hook that fetches a GraphQL query and exposes the result so you can render your UI based on the data it returns.
-
-The `useQuery` hook leverages React's [Hooks API](https://reactjs.org/docs/hooks-intro.html) to fetch and load data from queries into our UI. It exposes `error`, `loading` and `data` properties through a result object, that help us populate and render our component. Let's see an example:
-
-## Fetching a list
+Now that we've [set up Apollo Client](./client/), we can integrate it into our React app. This lets us use [React Hooks](https://reactjs.org/docs/hooks-intro.html) to bind the results of GraphQL queries directly to our UI.
 
 <Disclaimer />
 
-To create a component with `useQuery`, import `useQuery` from `@apollo/client`, pass your query wrapped with `gql` in as the first parameter, then wire your component up to use the `loading`, `data`, and `error` properties on the result object to render UI in your app.
+## Integrate with React
 
-First, we're going to build a GraphQL query that fetches a list of launches. We're also going to import some components that we will need in the next step. Navigate to `src/pages/launches.tsx` to get started and copy the code below into the file.
+To connect Apollo Client to React, we wrap our app in the `ApolloProvider` component from the `@apollo/client` package. We pass our client instance to the `ApolloProvider` component via the `client` prop.
+
+Open `src/index.tsx` and replace its contents with the following:
 
 <MultiCodeBlock>
 
-```tsx:title=src/pages/launches.tsx
-import React, { Fragment } from 'react'; // preserve-line
-import { gql, useQuery } from '@apollo/client'; // preserve-line
+```tsx:title=src/index.tsx
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider
+} from '@apollo/client';
+import { cache } from './cache';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Pages from './pages';
+import injectStyles from './styles';
 
-import { LaunchTile, Header, Button, Loading } from '../components'; // preserve-line
-import { RouteComponentProps } from '@reach/router';
-import * as GetLaunchListTypes from './__generated__/GetLaunchList';
+// Initialize ApolloClient
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
+  uri: 'http://localhost:4000/graphql',
+});
 
-const GET_LAUNCHES = gql`
-  query launchList($after: String) {
-    launches(after: $after) {
-      cursor
-      hasMore
-      launches {
-        id
-        isBooked
-        rocket {
-          id
-          name
-        }
-        mission {
-          name
-          missionPatch
-        }
-      }
-    }
-  }
-`;
+injectStyles();
+
+// Pass the ApolloClient instance to the ApolloProvider component
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Pages />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
 ```
 
 </MultiCodeBlock>
 
-Here, we're defining a query to fetch a list of launches by calling the `launches` query from our schema. The `launches` query returns an object type with a list of launches, in addition to the `cursor` of the paginated list and whether or not the list `hasMore` launches. We need to wrap the query with the `gql` function in order to parse it into an AST.
+The `ApolloProvider` component is similar to React’s context provider: it wraps your React app and places `client` on the context, which enables you to access it from anywhere in your component tree.
 
-Now, let's pass that query to Apollo's `useQuery` component to render the list. Copy and paste the following code after the query:
+Now we're ready to build React components that execute GraphQL queries.
+
+
+## Display a list of launches
+
+Let's build the page in our app that shows a list of available SpaceX launches. Open `src/pages/launches.tsx`. Right now, the file looks like this:
 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
+import React, { Fragment, useState }  from 'react'; // preserve-line
+import { RouteComponentProps } from '@reach/router';
+import { gql } from '@apollo/client' // preserve-line
+
+export const LAUNCH_TILE_DATA = gql`
+  fragment LaunchTile on Launch {
+    __typename
+    id
+    isBooked
+    rocket {
+      id
+      name
+    }
+    mission {
+      name
+      missionPatch
+    }
+  }
+`;
+
 interface LaunchesProps extends RouteComponentProps {}
 
 const Launches: React.FC<LaunchesProps> = () => {
-  const {
-    data,
-    loading,
-    error
-  } = useQuery<
-    GetLaunchListTypes.GetLaunchList,
-    GetLaunchListTypes.GetLaunchListVariables
-  >(GET_LAUNCHES);
-
-  if (loading) return <Loading />;
-  if (error) return <p>ERROR</p>;
-  if (!data) return <p>Not found</p>;
-
-  return (
-    <Fragment>
-      <Header />
-      {data.launches &&
-        data.launches.launches &&
-        data.launches.launches.map((launch: any) => (
-          <LaunchTile key={launch.id} launch={launch} />
-        ))}
-    </Fragment>
-  );
+  return <div />;
 }
 
 export default Launches;
@@ -98,15 +95,106 @@ export default Launches;
 
 </MultiCodeBlock>
 
-To render the list, we pass the `GET_LAUNCHES` query from the previous step into our `useQuery` hook. Then, depending on the state of `loading`, `error`, and `data`, we either render a loading indicator, an error message, or a list of launches.
+### Define the query
 
-We're not done yet! Right now, this query is only fetching the first 20 launches from the list. To fetch the full list of launches, we need to build a pagination feature that displays a `Load More` button for loading more items on the screen. Let's learn how!
+First, we'll define the shape of the query we'll use to fetch a paginated list of launches. Paste the following below the declaration of `LAUNCH_TILE_DATA`:
 
-### Build a paginated list
+```js:title=src/pages/launches.tsx
+export const GET_LAUNCHES = gql`
+  query GetLaunchList($after: String) {
+    launches(after: $after) {
+      cursor
+      hasMore
+      launches {
+        ...LaunchTile
+      }
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+```
 
-Apollo Client has built-in helpers to make adding pagination to our app much easier than it would be if we were writing the logic ourselves.
+#### Using fragments
 
-To build a paginated list with Apollo, we first need to destructure the `fetchMore` function from the `useQuery` result object:
+Notice that our query definition pulls in the `LAUNCH_TILE_DATA` definition above it. `LAUNCH_TILE_DATA` defines a GraphQL [fragment](https://graphql.org/learn/queries/#fragments), which is named `LaunchTile`. A fragment is useful for defining a set of fields that you can include across multiple queries without rewriting them.
+
+In the query above, we include the `LaunchTile` fragment in our query by preceding it with `...`, similar to JavaScript [spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+
+
+#### Pagination details
+
+Notice that in addition to fetching a list of `launches`, our query fetches `hasMore` and `cursor` fields. That's because the `launches` query returns **paginated results**:
+
+* The `hasMore` field indicates whether there are additional launches beyond the list returned by the server.
+* The `cursor` field indicates the client's current position within the list of launches. We can execute the query again and provide our most recent `cursor` as the value of the `$after` variable to fetch the _next_ set of launches in the list.
+
+
+### Apply the `useQuery` hook
+
+We'll use Apollo Client's `useQuery` [React Hook](https://reactjs.org/docs/hooks-intro.html) to execute our new query within the `Launches` component. The hook's result object provides properties that help us populate and render our component throughout the query's execution.
+
+1. Modify your `@apollo/client` import to include `useQuery`, and import a few predefined components for rendering the page:
+
+  ```js:title=src/pages/launches.tsx
+  import { gql, useQuery } from '@apollo/client';
+  import { LaunchTile, Header, Button, Loading } from '../components';
+  ```
+
+  If you're using TypeScript, also import the necessary types that are generated from your server's schema definitions:
+
+  ```js:title=src/pages/launches.tsx
+  import * as GetLaunchListTypes from './__generated__/GetLaunchList';
+  ```
+
+2. Replace the dummy declaration of `const Launches` with the following:
+
+  <MultiCodeBlock>
+
+  ```tsx:title=src/pages/launches.tsx
+  const Launches: React.FC<LaunchesProps> = () => {
+    const {
+      data,
+      loading,
+      error
+    } = useQuery<
+      GetLaunchListTypes.GetLaunchList,
+      GetLaunchListTypes.GetLaunchListVariables
+    >(GET_LAUNCHES);
+
+    if (loading) return <Loading />;
+    if (error) return <p>ERROR</p>;
+    if (!data) return <p>Not found</p>;
+
+    return (
+      <Fragment>
+        <Header />
+        {data.launches &&
+          data.launches.launches &&
+          data.launches.launches.map((launch: any) => (
+            <LaunchTile key={launch.id} launch={launch} />
+          ))}
+      </Fragment>
+    );
+  }
+  ```
+
+  </MultiCodeBlock>
+
+This component passes our `GET_LAUNCHES` query to `useQuery` and obtains `data`, `loading`, and `error` properties from the result. Depending on the state of those properties, we render a list of launches, a loading indicator, or an error message.
+
+Start up both your server and client with `npm start` and visit `localhost:3000`. If everything's configured correctly, our app's main page appears and lists 20 SpaceX launches!
+
+We have a problem though: there are _more_ than 20 SpaceX launches in total. Our server paginates its results and includes a maximum of 20 launches in a single response.
+
+To be able to fetch and store _all_ launches, we need to modify our code to use the `cursor` and `hasMore` fields included in our query. Let's learn how.
+
+### Add pagination support
+
+> Apollo Client 3 provides new pagination helper functions for [offset-based](https://www.apollographql.com/docs/react/pagination/offset-based/#the-offsetlimitpagination-helper) and [Relay-style](https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination) pagination that are not yet reflected in this tutorial.
+
+Apollo Client provides a `fetchMore` helper function to assist with paginated queries. It enables you to execute the same query with different values for variables (such as the current cursor).
+
+Add `fetchMore` to the list of objects we destructure from the `useQuery` result object, and also define an `isLoadingMore` state variable:
 
 <MultiCodeBlock>
 
@@ -121,93 +209,136 @@ const Launches: React.FC<LaunchesProps> = () => {
     GetLaunchListTypes.GetLaunchList,
     GetLaunchListTypes.GetLaunchListVariables
   >(GET_LAUNCHES);
-  // same as above
+  const [isLoadingMore, setIsLoadingMore] = useState(false); //highlight-line
+  // ...
 }
 ```
 
 </MultiCodeBlock>
 
-Now that we have `fetchMore`, let's connect it to a Load More button to fetch more items when it's clicked. To do this, we will need to specify an `updateQuery` function on the return object from `fetchMore` that tells the Apollo cache how to update our query with the new items we're fetching.
+Now we can connect `fetchMore` to a button within the `Launches` component that fetches additional launches when it's clicked.
 
-Copy the code below and add it before the closing `</Fragment>` tag in the `Launches` component we added in the previous step.
-
-<!-- TODO: make this more brief after a fix lands -->
+Paste this code directly above the closing `</Fragment>` tag in the `Launches` component:
 
 <MultiCodeBlock>
 
 ```tsx:title=src/pages/launches.tsx
-{data.launches &&
-  data.launches.hasMore && (
-    <Button
-      onClick={() =>
-        fetchMore({ // highlight-line
-          variables: {
-            after: data.launches.cursor,
-          },
-          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
-            if (!fetchMoreResult) return prev;
-            return {
-              ...fetchMoreResult,
-              launches: {
-                ...fetchMoreResult.launches,
-                launches: [
-                  ...prev.launches.launches,
-                  ...fetchMoreResult.launches.launches,
-                ],
-              },
-            };
-          },
-        })
-      }
-    >
-      Load More
-    </Button>
-  )
-}
-```
-
-```jsx:title=src/pages/launches.jsx
-{data.launches &&
-  data.launches.hasMore && (
-    <Button
-      onClick={() =>
-        fetchMore({ // highlight-line
-          variables: {
-            after: data.launches.cursor,
-          },
-          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
-            if (!fetchMoreResult) return prev;
-            return {
-              ...fetchMoreResult,
-              launches: {
-                ...fetchMoreResult.launches,
-                launches: [
-                  ...prev.launches.launches,
-                  ...fetchMoreResult.launches.launches,
-                ],
-              },
-            };
-          },
-        })
-      }
-    >
-      Load More
-    </Button>
-  )
-}
+{data.launches && data.launches.hasMore && (
+  isLoadingMore
+    ? <Loading />
+    : <Button
+        onClick={async () => {
+          setIsLoadingMore(true);
+          await fetchMore({
+            variables: {
+              after: data.launches.cursor,
+            },
+          });
+          setIsLoadingMore(false);
+        }}
+      >
+        Load More
+      </Button>
+)}
+//</Fragment>
 ```
 
 </MultiCodeBlock>
 
-First, we check to see if we have more launches available in our query. If we do, we render a button with a click handler that calls the `fetchMore` function from Apollo. The `fetchMore` function receives new variables for the list of launches query, which is represented by our cursor.
+When our new button is clicked, it calls `fetchMore` (passing the current `cursor` as the value of the `after` variable) and displays a Loading notice until the query returns results.
 
-We also define the `updateQuery` function to tell Apollo how to update the list of launches in the cache. To do this, we take the previous query result and combine it with the new query result from `fetchMore`.
+Let's test our button. Start everything up and visit `localhost:3000` again. A **Load More** button now appears below our 20 launches. Click it. After the query returns, _no additional launches appear_. 🤔
 
-In the next step, we'll learn how to wire up the launch detail page to display a single launch when an item in the list is clicked.
+If you check your browser's network activity, you'll see that the button did in fact send a followup query to the server, and the server did in fact respond with a list of launches. _However_, Apollo Client keeps these lists separate, because they represent the results of queries with _different variable values_ (in this case, the value of `after`).
 
-## Fetching a single launch
+We need Apollo Client to instead _merge_ the launches from our `fetchMore` query with the launches from our _original_ query. Let's configure that behavior.
 
-Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we should import some components and define our GraphQL query to get the launch details.
+### Merge cached results
+
+Apollo Client stores your query results in its **in-memory cache**. The cache handles most operations intelligently and efficiently, but it doesn't automatically know that we want to merge our two distinct lists of launches. To fix this, we'll define a **`merge` function** for the paginated field in our schema.
+
+Open `src/cache.ts`, where our default `InMemoryCache` is initialized:
+
+<MultiCodeBlock>
+
+```ts:title=src/cache.ts
+import { InMemoryCache, Reference } from '@apollo/client';
+
+export const cache: InMemoryCache = new InMemoryCache({});
+```
+
+</MultiCodeBlock>
+
+The schema field that our server paginates is the list of `launches`. Modify the initialization of `cache` to add a `merge` function for the `launches` field, like so:
+
+<MultiCodeBlock>
+
+```ts:title=src/cache.ts
+export const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        launches: {
+          keyArgs: false,
+          merge(existing, incoming) {
+            let launches: Reference[] = [];
+            if (existing && existing.launches) {
+              launches = launches.concat(existing.launches);
+            }
+            if (incoming && incoming.launches) {
+              launches = launches.concat(incoming.launches);
+            }
+            return {
+              ...incoming,
+              launches,
+            };
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+</MultiCodeBlock>
+
+This `merge` function takes our `existing` cached launches and the `incoming` launches and combines them into a single list, which it then returns. The cache stores this combined list and returns it to all queries that use the `launches` field.
+
+> This example demonstrates a use of [field policies](https://www.apollographql.com/docs/react/caching/cache-field-behavior/), which are cache configuration options that are specific to individual fields in your schema.
+
+If you try clicking the **Load More** button now, the UI will successfully append additional launches to the list!
+
+## Display a single launch's details
+
+We want to be able to click a launch in our list to view its full details. Open `src/pages/launch.tsx` and replace its contents with the following:
+
+<MultiCodeBlock>
+
+```tsx:title=src/pages/launch.tsx
+import { gql } from '@apollo/client';
+import { LAUNCH_TILE_DATA } from './launches';
+
+export const GET_LAUNCH_DETAILS = gql`
+  query LaunchDetails($launchId: ID!) {
+    launch(id: $launchId) {
+      site
+      rocket {
+        type
+      }
+      ...LaunchTile
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+```
+
+</MultiCodeBlock>
+
+This query includes all the details we need for the page. Notice that we're reusing the `LAUNCH_TILE_DATA` fragment that's already defined in `launches.tsx`. 
+
+Once again, we'll pass our query to the `useQuery` hook. This time, we also need to pass the corresponding launch's `launchId` to the query as a variable. The value of `launchId` is available as a prop that's passed by the router.
+
+Now replace the contents of `launch.tsx` with the following:
 
 <MultiCodeBlock>
 
@@ -215,6 +346,7 @@ Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we
 import React, { Fragment } from 'react'; // preserve-line
 import { gql, useQuery } from '@apollo/client'; // preserve-line
 
+import { LAUNCH_TILE_DATA } from './launches';
 import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
 import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
@@ -223,30 +355,16 @@ import * as LaunchDetailsTypes from './__generated__/LaunchDetails';
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
-      id
       site
-      isBooked
       rocket {
-        id
-        name
         type
       }
-      mission {
-        name
-        missionPatch
-      }
+      ...LaunchTile
     }
   }
+  ${LAUNCH_TILE_DATA}
 `;
-```
 
-</MultiCodeBlock>
-
-Now that we have a query, let's render a component with `useQuery` to execute it. This time, we'll also need to pass in the `launchId` as a variable to the query, which we'll do by adding a `variables` option to `useQuery`. The `launchId` comes through as a prop from the router.
-
-<MultiCodeBlock>
-
-```tsx:title=src/pages/launch.tsx
 interface LaunchProps extends RouteComponentProps {
   launchId?: any;
 }
@@ -255,7 +373,7 @@ const Launch: React.FC<LaunchProps> = ({ launchId }) => {
   const {
     data,
     loading,
-    error
+    error,
   } = useQuery<
     LaunchDetailsTypes.LaunchDetails,
     LaunchDetailsTypes.LaunchDetailsVariables
@@ -285,86 +403,12 @@ export default Launch;
 
 Just like before, we use the status of the query to render either a `loading` or `error` state, or data when the query completes.
 
-### Using fragments to share code
+Return to your app and click a launch in the list to view its details page.
 
-You may have noticed that the queries for fetching a list of launches and fetching a launch detail share a lot of the same fields. When we have two GraphQL operations that contain the same fields, we can use a **fragment** to share fields between the two.
 
-To learn how to build a fragment, navigate to `src/pages/launches.tsx` and copy the code below into the file:
+## Display the profile page
 
-<MultiCodeBlock>
-
-```tsx:title=src/pages/launches.tsx
-export const LAUNCH_TILE_DATA = gql`
-  fragment LaunchTile on Launch {
-    id
-    isBooked
-    rocket {
-      id
-      name
-    }
-    mission {
-      name
-      missionPatch
-    }
-  }
-`;
-```
-
-</MultiCodeBlock>
-
-We define a GraphQL fragment by giving it a name (`LaunchTile`) and defining it on a type on our schema (`Launch`). The name we give our fragment can be anything, but the type must correspond to a type in our schema.
-
-To use our fragment in our query, we import it into the GraphQL document and use the spread operator to spread the fields into our query:
-
-<MultiCodeBlock>
-
-```tsx{7}:title=src/pages/launches.tsx
-const GET_LAUNCHES = gql`
-  query launchList($after: String) {
-    launches(after: $after) {
-      cursor
-      hasMore
-      launches {
-        ...LaunchTile
-      }
-    }
-  }
-  ${LAUNCH_TILE_DATA}
-`;
-```
-
-</MultiCodeBlock>
-
-Let's use our fragment in our launch detail query too. Be sure to import the fragment from the `launches` page before you use it:
-
-<MultiCodeBlock>
-
-```tsx:title=src/pages/launch.tsx
-import { LAUNCH_TILE_DATA } from './launches';
-
-export const GET_LAUNCH_DETAILS = gql`
-  query LaunchDetails($launchId: ID!) {
-    launch(id: $launchId) {
-      site
-      rocket {
-        type
-      }
-      ...LaunchTile
-    }
-  }
-  ${LAUNCH_TILE_DATA}
-`;
-```
-
-</MultiCodeBlock>
-
-Great, now we've successfully refactored our queries to use fragments. Fragments are a helpful tool that you'll use a lot as you're building GraphQL queries and mutations.
-
-### Customizing the fetch policy
-
-Sometimes, it's useful to tell Apollo Client to bypass the cache altogether if you have some data that constantly needs to be refreshed. We can do this by customizing the `useQuery` hook's `fetchPolicy`.
-
-First, let's navigate to `src/pages/profile.tsx` and write our query:
+We want a user's profile page to display a list of launches that they've booked a seat on. Open `src/pages/profile.tsx` and replace its contents with the following:
 
 <MultiCodeBlock>
 
@@ -389,19 +433,15 @@ export const GET_MY_TRIPS = gql`
   }
   ${LAUNCH_TILE_DATA}
 `;
-```
 
-</MultiCodeBlock>
-
-Next, let's render a component with `useQuery` to fetch a logged in user's list of trips. By default, Apollo Client's fetch policy is `cache-first`, which means it checks the cache to see if the result is there before making a network request. Since we want this list to always reflect the newest data from our graph API, we set the `fetchPolicy` for this query to `network-only`:
-
-<MultiCodeBlock>
-
-```tsx:title=src/pages/profile.tsx
 interface ProfileProps extends RouteComponentProps {}
 
 const Profile: React.FC<ProfileProps> = () => {
-  const { data, loading, error } = useQuery<GetMyTripsTypes.GetMyTrips, any>(
+  const {
+    data,
+    loading,
+    error
+  } = useQuery<GetMyTripsTypes.GetMyTrips>(
     GET_MY_TRIPS,
     { fetchPolicy: "network-only" } // highlight-line
   );
@@ -428,6 +468,18 @@ export default Profile;
 
 </MultiCodeBlock>
 
-If you try to render this query, you'll notice that it returns null. This is because we need to implement our login feature first. We're going to tackle login in the next section.
+You should recognize all of the concepts in this code from the pages we've already completed, with one highlighted exception: we're setting a `fetchPolicy`.
 
-Now that we've learned how to leverage `useQuery` to build components that can fetch a paginated list, share fragments, and customize the fetch policy, it's time to progress to the next section so we can learn how to update data with mutations!
+### Customizing the fetch policy
+
+As mentioned earlier, Apollo Client stores query results in its cache. If you query for data that's already present in your cache, Apollo Client can return that data without needing to fetch it over the network.
+
+_However_, cached data can become stale. Slightly stale data is acceptable in many cases, but we definitely want our user's list of booked trips to be up to date. To handle this, we've specified a **fetch policy** for our `GET_MY_TRIPS` query.
+
+A fetch policy defines how Apollo Client uses the cache for a particular query. The default policy is `cache-first`, which means Apollo Client checks the cache to see if the result is present before making a network request. If the result is present, no network request occurs.
+
+By setting this query's fetch policy to `network-only`, we guarantee that Apollo Client _always_ queries our server to fetch the user's most up-to-date list of booked trips.
+
+> For a list of all supported fetch policies, see [Supported fetch policies](https://www.apollographql.com/docs/react/data/queries/#supported-fetch-policies).
+
+If you visit the profile page in your app, you'll notice that the query returns null. This is because we still need to implement login functionality. We'll tackle that in the next section!

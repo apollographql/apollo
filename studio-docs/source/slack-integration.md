@@ -71,7 +71,7 @@ Studio can notify your Slack channel whenever any changes (additions, deprecatio
 
 <img class="screenshot" src="./img/integrations/schema-notification.jpg" alt="Schema notification Slack message."></img>
 
-You can configure separate change notifications for each [variant](./schema/registry/#managing-environments-with-variants) of your graph.
+You can configure separate change notifications for each [variant](./org/graphs/#managing-variants) of your graph.
 
 ## Performance alerts
 

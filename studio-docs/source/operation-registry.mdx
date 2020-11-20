@@ -60,7 +60,7 @@ npm install apollo --save-dev
 
 ### 2. Push your schema to the Apollo schema registry
 
-> **Note:** If this server's schema has already been registered using `apollo service:push`, you can skip this step. For additional options and details, see the [documentation for the schema registry](./schema/registry/).
+> **Note:** If this server's schema has already been [registered](./schema/schema-reporting/), you can skip this step.
 
 First, make sure Apollo Server is running and that introspection is enabled (it is often disabled in production).
 
@@ -77,7 +77,7 @@ When successful, this command should return output similar to the following:
 ```
 ✔ Loading Apollo config
 ✔ Fetching current schema
-✔ Publishing <service> to Apollo Engine
+✔ Publishing <service> to Apollo
 
 id      schema        variant
 ------  ------------- -------
@@ -97,7 +97,7 @@ The `apollo client:push` command:
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
 - By default, includes the `__typename` fields which are added by Apollo Client at runtime.  (Add the `--no-addTypeName` flag to disable this behavior.)
 
-To register operations, use the following command as a reference, taking care to replace the `<ENGINE_API_KEY>` with the appropriate Apollo Studio API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
+To register operations, use the following command as a reference, taking care to replace the `<APOLLO_KEY>` with the appropriate Apollo Studio API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
 ```
 npx apollo client:push \
@@ -113,7 +113,7 @@ When successful, the output from this command should look similar to the followi
 
 ```
 ✔ Loading Apollo project
-✔ Pushing client to Engine service <service>
+✔ Pushing operations to operation registry
 ```
 
 Currently, once an operation is registered it will remain registered indefinitely. For production operation registration, it's recommended that operations be registered from a deployment pipeline step rather than manually.
@@ -238,12 +238,12 @@ If the server was not previously configured with Apollo Studio, be sure to start
 APOLLO_KEY=<APOLLO_KEY> npm start
 ```
 
-Alternatively, the API key can be specified with the `engine` parameter on the Apollo Server constructor options:
+Alternatively, the API key can be specified with the `apollo` parameter on the Apollo Server constructor options:
 
 ```js
 const server = new ApolloServer({
   // ...
-  engine: '<APOLLO_KEY>', // highlight-line
+  apollo: { key: '<APOLLO_KEY>' }, // highlight-line
   // ...
 });
 ```
@@ -290,7 +290,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   subscriptions: false,
-  engine: '<APOLLO_KEY>',
+  apollo: { key: '<APOLLO_KEY>' },
   plugins: [
     require('apollo-server-plugin-operation-registry')({
       // De-structure the object to get the HTTP `headers` and the GraphQL

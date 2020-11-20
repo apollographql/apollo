@@ -1,28 +1,64 @@
 ---
-title: Managing graphs and variants
+title: Graphs and variants
 sidebar_title: Graphs and variants
 ---
 
-A **graph** in Apollo Studio represents the entirety of a connected data graph. Every graph has its own associated GraphQL schema.
+A **graph** in Apollo Studio represents a connected data graph in your organization. Each graph has one or more **variants**, which correspond to the different environments where the graph runs (such as staging and production). Each variant has its own GraphQL schema, which means schemas can differ between environments.
 
 ## Creating a graph
 
-To create a graph in Studio, first select the Studio organization that the graph will belong to. Then click **New Graph** in the upper right and proceed through the creation flow.
+To create a graph in [Apollo Studio](https://studio.apollographql.com/), first select the Studio organization that the graph will belong to. Then click **New Graph** in the upper right and proceed through the creation flow:
 
-Note that every graph in Studio has a globally unique **graph name**. We recommend that you prefix your graph names with the name of your company or organization to avoid naming collisions.
+<img class="screenshot" src="../img/graph-creation.jpg" width="500" />
+
+There are two types of graphs in Studio:
+
+* **Deployed graphs** are shared with other members of your organization. Create a deployed graph for every use case _except_ local development.
+* **Development graphs** (**dev graphs** for short) are only visible to you. Use them to help you iterate on your graph in your development environment.
+
+## Registering a schema
+
+You can register your schema to a Studio graph with one of the following methods:
+
+* [Using schema reporting](../schema/schema-reporting/) (recommended)
+* [Using the Apollo CLI](../schema/cli-registration/)
 
 ## Viewing graph information
 
 After selecting an organization in Studio, click on a particular graph
-to view its data and settings. All of a Studio organization's members can access the data and settings for every graph that belongs to that organization.
+to view its schema, data, and settings. All of a Studio organization's members can access the data and settings for every graph that belongs to that organization.
+
+> Enterprise accounts can set [member roles](./members/#member-roles) to configure access for individual members of their organization.
+
+### Exploring your schema
+
+Apollo Studio provides a powerful **Explorer** IDE that helps you visualize your graph and run queries against it. It's available from your graph's Explorer tab in Studio.
+
+> [Learn about the Apollo Studio Explorer](../explorer/)
+
+### Tracking schema changes
+
+The History view in Apollo Studio lets you view the timeline of changes made to your graph's schema:
+
+<img src="../img//schema-history.jpg" class="screenshot" alt="Studio History view" width="400"></img>
+
+**Only schema changes that you push to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](../schema/cli-registration/#registering-with-continuous-delivery).
 
 ## Managing variants
 
-Every graph in Studio should correspond to a connected data graph. However, a single data graph might run in multiple _environments_ (such as development, staging, and production).
+To distinguish between instances of the same graph running in different environments (such as staging and production), you can define **variants** for a deployed graph. Each variant has its own schema, along with its own change history, metrics, and operation registry.
 
-To distinguish between graph activity in different environments, you can define [**variants**](../schema/registry/#managing-environments-with-variants) for a graph. Each variant has its own schema.
+> Development graphs do **not** support variants.
 
-When your server sends data to Studio, it can associate that data with a particular variant. Variants appear as separate items in your organization's graph list, allowing you to view analytics for each environment in isolation.
+### Adding a variant
+
+To add a variant to your graph, you [register a schema](#registering-a-schema) to the graph and include a variation name in the registration. If a variation with the specified name doesn't exist yet, Studio creates it.
+
+### Associating metrics with a variant
+
+You can configure Apollo Server to associate the metrics it sends to Apollo Studio with a particular variant. To do so, set the `APOLLO_GRAPH_VARIANT` environment variable (`ENGINE_SCHEMA_TAG` in `apollo-server` pre-2.13.0) to the appropriate variant before initializing Apollo Server.
+
+> Make sure you associate metrics with the correct variant! Otherwise, metrics from your staging and test environments will be included in reports for your production graph.
 
 ## Transferring graph ownership
 

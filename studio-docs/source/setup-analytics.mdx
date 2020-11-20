@@ -55,7 +55,7 @@ You can set up a reporting agent in your GraphQL server to push metrics to Apoll
 * Emitting batches of traces to the Apollo Studio reporting endpoint
 * Optionally defining plugins to enable advanced reporting features
 
-Apollo Server defines its agent for performing these tasks in [`agent.ts`](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts).
+Apollo Server defines its agent for performing these tasks in [the usage reporting plugin](https://github.com/apollographql/apollo-server/tree/main/packages/apollo-server-core/src/plugin/usageReporting).
 
 > If you're interested in collaborating with Apollo on creating a dedicated integration for your GraphQL server, please get in touch with us at **support@apollographql.com** or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
 
@@ -63,13 +63,13 @@ Apollo Server defines its agent for performing these tasks in [`agent.ts`](https
 
 Apollo Studio's reporting endpoint accepts batches of traces that are encoded in **protocol buffer** format. Each trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
-The schema for this protocol buffer is defined as the `FullTracesReport` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L466). 
+The schema for this protocol buffer is defined as the `Report` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-reporting-protobuf/src/reports.proto).
 
-As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting-protobuf/src/reports.proto#L7). Then, you can batch multiple traces into a single report. We recommend sending batches approximately every 20 seconds, and limiting each batch to a reasonable size (~4MB).
+As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-reporting-protobuf/src/reports.proto). Then, you can batch multiple traces into a single report. We recommend sending batches approximately every 20 seconds, and limiting each batch to a reasonable size (~4MB).
 
 An example of a `FullTracesReport` message, represented as JSON, is provided [below](#example-fulltracesreport-message).
 
-> Many server runtimes already support emitting tracing information as a [GraphQL extension](https://github.com/apollographql/apollo-tracing). Such extensions are available for [Node](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts), [Ruby](https://github.com/uniiverse/apollo-tracing-ruby), [Scala](https://github.com/sangria-graphql/sangria-slowlog#apollo-tracing-extension), [Java](https://github.com/graphql-java/graphql-java/pull/577), [Elixir](https://github.com/sikanhe/apollo-tracing-elixir), and [.NET](https://graphql-dotnet.github.io/docs/getting-started/metrics/). If you're working on adding metrics reporting functionality for one of these languages, reading through that tracing instrumentation is a good place to start. For other languages, we recommend consulting the [Apollo Server instrumentation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/extension.ts).
+> Many server runtimes already support emitting tracing information as a [GraphQL extension](https://github.com/apollographql/apollo-tracing). Such extensions are available for [Node](https://www.apollographql.com/docs/apollo-server/api/plugin/usage-reporting/), [Ruby](https://github.com/uniiverse/apollo-tracing-ruby), [Scala](https://github.com/sangria-graphql/sangria-slowlog#apollo-tracing-extension), [Java](https://github.com/graphql-java/graphql-java/pull/577), [Elixir](https://github.com/sikanhe/apollo-tracing-elixir), and [.NET](https://graphql-dotnet.github.io/docs/getting-started/metrics/). If you're working on adding metrics reporting functionality for one of these languages, reading through that tracing instrumentation is a good place to start. For other languages, we recommend consulting the [Apollo Server usage reporting plugin](https://github.com/apollographql/apollo-server/tree/main/packages/apollo-server-core/src/plugin/usageReporting).
 
 ### Operation signing
 
@@ -101,7 +101,7 @@ query AuthorForPost {
 }
 ```
 
-It's important to decide how to group such queries when tracking metrics. The [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/signature.ts) does the following to every query before generating its signature to better group functionally equivalent operations:
+It's important to decide how to group such queries when tracking metrics. The [TypeScript reference implementation](https://github.com/apollographql/apollo-tooling/blob/master/packages/apollo-graphql/src/operationId.ts) does the following to every query before generating its signature to better group functionally equivalent operations:
 
 * Drop unused fragments and/or operations
 * Hide string literals
@@ -116,7 +116,7 @@ We recommend using the same default signature method for consistency across diff
 After your GraphQL server prepares a batch of traces, it should send them to the Studio reporting endpoint at the following URL:
 
 ```
-https://engine-report.apollodata.com/api/ingress/traces
+https://usage-reporting.api.apollographql.com/api/ingress/traces
 ```
 
 Each batch should be sent as an HTTP POST request. The body of the request can be one of the following:
@@ -133,7 +133,7 @@ Only graph-level API keys (starting with the prefix `service:`) are supported.
 
 The request can also optionally include a `Content-Type` header with value `application/protobuf`, but this is not required.
 
-For a reference implementation, see the `sendReport()` method in the [TypeScript reference agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L210).
+For a reference implementation, see the `sendReport()` function in the [TypeScript reference agent](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-server-core/src/plugin/usageReporting/plugin.ts).
 
 #### Tuning reporting behavior
 
@@ -141,7 +141,7 @@ We recommend implementing retries with backoff when you encounter `5xx` response
 
 ### Implementing additional reporting features
 
-The reference TypeScript implementation includes several features that you might want to include in your implementation. All of these features are implemented in the agent itself, and are documented in the interface description for the `EngineReportingOptions` of [the agent](https://github.com/apollographql/apollo-server/blob/master/packages/apollo-engine-reporting/src/agent.ts#L48).
+The reference TypeScript implementation includes several features that you might want to include in your implementation. All of these features are implemented in the usage reporting plugin itself, and are documented [the plugin's API reference](https://www.apollographql.com/docs/apollo-server/api/plugin/usage-reporting/).
 
 For example, you can restrict which information is sent to Studio, particularly to avoid reporting personal data. Because personal data most commonly appears in variables and headers, the TypeScript agent offers options to `sendVariablesValues` and `sendHeaders`.
 

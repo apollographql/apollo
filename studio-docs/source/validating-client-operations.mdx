@@ -32,7 +32,7 @@ By combining your registered graph's schema with your client-side schema extensi
 
 During development, your application might be executing GraphQL operations against a locally running server with a schema that differs somewhat from your _production_ server's schema. Because schemas can differ, it's important to always check your operations against the current schema for a particular environment _before_ you push client changes to that environment.
 
-If you represent each of your server's environments with a separate [graph variant](./schema/registry/#managing-environments-with-variants) (recommended), you can check your operations against a particular variant's schema like so:
+If you represent each of your server's environments with a separate [graph variant](./org/graphs/#managing-variants) (recommended), you can check your operations against a particular variant's schema like so:
 
 ```
 $ apollo client:check --variant=production

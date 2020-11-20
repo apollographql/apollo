@@ -1,5 +1,6 @@
 ---
-title: "3. Write query resolvers"
+title: 'Write query resolvers'
+sidebar_title: '3. Write query resolvers'
 description: Learn how a GraphQL query fetches data
 ---
 
@@ -98,11 +99,12 @@ By providing your resolver map to Apollo Server like so, it knows how to call re
 
 ## Run test queries
 
-Let's run a test query on our server! Return to GraphQL Playground by running `npm start` and visiting `http://localhost:4000/` in your browser:
+Let's run a test query on our server! Start it up with `npm start` and open whichever tool you previously used to [explore your schema](./schema/#explore-your-schema):
 
-<img class="screenshot" src="../images/playground.png" alt="GraphQL Playground"></img>
+* The Explorer in [Apollo Studio](https://studio.apollographql.com/dev)
+* GraphQL Playground at `localhost:4000`
 
-Paste the following query into the left text field of GraphQL Playground:
+Paste the following query into the tool's editor panel:
 
 ```graphql
 # We'll cover more about the structure of a query later in the tutorial.
@@ -116,7 +118,7 @@ query GetLaunches {
 }
 ```
 
-Then, click the circular play button in the middle of the page to execute it. Our server's response appears on the right. See how the structure of the response object matches the structure of the query? This correspondence is a fundamental feature of GraphQL.
+Then, click the Run button. Our server's response appears on the right. See how the structure of the response object matches the structure of the query? This correspondence is a fundamental feature of GraphQL.
 
 Now let's try a test query that takes a **GraphQL argument**. Paste the following query and run it:
 
@@ -134,7 +136,7 @@ query GetLaunchById {
 
 This query returns the details of the `Launch` object with the `id` `60`.
 
-Instead of hard-coding the argument like the query above, GraphQL Playground lets you set variables in the bottom-left corner. Here's that same query using a variable instead of `60`:
+Instead of hard-coding the argument like the query above, these tools let you define **variables** for your operations. Here's that same query using a variable instead of `60`:
 
 ```graphql
 query GetLaunchById($id: ID!) {
@@ -148,7 +150,7 @@ query GetLaunchById($id: ID!) {
 }
 ```
 
-Now, paste the following into the Query Variables text area of GraphQL Playground:
+Now, paste the following into the tool's Variables panel:
 
 ```json:title=QUERY_VARIABLES
 {
@@ -316,7 +318,7 @@ module.exports = {
 };
 ```
 
-Let's test the cursor-based pagination we just implemented. Restart your server with `npm start` and run this query in GraphQL Playground:
+Let's test the cursor-based pagination we just implemented. Restart your server with `npm start` and run this query in the Explorer/GraphQL Playground:
 
 ```graphql
 query GetLaunches {

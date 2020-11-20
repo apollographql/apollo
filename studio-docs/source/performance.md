@@ -82,7 +82,7 @@ The signature algorithm is primarily designed to make it possible to treat opera
 
 Future versions of Apollo Studio are likely to change this default algorithm to leave string literals alone, though it will still be easy to configure your server to remove string literals like in the current implementation. We also intend to stop sending the full raw query in future versions of Studio, so that the signature algorithm really can be used to avoid sending sensitive data in queries to Studio.
 
-But where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Apollo Studio reporting pathway for privacy purposes. See [data privacy](./graph-manager-data-privacy/) for further detail on how this works.
+But where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Apollo Studio reporting pathway for privacy purposes. See [data privacy](./data-privacy/) for further detail on how this works.
 
 ## Error tracking
 

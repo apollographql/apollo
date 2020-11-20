@@ -1,5 +1,6 @@
 ---
-title: "4. Write mutation resolvers"
+title: 'Write mutation resolvers'
+sidebar_title: '4. Write mutation resolvers'
 description: Learn how a GraphQL mutation modifies data
 ---
 
@@ -18,20 +19,21 @@ First, let's write a resolver for `Mutation.login`, which enables a user to log 
 Mutation: {
   login: async (_, { email }, { dataSources }) => {
     const user = await dataSources.userAPI.findOrCreateUser({ email });
-    if (user) return Buffer.from(email).toString('base64');
-  }
+    if (user) {
+      user.token = new Buffer(email).toString('base64');
+      return user;
+    }
+  },
 },
 ```
 
-This resolver takes an `email` address and returns a login token for a corresponding user entity. If a user entity doesn't yet exist for this email address, one is created.
-
-In a later chapter, we'll learn how to save this login token on the client.
+This resolver takes an `email` address and returns corresponding user data from our `userAPI`. We add a `token` field to the object to represent the user's active session. In a later chapter, we'll learn how to persist this returned user data in our application client.
 
 ### Authenticating logged-in users
 
 > The authentication method used in our example application is not at all secure and should not be used by production applications. However, you can apply the principles demonstrated below to a token-based authentication method that _is_ secure.
 
-Our `Mutation.login` resolver returns a token that clients can use to authenticate themselves to our server. Now, we need to add logic to our server to actually perform the authentication.
+The `User` object returned by our `Mutation.login` resolver includes a `token` that clients can use to authenticate themselves to our server. Now, we need to add logic to our server to actually perform the authentication.
 
 In `src/index.js`, import the `isEmail` function and pass a `context` function to the constructor of `ApolloServer` that matches the following:
 
@@ -68,7 +70,7 @@ By creating this `context` object at the beginning of each operation's execution
 
 ## `bookTrips` and `cancelTrip`
 
-Now let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
+Now back in `resolvers.js`, let's add resolvers for `bookTrips` and `cancelTrip` to the `Mutation` object:
 
 ```js:title=src/resolvers.js
 //Mutation: {
@@ -114,33 +116,39 @@ To match our schema, these two resolvers both return an object that conforms to 
 
 > The `bookTrips` resolver needs to account for the possibility of a **partial success**, where some launches are booked successfully and others fail. The code above indicates a partial success in the `message` field.
 
-## Run mutations in GraphQL Playground
+## Run test mutations
 
-We're ready to test out our mutations! Restart your server and return to GraphQL Playground in your browser.
+We're ready to test out our mutations! Restart your server and return to the Apollo Studio Explorer or GraphQL Playground in your browser.
 
 ### Obtain a login token
 
-GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it in GraphQL Playground:
+GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it:
 
 ```graphql
 mutation LoginUser {
-  login(email: "daisy@apollographql.com")
+  login(email: "daisy@apollographql.com") {
+    token
+  }
 }
 ```
 
-The server should respond with a string that looks like this: 
+The server will respond like this: 
 
 ```
-ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
+"data": {
+  "login": {
+    "token": "ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20="
+  }
+ }
 ```
 
-This is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
+The value of the `token` field is our login token (which is just the Base64 encoding of the email address we provided). We'll use this value in the next mutation.
 
 ### Book trips
 
 Let's try booking some trips. Only authenticated users are allowed to book trips, so we'll include our login token in our request.
 
-First, paste the mutation below into GraphQL playground:
+First, paste the mutation below into your tool's query editor:
 
 ```graphql
 mutation BookTrips {
@@ -154,7 +162,7 @@ mutation BookTrips {
 }
 ```
 
-Next, paste the following into the HTTP Headers box in the bottom left:
+Next, paste the following into the tool's Headers panel:
 
 ```json:title=HTTP_HEADERS
 {
@@ -164,4 +172,4 @@ Next, paste the following into the HTTP Headers box in the bottom left:
 
 Run the mutation. You should see a success message, along with the `id`s of the trips we just booked.
 
-Running mutations manually in GraphQL Playground is a helpful way to test out our API, but a real-world application needs additional tooling to make sure its data graph grows and changes safely. In the next section, we'll connect our server to Apollo Studio to activate that tooling.
+Running mutations manually like this is a helpful way to test out our API, but a real-world application needs additional tooling to make sure its data graph grows and changes safely. In the next section, we'll connect our server to Apollo Studio to activate that tooling.

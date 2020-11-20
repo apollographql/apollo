@@ -1,18 +1,21 @@
 ---
-title: '1. Build a schema'
+title: 'Build a schema'
+sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
 > Time to accomplish: 15 minutes
 
-Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might define the following types:
+Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
 
 ```graphql
+# A book has a title and an author
 type Book {
   title: String
   author: Author
 }
 
+# An author has a name and a list of books
 type Author {
   name: String
   books: [Book]
@@ -111,6 +114,7 @@ type User {
   id: ID!
   email: String!
   trips: [Launch]!
+  token: String
 }
 
 type Mission {
@@ -158,7 +162,7 @@ The `Mutation` type is a special type that's similar in structure to the `Query`
 type Mutation {
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
   cancelTrip(launchId: ID!): TripUpdateResponse!
-  login(email: String): String # login token
+  login(email: String): User
 }
 ```
 
@@ -186,28 +190,57 @@ Our example app's schema is now complete!
 
 ## Run your server
 
-Return to `src/index.js` and add a call to `server.listen()`, like so:
+Return to `src/index.js` and add the following call to the bottom of the file:
 
-```js{6-8}:title=src/index.js
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-
-const server = new ApolloServer({ typeDefs });
-
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+```js:title=src/index.js
+server.listen().then(() => {
+  console.log(`
+    Server is running!
+    Listening on port 4000
+    Explore at https://studio.apollographql.com/dev
+  `);
 });
 ```
 
-After saving, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.
+After saving, run `npm start` to start your server! 🎉 Apollo Server is now available on port 4000.
 
-### Explore your schema
+## Explore your schema
 
-With your server running, visit `localhost:4000` in your browser to open [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/), an IDE that enables you to **introspect** your schema and test out queries. Introspection is a helpful feature of a GraphQL server that enables you to obtain its schema.
+Now that our server is running, we can **introspect** its schema types and fields with useful developer tools. Later, we'll also be able to run test queries from those tools.
 
-> Note that introspection should be **disabled** for a production GraphQL server. Apollo Server disables introspection automatically if the `NODE_ENV` environment variable is set to `production`.
+> Introspection is a helpful GraphQL feature that enables you to obtain a server's schema for development purposes. It should be **disabled** for servers running in production. Apollo Server disables introspection automatically if the `NODE_ENV` environment variable is set to `production`.
 
-To introspect your server's schema, click the **Schema** button on the right side of GraphQL Playground:
+### With Apollo Studio (recommended)
+
+The **Apollo Studio Explorer** is a powerful free web IDE for exploring your GraphQL schema and building queries against it:
+
+<img class="screenshot" src="../img/explorer-tab.jpg" />
+
+To use the Explorer with your locally running server, you create a **dev graph** in Apollo Studio, like so:
+
+1. Visit [studio.apollographql.com/dev](https://studio.apollographql.com/dev).
+
+    You'll be prompted to create an Apollo account if you don't already have one (again, Apollo accounts and the Explorer are completely free).
+
+2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial):
+
+    <img class="screenshot" src="../img/dev-graph.jpg" width="450" alt="Dev graph form" />
+
+3. Click **Create graph**. Studio automatically opens the Explorer to use with your server!
+
+To introspect your server's schema in the Explorer, click the Documentation tab on the left side:
+
+<img class="screenshot" src="../img/explorer-documentation-tab.jpg" alt="Explorer documentation tab" width="200"/>
+
+Your schema's root types (`Query` and `Mutation`) appear. You can click any type to view its fields and step down into your schema. You'll see that the types and fields match what we provided to our server.
+
+> [Learn more about the Apollo Studio Explorer](https://www.apollographql.com/docs/studio/explorer/)
+
+### With GraphQL Playground
+
+[GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/) is an open-source tool for querying your GraphQL server. It provides fewer features than the Apollo Studio Explorer, but it does everything we need for this tutorial. It's also included in every Apollo Server installation.
+
+With your server running, visit `localhost:4000` in your browser to open GraphQL Playground. To introspect your server's schema, click the **Schema** button on the right side:
 
 <img src="../images/schematab.png" alt="Schema button">
 
@@ -215,6 +248,6 @@ Your schema's queries, mutations, and object type definitions appear:
 
 <img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
 
-
+---
 
 Our server now knows which GraphQL types and operations it supports, but it doesn't know where to obtain the data to respond to those operations. Next, we'll connect our server to two data sources.
