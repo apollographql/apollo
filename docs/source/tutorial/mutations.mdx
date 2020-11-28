@@ -99,8 +99,8 @@ Modify the `useMutation` call in `login.tsx` to match the following:
 
 ```tsx:title=src/pages/login.tsx
 const [login, { loading, error }] = useMutation<
-  LoginTypes.Login,
-  LoginTypes.LoginVariables
+  LoginTypes.login,
+  LoginTypes.loginVariables
 >(
   LOGIN_USER,
   {
