@@ -11,11 +11,13 @@ Time to accomplish: _20 Minutes_
 
 Now that we've [set up Apollo Client](./client/), we can integrate it into our React app. This lets us use [React Hooks](https://reactjs.org/docs/hooks-intro.html) to bind the results of GraphQL queries directly to our UI.
 
-<Disclaimer />
+> **If you're starting the tutorial here, first [clone the example app](./introduction/#clone-the-example-app).**
 
 ## Integrate with React
 
 To connect Apollo Client to React, we wrap our app in the `ApolloProvider` component from the `@apollo/client` package. We pass our client instance to the `ApolloProvider` component via the `client` prop.
+
+<Disclaimer />
 
 Open `src/index.tsx` and replace its contents with the following:
 
