@@ -1,5 +1,8 @@
 / /docs/
 
+# Add tutorial shortcut
+/docs/tutorial/ /docs/tutorial/introduction/
+
 # Add Developer Tools category to root docset
 /docs/resources/apollo-config/ /docs/devtools/apollo-config/
 
