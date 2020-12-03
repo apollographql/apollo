@@ -35,7 +35,7 @@ The `RESTDataSource` class automatically caches responses from REST resources wi
 
 ### Write data-fetching methods
 
-Our `LaunchAPI` data source needs methods that enable it to fetch the data that incoming queries will request. 
+Our `LaunchAPI` data source needs methods that enable it to fetch the data that incoming queries will request.
 
 #### The `getAllLaunches` method
 
@@ -55,7 +55,7 @@ The `RESTDataSource` class provides helper methods that correspond to HTTP verbs
 1. The call to `this.get('launches')` sends a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the array of returned launches in `response`.
 2. We use `this.launchReducer` (which we'll write next) to transform each returned launch into the format expected by our schema. If there are no launches, an empty array is returned.
 
-Now we need to write the `launchReducer` method, which transforms returned launch data into the shape that our schema expects. This approach decouples the structure of your schema from the structure of the various data sources that populate its fields. 
+Now we need to write the `launchReducer` method, which transforms returned launch data into the shape that our schema expects. This approach decouples the structure of your schema from the structure of the various data sources that populate its fields.
 
 First, let's recall what a `Launch` object type looks like in our schema:
 
@@ -117,7 +117,7 @@ Our `LaunchAPI` class is complete! Next, let's connect a database to our server.
 
 ## Connect a database
 
-The SpaceX API is a read-only data source for fetching launch data. We also need a _writable_ data source that allows us to store application data, such as user identities and seat reservations. To accomplish this, we'll connect to a SQLite database and use Sequelize for our ORM. Our `package.json` file includes these dependencies, so they were installed with our `npm install` call in [Build a schema](./schema/). 
+The SpaceX API is a read-only data source for fetching launch data. We also need a _writable_ data source that allows us to store application data, such as user identities and seat reservations. To accomplish this, we'll connect to a SQLite database and use Sequelize for our ORM. Our `package.json` file includes these dependencies, so they were installed with our `npm install` call in [Build a schema](./schema/).
 
 Because this section contains SQL-specific code that isn't necessary for understanding Apollo data sources, a `UserAPI` data source is included in [`src/datasources/user.js`](https://github.com/apollographql/fullstack-tutorial/blob/master/start/server/src/datasources/user.js). Navigate to that file so we can cover the high-level concepts.
 
@@ -143,7 +143,7 @@ Let's go over some of the methods in `src/datasources/user.js` that we use to fe
 
 Now that we've built our two data sources, we need to add them to Apollo Server.
 
-Pass a `dataSources` option to the `ApolloServer` constructor. This option is a function that returns an object containing newly instantiated data sources. 
+Pass a `dataSources` option to the `ApolloServer` constructor. This option is a function that returns an object containing newly instantiated data sources.
 
 Navigate to `src/index.js` and add the code highlighted below (or replace the entire file with the entire code block):
 
@@ -176,6 +176,6 @@ server.listen().then(() => {
 
 First, we import and call the `createStore` function to set up our SQLite database. Then, we add the `dataSources` function to the `ApolloServer` constructor to connect instances of `LaunchAPI` and `UserAPI` to our graph. We also make sure to pass the database to the `UserAPI` constructor.
 
-If you use `this.context` in a datasource, it's critical to create a _new_ instance in the `dataSources` function, rather than sharing a single instance. Otherwise, `initialize` might be called during the execution of asynchronous code for a particular user, replacing `this.context` with the context of _another_ user.
+If you use `this.context` in a datasource, it's critical to create a _new_ instance of that datasource in the `dataSources` function, rather than sharing a single instance. Otherwise, `initialize` might be called during the execution of asynchronous code for a particular user, replacing `this.context` with the context of _another_ user.
 
 Now that we've hooked up our data sources to Apollo Server, it's time to move on to the next section and learn how to interact with our data sources from within our resolvers.
