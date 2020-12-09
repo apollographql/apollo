@@ -235,7 +235,7 @@ User: {
 },
 ```
 
-You might be wondering how our server knows the identity of the current user when calling functions like `getLaunchIDsByUser`. It doesn't yet! We'll fix that in the next chapter.
+You might be wondering how our server knows the identity of the current user when calling functions like `getLaunchIdsByUser`. It doesn't yet! We'll fix that in the next chapter.
 
 ## Paginate results
 
