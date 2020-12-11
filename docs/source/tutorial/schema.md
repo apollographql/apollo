@@ -45,7 +45,7 @@ const typeDefs = require('./schema');
 const server = new ApolloServer({ typeDefs });
 ```
 
-This code imports the `ApolloServer` class from `apollo-server`, along with our (currently undefined) schema from `src/schema.js`. It then creates a new instance of `ApolloServer` and passes it the imported schema via the `typeDefs` property.
+This code imports the `ApolloServer` class from `apollo-server`, along with our (currently undefined) schema from `src/schema.js`. It then creates a new instance of `ApolloServer` and passes in the imported schema via the `typeDefs` property.
 
 Now that Apollo Server is prepared to receive our schema, let's define it.
 
