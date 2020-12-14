@@ -73,8 +73,8 @@ Add the following to the bottom of `login.tsx`:
 ```tsx:title=src/pages/login.tsx
 export default function Login() {
 const [login, { loading, error }] = useMutation<
-  LoginTypes.login,
-  LoginTypes.loginVariables
+  LoginTypes.Login,
+  LoginTypes.LoginVariables
 >(LOGIN_USER);
 
 if (loading) return <Loading />;
@@ -105,8 +105,10 @@ const [login, { loading, error }] = useMutation<
   LOGIN_USER,
   {
     onCompleted({ login }) {
-      localStorage.setItem('token', login.token as string);
-      localStorage.setItem('userId', login.id as string);
+      if (login) {
+        localStorage.setItem('token', login.token as string);
+        localStorage.setItem('userId', login.id as string);
+      }
     }
   }
 );
