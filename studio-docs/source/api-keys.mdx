@@ -12,13 +12,20 @@ Every application that sends data to Apollo must use an **API key** to do so. Ap
 
 A graph API key provides **full** access to a **single graph** in Apollo Studio. A GraphQL server (such as Apollo Server) can use a graph API key to register its schema and push metrics to Studio.
 
+> If your organization has an enterprise subscription, you will be able to [**assign a role**](/org/members/#member-roles) to your graph API keys when you create them. These are the same roles that you can assign to users in your organization. The role an API key has cannot be changed after it is created; you must create a new key if you want to enforce a different role.
+
 Create a unique graph API key for each non-development system that communicates with Studio. Doing so enables you to revoke access to a single system without affecting others.
 
 <ObtainGraphApiKey />
 
 ## Personal API keys
 
-A personal API key provides **partial** access to **every graph in every organization you belong to**. Specifically, the Apollo [CLI](https://www.apollographql.com/docs/devtools/cli/) and [VS Code extension](https://www.apollographql.com/docs/devtools/editor-plugins/) support personal API keys, but all other Studio interactions require a graph API key.
+A personal API key provides **partial** access to **every graph in every organization you belong to**.
+
+You can use personal API keys with the Apollo CLI and VS Code extensions to load data (usually schemas) from Studio.
+Specifically, the Apollo [CLI](https://www.apollographql.com/docs/devtools/cli/) and [VS Code extension](https://www.apollographql.com/docs/devtools/editor-plugins/) can be set up using personal API keys, but almost all other Studio interactions require a graph API key.
+
+
 
 Interactions that require a graph API key include:
 
@@ -26,6 +33,6 @@ Interactions that require a graph API key include:
 * [Metrics reporting](../setup-analytics/)
 
 
-Every interaction that's performed using a personal API key is associated with the corresponding user.
+Every interaction that's performed using a personal API key is associated with the corresponding user. Your personal API keys will have the exact same permissions as your user. If you need to limit which permissions your token has, use a graph API key.
 
 <ObtainPersonalApiKey />
