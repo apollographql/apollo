@@ -65,6 +65,14 @@ You can configure Apollo Server to associate the metrics it sends to Apollo Stud
 
 > Make sure you associate metrics with the correct variant! Otherwise, metrics from your staging and test environments will be included in reports for your production graph.
 
+### Protected variants
+
+If your graph is in an organization with an Enterprise subscription, you can specify particular variants to be come **protected variants**. This means that members of  your org who might otherwise have permission to push schema and change configurations for your graphs may not have that permission for a protected variant.
+
+This specifically applies to the [Contributor role](/org/members/#member-roles-in-organizations). Contributors will become read-only users (with the same permissions as observers) for protected variants, while their contributor permission remains for all unprotected variants. Effectively, contributors will not be able to push new schemas to protected variants.
+
+Graph admins and organization admins remain administrative users who still have permission to change everything about a graph. Observers and Consumers remain read-only users.
+
 ## Transferring graph ownership
 
 You can transfer a graph to a different Studio organization you belong to
