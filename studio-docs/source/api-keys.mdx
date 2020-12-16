@@ -10,29 +10,29 @@ Every application that sends data to Apollo must use an **API key** to do so. Ap
 
 ## Graph API keys
 
-A graph API key provides **full** access to a **single graph** in Apollo Studio. A GraphQL server (such as Apollo Server) can use a graph API key to register its schema and push metrics to Studio.
-
-> If your organization has an enterprise subscription, you will be able to [**assign a role**](/org/members/#member-roles) to your graph API keys when you create them. These are the same roles that you can assign to users in your organization. The role an API key has cannot be changed after it is created; you must create a new key if you want to enforce a different role.
+A graph API key provides access to a **single graph** in Apollo Studio. A GraphQL server (such as Apollo Server) can use a graph API key to register its schema and push metrics to Studio.
 
 Create a unique graph API key for each non-development system that communicates with Studio. Doing so enables you to revoke access to a single system without affecting others.
 
 <ObtainGraphApiKey />
 
+### Setting permissions
+
+Unless you have an Enterprise plan, every graph API key provides **full access** to its associated graph.
+
+If you have an Enterprise plan, you can [assign a member role](/org/members/#member-roles) to each graph API key you create. If you do, the API key's permissions are limited to that role's permissions.
+
+You can't change a graph API key's role after it's created. Instead, create a new key with the desired role.
+
 ## Personal API keys
 
-A personal API key provides **partial** access to **every graph in every organization you belong to**.
+A personal API key provides partial access to **every graph in every organization you belong to**. A personal API key has the same permissions that your user account has in each of your organizations. 
 
-You can use personal API keys with the Apollo CLI and VS Code extensions to load data (usually schemas) from Studio.
-Specifically, the Apollo [CLI](https://www.apollographql.com/docs/devtools/cli/) and [VS Code extension](https://www.apollographql.com/docs/devtools/editor-plugins/) can be set up using personal API keys, but almost all other Studio interactions require a graph API key.
+You can use personal API keys with local development tools (like the Apollo [CLI](https://www.apollographql.com/docs/devtools/cli/) and [VS Code extension](https://www.apollographql.com/docs/devtools/editor-plugins/)) to load schemas and other data from Studio.
 
-
-
-Interactions that require a graph API key include:
+However, a [graph API key](#graph-api-keys) is required for almost all other Studio interactions, including:
 
 * Schema registration via [schema reporting](../schema/schema-reporting/)
 * [Metrics reporting](../setup-analytics/)
-
-
-Every interaction that's performed using a personal API key is associated with the corresponding user. Your personal API keys will have the exact same permissions as your user. If you need to limit which permissions your token has, use a graph API key.
 
 <ObtainPersonalApiKey />

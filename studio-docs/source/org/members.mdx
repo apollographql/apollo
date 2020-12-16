@@ -5,11 +5,11 @@ sidebar_title: Members and roles
 
 A Studio organization can have any number of members, and each member can be assigned a **role** that defines their capabilities within the organization.
 
-## Member roles in organizations
+## Organization-wide member roles
 
-> **Member roles are available for Enterprise accounts.**
+> **Member roles are available for organizations with an Enterprise plan.**
 >
-> Apollo Support can also grant access to the Billing Manager role for Team accounts on request. Please contact support@apollographql.com for more information.
+> Apollo Support can also grant access to the Billing Manager role for Team accounts on request. Please contact **support@apollographql.com** for more information.
 >
 > If you're using member roles, [please let us know what you think!](https://docs.google.com/forms/d/10C4_ETX5Xb60RfnJjBC2xBVK9gjr6A644AYKA-27T-E/viewform) Your feedback will help us improve the feature before we roll it out to all organizations.
 >
@@ -21,16 +21,24 @@ Each organization member has one of the following roles:
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Organization Admin` | Has management access to the entire organization, including its members, graphs, and configuration.                                                                                                                |
 | `Graph Admin`        | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for developers who are considered admins to the graph.                                        |
-| `Contributor`        | Can push new schemas to graphs, but cannot configure graph settings or integrations. Intended for back-end developers who are authorized to make changes to graphs.                                                |
+| `Contributor`        | Can push new schemas to graphs, but cannot configure graph settings or integrations. Intended for back-end developers who are authorized to make changes to graphs. _Cannot_ push schema changes to [protected variants](./graphs/#protected-variants-enterprise-only).                                               |
 | `Observer`           | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. |
 | `Consumer`           | Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph.                       |
 | `Billing Manager`    | Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs.                                                                         |
 
-> On XX/YY/ZZ, we introduced the **Graph Admin** role and redefined the **Contributor** role to have fewer permissions. All members who were **Contributors** before that point were automatically reduced to updated Contributor role *with a lower permission set* unless otherwise discussed with your customer success manager.
+Only members with the `Organization Admin` role can assign roles to other members. You can see which role you have in a particular organization from your [user settings page](https://studio.apollographql.com/user-settings), or from the organization's Members tab.
 
-Only organization admins can assign roles to other members. You can see which role you have in a particular organization from your [user settings page](https://studio.apollographql.com/user-settings), or from that organization's Members tab.
+## Graph-specific member roles
 
-### Role permissions
+You can override a member's organization-wide role for individual graphs. For example, if a member has the `Observer` role in your organization, you can assign them the `Contributor` role for a graph that they need extra access to.
+
+> A member's graph-specific role must have _more_ permissions than their organization-wide role.
+
+Members with the `Graph Admin` or `Organization Admin` role can assign graph-specific roles from the Access tab of the graph's Settings page.
+
+## Role permissions
+
+> We recently added the `Graph Admin` role and reduced permissions for members with the `Contributor` role.
 
 | Action                                                 | Org Admin | Graph Admin | Billing Manager | Contributor | Observer | Consumer |
 | :----------------------------------------------------- | :-------: | :---------: | :-------------: | :---------: | :------: | :------: |
@@ -44,18 +52,11 @@ Only organization admins can assign roles to other members. You can see which ro
 | View and manage graph API keys                         |     ✓     |      ✓      |                 |             |          |          |
 | Modify schema checks configuration                     |     ✓     |      ✓      |                 |             |          |          |
 | Push schemas to your graph                             |     ✓     |      ✓      |                 |      ✓      |          |          |
+| Push schemas to a [protected variant](./graphs/#protected-variants-enterprise-only)                             |     ✓     |      ✓      |                 |            |          |          |
 | Run schema checks                                      |     ✓     |      ✓      |                 |      ✓      |    ✓     |          |
 | View graph usage metrics                               |     ✓     |      ✓      |                 |      ✓      |    ✓     |          |
 | View graph schemas and changelogs                      |     ✓     |      ✓      |                 |      ✓      |    ✓     |    ✓     |
 | Query graphs with the Explorer                         |     ✓     |      ✓      |                 |      ✓      |    ✓     |    ✓     |
-
-## Member roles for graphs
-
-For any graph in your organization, you can provide a single member with a **graph role override** that will replace the permissions allotted by their organization role.
-
-Graph admins and organization admins may set graph role overrides. Graph role overrides must strictly be *promotions* from the member's organization role; you cannot enforce a *permission downgrade* with a graph role override.
-
-You cannot set graph role overrides for organization admins. They will always be full admins unless you downgrade their role on the organization.
 
 ## Inviting members
 

@@ -16,11 +16,6 @@ There are two types of graphs in Studio:
 * **Deployed graphs** are shared with other members of your organization. Create a deployed graph for every use case _except_ local development.
 * **Development graphs** (**dev graphs** for short) are only visible to you. Use them to help you iterate on your graph in your development environment.
 
-For **deployed graphs**, there are two types of visibility you can set on your graph.
-* **Visible to others by default** – this is the standard option. Your graph will be visible to all members of your organization in their graph list.
-* **Hidden from others unless granted access** – this options is available to graphs created in an organization with an Enterprise subscription. Your graph will only be visible to members you have explicitly invited from your Graph's Settings/Access page. You can change this preference at any time.
-
-
 ## Registering a schema
 
 You can register your schema to a Studio graph with one of the following methods:
@@ -33,7 +28,7 @@ You can register your schema to a Studio graph with one of the following methods
 After selecting an organization in Studio, click on a particular graph
 to view its schema, data, and settings. All of a Studio organization's members can access the data and settings for every graph that belongs to that organization.
 
-> Enterprise accounts can set [member roles](./members/#member-roles) to configure access for individual members of their organization.
+> Enterprise accounts can set [member roles](./members/#organization-wide-member-roles) to configure access for individual members of their organization.
 
 ### Exploring your schema
 
@@ -48,6 +43,12 @@ The History view in Apollo Studio lets you view the timeline of changes made to 
 <img src="../img//schema-history.jpg" class="screenshot" alt="Studio History view" width="400"></img>
 
 **Only schema changes that you push to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](../schema/cli-registration/#registering-with-continuous-delivery).
+
+## Setting graph visibility (Enterprise only)
+
+By default, deployed graphs are visible to all members of your organization. If you have an Enterprise plan, you can set a deployed graph to instead be visible only to members you invite. 
+
+You can configure visibility and invite members from the Access tab of your graph's Settings page.
 
 ## Managing variants
 
@@ -65,13 +66,11 @@ You can configure Apollo Server to associate the metrics it sends to Apollo Stud
 
 > Make sure you associate metrics with the correct variant! Otherwise, metrics from your staging and test environments will be included in reports for your production graph.
 
-### Protected variants
+### Protected variants (Enterprise only)
 
-If your graph is in an organization with an Enterprise subscription, you can specify particular variants to be come **protected variants**. This means that members of  your org who might otherwise have permission to push schema and change configurations for your graphs may not have that permission for a protected variant.
+If you have an Enterprise plan, you can designate particular variants of a graph as **protected variants**. Members of your organization with the [`Contributor` role](/org/members/#organization-wide-member-roles) _cannot_ push schema updates to a protected variant. Only members with the `Organization Admin` or `Graph Admin` role can do so. `Contributor` members still have read access to protected variants.
 
-This specifically applies to the [Contributor role](/org/members/#member-roles-in-organizations). Contributors will become read-only users (with the same permissions as observers) for protected variants, while their contributor permission remains for all unprotected variants. Effectively, contributors will not be able to push new schemas to protected variants.
-
-Graph admins and organization admins remain administrative users who still have permission to change everything about a graph. Observers and Consumers remain read-only users.
+Configure protected variants from the Access tab of your graph's Settings page.
 
 ## Transferring graph ownership
 
