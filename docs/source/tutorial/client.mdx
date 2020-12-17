@@ -82,6 +82,16 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 });
 ```
 
+```jsx:title=src/index.jsx
+import { ApolloClient, gql } from "@apollo/client";
+import { cache } from "./cache";
+
+const client = new ApolloClient({
+  cache,
+  uri: "http://localhost:4000/graphql"
+});
+```
+
 </MultiCodeBlock>
 
 The `ApolloClient` constructor requires two parameters:
