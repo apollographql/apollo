@@ -162,7 +162,7 @@ mutation BookTrips {
 }
 ```
 
-Next, paste the following into the tool's Headers panel:
+Next, paste the following into the tool's Headers tab (a separate text area in the panel _below_ the query editor):
 
 ```json:title=HTTP_HEADERS
 {
