@@ -31,9 +31,7 @@ module.exports = {
           ],
           'Metrics Reporting': [
             'setup-analytics',
-            'slack-integration',
             'client-awareness',
-            'performance',
             'datadog-integration',
             // field usage
             // operation usage
@@ -43,6 +41,12 @@ module.exports = {
             'check-configurations',
             'validating-client-operations',
             'github-integration',
+          ],
+          'Notifications': [
+            'notification-setup',
+            'performance-alerts',
+            'daily-reports',
+            'schema-change-integration',
           ],
           'Security': [
             'api-keys',
