@@ -36,27 +36,46 @@ You can override a member's organization-wide role for individual graphs. For ex
 
 Members with the `Graph Admin` or `Organization Admin` role can assign graph-specific roles from the Access tab of the graph's Settings page.
 
+When `Contributors` in an organization create a new graph, they are automatically granted the `Graph Admin` role on that graph.
+
 ## Role permissions
 
-> We recently added the `Graph Admin` role and reduced permissions for members with the `Contributor` role.
+> In January 2021, we added the `Graph Admin` role and reduced permissions for members with the `Contributor` role.
 
-| Action                                                 | Org Admin | Graph Admin | Billing Manager | Contributor | Observer | Consumer |
-| :----------------------------------------------------- | :-------: | :---------: | :-------------: | :---------: | :------: | :------: |
-| Invite members                                         |     ✓     |             |                 |             |          |          |
-| Remove members                                         |     ✓     |             |        ✓        |             |          |          |
-| View and edit billing information                      |     ✓     |             |        ✓        |             |          |          |
-| Manage organization configuration (name, avatar, etc.) |     ✓     |             |        ✓        |             |          |          |
-| Delete graphs                                          |     ✓     |      ✓      |                 |             |          |          |
-| Create, rename graphs                                  |     ✓     |      ✓      |                 |             |          |          |
-| Manage graph integrations (Datadog, Slack, etc.)       |     ✓     |      ✓      |                 |             |          |          |
-| View and manage graph API keys                         |     ✓     |      ✓      |                 |             |          |          |
-| Modify schema checks configuration                     |     ✓     |      ✓      |                 |             |          |          |
-| Push schemas to your graph                             |     ✓     |      ✓      |                 |      ✓      |          |          |
-| Push schemas to a [protected variant](./graphs/#protected-variants-enterprise-only)                             |     ✓     |      ✓      |                 |            |          |          |
-| Run schema checks                                      |     ✓     |      ✓      |                 |      ✓      |    ✓     |          |
-| View graph usage metrics                               |     ✓     |      ✓      |                 |      ✓      |    ✓     |          |
-| View graph schemas and changelogs                      |     ✓     |      ✓      |                 |      ✓      |    ✓     |    ✓     |
-| Query graphs with the Explorer                         |     ✓     |      ✓      |                 |      ✓      |    ✓     |    ✓     |
+| Action                                                          | Org Admin | Graph Admin | Contributor | Observer | Consumer |
+| :-------------------------------------------------------------- | :-------: | :---------: | :---------: | :------: | :------: |
+| Invite members                                                  |     ✓     |             |             |          |          |
+| Remove members                                                  |     ✓     |             |             |          |          |
+| View and edit billing information                               |     ✓     |             |             |          |          |
+| Manage organization configuration (name, avatar, etc.)          |     ✓     |             |             |          |          |
+| Delete the organization                                         |     ✓     |             |             |          |          |
+| Manage which users have access to the graph                     |     ✓     |      ✓      |             |          |          |
+| Manage graph integrations (Datadog, Slack, etc.)                |     ✓     |      ✓      |             |          |          |
+| View and manage graph API keys                                  |     ✓     |      ✓      |             |          |          |
+| Modify schema checks configuration                              |     ✓     |      ✓      |             |          |          |
+| Delete graphs                                                   |     ✓     |      ✓      |             |          |          |
+| Create [Deployed Graphs](/org/graphs/)                          |     ✓     |      ✓      |      ✓      |          |          |
+| Create [Development Graphs](/dev-graphs/)                       |     ✓     |      ✓      |      ✓      |    ✓     |     ✓    |
+| Push schemas to a non-protected variant                         |     ✓     |      ✓      |      ✓      |          |          |
+| Push schemas to a [protected variant](./graphs/#protected-variants-enterprise-only) |     ✓     |      ✓      |            |          |          |
+| Run schema checks                                               |     ✓     |      ✓      |      ✓      |    ✓     |          |
+| See the schemas of implementing services in federated graphs    |     ✓     |      ✓      |      ✓      |    ✓     |          |
+| View graph usage metrics                                        |     ✓     |      ✓      |      ✓      |    ✓     |          |
+| View graph schemas and changelogs                               |     ✓     |      ✓      |      ✓      |    ✓     |    ✓     |
+| Query graphs with the Explorer                                  |     ✓     |      ✓      |      ✓      |    ✓     |    ✓     |
+
+### Billing Managers
+`Billing Managers` cannot see or manage graphs in their organizations, but they can:
+- Remove members from the organization
+- View and edit billing information
+- Manage organization configuration (name, avatar, etc.)
+
+Notable, `Billing Managers` cannot invite new members to their organizations.
+
+### Dev Graphs
+
+It is worth noting that [Development Graphs](/dev-graphs/) take a special permission in our system.
+Any user, regarldess their permission, can create a dev graph and act as the `Graph Admin` for it. Dev graphs are private to the users who creat them.
 
 ## Inviting members
 
