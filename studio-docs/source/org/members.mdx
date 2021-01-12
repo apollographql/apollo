@@ -73,7 +73,7 @@ When `Contributors` in an organization create a new graph, they are automaticall
 > - We significantly reduced the permissions of the `Contributor` role, making it much closer to `Observer` plus the ability to perform a small set of write operations on protected variants.
 > - We added the `Graph Admin` role. This role is nearly identical to the former `Contributor` role; as part of the transition, we changed all existing `Contributors` to `Graph Admins`. The only difference between the old `Contributor` role and the new `Graph Admin` role is that `Graph Admins` can delete graphs (and manage graph overrides, a new feature released simultaneously).
 
-> Currently, graph usage metrics and traces are not displayed to `Consumer`s via the Studio web app but they are not blocked at the API layer. We intend to remove this capability from `Consumer`s, but for the time being you should und erstand that `Consumer`s are not fully prevented from accessing these metrics and traces.
+> Currently, graph usage metrics and traces are not displayed to `Consumer`s via the Studio web app but they are not blocked at the API layer. We intend to remove this capability from `Consumer`s, but for the time being you should understand that `Consumer`s are not fully prevented from accessing these metrics and traces.
 
 ### Billing Managers
 `Billing Managers` cannot see or manage graphs in their organizations, but they can:
