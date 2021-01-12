@@ -70,12 +70,14 @@ You can configure Apollo Server to associate the metrics it sends to Apollo Stud
 
 ### Protected variants (Enterprise only)
 
-If you have an Enterprise plan, you can designate particular variants of a graph as **protected variants**. Members of your organization with the [`Contributor` role](/org/members/#organization-wide-member-roles) will have reduced permission for protected variants in your graph in the following ways:
-- They _cannot_ push schema updates to a protected variant. Only members with the `Organization Admin` or `Graph Admin` role can do so. `Contributor` members still have read access to protected variants.
-- The will not be able to manage settings for the Explorer, like setting its URL.
-- Graph API Keys with the `Contributor` permission will not be able to report usage metrics to your graph. Only `Graph Admin` keys will be able to report usage.
+If you have an Enterprise plan, you can designate particular variants of a graph as **protected variants**. Making a variant protected specifically affects the ability of users with the [`Contributor` role](/org/members/#organization-wide-member-roles) to make certain changes to the variant:
+- `Contributor`s _cannot_ push schema updates to a protected variant.
+- `Contributors` _cannot_ manage Explorer-related settings for a protected variant, like setting its URL.
+- Graph API Keys with the `Contributor` permission will not be able to report usage metrics to your graph.
 
-You can configure protected variants from the Access tab of your graph's Settings page.
+These are the only operations (other than creating new protected variants and creating new graphs) that can be performed by `Contributor`s and not by `Observer`s, so one way of thinking of protected variants are that they are variants where `Contributor`s are treated as `Observer`s.
+
+`Graph Admins` and `Org Admins` can configure whether a variant is protected from the Access tab of the graph's Settings page.
 
 ## Transferring graph ownership
 
