@@ -68,12 +68,12 @@ When `Contributors` in an organization create a new graph, they are automaticall
 | Query graphs with the Explorer                                  |     ✓     |      ✓      |      ✓      |    ✓     |    ✓     |
 
 
+> Currently, graph usage metrics and traces are not displayed to `Consumer`s via the Studio web app but they are not blocked at the API layer. We intend to remove this capability from `Consumer`s, but for the time being you should understand that `Consumer`s are not fully prevented from accessing these metrics and traces.
+
 > In January 2021, we made three changes to our role structure:
 > - We removed the ability of `Observers` to view integration settings, as some of these settings contain sensitive information.
 > - We significantly reduced the permissions of the `Contributor` role, making it much closer to `Observer` plus the ability to perform a small set of write operations on protected variants.
 > - We added the `Graph Admin` role. This role is nearly identical to the former `Contributor` role; as part of the transition, we changed all existing `Contributors` to `Graph Admins`. The only difference between the old `Contributor` role and the new `Graph Admin` role is that `Graph Admins` can delete graphs (and manage graph overrides, a new feature released simultaneously).
-
-> Currently, graph usage metrics and traces are not displayed to `Consumer`s via the Studio web app but they are not blocked at the API layer. We intend to remove this capability from `Consumer`s, but for the time being you should understand that `Consumer`s are not fully prevented from accessing these metrics and traces.
 
 ### Billing Managers
 `Billing Managers` cannot see or manage graphs in their organizations, but they can:
@@ -85,8 +85,8 @@ Notably, `Billing Managers` cannot invite new members to the organization or upd
 
 ### Dev Graphs
 
-[Development Graphs](/dev-graphs/) work specially in our permissions system.
-Any user in an organization (even a `Consumer`) can create a dev graph and act as the `Graph Admin` for it. Dev graphs are private to the users who create them: even `Org Admins` cannot view them, and they cannot currently be shared with other users via overrides.
+[Development Graphs](/dev-graphs/) are a special case in our permissions system.
+Any user in an organization (even a `Consumer`) can create a dev graph and act as the `Graph Admin` for it. Dev graphs are private to the users who create them: even `Org Admins` cannot view them, and they cannot currently be shared with other users.
 
 ## Graph key roles
 
