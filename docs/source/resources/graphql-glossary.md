@@ -337,7 +337,7 @@ const resolvers = {
 
 ## Schema
 
-A GraphQL [schema](https://www.apollographql.com/docs/apollo-server/essentials/schema.html) is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
+A GraphQL [schema](https://www.apollographql.com/docs/apollo-server/schema/schema/) is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
 
 ## Schema Definition Language (SDL)
 
