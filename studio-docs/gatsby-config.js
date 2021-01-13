@@ -53,7 +53,7 @@ module.exports = {
             'data-privacy',
             'operation-registry',
           ],
-          'Managing your Org': [
+          'Managing your Account': [
             'org/account',
             'org/organizations',
             'org/members',
