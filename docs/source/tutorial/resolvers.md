@@ -267,7 +267,7 @@ last item in the list. Pass this cursor to the launches query to fetch results
 after these.
 """
 type LaunchConnection { # add this below the Query type as an additional type.
-  cursor: String!
+  cursor: String
   hasMore: Boolean!
   launches: [Launch]!
 }
