@@ -12,7 +12,7 @@ Apollo Studio can notify your team about changes to your data graph and its perf
 Studio can send your team the following notification types:
 
 - [Daily reports](./daily-reports) of your graph's request rate, error rate, and latency
-- [Schema change notifications](./schema-change-integrations) whenever your graph's schema is updated
+- [Schema change notifications](./schema-change-integration) whenever your graph's schema is updated
 - [Performance alerts](./performance-alerts) whenever a metric such as error percentage or request latency exceeds a particular threshold (this experimental feature requires a [paid plan](https://www.apollographql.com/pricing/))
 
 Currently, Studio can send each of these notification types to the channel(s) indicated:

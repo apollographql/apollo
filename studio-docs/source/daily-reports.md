@@ -3,9 +3,11 @@ title: Daily reports
 sidebar_title: Daily reports
 ---
 
-Apollo Studio sends your graph's daily report around 9am in your specified time zone. The report provides a high-level summary of what your GraphQL API delivered in the previous day:
+You can [configure Apollo Studio](./notification-setup/) to send your team a daily summary of your graph's activity over the last 24 hours:
 
-<img src="./img/integrations/slack-report.png" alt="Slack daily report" class="screenshot"></img>
+<img src="./img/integrations/slack-report.png" width="400" alt="Slack daily report" class="screenshot"></img>
+
+When you configure daily reports, you can specify what time you want to receive them each day.
 
 ### Acting on report data
 
@@ -17,12 +19,4 @@ The daily report provides an actionable summary of what's happened in your API o
 
 ## Setup
 
-## Setup
-
-> If you don't have an Apollo account yet, [get started](getting-started/). 
-
-1. Navigate to the notifications tab under graph settings and scroll to the bottom of the page
-2. Click `Add Notification`
-3. Select `Daily Report` in the first step of the modal then hit `Next` 
-4. Chose the variant from where the report information is aggregated and a timezone. The report will be sent at 9AM in whatever timezone is selectied
-5. Then select channel that notifications should be sent to new channels can also be created here. Only slack channels are supported for daily reports [setup](./notification-setup)
+See [Setting up Studio Notifications](./notification-setup).
