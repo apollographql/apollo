@@ -44,9 +44,9 @@ module.exports = {
           ],
           'Notifications': [
             'notification-setup',
-            'performance-alerts',
             'daily-reports',
             'schema-change-integration',
+            'performance-alerts',
           ],
           'Security': [
             'api-keys',

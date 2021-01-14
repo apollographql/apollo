@@ -1,6 +1,6 @@
 ---
-title: Performance alert 
-sidebar_title: Performance alerts
+title: Performance alerts
+sidebar_title: Performance alerts (experimental)
 ---
 
 Apollo Studio can send performance alerts to your team's Slack workspace or Pagerduty instnace. This helps you stay up to date on changes to your server's metrics in realtime.
