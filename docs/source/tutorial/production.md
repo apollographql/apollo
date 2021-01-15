@@ -37,21 +37,35 @@ From your [Studio homepage](https://studio.apollographql.com), click your newly 
 
 <img src="../img/register-schema.png" class="screenshot" width="600"></img>
 
-Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
+Copy all of the environment variable definitions in the block at the bottom of the dialog (the value of `APOLLO_KEY` is your graph API key).
 
-You provide your API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable. Conveniently, our example app already uses the `dotenv` package to read environment variables from a `.env` file.
+### Set environment variables
 
-Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so, and add `APOLLO_SCHEMA_REPORTING=true` as well:
+You provide your graph API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable.
+
+Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste the environment variables from the dialog in studio:
 
 ```none:title=.env
-APOLLO_KEY=PASTE_YOUR_KEY_HERE
+APOLLO_KEY=YOUR_API_KEY
+APOLLO_GRAPH_VARIANT=current
 APOLLO_SCHEMA_REPORTING=true
 ```
 
 > **Graph API keys are secret credentials.** Never share them outside your organization or commit them to version control. Delete and replace API keys that might be compromised.
 
+### Load environment variables
 
-Start up your server using `npm start`, then return to your Studio homepage. After a few seconds, clicking on your graph will now open its full details.
+Add the following line to the very top of `start/server/src/index.js` if it isn't already there:
+
+```js:title=start/server/src/index.js
+require('dotenv').config();
+```
+
+The `dotenv` package provides support for reading environment variables from the `.env` file.
+
+### Restart your server
+
+After you restart your server with `npm start`, return to your Studio homepage. After fifteen seconds or so, Studio will receive your server's schema and you can view its full details.
 
 ## Try out free Studio features
 

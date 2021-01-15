@@ -202,7 +202,7 @@ server.listen().then(() => {
 });
 ```
 
-After saving, run `npm start` to start your server! 🎉 Apollo Server is now available on port 4000.
+After saving, run `npm start` to start your server! 🎉 Apollo Server is now available at `http://localhost:4000`.
 
 ## Explore your schema
 

@@ -90,8 +90,12 @@ const server = new ApolloServer({
   })
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+server.listen().then(() => {
+  console.log(`
+    Server is running!
+    Listening on port 4000
+    Explore at https://studio.apollographql.com/dev
+  `);
 });
 ```
 
@@ -310,10 +314,8 @@ module.exports = {
           : false
       };
     },
-    launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
-     me: async (_, __, { dataSources }) =>
-      dataSources.userAPI.findOrCreateUser(),
+
+    // ...other Query fields...
   }
 };
 ```
