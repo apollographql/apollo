@@ -39,15 +39,17 @@ Our `LaunchAPI` data source needs methods that enable it to fetch the data that 
 
 #### The `getAllLaunches` method
 
-According to our schema, we'll need a method to get a list of all SpaceX launches. Let's add a `getAllLaunches` method to our `LaunchAPI` class:
+According to our schema, we'll need a method to get a list of all SpaceX launches. Let's add a `getAllLaunches` method **inside our `LaunchAPI` class**:
 
 ```js:title=src/datasources/launch.js
-async getAllLaunches() {
-  const response = await this.get('launches');
-  return Array.isArray(response)
-    ? response.map(launch => this.launchReducer(launch))
-    : [];
-}
+// class LaunchAPI... {
+
+  async getAllLaunches() {
+    const response = await this.get('launches');
+    return Array.isArray(response)
+      ? response.map(launch => this.launchReducer(launch))
+      : [];
+  }
 ```
 
 The `RESTDataSource` class provides helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above:
@@ -70,45 +72,49 @@ type Launch {
 }
 ```
 
-Now, let's write a `launchReducer` method that transforms launch data from the REST API into the shape above. Copy the following code into your `LaunchAPI` class:
+Now, let's write a `launchReducer` method that transforms launch data from the REST API into the shape above. Copy the following code **inside your `LaunchAPI` class**:
 
 ```js:title=src/datasources/launch.js
-launchReducer(launch) {
-  return {
-    id: launch.flight_number || 0,
-    cursor: `${launch.launch_date_unix}`,
-    site: launch.launch_site && launch.launch_site.site_name,
-    mission: {
-      name: launch.mission_name,
-      missionPatchSmall: launch.links.mission_patch_small,
-      missionPatchLarge: launch.links.mission_patch,
-    },
-    rocket: {
-      id: launch.rocket.rocket_id,
-      name: launch.rocket.rocket_name,
-      type: launch.rocket.rocket_type,
-    },
-  };
-}
+// class LaunchAPI... {
+
+  launchReducer(launch) {
+    return {
+      id: launch.flight_number || 0,
+      cursor: `${launch.launch_date_unix}`,
+      site: launch.launch_site && launch.launch_site.site_name,
+      mission: {
+        name: launch.mission_name,
+        missionPatchSmall: launch.links.mission_patch_small,
+        missionPatchLarge: launch.links.mission_patch,
+      },
+      rocket: {
+        id: launch.rocket.rocket_id,
+        name: launch.rocket.rocket_name,
+        type: launch.rocket.rocket_type,
+      },
+    };
+  }
 ```
 
 Using a reducer like this enables the `getAllLaunches` method to remain concise as our definition of a `Launch` potentially changes and grows over time. It also helps with testing the `LaunchAPI` class, which we'll cover later.
 
 #### The `getLaunchById` method
 
-Our schema also supports fetching an individual launch by its ID. To support this, let's add _two_ methods to the `LaunchAPI` class: `getLaunchById` and `getLaunchesByIds` :
+Our schema also supports fetching an individual launch by its ID. To support this, let's add _two_ methods **inside the `LaunchAPI` class**: `getLaunchById` and `getLaunchesByIds` :
 
 ```js:title=src/datasources/launch.js
-async getLaunchById({ launchId }) {
-  const response = await this.get('launches', { flight_number: launchId });
-  return this.launchReducer(response[0]);
-}
+// class LaunchAPI... {
 
-getLaunchesByIds({ launchIds }) {
-  return Promise.all(
-    launchIds.map(launchId => this.getLaunchById({ launchId })),
-  );
-}
+  async getLaunchById({ launchId }) {
+    const response = await this.get('launches', { flight_number: launchId });
+    return this.launchReducer(response[0]);
+  }
+
+  getLaunchesByIds({ launchIds }) {
+    return Promise.all(
+      launchIds.map(launchId => this.getLaunchById({ launchId })),
+    );
+  }
 ```
 
 The `getLaunchById` method takes a launch's flight number and returns the data for the associated launch. The `getLaunchesByIds` method returns the result of multiple calls to `getLaunchById`.
