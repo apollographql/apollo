@@ -36,8 +36,8 @@ Currently, Studio can send each of these notification types to the channel(s) in
 6. Select an existing configured channel to send notifications to, or select which type of new channel you want to configure:
     <img src="./img/create-new-channel.jpg" class="screenshot" width="400" alt="Notification creation modal">
 7. Click **Next**.
-8. If you're configuring a new channel, proceed to [Configuring a new channel](#configuring-a-new-channel).
-9. If you are creating a daily report you will need to select the timezone for the daily report. It will get sent at 9AM every day in whichever timezone is selected.
+8. If you're configuring a new channel, complete the steps in [Configuring a new channel](#configuring-a-new-channel).
+9. If you're creating a daily report, select a time zone. The report is sent daily at 9am in the selected time zone.
 
 ## Configuring a new channel
 
@@ -79,32 +79,35 @@ You can repeat this process to create webhook URLs for different Slack channels.
 
 ### Pagerduty
 
-#### 1. Create a pagerduty integration key
+#### 1. Create a Pagerduty integration key
 
-1. Generate an [integration key](https://support.pagerduty.com/docs/generating-api-keys#events-api-keys) for the service that should recieve pagerduty alerts in Pagerduty.
-2. Select a service that corresponds to your GraphQL API, or "Add New Service".
-   1. For existing services:
-      - Click on the "Integrations" tab, and then "new integration".
-      - Enter an Integration Name, (e.g. "Apollo Alerts").
-      - Under "Integration type", choose "Use our API directly", and "Events API v2".
-      - Click "Add Integration"
-   2. When adding a service:
-      - Under "Integration Settings", choose "Use our API directly", and use "Events API v2".
-      - Enter an Integration Name (e.g. "Apollo Alerts"), and continue with adding the service.
-3. From the "Integrations" tab, copy the generated "Integration Key" from the table and paste it into the form below.
-4. Click 'Done'.
+Generate an [integration key](https://support.pagerduty.com/docs/generating-api-keys#events-api-keys) for the service that should recieve alerts in Pagerduty. You can select an [existing service](#existing-services) that corresponds to your GraphQL API or [**Add New Service**](#adding-a-service).
+
+##### Existing services
+
+1. Navigate to the service's Integrations tab and click **new integration**.
+2. Enter an Integration Name, (e.g. "Apollo Alerts").
+3. Under "Integration type", choose **Use our API directly** and **Events API v2**.
+4. Click **Add Integration**.
+5. From the Integrations tab, copy the generated integration key from the table for use in the [next step](#2-provide-the-integration-key-to-studio).
+
+##### Adding a service
+
+1. Under "Integration Settings", choose **Use our API directly** and use **Events API v2**.
+2. Enter an Integration Name (e.g., `Apollo Alerts`) and complete the add service flow.
+3. From the Integrations tab, copy the generated integration key from the table for use in the [next step](#2-provide-the-integration-key-to-studio).
 
 
 
-#### 2. Provide the Integration key to Studio
+#### 2. Provide the integration key to Studio
 
 <img src="./img/integrations/pd_creation.png" width="500" class="screenshot" alt="Slack Creation Modal">
 
 1. Back in Studio, specify a name for this notification channel in the Channel Name field. This name must be unique among your graph's notification channels.
 
-   _This name does not have to match the name of the Pagerduty Service, but it's recommended for simplicity._
+   _This name does not have to match the name of the Pagerduty service, but it's recommended for simplicity._
 
-2. In the Pagerduty Integration Key field, paste the integration key you obtained in [Create a pagerduty integration key](#1-Create a pagerduty integration key).
+2. In the Pagerduty Integration Key field, paste the integration key you obtained in [Create a pagerduty integration key](#1-create-a-pagerduty-integration-key).
 
 3. Click **Done**.
 
@@ -112,11 +115,10 @@ You can repeat this process to create webhook URLs for different Slack channels.
 
 > Custom webhooks require an [Enterprise plan](https://www.apollographql.com/pricing/).
 
-Custom webhooks require you to set up an HTTPS endpoint that is accessible via the public internet. Webhook notifications are sent to this endpoint as `POST` requests. Notification details are provided as JSON in the request body.
+Custom webhooks require you to set up an HTTPS endpoint that is accessible via the public internet. Webhook notifications are sent to this endpoint as `POST` requests. Notification details are provided as JSON in the request body, as described in [Webhook format](./schema-change-integration/#webhook-format).
 
 <img src="./img/integrations/webhook_creation.png" class="screenshot" alt="Webhook creation modal">
 
 1. Specify a name for this notification channel in the Channel Name field. This name must be unique among of your graph's notification channels.
 2. In the Webhook URL field, provide the URL of your HTTP(S) endpoint.
-3. Click **Next**.
-4. After you complete configuration, verify that your endpoint receives a confirmation notification from Studio.
+3. Click **Next** and complete any remaining steps in the dialog.

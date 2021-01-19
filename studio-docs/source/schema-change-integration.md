@@ -12,9 +12,11 @@ You can configure separate change notifications for each [variant](./org/graphs/
 
 See [Setting up Studio Notifications](./notification-setup).
 
-## Webhook Schema
+## Webhook format
 
-The webhook will have the following response shape
+If you receive schema change notifications via a [custom webhook](./notification-setup/#custom-webhooks-enterprise-only), notification details are provided as a JSON object in the request body.
+
+The JSON object conforms to the structure of the `ResponseShape` interface:
 
 ```javascript
 interface Change {
@@ -22,20 +24,17 @@ interface Change {
 }
 
 interface ResponseShape {
-  eventType: 'SCHEMA_PUBLISH';
+  eventType: 'SCHEMA_PUBLISH'; // Currently, only SCHEMA_PUBLISH webhooks are supported
   eventID: string;
-  changes: Change[];
-  schemaURL: string;
-  schemaURLExpiresAt: string; # ISO 8601 Date string
+  changes: Change[]; // Set of schema changes that occurred
+  schemaURL: string; // See description below
+  schemaURLExpiresAt: string; // ISO 8601 Date string
   graphID: string;
-  variantID: string;
-  timestamp: string; # ISO 8601 Date string
+  variantID: string; // See description below
+  timestamp: string; // ISO 8601 Date string
 }
-
 ```
 
+* The value of `schemaURL` is a short-lived (24-hour) URL that enables you to fetch the published schema _without_ authenticating (such as with an API key). The URL expires at the time indicated by `schemaURLExpiresAt`.
 
-
-The schemaURL is a short lived (24-hour) url which allows the schema that was published to be fetched without other access tokens or permissions required. The expires at timestamp will be when the url will no longer work.
-
-Variant ID is the concatenation of `graphID@variantName` on which the schema publish occured.
+* The value of `variantID` is in the format `graphID@variantName` (e.g., `mygraph@staging`).
