@@ -4,6 +4,8 @@ sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
+> Getting started with Apollo? [Check out **Odyssey**, Apollo's new learning platform](https://odyssey.apollographql.com)! Our first Odyssey course, **Lift-off Part 1**, introduces many of the same concepts as this tutorial with helpful videos and interactive code challenges.
+
 > Time to accomplish: 15 minutes
 
 Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
