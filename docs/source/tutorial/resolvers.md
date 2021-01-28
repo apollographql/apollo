@@ -220,7 +220,7 @@ Now that we know how to add resolvers for types besides `Query`, let's add some 
 // },
 Launch: {
   isBooked: async (launch, _, { dataSources }) =>
-    dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
+    await dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id }),
 },
 User: {
   trips: async (_, __, { dataSources }) => {
