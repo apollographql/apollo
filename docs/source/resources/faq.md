@@ -1,5 +1,6 @@
 ---
 title: Frequently Asked Questions
+sidebar_title: FAQ
 description: Common questions asked at each stage of GraphQL adoption
 ---
 
@@ -7,7 +8,7 @@ Everyone has questions about how to properly set up a GraphQL schema, but not al
 
 ## Learning GraphQL
 
-You are just beginning to learn GraphQL. You're learning about syntax, running queries, schemas, and how to connect your existing services to your GraphQL layer.
+You're just getting started with GraphQL. You're learning about syntax, running queries, schemas, and how to connect your existing services to your GraphQL layer.
 
 #### What is GraphQL?
 
@@ -15,36 +16,45 @@ GraphQL is a language for querying data. With GraphQL, your existing services de
 
 #### Why use GraphQL?
 
-GraphQL can make a difference in nearly every area of development: from improving developer experience with quality tooling to improving client performance by reducing bundle sizes. Read more about the benefits of GraphQL [here](/intro/benefits/).
+GraphQL can make a difference in nearly every area of development: from improving developer experience with quality tooling to improving client performance by reducing bundle sizes. [Read more about the benefits of GraphQL](/intro/benefits/).
 
 #### Where can I learn GraphQL?
 
-There are a number of resources available to learn GraphQL. If you're looking to get started learning the basics, check out [GraphQL.org](https://graphql.org).
+Apollo's learning platform, [**Odyssey**](https://odyssey.apollographql.com), provides practical, hands-on courses that help you learn GraphQL with Apollo technologies.
 
-The simplest way to get started with implementing GraphQL is with the Apollo platform. The Apollo platform includes all the tools needed to get started, including a production-ready GraphQL server (`apollo-server`), a fully-featured schema management and monitoring tool (Apollo Studio), and a client that manages local and remote data in your apps (`apollo-client`).
+This documentation also includes a [full-stack tutorial](../tutorial/introduction/) and getting-started content for each platform component:
 
-To get started, read the getting started guides for [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/), [Apollo Studio](https://www.apollographql.com/docs/studio/getting-started/), and [Apollo Client](https://www.apollographql.com/docs/react/get-started/).
+* [Apollo Client](https://www.apollographql.com/docs/react/get-started/)
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/)
+* [Apollo Studio](https://www.apollographql.com/docs/studio/)
 
-This site and the [Apollo blog](https://www.apollographql.com/blog/) are also great places to learn and keep up with the latest developments in GraphQL and Apollo.
+For an introduction to core GraphQL concepts, check out [graphql.org](https://graphql.org).
 
-#### How can I host my schema online?
+For technical GraphQL content from Apollo developer advocates and the larger GraphQL community, check out the [Apollo blog](https://www.apollographql.com/blog/).
 
-A great tool for learning and building small projects is [Glitch](https://glitch.com). Glitch allows development of a schema in the browser, and even supports cloning from and pushing to GitHub. Glitch provides a public endpoint that projects can query against. To get started with building a GraphQL schema, try using and remixing the [Apollo Launchpad](https://glitch.com/~apollo-launchpad) project.
+#### How can I host my GraphQL server online?
 
-GraphQL schemas written with `apollo-server` can be deployed anywhere that other Node.js projects can be deployed. `apollo-server` even has variants to support serverless deployment with AWS Lambda.
+GraphQL servers created with `apollo-server` can be deployed to any environment that supports Node.js projects can be deployed. `apollo-server` even has variants to support serverless deployment with AWS Lambda.
 
-There are deployment guides available for [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/), [Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/), and [Azure Functions](https://www.apollographql.com/docs/apollo-server/deployment/azure-functions/).
+There are deployment guides available for:
+
+* [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/)
+* [Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/)
+* [Azure Functions](https://www.apollographql.com/docs/apollo-server/deployment/azure-functions/)
 
 #### How do I connect my client app to my schema?
 
-The Apollo platform has tools available to connect almost any kind of client to your schema: [Apollo Client](https://www.apollographql.com/docs/react/) for JavaScript clients,
-[Apollo iOS](https://www.apollographql.com/docs/ios/) for native iOS clients, and [Apollo Android](https://github.com/apollographql/apollo-android) for native Android clients.
+The Apollo platform has tools available to connect almost any kind of client to your schema: 
 
-For Apollo Client projects, there are also many view-layer integrations, to make querying GraphQL schemas easier in [React](https://www.apollographql.com/docs/react/), [Vue](https://github.com/Akryum/vue-apollo), and [Angular](https://www.apollographql.com/docs/angular/).
+* [Apollo Client](https://www.apollographql.com/docs/react/) for JavaScript clients
+* [Apollo iOS](https://www.apollographql.com/docs/ios/) for native iOS clients
+* [Apollo Android](https://github.com/apollographql/apollo-android) for native Android clients
+
+For Apollo Client projects, there are also many view-layer integrations to make querying GraphQL schemas easier in [React](https://www.apollographql.com/docs/react/), [Vue](https://apollo.vuejs.org/), and [Angular](https://apollo-angular.com/docs/).
 
 ## Building a proof of concept
 
-You understand how GraphQL works and what benefits it offers. You are trying to create a proof of concept for your projects or company to test GraphQL's viability in production.
+You understand how GraphQL works and the benefits it offers. You're trying to create a proof of concept for your project or company to test GraphQL's viability in production.
 
 #### Should I use Node.js for schema development?
 
@@ -72,7 +82,7 @@ For errors not prevented by the type system, it's helpful to know what exact que
 
 ## Moving a feature to GraphQL
 
-You have decided to use GraphQL in production. You don't want to immediately refactor the APIs or apps. You want to move a single feature over to GraphQL to learn how to use it and monitor it in production.
+You've decided to use GraphQL in production. You don't want to immediately refactor the APIs or apps. You want to move a single feature over to GraphQL to learn how to use it and monitor it in production.
 
 #### How should the transition to GraphQL happen?
 
@@ -80,7 +90,7 @@ As with any large change, the adoption of GraphQL should be incremental. GraphQL
 
 #### Who owns the schema design?
 
-GraphQL schemas work best when their design is heavily influenced by the needs of the product developers. It's tempting to design a schema to resemble the underlying sources or databases, but this can be hurtful to the usefulness of GraphQL.
+GraphQL schemas work best when their design is heavily influenced by the needs of the product developers. It's tempting to design a schema to resemble the underlying sources or databases, but this can reduce the usefulness of GraphQL.
 
 #### How do I set up authentication/authorization for my GraphQL schema?
 
@@ -94,11 +104,13 @@ Public APIs of any kind need some kind of safeguards against malicious queries. 
 
 GraphQL can be cached in multiple places.
 
-On the client, caches can prevent multiple queries from being called when not necessary. Client caches for GraphQL differ from REST clients in one important way: cache can handle queries that have never been made. This is possible because of how a GraphQL response is normalized and stored. For example, if a client requests a list of movies, each movie is cached separately on the client. Later, if the client requests a single movie in a different query and the needed information is in the cache, the request doesn't have to be made. This normalized cache is a part of `apollo-client` by default.
+On the client, caches can prevent multiple queries from being called when data is already available locally. Client caches for GraphQL have one significant advantage over REST client caches: they can handle queries that have never been made. This is possible because of how GraphQL responses are normalized and stored.
 
-Cache can also be set up at the schema level. Whole-query caching, partial-query caching, and cache backed by a CDN can all be used to lower response times and make a GraphQL schema as performant as possible.
+For example, if a client requests a list of movies, each movie is cached separately on the client. Later, if the client requests a single movie in a different query and the needed movie is in the cache, the request doesn't have to use the network. This normalized cache is a part of `apollo-client` by default.
 
-Whole-query and CDN caches are most useful when an API receives many of the same queries. This commonly happens with public data, like content on pages of a site. Regardless of whether the API is used for public data or not, these caches almost always provide large performance benefits and are highly recommended. You can read more about how to set up whole-query and CDN caching with `apollo-server` 2.0 [here](https://www.apollographql.com/docs/apollo-server/performance/caching/).
+You can also set up server-side caching, including whole-query caching, partial-query caching, and cache backed by a CDN. These can lower response times and make your GraphQL server as performant as possible.
+
+Whole-query and CDN caches are most useful when an API handles multiple identical queries. This commonly happens with public data, like content on pages of a site. Regardless of whether the API is used for public data or not, these caches almost always provide large performance benefits and are highly recommended. You can read more about how to set up whole-query and CDN caching with `apollo-server` 2.0 [here](https://www.apollographql.com/docs/apollo-server/performance/caching/).
 
 Partial query caching can be achieved by caching the responses from underlying services with something like Redis or Memcache. With this strategy, even if two queries look completely different from one another, if there is any duplication of data fetched, those results can be shared, preventing unnecessary traffic. The [`RESTDataSource`](https://www.apollographql.com/docs/apollo-server/data/data-sources/#rest-data-source) does this automatically if the appropriate `cache-control` headers are present in REST responses.
 
