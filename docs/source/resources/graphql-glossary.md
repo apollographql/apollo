@@ -1,5 +1,6 @@
 ---
 title: GraphQL Glossary
+sidebar_title: Glossary
 description: A comprehensive list of important GraphQL words and acronyms
 ---
 
@@ -18,7 +19,7 @@ A technique for improving GraphQL network performance with zero build-time confi
 A set of key-value pairs attached to a specific field. Arguments can be literal values or variables.
 
 ```graphql
-{
+query GetHumanStats {
   human(id: "200") {
     weight(unit: "pounds")
     height
@@ -26,14 +27,14 @@ A set of key-value pairs attached to a specific field. Arguments can be literal 
 }
 ```
 
-`id` is an argument to human in the query above.
+`id` is an argument to `human` in the query above.
 
 ## Alias
 
 An alternative name given to the result of a field to avoid conflicts during data fetching.
 
 ```graphql
-{
+query AdminsAndManagers {
   admins: users(role: "admin") {
     id
     firstname
@@ -47,7 +48,7 @@ An alternative name given to the result of a field to avoid conflicts during dat
 }
 ```
 
-`admins` and `managers` are aliases in the example query above.
+`admins` and `managers` are aliases on the `users` field in the example query above.
 
 ## Data source
 
@@ -85,7 +86,7 @@ type User @auth {
 
 ## Docstring
 
-It is used for providing descriptions of types, fields and arguments. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
+Provides the description of a types, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
 
 ```graphql
 """
@@ -126,7 +127,7 @@ type Author {
 }
 ```
 
-`id`, `firstName`, and `lastName` are fields in the Author type above.
+`id`, `firstName`, and `lastName` are fields of the `Author` type above.
 
 ## Fragment
 
