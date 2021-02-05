@@ -78,11 +78,11 @@ See the reference implementation of [query signatures](https://github.com/apollo
 
 ### Signatures and sensitive data
 
-The signature algorithm is primarily designed to make it possible to treat operations that differ only in trivial ways as the same operation. It also happens that removing the content of string literals appears to achieve greater data privacy within Apollo Studio, but this is not the primary goal. In fact, Studio also sends the full raw query along with traces (though it does not currently expose them in the user interface), so relying on the signature to ensure sensitive data never hits Studio's servers is inappropriate.
+The signature algorithm is primarily designed to make it possible to treat operations that differ only in trivial ways as the same operation. It also happens that removing the content of string literals appears to achieve greater data privacy within Apollo Studio, but this is not the primary goal.
 
-Future versions of Apollo Studio are likely to change this default algorithm to leave string literals alone, though it will still be easy to configure your server to remove string literals like in the current implementation. We also intend to stop sending the full raw query in future versions of Studio, so that the signature algorithm really can be used to avoid sending sensitive data in queries to Studio.
+Future versions of Apollo Studio are likely to change this default algorithm to leave string literals alone, though it will still be easy to configure your server to remove string literals like in the current implementation.
 
-But where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Apollo Studio reporting pathway for privacy purposes. See [data privacy](./data-privacy/) for further detail on how this works.
+Where possible, we strongly advise that you keep sensitive data in GraphQL variables instead of in literal arguments in the query body, as you can more easily control which variables should be stripped out of the Apollo Studio reporting pathway for privacy purposes. See [data privacy](./data-privacy/) for further detail on how this works.
 
 ## Error tracking
 
