@@ -20,7 +20,7 @@ GraphQL can make a difference in nearly every area of development: from improvin
 
 #### Where can I learn GraphQL?
 
-Apollo's learning platform, [**Odyssey**](https://odyssey.apollographql.com), provides practical, hands-on courses that help you learn GraphQL with Apollo technologies.
+Apollo's learning platform, [**Odyssey**](https://odyssey.apollographql.com?utm_source=apollo_docs&utm_medium=referral), provides practical, hands-on courses that help you learn GraphQL with Apollo technologies.
 
 This documentation also includes a [full-stack tutorial](../tutorial/introduction/) and getting-started content for each platform component:
 
