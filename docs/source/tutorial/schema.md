@@ -224,7 +224,7 @@ To use the Explorer with your locally running server, you create a **dev graph**
 
     You'll be prompted to create an Apollo account if you don't already have one (again, Apollo accounts and the Explorer are completely free).
 
-2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial):
+2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial). **Note that your local server must be running.**
 
     <img class="screenshot" src="../img/dev-graph.jpg" width="450" alt="Dev graph form" />
 
