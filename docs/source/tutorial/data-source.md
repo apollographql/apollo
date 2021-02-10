@@ -72,7 +72,7 @@ type Launch {
 }
 ```
 
-Now, let's write a `launchReducer` method that transforms launch data from the REST API into the shape above. Copy the following code **inside your `LaunchAPI` class**:
+Now, let's write a `launchReducer` method that transforms launch data from the REST API into this schema-defined shape. Copy the following code **inside your `LaunchAPI` class**:
 
 ```js:title=src/datasources/launch.js
 // class LaunchAPI... {
@@ -95,6 +95,8 @@ Now, let's write a `launchReducer` method that transforms launch data from the R
     };
   }
 ```
+
+> Notice that `launchReducer` doesn't set a value for the `isBooked` field in our schema. That's because the Space-X API doesn't know which trips a user has booked! That field will be populated by our _other_ data source, which connects to a SQLite database.
 
 Using a reducer like this enables the `getAllLaunches` method to remain concise as our definition of a `Launch` potentially changes and grows over time. It also helps with testing the `LaunchAPI` class, which we'll cover later.
 
