@@ -13,8 +13,13 @@ module.exports = {
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/',
         sidebarCategories: {
-          null: ['index', 'intro/platform', 'intro/benefits'],
-          Tutorial: [
+          null: [
+            'index',
+            'intro/platform',
+            'intro/benefits',
+            '[Guided tutorials](https://odyssey.apollographql.com)',
+          ],
+          'Full-Stack Tutorial': [
             'tutorial/introduction',
             'tutorial/schema',
             'tutorial/data-source',
