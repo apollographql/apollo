@@ -42,13 +42,16 @@ management.
 
 ## Prerequisites
 
-This tutorial assumes that you're familiar with both JavaScript/ES6
-and React. If you need to brush up on React, we recommend going through the [official tutorial](https://reactjs.org/tutorial/tutorial.html).
+This tutorial assumes the following:
 
-> Building your frontend with React is not a requirement for using the Apollo 
-> platform, but it is the primary view layer supported by Apollo.
-> If you use another view layer (such as Angular or Vue), you can still 
-> apply this tutorial's concepts to it.
+* You're familiar with both JavaScript/ES6 and React.
+    * If you need to brush up on React, we recommend going through the [official React tutorial](https://reactjs.org/tutorial/tutorial.html).
+
+* You're interested in implementing both a back-end GraphQL API _and_ a front-end client that consumes it. If you're only interested in one or the other, see one of the following:
+    * [Get started with Apollo Client](https://www.apollographql.com/docs/react/get-started/) (frontend)
+    * [Get started with Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/) (backend)
+
+> Building your frontend with React is not a requirement for using the Apollo platform, but it is the primary view layer supported by Apollo. If you use another view layer (such as Angular or Vue), you can still apply this tutorial's concepts to it.
 
 ### System requirements
 
