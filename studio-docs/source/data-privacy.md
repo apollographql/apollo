@@ -94,7 +94,7 @@ Apollo Server reports the string representation of each query operation to Apoll
 
 #### Apollo Server 2.7.0 and later
 
-In Apollo Server 2.7.0 and later, **none** of an operation's GraphQL variables is sent to Apollo Studio by default.
+In Apollo Server 2.7.0 and later, **none** of an operation's GraphQL variables are sent to Apollo Studio by default.
 
 You can set a value for the [usage reporting plugin's `sendVariableValues` option](https://www.apollographql.com/docs/apollo-server/api/plugin/usage-reporting/#sendvariablevalues) to specify a different strategy for reporting some or all of your GraphQL variables.
 

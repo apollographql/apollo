@@ -17,7 +17,7 @@ module.exports = {
             'index',
             'intro/platform',
             'intro/benefits',
-            '[Guided tutorials](https://odyssey.apollographql.com)',
+            '[Guided tutorials](https://odyssey.apollographql.com/?utm_source=apollo_docs&utm_medium=referral&utm_campaign=docs_sidebar)',
           ],
           'Full-Stack Tutorial': [
             'tutorial/introduction',
