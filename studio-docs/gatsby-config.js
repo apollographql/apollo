@@ -50,8 +50,9 @@ module.exports = {
           ],
           'Security': [
             'api-keys',
-            'data-privacy',
             'operation-registry',
+            'data-privacy',
+            'sub-processors'
           ],
           'Managing your Account': [
             'org/account',
