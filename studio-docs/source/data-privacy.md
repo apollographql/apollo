@@ -24,7 +24,7 @@ All data sent to Apollo Studio is sent to an endpoint with one of the following 
 |----------|---------|
 | **Latest URLs** |
 | `https://usage-reporting.api.apollographql.com` | Metrics reporting from [Apollo Server](https://www.apollographql.com/docs/studio/setup-analytics/#pushing-traces-from-apollo-server) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/setup-analytics/#third-party-support) |
-| `https://schema-reporting.apollographql.com` | Schema registration via schema reporting in [Apollo Server](https://www.apollographql.com/docs/studio/schema/schema-reporting/#apollo-server-setup) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/schema/schema-reporting/#other-graphql-servers) |
+| `https://schema-reporting.api.apollographql.com` | Schema registration via schema reporting in [Apollo Server](https://www.apollographql.com/docs/studio/schema/schema-reporting/#apollo-server-setup) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/schema/schema-reporting/#other-graphql-servers) |
 | `https://graphql.api.apollographql.com` | All [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) (v2.31+) commands that communicate with Studio (and the Studio web UI) |
 | `https://federation.api.apollographql.com` | Apollo Server with Apollo Gateway (v0.16.0+) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/) |
 | `https://operations.api.apollographql.com` | Apollo Server with the [operation registry plugin](https://www.apollographql.com/docs/studio/operation-registry/) (v0.4.1+) |
