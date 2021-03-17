@@ -1,5 +1,6 @@
 ---
 title: Segmenting metrics by client
+sidebar_title: Segmenting by client
 description: Understand how each of your clients is using your graph
 ---
 
