@@ -24,7 +24,7 @@ module.exports = {
             'explorer',
             'dev-graphs',
           ],
-          'Registering your Schema': [
+          'Registering Schemas': [
             'schema/schema-reporting',
             'schema/cli-registration',
             'schema/schema-reporting-protocol',
@@ -54,7 +54,7 @@ module.exports = {
             'data-privacy',
             'sub-processors'
           ],
-          'Managing your Account': [
+          'Managing Accounts': [
             'org/account',
             'org/organizations',
             'org/members',
