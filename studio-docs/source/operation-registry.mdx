@@ -96,7 +96,7 @@ The `apollo client:push` command:
 - Supports multiple client bundles. Each bundle is identified by a `clientName` (e.g. `react-web`) and `clientVersion`.
 - Supports JavaScript, TypeScript and `.graphql` files.
 - Accepts a list of files as a glob (e.g. `src/**/*.ts`) to search for GraphQL operations.
-- By default, includes the `__typename` fields which are added by Apollo Client at runtime.  (Add the `--no-addTypeName` flag to disable this behavior.)
+- By default, includes the `__typename` fields which are added by Apollo Client at runtime.  (Add the `addTypename: false` setting to your `apollo.config.js` to disable this behavior.)
 
 To register operations, use the following command as a reference, taking care to replace the `<APOLLO_KEY>` with the appropriate Apollo Studio API key, specifying a unique name for this application with `<CLIENT_IDENTIFIER>`, and indicating the correct glob of files to search:
 
