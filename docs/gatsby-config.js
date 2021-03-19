@@ -27,8 +27,10 @@ module.exports = {
             'tutorial/local-state',
           ],
           'Development Tools': [
+            '[Graph Manager](https://www.apollographql.com/docs/graph-manager/)',
             'devtools/cli',
             'devtools/editor-plugins',
+            'devtools/chrome-devtools',
             'devtools/apollo-config',
           ],
           Resources: [
