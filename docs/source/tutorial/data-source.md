@@ -104,7 +104,7 @@ async getLaunchById({ launchId }) {
   return this.launchReducer(response[0]);
 }
 
-getLaunchesByIds({ launchIds }) {
+async getLaunchesByIds({ launchIds }) {
   return Promise.all(
     launchIds.map(launchId => this.getLaunchById({ launchId })),
   );
