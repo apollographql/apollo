@@ -17,12 +17,13 @@ Let's connect the [SpaceX v2 REST API](https://github.com/r-spacex/SpaceX-API) t
 The base URL for the Space-X API is `https://api.spacexdata.com/v2/`. Let's create a data source called `LaunchAPI` by adding the code below to `src/datasources/launch.js`:
 
 ```js:title=src/datasources/launch.js
-const { RESTDataSource } = require('apollo-datasource-rest');
+const { RESTDataSource, HTTPCache } = require('apollo-datasource-rest');
 
 class LaunchAPI extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = 'https://api.spacexdata.com/v2/';
+    this.httpCache = new HTTPCache();
   }
 }
 
