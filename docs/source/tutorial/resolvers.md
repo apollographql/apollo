@@ -110,10 +110,12 @@ Paste the following query into the tool's editor panel:
 # We'll cover more about the structure of a query later in the tutorial.
 query GetLaunches {
   launches {
-    id
-    mission {
-      name
-    }
+    launches {
+      id
+      mission {
+        name
+      }
+    } 
   }
 }
 ```
