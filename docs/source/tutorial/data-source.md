@@ -137,7 +137,7 @@ The following core concepts of a `DataSource` subclass are demonstrated in `src/
 
 - **The `initialize` method**: Implement this method if you want to pass any configuration options to your subclass. The `UserAPI` class uses `initialize` to access our API's `context`.
 - **`this.context`**: A graph API's context is an object that's shared across every **resolver** in a GraphQL request. We'll cover resolvers in detail in the next section. Right now, all you need to know is that the context is useful for storing and sharing user information.
-- **Caching**: Although the `RESTDataSource` class provides a built-in cache, the generic `DataSource` class does _not_. You can use [cache primitives](https://www.apollographql.com/docs/apollo-server/features/data-sources/#using-memcached-redis-as-a-cache-storage-backend) to build your own caching functionality.
+- **Caching**: Although the `RESTDataSource` class provides a built-in cache, the generic `DataSource` class does _not_. You can use [cache primitives](https://www.apollographql.com/docs/apollo-server/data/data-sources/#using-memcachedredis-as-a-cache-storage-backend) to build your own caching functionality.
 
 Let's go over some of the methods in `src/datasources/user.js` that we use to fetch and update data in our database. You'll want to refer to these in the next section:
 
