@@ -23,6 +23,7 @@ module.exports = {
             'org/graphs',
             'explorer',
             'dev-graphs',
+            'federated-graphs',
           ],
           'Registering Schemas': [
             'schema/schema-reporting',
