@@ -1,0 +1,118 @@
+---
+title: Federated graphs in Studio
+sidebar_title: Federated graphs
+---
+
+import { VideoFrame } from 'gatsby-theme-apollo-docs'
+
+Studio includes powerful tools for teams collaborating on Federated graphs.
+
+<VideoFrame src="http://placeholder"/>
+
+Federated graphs are graphs composed of multiple individual subgraphs. The graphs are often managed by separate teams within an organization, and typically represent an underlying service or set of services that has a GraphQL API.
+
+You can collaborate on your Federated graph in Studio to get better visibility into the subgraphs that make up your graph.
+
+## Subgraphs on the Schema Reference
+
+In the Schema Reference, you can see which subgraph a type or field in your graph originates from by looking at the subgraphs column.
+
+**[📸screenshot: query field row with subgraph]**
+
+Clicking through the subgraph link will take you to the line in the subgraph schema SDL where the object is defined.
+
+**[📸screenshot: SDL where query field is defined]**
+
+If you are using [the `@contact` directive`](#) in your subgraphs to define subgraph owner contact information, hovering over the subgraph name will display a tooltip showing contact information for that object in the schema where you can follow up with the graph maintainer about implementation questions.
+
+**[📸screenshot: query field row with subgraph and contact tooltip on hover]**
+
+## Subgraphs on the Schema SDL view
+
+When you are working with a Federated graph, you can browse the SDL file for for each subgraph that makes up your graph and compare it to the composed API schema from the Schema SDL tab in Studio.
+
+From the SDL tab you can:
+- see metadata about the composed graph and each subgraph, like what URL it is reachable at and when it was most recently pushed to the Apollo Registry
+- find the originating subgraph for any field or type in your API and share a link directly to it with a team member
+- search for types and fields
+- hide comments and deprecated fields with the view filter for easier visual scanning
+- download a copy of your subgraph’s SDL for working locally
+
+## Defining subgraph contact information
+
+Working with subgraphs usually means coordinating work across multiple teams. To make collaboration easier, you can define contact information for each subgraph using the `@contact` directive on your SDL's schema object.
+
+The `@contact` directive lets you add metadata to your schema to define:
+- who is responsible for maintaining this subgraph 
+- a URL where they can be reached for discussion
+- and a description for brief context about the subgraph
+
+Once a subgraph is using the `@contact` directive, its contact information will be included with the SDL’s metadata at the top of the SDL file.
+
+**[📸screenshot: SDL metadata with contact info]**
+
+You’ll also see a contact card when you hover over the subgraph column of schema objects in the Schema reference, so you can quickly see who is responsible for that object, and where to contact them for questions or support.
+
+**[📸screenshot: query field row with subgraph and contact tooltip on hover]**
+
+### Adding the @contact directive to your subgraph
+
+The `@contact` directive can be added to any subgraph directly above the `schema` object in your SDL. If your subgraph does not have a schema object, you’ll need to add one to use the `@contact` directive, and it cannot be empty, so you will need to add the `query` field.
+
+Example:
+
+```
+directive @contact(
+  "Contact title of the subgraph owner"
+  name: String!
+  "URL where the subgraph can be reached"
+  url: String
+  "Other relevant notes can be included here; supports markdown links"
+  description: String
+) on SCHEMA
+schema @contact(
+  name: "Acephei Server Team",
+  url: "https://myteam.slack.com/archives/teams-chat-room-url",
+  description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
+) {
+  query: Query
+}
+```
+
+Available fields:
+- `name: String!` - use the `name` field to label the person, people, or team responsible for the subgraph. This is the only required field for using the `@contact` directive.
+- `url: String` - use the `url` field to provide a URL where the subgraph owner(s) can be reached. You could put a chat room, a forum, or an email address, for example.
+- `description: String` - use the description field to provide any additional helpful details about working with this subgraph, or contacting its maintainers. This field also supports markdown links.
+
+*Note:* working with the `@contact` directive currently has some known limitations:
+- Using the `@contact` directive only works when direct pushing your subgraph schema using the `apollo service push --localSchemaFile /path/to/schema.graphql` command. This command includes directives in its push to the Registry.
+  - Using the `apollo service push --endpoint localhost:4000` command does not support use of the `@contact` directive because it relies on introspection, which ignores directives (except `@deprecated`, which is a special case)
+- The Automatic Schema Reporting plugin in Apollo Server does not currently report directive information from schemas, so your `@contact` directive definition will not come through to the schema registry if you rely on that plugin to report your subgraph schemas.
+- If your subgraph doesn’t already have a `schema` object, you will have to include one to use the `@contact` directive. The `schema` object cannot be empty, so you’ll need to include field on it, like `query: Query`. And if you use the `Query` field, it will need to reference a type within the subgraph, so if you do not have one that can be referenced, you’ll need to include a fake one for the SDL to be valid. It’s kind of a hack for now. :-)
+```
+@contact(...)
+schema {
+  query: Query
+}
+
+extend type Query {
+  _fakeField: Boolean
+}
+```
+
+## Subgraphs in Explorer
+
+Studio’s Explorer also has improved support for working with Federated graphs. If you’d like to preview how your server resolves the data for your operations, you can now see the Query plan in the Operation results pane.
+
+And when you are building your operations, you can see which subgraphs different parts of your operation originate from by enabling subgraph hints from the Explorer Settings menu.
+
+## Composition errors
+
+When you are working with a Federated graph in Studio, you will see a label next to the graph name to let you know the graph is federated.
+
+If the graph has composition errors, you can click into the label and see the errors that need to be resolved before composition can succeed.
+
+**[📸screenshot: Federation label in error state ]**
+**[📸screenshot: Composition error modal ]**
+
+Learn more: [How to resolve composition errors in your Federated graph](#)
