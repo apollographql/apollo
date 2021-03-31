@@ -80,9 +80,9 @@ schema @contact(
 ```
 
 Available fields:
-- `name: String!` - use the `name` field to label the person, people, or team responsible for the subgraph. This is the only required field for using the `@contact` directive.
-- `url: String` - use the `url` field to provide a URL where the subgraph owner(s) can be reached. You could put a chat room, a forum, or an email address, for example.
-- `description: String` - use the description field to provide any additional helpful details about working with this subgraph, or contacting its maintainers. This field also supports markdown links.
+- `name: String!` - used to identify the person or team responsible for the subgraph. This is the only required field for using the `@contact` directive.
+- `url: String` - used to provide a URL where the subgraph maintainers can be reached for questions or discussion. For example, you might link to a repository, chat channel, forum, or email address.
+- `description: String` - used to provide helpful details about working with this subgraph, or contacting its maintainers. This field also supports markdown links.
 
 *Note:* working with the `@contact` directive currently has some known limitations:
 - Using the `@contact` directive only works when direct pushing your subgraph schema using the `apollo service push --localSchemaFile /path/to/schema.graphql` command. This command includes directives in its push to the Registry.
