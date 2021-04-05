@@ -58,7 +58,7 @@ const server = new ApolloServer({
 });
 ```
 
-The `context` function defined above is called once for _every GraphQL operation_ that clients send to our server. The return value of this function becomes the [`context` argument](./resolvers/#the-resolver-function-signature) that's passed to every resolver that runs as part of that operation.
+The `context` function defined above is called once for _every GraphQL operation_ that clients send to our server. The return value of this function becomes the [`context` argument](./resolvers/#the-resolver-function-signature) that's passed to every resolver that runs as part of that operation (you might have noticed that `dataSources` is nowhere to be found, even though we expect it to be part of the `context` argument in our query resolvers. This is because although we defined `dataSources` outside of `context`, it is [automatically included](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#dataSources) for each operation).
 
 Here's what our `context` function does:
 
