@@ -58,7 +58,9 @@ const server = new ApolloServer({
 });
 ```
 
-The `context` function defined above is called once for _every GraphQL operation_ that clients send to our server. The return value of this function becomes the [`context` argument](./resolvers/#the-resolver-function-signature) that's passed to every resolver that runs as part of that operation (you might have noticed that `dataSources` is nowhere to be found, even though we expect it to be part of the `context` argument in our query resolvers. This is because although we defined `dataSources` outside of `context`, it is [automatically included](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#dataSources) for each operation).
+The `context` function defined above is called once for _every GraphQL operation_ that clients send to our server. The return value of this function becomes the [`context` argument](./resolvers/#the-resolver-function-signature) that's passed to every resolver that runs as part of that operation.
+
+> You might have noticed that `dataSources` is nowhere to be found, even though we expect it to be part of the `context` argument in our query resolvers. This is because although we defined `dataSources` outside of `context`, it is [automatically included](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#dataSources) for each operation.
 
 Here's what our `context` function does:
 
@@ -67,6 +69,7 @@ Here's what our `context` function does:
 3. If the decoded value resembles an email address, obtain user details for that email address from the database and return an object that includes those details in the `user` field.
 
 By creating this `context` object at the beginning of each operation's execution, all of our resolvers can access the details for the logged-in user and perform actions specifically _for_ that user.
+
 
 ## `bookTrips` and `cancelTrip`
 
