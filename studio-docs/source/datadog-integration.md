@@ -11,13 +11,13 @@ To integrate with Datadog, you provide your Datadog API key and region to Studio
 
 1. Go to your [Datadog Integrations page](https://app.datadoghq.com/account/settings) and select **Apollo** from the list:
 
-    <img src="./img/datadog/integration-tile.png" alt="Datadog integration tile" class="screenshot">
+    <img src="./img/datadog/integration-tile.png" alt="Datadog integration tile" class="screenshot" />
 
     Then go to the Configuration tab and click **Install Integration** at the bottom.
 
 2. Go to your [Datadog APIs page](https://app.datadoghq.com/account/settings#api) and create an API key:
 
-    <img src="./img/datadog/api-key.png" alt="Datadog API key list" class="screenshot">
+    <img src="./img/datadog/api-key.png" alt="Datadog API key list" class="screenshot" />
 
 3. Determine your Datadog API region by looking at your browser's address bar:
 
@@ -26,11 +26,11 @@ To integrate with Datadog, you provide your Datadog API key and region to Studio
 
 4. In Studio, go to your graph's Integrations page:
 
-    <img src="./img/datadog/settings-link.png" alt="Studio Integrations page" class="screenshot">
+    <img src="./img/datadog/settings-link.png" alt="Studio Integrations page" class="screenshot" />
 
 5. In the Datadog Forwarding section, click **Configure**. Provide your API key and region, then click **Enable**.
 
-    <img src="./img/datadog/settings-toggle.png" alt="Datadog configuration dialog" class="screenshot" width="500">
+    <img src="./img/datadog/settings-toggle.png" alt="Datadog configuration dialog" class="screenshot" width="500" />
 
     You can use the same Datadog API key for all of your graphs, because all forwarded metrics are tagged with the corresponding graph's ID (`graph:<graph-id>`).
 
@@ -72,7 +72,7 @@ In the [Datadog metrics explorer](https://app.datadoghq.com/metric/explorer):
 
 At Apollo, we use Studio to monitor Studio itself, so this graph for us looks like the following:
 
-<img src="./img/datadog/datadog.png" alt="p95 latency graph" class="screenshot">
+<img src="./img/datadog/datadog.png" alt="p95 latency graph" class="screenshot" />
 
 To generate more advanced reports, open up a [Datadog notebook](https://app.datadoghq.com/notebook).
 

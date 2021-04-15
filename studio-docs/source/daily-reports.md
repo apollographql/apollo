@@ -5,7 +5,7 @@ sidebar_title: Daily reports
 
 You can [configure Apollo Studio](./notification-setup/) to send your team a daily summary of your graph's activity over the last 24 hours:
 
-<img src="./img/integrations/slack-report.png" width="400" alt="Slack daily report" class="screenshot"></img>
+<img src="./img/integrations/slack-report.png" width="400" alt="Slack daily report" class="screenshot" />
 
 When you configure daily reports, you can specify what time you want to receive them each day.
 

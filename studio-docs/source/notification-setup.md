@@ -31,10 +31,10 @@ Currently, Studio can send each of these notification types to the channel(s) in
 2. Select the **Notifications** tab.
 3. Click **Add notification** in the upper right.
 4. Choose a notification type and click **Next**.
-    <img src="./img/add-notification.jpg" class="screenshot" width="500" alt="Notification creation modal">
+    <img src="./img/add-notification.jpg" class="screenshot" width="500" alt="Notification creation modal" />
 5. In the dropdown, select which [variant](./org/graphs/#managing-variants) of your graph you want to receive notifications for.
 6. Select an existing configured channel to send notifications to, or select which type of new channel you want to configure:
-    <img src="./img/create-new-channel.jpg" class="screenshot" width="400" alt="Notification creation modal">
+    <img src="./img/create-new-channel.jpg" class="screenshot" width="400" alt="Notification creation modal" />
 7. Click **Next**.
 8. If you're configuring a new channel, complete the steps in [Configuring a new channel](#configuring-a-new-channel).
 9. If you're creating a daily report, select a time zone. The report is sent daily at 9am in the selected time zone.
@@ -65,7 +65,7 @@ You can repeat this process to create webhook URLs for different Slack channels.
 
 #### 2. Provide the Slack hook to Studio
 
-<img src="./img/integrations/slack_creation.png" width="500" class="screenshot" alt="Slack Creation Modal">
+<img src="./img/integrations/slack_creation.png" width="500" class="screenshot" alt="Slack Creation Modal" />
 
 1. Back in Studio, specify a name for this notification channel in the Channel Name field. This name must be unique among your graph's notification channels.
 
@@ -101,7 +101,7 @@ Generate an [integration key](https://support.pagerduty.com/docs/generating-api-
 
 #### 2. Provide the integration key to Studio
 
-<img src="./img/integrations/pd_creation.png" width="500" class="screenshot" alt="Slack Creation Modal">
+<img src="./img/integrations/pd_creation.png" width="500" class="screenshot" alt="Slack Creation Modal" />
 
 1. Back in Studio, specify a name for this notification channel in the Channel Name field. This name must be unique among your graph's notification channels.
 
@@ -117,7 +117,7 @@ Generate an [integration key](https://support.pagerduty.com/docs/generating-api-
 
 Custom webhooks require you to set up an HTTPS endpoint that is accessible via the public internet. Webhook notifications are sent to this endpoint as `POST` requests. Notification details are provided as JSON in the request body, as described in [Webhook format](./schema-change-integration/#webhook-format).
 
-<img src="./img/integrations/webhook_creation.png" class="screenshot" alt="Webhook creation modal">
+<img src="./img/integrations/webhook_creation.png" class="screenshot" alt="Webhook creation modal" />
 
 1. Specify a name for this notification channel in the Channel Name field. This name must be unique among of your graph's notification channels.
 2. In the Webhook URL field, provide the URL of your HTTP(S) endpoint.

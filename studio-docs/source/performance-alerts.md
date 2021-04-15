@@ -7,7 +7,7 @@ sidebar_title: Performance alerts (experimental)
 
 Apollo Studio can notify your team's Slack workspace or Pagerduty instance whenever a particular metric (such as error rate) for a particular GraphQL operation exceeds a defined threshold. This is useful for detecting anomalies, especially following a release.
 
-<img src="./img/integrations/slack-notification.png" width="500" class="screenshot" alt="Performance alert">
+<img src="./img/integrations/slack-notification.png" width="500" class="screenshot" alt="Performance alert" />
 
 ## Supported metrics
 
@@ -26,7 +26,7 @@ Each performance alert you define can apply to either **a specific operation** o
 1. Go to your graph's Settings page in [Apollo Studio](https://studio.apollographql.com/).
 2. Select the **Notifications** tab and scroll to the bottom of the page:
 
-   <img src="./img/integrations/perf_alert_setup.png" class="screenshot" alt="Performance alert">
+   <img src="./img/integrations/perf_alert_setup.png" class="screenshot" alt="Performance alert" />
 
 2. Click **Add new alert**.
 3. Configure the alert's **Operation Name**, **Trigger**, and **Trigger Value** to suit your needs.

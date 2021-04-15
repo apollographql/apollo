@@ -35,7 +35,7 @@ Apollo Server can communicate directly with Apollo Studio to register its schema
 
 From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
-<img src="../img/register-schema.png" class="screenshot" width="600"></img>
+<img src="../img/register-schema.png" class="screenshot" width="600" />
 
 Copy all of the environment variable definitions in the block at the bottom of the dialog (the value of `APOLLO_KEY` is your graph API key).
 
@@ -75,13 +75,13 @@ Connecting your server to Apollo Studio activates a variety of powerful features
 
 As shown [earlier in the tutorial](./schema/#explore-your-schema) the Apollo Studio Explorer provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
-<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" /></img>
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 ### Schema history
 
 Open the **History** tab to view a full revision history of the schema versions your server pushes over time:
 
-<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400"></img>
+<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400" />
 
 This history helps you identify exactly when a particular type or field was added or removed, which is crucial when diagnosing an issue.
 
@@ -93,7 +93,7 @@ Apollo Server pushes metrics data to Studio for each GraphQL operation it execut
 
 Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces:
 
-<img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+<img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 > Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/studio/).
 
