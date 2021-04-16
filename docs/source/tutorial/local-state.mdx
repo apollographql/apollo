@@ -404,7 +404,7 @@ import * as GetCartItemsTypes from '../pages/__generated__/GetCartItems';
 import * as BookTripsTypes from './__generated__/BookTrips';
 
 export const BOOK_TRIPS = gql`
-  mutation BookTrips($launchIds: [ID]!) {
+  mutation BookTrips($launchIds: [ID!]!) {
     bookTrips(launchIds: $launchIds) {
       success
       message
