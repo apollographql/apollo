@@ -37,7 +37,7 @@ To enable schema checks for your graph, do the following if you haven't yet:
 
 Let's say you've made local changes to your GraphQL server's schema. After you [complete the prerequisites](#prerequisites), you can run schema checks against those changes with the `rover graph check` command.
 
-> **Important:** If your graph is [federated](https://www.apollographql.com/docs/federation/), instead use [`rover subgraph check`](https://www.apollographql.com/docs/rover/subgraphs/#checking-subgraph-schema-changes). This command requires one additional option, the `--name` of the subgraph you're checking against.
+> **Important:** If your graph is [federated](https://www.apollographql.com/docs/federation/), instead use [`rover subgraph check`](https://www.apollographql.com/docs/rover/subgraphs/#checking-subgraph-schema-changes). This command requires one additional option, the `--name` of the subgraph you're performing checks for.
 
 The `rover graph check` command looks like this:
 
@@ -142,18 +142,19 @@ If you have a [federated graph](https://www.apollographql.com/docs/federation/),
 rover subgraph check docs-example-graph@current --schema ./schema.graphql --name products
 ```
 
-In addition to the arguments required by `graph check` , `subgraph check` requires the `--name` of the particular subgraph you're checking against.
+In addition to the arguments required by `graph check` , `subgraph check` requires the `--name` of the particular subgraph you're performing checks for.
 
-When you run `subgraph check`, Apollo Studio performs operation checks as usual, along with **composition checks**: Studio verifies that the changes you make to a subgraph schema are compatible with your _other_ subgraph schemas, enabling them to compose into a _supergraph_ schema ([learn more](https://www.apollographql.com/docs/federation/quickstart/#federation-concepts)).
+When you run `subgraph check`, Apollo Studio performs a **composition check** before it performs operation checks. A composition check verifies that changes you make to a subgraph schema are compatible with your _other_ subgraph schemas, enabling them to compose into a _supergraph_ schema ([learn more](https://www.apollographql.com/docs/federation/quickstart/#federation-concepts)).
 
+> If a composition check fails, Studio does _not_ then perform operation checks for the provided schema.
 
 Results of both check types are available in Studio from your graph's Checks tab:
 
 <img class="screenshot" src="./img/schema-checks/checks-studio.jpg" alt="Schema check results in Studio" width="300" />
 
-You can click on a composition check to view its result. If composition succeeded, you can view the composed supergraph schema.
+You can click on a composition check to view its result. If composition succeeded, you can view the composed supergraph schema. Regardless of success, you can view the subgraph schema.
 
-The `rover subgraph check` command returns a nonzero result if any associated operation check _or_ composition check fails.
+The `rover subgraph check` command returns a nonzero result if a composition check _or_ operation check fails.
 
 ## Using in CI
 
