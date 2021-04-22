@@ -3,13 +3,15 @@ title: Schema checks
 description: Verify the safety of changes to your graph
 ---
 
-> Schema checks are a **paid feature** that's available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
+> This article was recently updated to use the new Rover CLI instead of the Apollo CLI. If you are already using the Apollo CLI for schema checks, [see this article](./schema-checks-apollo-cli/).
 
 Certain changes to your GraphQL schema (such as removing a field or type) might break one of your application's clients. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a potentially dangerous change _won't_ break anything.
 
 You can review the results of schema checks inside Studio, helping you make informed decisions about evolving your graph:
 
 <img class="screenshot" src="./img/schema-checks/checks-studio.jpg" alt="Schema check results in Studio" width="300" />
+
+> Schema checks are a **paid feature** that's available as part of Apollo Studio [Team and Enterprise plans](https://www.apollographql.com/plans/).
 
 ## Types of checks
 
@@ -29,7 +31,7 @@ To enable schema checks for your graph, do the following if you haven't yet:
     * [Federated setup](https://www.apollographql.com/docs/federation/managed-federation/setup)
     * [Non-federated setup](./schema/schema-reporting/)
 2. Enable metrics reporting to Apollo Studio from your production graph. Studio uses these metrics to help determine when a type or field can be modified or removed safely.
-    * [Federated setup](./setup-analytics/)
+    * [Federated setup](https://www.apollographql.com/docs/federation/managed-federation/monitoring/#metrics-and-observability)
     * [Non-federated setup](./setup-analytics/)
 3. [Install the Rover CLI](https://www.apollographql.com/docs/rover/getting-started/) in your development environment and [authenticate it with Apollo Studio](https://www.apollographql.com/docs/rover/configuring/#authenticating-with-apollo-studio).
 
@@ -76,23 +78,16 @@ Running `rover graph check` outputs the diff of all detected schema changes and 
 
 ```console
 $ rover graph check docs-example-graph@current --schema ./schema.graphql
-  ✔ Loading Apollo Project
-  ✔ Validated local schema against variant prod on service engine
-  ✔ Compared 8 schema changes against 110 operations over the last 24 hours
-  ✖ Found 3 breaking changes and 5 compatible changes
-    → breaking changes found
 
-FAIL    ARG_REMOVED                `ServiceMutation.checkSchema` arg `gitContext` was removed
-FAIL    FIELD_REMOVED              `Schema.fieldCount` was removed
-FAIL    FIELD_REMOVED              `Schema.typeCount` was removed
+Validated the proposed subgraph against metrics from docs-example-graph@current
+Compared 1 schema changes against 24 operations
+┌────────┬────────────────────┬─────────────────────────────────────────────────────────┐
+│ Change │        Code        │                       Description                       │
+├────────┼────────────────────┼─────────────────────────────────────────────────────────┤
+│ PASS   │ FIELD_CHANGED_TYPE │ field `Query.books`: type `[Book]` changed to `[Book!]` │
+└────────┴────────────────────┴─────────────────────────────────────────────────────────┘
 
-PASS    FIELD_ADDED                `SchemaTag.schemaRepoID` was added
-PASS    FIELD_CHANGED_TYPE         `ServiceMutation.uploadPartialSchema` changed type from `UploadPartialSchemaResponse!` to `CompositionResult!`
-PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.fieldCount` is no longer deprecated
-PASS    FIELD_DEPRECATION_REMOVED  `IntrospectionSchema.typeCount` is no longer deprecated
-PASS    TYPE_REMOVED               `UploadPartialSchemaResponse` removed
-
-View full details at: https://studio.apollographql.com/service/example-1234/check/<DETAILS>
+View full details at https://studio.apollographql.com/service/docs-example-graph/checks/<DETAILS>
 ```
 
 Each change to the schema is labeled either `PASS` or `FAIL`.

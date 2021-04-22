@@ -37,7 +37,7 @@ module.exports = {
             // field usage
             // operation usage
           ],
-          'Continuous Integration': [
+          'CI/CD': [
             'schema-checks',
             'check-configurations',
             'validating-client-operations',
