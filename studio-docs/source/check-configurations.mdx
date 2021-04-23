@@ -6,6 +6,7 @@ description: Define exactly what schema changes are checked against
 After you [enable schema checks](./schema-checks/) for your graph, you can customize their behavior to suit your use case. For example, you can:
 
 * Exclude past operations that were executed by a particular client, such as a client that you only use for testing
+* Exclude past operations that were executed relatively infrequently
 * Check schema changes against multiple graph variants
 
 ## Using Apollo Studio (recommended)
@@ -22,16 +23,22 @@ In [Apollo Studio](https://studio.apollographql.com), you can configure default 
 * **Client exclusions**: _Exclude_ all operations that were executed by particular clients, such as clients used exclusively for development and testing.
     <img class="screenshot" src="./img/check-configurations/excluded-clients.png" alt="Excluded clients configuration in Apollo Studio" />
 
-## Using the Apollo CLI
+## Using the CLI
 
-You can customize the execution of a single `apollo service:check` command by providing command-line options to it. If you've also [configured default rules](#using-apollo-studio-recommended) for schema checks in Apollo Studio, any command-line options you provide take precedence over those rules.
+You can customize a single run of schema checks by providing options to the CLI command you use. If you've _also_ [configured default rules](#using-apollo-studio-recommended) for schema checks, any command-line options you provide take precedence over those rules.
 
-For example, you can provide the `--validationPeriod` option to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
+> **Note:** The examples below use the Rover CLI command `rover graph check`. If you're using the Apollo CLI command `apollo service:check`, option names differ slightly (e.g., `--queryCountThresholdPercentage` instead of `--query-percentage-threshold`).
+>
+>Run `apollo help service:check` for details.
 
-This command checks your schema changes against the past two weeks of operations:
+### Validation period
+
+You can provide the `--validation-period` option to specify how far back in time Studio should look when determining the compatibility of past operations with the changes to your schema (by default, the command uses the last 7 days of operations).
+
+This command checks schema changes against the past two weeks of operations:
 
 ```bash
-apollo service:check --validationPeriod=P2W
+rover graph check docs-example-graph@current --schema ./schema.graphql --validation-period=P2W
 ```
 
 Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
@@ -40,41 +47,47 @@ Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wi
 
 ### Threshold values
 
-You can also customize the behavior of schema checks by specifying **threshold values** to the `service:check` command. These values tell checks to ignore all historical operations that do not exceed the threshold(s) you specify.
+You can provide **threshold values** to your CLI command to ignore historical operations that are relatively rare.
 
 For example, you might want to discontinue support for an old version of your client that uses deprecated fields. You can set threshold values to determine when an acceptably small number of users are using the outdated client, thus reducing the impact of discontinuing support.
 
 Provide threshold values with the following flags:
 
-- `--queryCountThreshold` - Validate your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
-- `--queryCountThresholdPercentage` - Validate your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
+- `--query-count-threshold` - Check your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
+- `--query-percentage-threshold` - Check your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
 
 > **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
 
-Here's an example of running `service:check` with threshold values:
+Here's an example of running `rover graph:check` with threshold values:
 
 ```bash
-npx apollo service:check \
-# Validate the schema against operations that have run in the last 5 days
---validationPeriod=P5D \
-# Only validate against operations that have run at least 5 times during the 5 day duration
---queryCountThreshold=5 \
-# Only validate against operations that account for at least 3% of total operation volume
---queryCountThresholdPercentage=3
+rover graph check docs-example-graph@current \
+# Path to schema file
+--schema ./schema.graphql 
+# Check the schema against operations that have run in the last 5 days
+--validation-period=P5D \
+# Only check against operations that have run at least 5 times during the 5-day duration
+--query-count-threshold=5 \
+# Only check against operations that account for at least 3% of total operation volume
+--query-percentage-threshold=3
 ```
 
-If you have any requests for other filtering or threshold mechanisms, please get in touch with us on the [apollo-tooling](https://github.com/apollographql/apollo-tooling/) repository.
+To request other filtering or threshold mechanisms, please get in touch with us on the [Rover repository](https://github.com/apollographql/rover).
 
 ### Checking against multiple environments
 
-You might want to check your schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./org/graphs/#managing-variants) of a single data graph.
+You might want to check schema changes against multiple environments, such as production, staging, and beta. Each of these environments might have a slightly different schema to support features that are experimental or in active development. In Apollo Studio, these schemas are represented as [variants](./org/graphs/#managing-variants) of a single graph.
 
-You can check your schema against a particular variant by including the `--variant` flag in your call to `apollo service:check`, like so:
+You specify which variant you want to check against in the [graph ref](https://www.apollographql.com/docs/rover/conventions/#graph-refs) you provide to `rover graph check`:
 
+```bash
+rover graph check docs-example-graph@staging --schema ./schema.graphql
 ```
-$ apollo service:check --variant=staging
-```
 
-If you want to check your schema against multiple variants, call `apollo service:check` once for each variant. Running `service:check` against multiple variants results in status checks similar to the following:
+The graph ref `docs-example-graph@staging` specifies the `staging` variant of the `docs-example-graph` graph.
+ 
+> In the Apollo CLI, you instead provide a `--variant` option to `apollo service:check`.
 
-![multiple service checks](./img/schema-checks/multi-github-check.png)
+To check your schema against multiple variants, call `rover graph check` once for each variant. Doing so results in status checks similar to the following:
+
+<img class="screenshot" src="./img/schema-checks/multi-github-check.png" alt="Multiple service checks" />
