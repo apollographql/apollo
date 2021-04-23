@@ -54,7 +54,7 @@ For example, you might want to discontinue support for an old version of your cl
 Provide threshold values with the following flags:
 
 - `--query-count-threshold` - Check your schema only against operations that have been executed _at least_ the specified number of times within the specified duration.
-- `--query-count-threshold-percentage` - Check your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
+- `--query-percentage-threshold` - Check your schema only against operations that account for _at least_ the specified percentage of _all_ operations against the graph within the specified duration. For example, specify `3` to set this threshold to 3%.
 
 > **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
 
