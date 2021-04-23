@@ -39,7 +39,7 @@ To enable schema checks for your graph, do the following if you haven't yet:
 
 Let's say you've made local changes to your GraphQL server's schema. After you [complete the prerequisites](#prerequisites), you can run schema checks against those changes with the `rover graph check` command.
 
-> **Important:** If your graph is [federated](https://www.apollographql.com/docs/federation/), instead use [`rover subgraph check`](https://www.apollographql.com/docs/rover/subgraphs/#checking-subgraph-schema-changes). This command requires one additional option, the `--name` of the subgraph you're performing checks for.
+> **Important:** If your graph is [federated](https://www.apollographql.com/docs/federation/), use [`rover subgraph`](https://www.apollographql.com/docs/rover/subgraphs/#checking-subgraph-schema-changes) commands instead of `rover graph` commands. These commands require one additional option, the `--name` of the subgraph you're operating on.
 
 The `rover graph check` command looks like this:
 
