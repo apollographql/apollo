@@ -128,7 +128,7 @@ Now let's try a test query that takes a **GraphQL argument**. Paste the followin
 
 ```graphql
 query GetLaunchById {
-  launch(id: 60) {
+  launch(id: "60") {
     id
     rocket {
       id
@@ -158,7 +158,7 @@ Now, paste the following into the tool's Variables panel:
 
 ```json:title=QUERY_VARIABLES
 {
-  "id": 60
+  "id": "60"
 }
 ```
 
