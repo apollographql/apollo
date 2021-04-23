@@ -137,7 +137,9 @@ If you have a [federated graph](https://www.apollographql.com/docs/federation/),
 rover subgraph check docs-example-graph@current --schema ./schema.graphql --name products
 ```
 
-In addition to the arguments required by `graph check` , `subgraph check` requires the `--name` of the particular subgraph you're performing checks for.
+In addition to the arguments required by `graph check`, `subgraph check` requires the `--name` of the particular subgraph you're performing checks for.
+
+> To obtain your running subgraph's schema via introspection, use `subgraph introspect` instead of `graph introspect`. This preserves federation-specific directives that are required for composition.
 
 When you run `subgraph check`, Apollo Studio performs a **composition check** before it performs operation checks. A composition check verifies that changes you make to a subgraph schema are compatible with your _other_ subgraph schemas, enabling them to compose into a _supergraph_ schema ([learn more](https://www.apollographql.com/docs/federation/quickstart/#federation-concepts)).
 
