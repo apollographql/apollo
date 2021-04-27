@@ -4,7 +4,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "netlify": "gatsby build --prefix-paths",
+    "netlify": "gatsby build --prefix-paths && npm run mv",
     "mv": "mkdir -p docs/studio && mv public/* docs/studio && mv docs public/ && mv public/docs/studio/_redirects public",
     "noindex": "echo 'User-agent: *\nDisallow: /' > public/robots.txt"
   },
