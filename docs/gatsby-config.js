@@ -33,6 +33,7 @@ module.exports = {
           ],
           'Development Tools': [
             'devtools/cli',
+            '[Rover CLI (preview)](https://www.apollographql.com/docs/rover)',
             'devtools/editor-plugins',
             'devtools/apollo-config',
           ],
