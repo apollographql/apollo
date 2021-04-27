@@ -4,7 +4,7 @@ sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
-> Getting started with Apollo? [Check out **Odyssey**, Apollo's new learning platform](https://odyssey.apollographql.com?utm_source=apollo_docs&utm_medium=referral)! Our first Odyssey course, **Lift-off Part 1**, introduces many of the same concepts as this tutorial with helpful videos and interactive code challenges.
+> Getting started with Apollo? [Check out **Odyssey**, Apollo's learning platform](https://odyssey.apollographql.com?utm_source=apollo_docs&utm_medium=referral)! Our introductory course, **Lift-off**, introduces many of the same concepts as this tutorial with helpful videos and interactive code challenges.
 
 > Time to accomplish: 15 minutes
 
