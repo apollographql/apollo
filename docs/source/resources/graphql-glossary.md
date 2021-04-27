@@ -1,5 +1,6 @@
 ---
 title: GraphQL Glossary
+sidebar_title: Glossary
 description: A comprehensive list of important GraphQL words and acronyms
 ---
 
@@ -18,7 +19,7 @@ A technique for improving GraphQL network performance with zero build-time confi
 A set of key-value pairs attached to a specific field. Arguments can be literal values or variables.
 
 ```graphql
-{
+query GetHumanStats {
   human(id: "200") {
     weight(unit: "pounds")
     height
@@ -26,14 +27,14 @@ A set of key-value pairs attached to a specific field. Arguments can be literal 
 }
 ```
 
-`id` is an argument to human in the query above.
+`id` is an argument to `human` in the query above.
 
 ## Alias
 
 An alternative name given to the result of a field to avoid conflicts during data fetching.
 
 ```graphql
-{
+query AdminsAndManagers {
   admins: users(role: "admin") {
     id
     firstname
@@ -47,11 +48,11 @@ An alternative name given to the result of a field to avoid conflicts during dat
 }
 ```
 
-`admins` and `managers` are aliases in the example query above.
+`admins` and `managers` are aliases on the `users` field in the example query above.
 
-## Data Source
+## Data source
 
-A new pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources/) provide the best experience for fetching and caching data from REST endpoints.
+A pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources/) provide the best experience for fetching and caching data from REST endpoints.
 
 ## Deferred query
 
@@ -85,7 +86,7 @@ type User @auth {
 
 ## Docstring
 
-It is used for providing descriptions of types, fields and arguments. Docstrings show up in the documentation panel inside GraphQL playground and GraphiQL.
+Provides the description of a types, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
 
 ```graphql
 """
@@ -116,7 +117,7 @@ Special fields in the GraphQL response that allow you to attach extra metadata. 
 
 ## Field
 
-A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.
+A unit of data that belongs to a type in your schema. Every GraphQL query requests one or more fields.
 
 ```graphql
 type Author {
@@ -126,7 +127,7 @@ type Author {
 }
 ```
 
-`id`, `firstName`, and `lastName` are fields in the Author type above.
+`id`, `firstName`, and `lastName` are fields of the `Author` type above.
 
 ## Fragment
 
@@ -162,7 +163,7 @@ const typeDefs = gql`
 
 ## GraphQL Playground
 
-An in-browser IDE for GraphQL development and workflow. Added benefits exist such as theme change, automatic schema reloading, HTTP headers configuration, query history and GraphQL subscription support. In addition, it comes [out-of-the-box in Apollo Server 2](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
+An in-browser IDE for GraphQL development and workflow. Provided [out-of-the-box in Apollo Server](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
 
 ## GraphQL Service
 
@@ -170,7 +171,7 @@ The server that contains a GraphQL schema and the ability to run it. Services ha
 
 ## GraphiQL
 
-An in-browser IDE for GraphQL development.
+An in-browser IDE for GraphQL development and workflow.
 
 ## Introspection
 
@@ -188,7 +189,7 @@ A technique to provide detailed information about a GraphQL API's schema. Types 
 
 ## Mutation
 
-An operation for creating, modifying and destroying data.
+A GraphQL operation that creates, modifies, or destroys data.
 
 ```graphql
 mutation AddTodo($type: String!) {
@@ -201,7 +202,7 @@ mutation AddTodo($type: String!) {
 
 ## Normalization
 
-A technique for transforming the response of a query operation before saving it to the store by [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching/#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.
+A technique for transforming the response of a query operation before saving it to [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching/#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.
 
 ```js
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
@@ -238,7 +239,7 @@ A single query, mutation, or subscription that can be interpreted by a GraphQL e
 
 ## Operation name
 
-A name for a single query, mutation, or subscription. Identifying a query or mutation by name is very useful for logging and debugging when something goes wrong in a GraphQL server.
+The name of a particular query, mutation, or subscription. Identifying an operation by name is useful for logging and debugging when something goes wrong in a GraphQL server.
 
 ```graphql
 mutation AddTodo($type: String!) {
@@ -312,7 +313,7 @@ export const queryComponent = ({ breed }) => (
 );
 ```
 
-## Query whitelisting
+## Query safelisting
 
 A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](https://www.apollographql.com/docs/apollo-server/performance/apq/) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.
 
@@ -337,7 +338,7 @@ const resolvers = {
 
 ## Schema
 
-A GraphQL [schema](https://www.apollographql.com/docs/apollo-server/essentials/schema.html) is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
+A GraphQL [schema](https://www.apollographql.com/docs/apollo-server/schema/schema/) is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
 
 ## Schema Definition Language (SDL)
 
@@ -397,11 +398,11 @@ subscription onCommentAdded($repoFullName: String!){
 }
 ```
 
-## Scalar Type
+## Scalar type
 
 A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a [custom scalar](https://www.apollographql.com/docs/graphql-tools/scalars/#custom-scalars) type such as **Date** can be specified in a GraphQL service implementation.
 
-## Type System
+## Type system
 
 A collection of types which characterizes the set of data that can be validated, queried, and executed on a GraphQL API.
 

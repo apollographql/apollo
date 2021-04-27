@@ -13,8 +13,13 @@ module.exports = {
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/',
         sidebarCategories: {
-          null: ['index', 'intro/platform', 'intro/benefits'],
-          Tutorial: [
+          null: [
+            'index',
+            'intro/platform',
+            'intro/benefits',
+            '[Guided tutorials](https://odyssey.apollographql.com/?utm_source=apollo_docs&utm_medium=referral&utm_campaign=docs_sidebar)',
+          ],
+          'Full-Stack Tutorial': [
             'tutorial/introduction',
             'tutorial/schema',
             'tutorial/data-source',
@@ -28,6 +33,7 @@ module.exports = {
           ],
           'Development Tools': [
             'devtools/cli',
+            '[Rover CLI (preview)](https://www.apollographql.com/docs/rover)',
             'devtools/editor-plugins',
             'devtools/apollo-config',
           ],

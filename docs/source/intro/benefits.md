@@ -89,13 +89,13 @@ Apollo provides a cloud-hosted collection of tools that help you measure your gr
 
 After registering your GraphQL schema, you can use Studio's **Explorer tab** to inspect all of its types and fields. You can also build and run queries against your running server:
 
-<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 ### Apollo Client DevTools
 
 The Apollo Client DevTools extension for [Chrome](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/) enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes [GraphiQL](https://github.com/graphql/graphiql), an IDE that helps you test queries while you're working on front-end code.
 
-<img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot"></img>
+<img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot" />
 
 ## Production readiness
 

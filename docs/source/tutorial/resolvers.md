@@ -90,8 +90,12 @@ const server = new ApolloServer({
   })
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+server.listen().then(() => {
+  console.log(`
+    Server is running!
+    Listening on port 4000
+    Explore at https://studio.apollographql.com/dev
+  `);
 });
 ```
 
@@ -124,7 +128,7 @@ Now let's try a test query that takes a **GraphQL argument**. Paste the followin
 
 ```graphql
 query GetLaunchById {
-  launch(id: 60) {
+  launch(id: "60") {
     id
     rocket {
       id
@@ -154,7 +158,7 @@ Now, paste the following into the tool's Variables panel:
 
 ```json:title=QUERY_VARIABLES
 {
-  "id": 60
+  "id": "60"
 }
 ```
 
@@ -235,7 +239,7 @@ User: {
 },
 ```
 
-You might be wondering how our server knows the identity of the current user when calling functions like `getLaunchIDsByUser`. It doesn't yet! We'll fix that in the next chapter.
+You might be wondering how our server knows the identity of the current user when calling functions like `getLaunchIdsByUser`. It doesn't yet! We'll fix that in the next chapter.
 
 ## Paginate results
 
@@ -310,10 +314,8 @@ module.exports = {
           : false
       };
     },
-    launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
-     me: async (_, __, { dataSources }) =>
-      dataSources.userAPI.findOrCreateUser(),
+
+    // ...other Query fields...
   }
 };
 ```

@@ -63,11 +63,11 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 * A powerful **schema explorer** that helps your team build and run queries against your registered schema:
 
-    <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+    <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 * [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for up to the last 24 hours:
 
-    <img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+    <img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 * Team collaboration via [organizations](https://www.apollographql.com/docs/studio/org/organizations/)
 * [Slack notifications](https://www.apollographql.com/docs/studio/slack-integration/) for schema changes and daily metrics reports

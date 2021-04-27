@@ -3,15 +3,11 @@ title: Organizations
 sidebar_title: Organizations
 ---
 
-All data in Apollo Studio (GraphQL schemas, metrics, etc.) belongs to a particular organization. Every organization has one or more [members](./members/) who manage it and can access its associated data.
-
-> **Important**: Currently by default, all members of a Studio organization have full permissions for the organization, including the ability to delete graphs or transfer them out of the organization.
->
-> To control member access, please request enablement of the new [member roles feature](./members/#member-roles-available-by-request).
+All data in Apollo Studio (GraphQL schemas, metrics, etc.) belongs to a particular organization. Every organization has one or more [members](./members/) who manage it and can access its associated data. Enterprise organizations can also assign specific [roles](./members/#organization-wide-member-roles) to users in the organization.
 
 ## Creating an organization
 
-You create your first organization as part of [account creation](./account/), unless you've been invited to an existing organization by another Studio user.
+You create your first organization as part of [the user signup process](./account/), unless you've been invited to an existing organization by another Studio user.
 
 You can create additional organizations by clicking the `+` button at the top of your list of organizations in [Studio](https://studio.apollographql.com). A single Studio organization can include any number of [graphs](./graphs/), so a company rarely needs more than one or two organizations.
 
@@ -20,11 +16,13 @@ You can create additional organizations by clicking the `+` button at the top of
 [Studio](https://studio.apollographql.com) lists the organizations you belong to in the left-hand column.
 
 * Click on an organization to view its associated schemas and metrics.
-* Click the gear icon next to an organization to view its settings.
+* Each organization has a **Graphs** list, a **Members** management page, and a **Settings** page.
 
 ## Deleting an organization
 
-Deleting an organization requires contacting Apollo. You can do so from your organization's Settings tab.
+You can delete an organization at any time. This is a permanent action that cannot be undone, and will remove all traces of your organization from Studio's system.
+Deleting your organization wil:
 
-Deleting an organization does not affect the uptime of services that send data
-to Studio as part of that organization.
+* Remove all user memberships from your organizations.
+* Permanently delete all graphs from your organization, and their associated data. These graph IDs cannot be reused later.
+* Immediately terminate the Team subscription or Team Trial on your account, if you have one. We can't issue refunds for this, unfortunately.

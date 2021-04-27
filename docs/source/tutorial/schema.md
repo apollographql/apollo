@@ -4,6 +4,8 @@ sidebar_title: '1. Build a schema'
 description: Create the blueprint for your data graph
 ---
 
+> Getting started with Apollo? [Check out **Odyssey**, Apollo's learning platform](https://odyssey.apollographql.com?utm_source=apollo_docs&utm_medium=referral)! Our introductory course, **Lift-off**, introduces many of the same concepts as this tutorial with helpful videos and interactive code challenges.
+
 > Time to accomplish: 15 minutes
 
 Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
@@ -97,7 +99,7 @@ type Launch {
 }
 ```
 
-The `Launch` object type has a collection of **fields**, and each field has a type of its own. A field's type can be either an object type or a **scalar type**. A scalar type is a primitive (like `ID`, `String`, `Boolean`, or `Int`) that resolves to a single value. In addition to GraphQL's built-in scalar types, you can define [custom scalar types](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/).
+The `Launch` object type has a collection of **fields**, and each field has a type of its own. A field's type can be either an object type or a **scalar type**. A scalar type is a primitive (like `ID`, `String`, `Boolean`, `Int` or `Float`) that resolves to a single value. In addition to GraphQL's built-in scalar types, you can define [custom scalar types](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/).
 
 > An exclamation point (`!`) after a declared field's type means "this field's value can never be null."
 
@@ -202,7 +204,7 @@ server.listen().then(() => {
 });
 ```
 
-After saving, run `npm start` to start your server! 🎉 Apollo Server is now available on port 4000.
+After saving, run `npm start` to start your server! 🎉 Apollo Server is now available at `http://localhost:4000`.
 
 ## Explore your schema
 
@@ -222,7 +224,7 @@ To use the Explorer with your locally running server, you create a **dev graph**
 
     You'll be prompted to create an Apollo account if you don't already have one (again, Apollo accounts and the Explorer are completely free).
 
-2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial):
+2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial). **Note that your local server must be running.**
 
     <img class="screenshot" src="../img/dev-graph.jpg" width="450" alt="Dev graph form" />
 

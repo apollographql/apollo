@@ -15,7 +15,7 @@ Go to [https://github.com/apps/apollo-studio](https://github.com/apps/apollo-stu
 
 Next, make sure your CI has a step to run the schema check command. This is accomplished by adding the `apollo service:check` command directly as a step in your CI. For CircleCI it could look something like this:
 
-### Circle-CI
+### CircleCI
 
 ```yaml{13,29,33-36}:title=.circleci/config.yml
 version: 2

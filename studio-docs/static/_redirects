@@ -7,6 +7,9 @@
 /docs/studio/managed-federation/setup/ /docs/federation/managed-federation/setup/
 /docs/studio/managed-federation/advanced-topics/ /docs/federation/managed-federation/advanced-topics/
 
+# Slack content folded into Notifications article
+/docs/studio/slack-integration/ /docs/studio/notification-setup/#slack
+
 # Migrate schema validation to schema checks
 /docs/studio/schema-validation/ /docs/studio/schema-checks/
 

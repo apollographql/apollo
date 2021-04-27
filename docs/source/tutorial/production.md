@@ -27,7 +27,7 @@ In Apollo Studio, each **graph** is a distinct data graph with a corresponding G
 1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
 2. Provide a name for your graph and set the **Graph type** to **Deployed**.
     > Earlier, we [created a private _development_ graph](./schema/#with-apollo-studio-recommended) with Studio. This time we're creating a _deployed_ graph, which is shared with other members of our organization.
-3. Click **Next**. A dialog appears instructing to you register your schema. We'll do that in the next step.
+3. Click **Next**. A dialog appears instructing you to register your schema. We'll do that in the next step.
 
 ## Connect your server
 
@@ -35,23 +35,37 @@ Apollo Server can communicate directly with Apollo Studio to register its schema
 
 From your [Studio homepage](https://studio.apollographql.com), click your newly created graph. This displays the same dialog that appeared after you created it:
 
-<img src="../img/register-schema.png" class="screenshot" width="600"></img>
+<img src="../img/register-schema.png" class="screenshot" width="600" />
 
-Your graph API key is the value that appears just after `APOLLO_KEY=` in the first code block (it starts with `service:`). Copy it.
+Copy all of the environment variable definitions in the block at the bottom of the dialog (the value of `APOLLO_KEY` is your graph API key).
 
-You provide your API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable. Conveniently, our example app already uses the `dotenv` package to read environment variables from a `.env` file.
+### Set environment variables
 
-Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste your API key into it like so, and add `APOLLO_SCHEMA_REPORTING=true` as well:
+You provide your graph API key to Apollo Server by setting it as the value of the `APOLLO_KEY` environment variable.
+
+Create a `.env` file in `start/server` by making a copy of `start/server/.env.example`. Then paste the environment variables from the dialog in studio:
 
 ```none:title=.env
-APOLLO_KEY=PASTE_YOUR_KEY_HERE
+APOLLO_KEY=YOUR_API_KEY
+APOLLO_GRAPH_VARIANT=current
 APOLLO_SCHEMA_REPORTING=true
 ```
 
 > **Graph API keys are secret credentials.** Never share them outside your organization or commit them to version control. Delete and replace API keys that might be compromised.
 
+### Load environment variables
 
-Start up your server using `npm start`, then return to your Studio homepage. After a few seconds, clicking on your graph will now open its full details.
+Add the following line to the very top of `start/server/src/index.js` if it isn't already there:
+
+```js:title=start/server/src/index.js
+require('dotenv').config();
+```
+
+The `dotenv` package provides support for reading environment variables from the `.env` file.
+
+### Restart your server
+
+After you restart your server with `npm start`, return to your Studio homepage. After fifteen seconds or so, Studio will receive your server's schema and you can view its full details.
 
 ## Try out free Studio features
 
@@ -61,13 +75,13 @@ Connecting your server to Apollo Studio activates a variety of powerful features
 
 As shown [earlier in the tutorial](./schema/#explore-your-schema) the Apollo Studio Explorer provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
-<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" /></img>
+<img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 ### Schema history
 
 Open the **History** tab to view a full revision history of the schema versions your server pushes over time:
 
-<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400"></img>
+<img src="../img/schema-history/schema-history.jpg" class="screenshot" width="400" />
 
 This history helps you identify exactly when a particular type or field was added or removed, which is crucial when diagnosing an issue.
 
@@ -79,7 +93,7 @@ Apollo Server pushes metrics data to Studio for each GraphQL operation it execut
 
 Open the **Operations** tab to view performance data based on the last 24 hours of your server's operation traces:
 
-<img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot"></img>
+<img src="../img/operations-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 > Organizations with a paid Studio plan can view metrics for the last 90 days or more, depending on the plan.  For more information on paid Studio features, see the [Studio documentation](https://www.apollographql.com/docs/studio/).
 

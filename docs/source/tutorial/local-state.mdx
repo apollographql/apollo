@@ -123,9 +123,11 @@ Now, let's also update that variable whenever a user logs in. Modify the `onComp
 
 ```tsx:title=src/pages/login.tsx
 onCompleted({ login }) {
-  localStorage.setItem('token', login.token as string);
-  localStorage.setItem('userId', login.id as string);
-  isLoggedInVar(true); // highlight-line
+  if (login) {
+    localStorage.setItem('token', login.token as string);
+    localStorage.setItem('userId', login.id as string);
+    isLoggedInVar(true); // highlight-line
+  }
 }
 ```
 
@@ -508,17 +510,9 @@ const CancelTripButton: React.FC<ActionButtonProps> = ({ id }) => {
             id: localStorage.getItem('userId'),
           }),
           fields: {
-            trips(existingTrips) {
-              const launchRef = cache.writeFragment({
-                data: launch,
-                fragment: gql`
-                  fragment RemoveLaunch on Launch {
-                    id
-                  }
-                `
-              });
+            trips(existingTrips: Reference[], { readField }) {
               return existingTrips.filter(
-                (tripRef: Reference) => tripRef === launchRef
+                tripRef => readField("id", tripRef) !== launch.id
               );
             }
           }

@@ -23,33 +23,39 @@ module.exports = {
             'org/graphs',
             'explorer',
             'dev-graphs',
+            'federated-graphs',
           ],
-          'Registering your Schema': [
+          'Registering Schemas': [
             'schema/schema-reporting',
             'schema/cli-registration',
             'schema/schema-reporting-protocol',
           ],
           'Metrics Reporting': [
             'setup-analytics',
-            'slack-integration',
             'client-awareness',
-            'performance',
             'datadog-integration',
             // field usage
             // operation usage
           ],
-          'Continuous Integration': [
+          'CI/CD': [
             'schema-checks',
             'check-configurations',
             'validating-client-operations',
             'github-integration',
           ],
+          'Notifications': [
+            'notification-setup',
+            'daily-reports',
+            'schema-change-integration',
+            'performance-alerts',
+          ],
           'Security': [
             'api-keys',
-            'data-privacy',
             'operation-registry',
+            'data-privacy',
+            'sub-processors'
           ],
-          'Managing your Org': [
+          'Managing Accounts': [
             'org/account',
             'org/organizations',
             'org/members',
