@@ -1,0 +1,5 @@
+[build]
+  command = "npm run netlify && npm run mv && npm run noindex"
+  publish = "studio-docs/public"
+[context.production]
+  command = "npm run netlify && npm run mv"

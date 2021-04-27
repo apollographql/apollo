@@ -3,7 +3,10 @@
     "prestart": "gatsby clean",
     "start": "gatsby develop",
     "build": "gatsby build",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "netlify": "gatsby build --prefix-paths",
+    "mv": "mkdir -p docs && mv public/* docs && mv docs public/ && mv public/docs/_redirects public",
+    "noindex": "echo 'User-agent: *\nDisallow: /' > public/robots.txt"
   },
   "dependencies": {
     "gatsby": "2.27.0",
