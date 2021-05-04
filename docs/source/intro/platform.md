@@ -109,7 +109,7 @@ graph TB
 
 ### Apollo Federation architecture
 
-With Apollo Federation, a **gateway** sits in front of one or more **implementing services**:
+With Apollo Federation, a **gateway** sits in front of one or more **subgraphs**:
 
 ```mermaid
 graph TB;
@@ -117,9 +117,9 @@ graph TB;
   userdb[(Users database)];
   productdb[(Products database)];
   gateway([GraphQL gateway]);
-  serviceA[Users service];
-  serviceB[Products service];
-  serviceC[Inventory service];
+  serviceA[Users subgraph];
+  serviceB[Products subgraph];
+  serviceC[Inventory subgraph];
   end
   webapp(Web app);
   iosapp(iOS app);
@@ -130,8 +130,8 @@ graph TB;
   class webapp,iosapp secondary;
 ```
 
-The gateway is a GraphQL server, _and so is each implementing service_. Each implementing service defines its own schema and connects to whichever data stores it needs to populate that schema's fields. The gateway then aggregates these schemas and combines them into a _single_ schema.
+The gateway is a GraphQL server, _and so is each subgraph_. Each subgraph defines its own schema and connects to whichever data stores it needs to populate that schema's fields. The gateway then aggregates these schemas and combines them into a _single_ schema.
 
-When a client request comes in, the gateway knows which requested fields are owned by which service. It intelligently executes operations across whichever combination of services is needed to fully complete the operation.
+When a client request comes in, the gateway knows which requested fields are owned by which subgraph. It intelligently executes operations across whichever combination of subgraphs is needed to fully complete the operation.
 
-Apollo Server includes extension libraries that enable it to act as either a gateway or an implementing service. And Apollo Studio provides free [managed federation](https://www.apollographql.com/docs/studio/managed-federation/overview/) features that help you maximize your graph's uptime.
+Apollo Server includes extension libraries that enable it to act as either a gateway or a subgraph. And Apollo Studio provides free [managed federation](https://www.apollographql.com/docs/studio/managed-federation/overview/) features that help you maximize your graph's uptime.
