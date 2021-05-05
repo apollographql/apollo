@@ -7,20 +7,19 @@ A Studio organization can have any number of members, and each member can be ass
 
 ## Organization-wide member roles
 
-> The `Org Admin` and `Consumer` roles are available to all organizations. Other roles are available only to organizations with an Enterprise plan.
->
-> If you're using member roles, [please let us know what you think!](https://docs.google.com/forms/d/10C4_ETX5Xb60RfnJjBC2xBVK9gjr6A644AYKA-27T-E/viewform) Your feedback will help us improve the feature before we roll it out to all organizations.
-
 Each organization member has one of the following roles:
 
-| Name                 | Description                                                                                                                                                                                                        |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Org Admin` | Has management access to the entire organization, including its members, graphs, and configuration.                                                                                                                |
-| `Graph Admin`        | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for developers who are considered admins to the graph.                                        |
-| `Contributor`        | Can push new schemas to graphs, but cannot configure graph settings or integrations. Intended for back-end developers who are authorized to make changes to graphs. _Cannot_ push schema changes to [protected variants](./graphs/#protected-variants-enterprise-only).                                               |
-| `Observer`           | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. |
-| `Consumer` (free)        | <p>Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph.</p><p>This role is available to all plan types, including Free. If you have a paid plan, `Consumer` members do not count as billed users.</p>                    |
-| `Billing Manager`    | Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs. [Learn more](#billing-managers)                                                                       |
+> If you're using member roles, [please let us know what you think!](https://docs.google.com/forms/d/10C4_ETX5Xb60RfnJjBC2xBVK9gjr6A644AYKA-27T-E/viewform) Your feedback will help us improve the feature before we roll it out to all organizations.
+
+
+| Name | Description | Supported [plan types](https://www.apollographql.com/pricing/) |
+| ---- | ----------- | :------------------: |
+| `Org Admin` | Has management access to the entire organization, including its members, graphs, and configuration. | All |
+| `Graph Admin`        | Has management access to the organization's graphs, but not to members or organization-level configuration. Intended for developers who are considered admins to the graph. | Enterprise only |
+| `Contributor`        | Can push new schemas to graphs, but cannot configure graph settings or integrations. Intended for back-end developers who are authorized to make changes to graphs. _Cannot_ push schema changes to [protected variants](./graphs/#protected-variants-enterprise-only). | Enterprise only |
+| `Observer` | Has view-only access to the organization's graph data, such as schemas and metrics. Can also execute queries in the Explorer. Intended for back-end developers who are _not_ authorized to make changes to graphs. | Enterprise only |
+| `Consumer` (free)        | <p>Has view-only access to the organization's graph _schemas_, but not metrics. Can also execute queries in the Explorer. Intended for application developers building clients against a graph.</p><p>This role is available to all plan types, including Free. `Consumer` members do not count as billed users.</p> | All |
+| `Billing Manager` (free)   | <p>Has management access to organization-level configuration and billing. Can also remove members (but not invite them). No access to graphs. [Learn more](#billing-managers)</p><p>This role is available to all paid plan types. `Billing Manager` members do not count as billed users.</p> | Enterprise & Team |
 
 Only members with the `Org Admin` role can assign roles to other members. You can see which role you have in a particular organization from your [user settings page](https://studio.apollographql.com/user-settings), or from the organization's Members tab.
 
@@ -71,7 +70,7 @@ When `Contributors` in an organization create a new graph, they are automaticall
 > - We significantly reduced the permissions of the `Contributor` role, making it much closer to `Observer` plus the ability to perform a small set of write operations on non-protected variants.
 > - We added the `Graph Admin` role. This role is nearly identical to the former `Contributor` role. As part of the transition, we changed all existing `Contributor`s to `Graph Admin`s. The only difference between the old `Contributor` role and the new `Graph Admin` role is that `Graph Admin`s can delete graphs (and manage graph overrides, a new feature released simultaneously).
 
-### Billing Managers
+### Billing managers
 
 Members with the `Billing Manager` role can't see or manage graphs in their organizations, but they can:
 
@@ -81,7 +80,7 @@ Members with the `Billing Manager` role can't see or manage graphs in their orga
 
 Notably, `Billing Manager`s can't invite new members to the organization or update roles.
 
-### Dev Graphs
+### Dev graphs
 
 [Development Graphs](/dev-graphs/) are a special case in our permissions system. Any user in an organization (even a `Consumer`) can create a dev graph and act as its `Graph Admin`. Each dev graph is private to the user who creates it. Even `Org Admin`s can't view them, and they can't currently be shared with other users.
 
