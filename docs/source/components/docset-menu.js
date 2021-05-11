@@ -6,6 +6,7 @@ import { ReactComponent as FederationIcon } from '../assets/federation.svg';
 import { IconSatellite3 } from '@apollo/space-kit/icons/IconSatellite3';
 import { IconSchema } from '@apollo/space-kit/icons/IconSchema';
 import { ReactComponent as ReactLogo } from '../assets/react-logo.svg';
+import { ReactComponent as RoverIcon } from '../assets/rover-logo.svg';
 import {
   NavItemsContext,
   NavItemDescription
@@ -53,7 +54,8 @@ const icons = [
   <AndroidLogo />,
   <IconSatellite3 weight="thin" />,
   <FederationIcon />,
-  <IconSchema weight="thin" />
+  <IconSchema weight="thin" />,
+  <RoverIcon />
 ];
 
 export default function DocsetMenu() {
