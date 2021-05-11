@@ -1,16 +1,15 @@
 ---
-title: Schema registration via the Apollo CLI
-sidebar_title: Using the Apollo CLI
+title: Schema registration via the Rover CLI
+sidebar_title: Using the Rover CLI
 ---
 
 import ProjectConfigPanel from "gatsby-theme-apollo-docs/shared/project-config-panel.mdx";
 import RegisterCli from '../../shared/register-cli.mdx';
 import RegisterFederatedCli from '../../shared/register-federated-cli.mdx'
 
+If you're using a GraphQL server that doesn't support [schema reporting](./schema-reporting/), you can register your schema via the [Rover CLI](https://www.apollographql.com/docs/rover/).
 
-If you're using an earlier version of Apollo Server or another GraphQL server that doesn't support [schema reporting](./schema-reporting/), you can register your schema via the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/).
-
-> **Do not use both schema reporting and the Apollo CLI to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, automatic registration preserves a schema's comments and directives, whereas manual registration does not.
+> **Do not use both schema reporting and Rover to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, schema reporting preserves a schema's comments and directives, whereas CLI registration does not.
 
 ## Registering a non-federated schema
 
@@ -39,7 +38,7 @@ jobs:
 
       - run: npm install
       # CircleCI needs global installs to be sudo
-      - run: sudo npm install --global apollo
+      - run: sudo npm install --global @apollo/rover
 
       # Start the GraphQL server.  If a different command is used to
       # start the server, use it in place of `npm start` here.
@@ -56,6 +55,6 @@ jobs:
       # of the schema to Apollo Studio.
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            apollo service:push --variant=master
+            rover graph publish my-graph@my-variant --schema ./schema.graphql
           fi
 ```

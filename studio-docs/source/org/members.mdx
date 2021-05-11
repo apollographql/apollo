@@ -56,7 +56,7 @@ When `Contributors` in an organization create a new graph, they are automaticall
 | Manage Explorer settings (URL, etc)                             |     ✓     |      ✓      |  Non-[protected](./graphs/#protected-variants-enterprise-only) variants only      |          |          |
 | Create [Deployed Graphs](/org/graphs/)                          |     ✓     |      ✓      |      ✓      |          |          |
 | Run [schema checks](../schema-checks)                                               |     ✓     |      ✓      |      ✓      |    ✓     |          |
-| See the schemas of implementing services in federated graphs    |     ✓     |      ✓      |      ✓      |    ✓     |          |
+| See the schemas of subgraphs in federated graphs    |     ✓     |      ✓      |      ✓      |    ✓     |          |
 | View graph usage metrics and traces                             |     ✓     |      ✓      |      ✓      |    ✓     |          |
 | Create [Development Graphs](/dev-graphs/)                       |     ✓     |      ✓      |      ✓      |    ✓     |     ✓    |
 | View graph schemas and changelogs                               |     ✓     |      ✓      |      ✓      |    ✓     |    ✓     |
@@ -95,13 +95,13 @@ A few operations aren't listed in the table above because they are *only* suppor
 - Reporting usage (traces and performance metrics). This requires a `Graph Admin` key, or a `Contributor` key if the variant is not protected.
 - [Registering operations](../operation-registry/). This requires a `Graph Admin` key.
 
-> Before January 2021, graph keys did not have roles. Keys created before that date (which are shown as `Legacy Admin` keys) can perform the following operations:
+> Before January 2021, graph keys did not have roles. Keys created before that date (shown as `Legacy Admin` keys) can perform the following operations:
 >
 > - Create new variants
 > - Run schema checks
 > - View and manage graph API keys
 > - Push schemas to a graph
-> - See the schemas of implementing services in federated graphs
+> - See the schemas of subgraphs in federated graphs
 > - View graph schemas and changelogs
 > - Modify schema checks configuration
 

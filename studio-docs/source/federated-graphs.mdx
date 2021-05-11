@@ -95,7 +95,8 @@ Note that the `schema` object can’t be empty, so you need to add the `query` f
 
 #### Known `@contact` limitations
 
-- To provide the `@contact` directive to Apollo, you must register your schema using the `--localSchemaFile` option of [`apollo service push`](./schema/cli-registration/#registering-a-non-federated-schema). If you use the `--endpoint` option instead, directives are **not** included in the registered schema.
+- To provide the `@contact` directive to Apollo, you must register your schema by providing a local `.graphql` file as the `--schema` option of [`rover graph publish`](./schema/cli-registration/#registering-a-non-federated-schema).
+    * If you provide an introspection result to the command instead, directives are **not** included in the result.
 - Similarly, you cannot provide your `@contact` directive to Apollo via [schema reporting](./schema/schema-reporting/). This registration method also does not include directives.
 - If your subgraph doesn’t already have a `schema` object, you need to add one to use the `@contact` directive. The `schema` object cannot be empty, so you need to include at least one field in it (most commonly `query: Query`). If you do provide the `Query` type like this, it needs to include at least one field in your subgraph’s schema. If your subgraph’s `Query` type is empty, you need to add a dummy field for the SDL to be valid:
 

@@ -1,53 +1,46 @@
-In a federated architecture, each of your graph's [implementing services](https://www.apollographql.com/docs/federation/implementing-services/) uses the Apollo CLI to register its schema as a separate service **of the same graph**:
+In a federated architecture, each of your graph's [subgraphs](https://www.apollographql.com/docs/federation/subgraphs/) uses the Rover CLI to register its schema with Apollo:
 
 ```mermaid
-graph BT;
+graph LR;
   subgraph " "
   gateway([Gateway]);
-  serviceA[Products service];
-  serviceB[Reviews service];
-  serviceC[Inventory service];
+  serviceA[Products subgraph];
+  serviceB[Reviews subgraph];
+  serviceC[Inventory subgraph];
   end
   registry{{Apollo Schema Registry}};
   gateway --- serviceA & serviceB & serviceC;
-  serviceA -. --serviceName=Products  .-> registry;
-  serviceB -. --serviceName=Reviews  .-> registry;
-  serviceC -. --serviceName=Inventory  .-> registry;
+  serviceA & serviceB & serviceC -. rover subgraph publish  .-> registry;
   class registry secondary;
 ```
 
-First, <a href="https://www.apollographql.com/docs/devtools/cli/" target="_blank">install the Apollo CLI</a> if you haven't yet.
+If you haven't yet:
 
-Then, **do the following for each of your implementing services**:
+*  <a href="https://www.apollographql.com/docs/rover/getting-started/" target="_blank">Install the Rover CLI.</a>
+* <a href="https://www.apollographql.com/docs/rover/configuring/" target="_blank">Authenticate Rover</a> with Apollo Studio.
 
-1. Obtain the following values, which are required for the `apollo service:push` command:
+Then, **do the following for each of your subgraphs**:
 
-    * The URL that your federated gateway will use to communicate with the service (e.g., `http://products-graphql.svc.cluster.local:4001/`).
-    * The name that uniquely identifies the service within your graph (e.g., `products`).
-    * The service's schema. The Apollo CLI can either:
+1. Obtain the following values, which are required for the `rover subgraph publish` command:
+
+    * The name that uniquely identifies the subgraph within your graph (e.g., `products`).
+        * If you've already registered a particular subgraph at least once, you can get its name from your graph's **Schema > SDL** tab in Apollo Studio, or by running `rover subgraph list`.
+        * Otherwise, you set the subgraph's name the first time you register it. **Make sure the name is unique within your graph.**
+    * The URL that your gateway will use to communicate with the subgraph (e.g., `http://products-graphql.svc.cluster.local:4001/`).
+    * The service's schema. The Rover CLI can either:
         * Use a `.gql` or `.graphql` file saved on your local machine, or
         * Perform an introspection query on the running service to fetch the schema
 
-2. Run the `apollo service:push` command, providing the following options (documented below):
+2. Run the `rover subgraph publish` command, providing your schema in one of the ways shown:
 
     ```bash
-    apollo service:push \
-      --localSchemaFile=./schema.gql \ # (or --endpoint)
-      --key=service:docs-example-graph:NYKgCqwfCyYPIm84WVXCdw
-      --graph=docs-example-graph \
-      --variant=local-development \
-      --serviceName=products \
-      --serviceURL=http://products-graphql.svc.cluster.local:4001/
+    # Provide a local .graphql file path
+    rover subgraph publish my-graph@my-variant --name products --routing-url http://products-graphql.svc.cluster.local:4001/ --schema ./schema.graphql 
+
+    # Provide an introspection result via stdin
+    rover subgraph introspect http://localhost:4000 | rover subgraph publish my-graph@my-variant --name products --routing-url http://products-graphql.svc.cluster.local:4001/ --schema -
     ```
 
-| Name | Description  |
-|---|---|
-| `--endpoint` | <p>The URL of the running service to perform an introspection query on.</p><p>**Provide this only if the CLI should obtain your schema via introspection.**</p> |
-| `--localSchemaFile` | <p>The path of the schema file to register.</p><p>**Provide this only if the CLI should obtain your schema via a local file.**</p> |
-| `--key` | <p>The graph API key that the CLI should use to authenticate with the schema registry.</p><p>By default, the CLI uses the value of the `APOLLO_KEY` environment variable.</p> |
-| `--graph` | The name of your graph in Apollo Studio (e.g., `docs-example-graph`) |
-| `--variant` | <p>The [variant of your graph](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants) to register the schema with.</p><p>The default value is `current`.</p> |
-| `--serviceName` | The service's unique name in your federated graph (e.g., `products`). |
-| `--serviceURL` | The URL that your federated gateway will use to communicate with the service. |
+As you register your subgraph schemas, the schema registry attempts to **compose** their latest versions into a single **supergraph schema**. Whenever composition succeeds, your gateway can fetch the latest supergraph schema from the registry.
 
-As you register your service schemas, the schema registry attempts to **compose** their latest versions into a single **federated schema**. Whenever composition succeeds, your gateway can fetch the latest federated schema from the registry.
+You can also fetch your latest supergraph schema with the `rover supergraph fetch` command, and it's available in Apollo Studio from your graph's **Schema > SDL** tab.
