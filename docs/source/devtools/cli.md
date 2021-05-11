@@ -2,6 +2,8 @@
 title: The Apollo CLI
 ---
 
+> **Important:** All `apollo service:*` commands are now **deprecated** in favor of commands in the [Rover CLI](https://www.apollographql.com/docs/rover/).
+
 The **Apollo CLI** provides useful commands for interacting with every component of the Apollo platform, including Apollo Client, Apollo Server, and Apollo Studio.
 
 ## Download and install
@@ -46,6 +48,7 @@ Most of the Apollo CLI's commands are in the following namespaces:
 
 * `client` (such as `apollo client:codegen`) for interactions involving Apollo Client and Apollo Studio
 * `service` (such as `apollo service:check`) for interactions involving Apollo Server and Apollo Studio
+    * **Important:** All `apollo service:*` commands are now **deprecated** in favor of commands in the [Rover CLI](https://www.apollographql.com/docs/rover/).
 
 For a full list of commands in a particular namespace, use the `apollo help` command:
 
