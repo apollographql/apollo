@@ -47,6 +47,7 @@ Create a `.env` file in `start/server` by making a copy of `start/server/.env.ex
 
 ```none:title=.env
 APOLLO_KEY=YOUR_API_KEY
+APOLLO_GRAPH_ID=your-graph-id
 APOLLO_GRAPH_VARIANT=current
 APOLLO_SCHEMA_REPORTING=true
 ```
