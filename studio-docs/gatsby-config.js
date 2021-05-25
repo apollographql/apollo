@@ -47,7 +47,7 @@ module.exports = {
             'notification-setup',
             'daily-reports',
             'schema-change-integration',
-            'composition-publish-notification',
+            'build-status-notification',
             'performance-alerts',
           ],
           'Security': [
