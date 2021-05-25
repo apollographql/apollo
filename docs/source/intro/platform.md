@@ -43,7 +43,7 @@ Apollo Client is a customizable, [open-source](https://github.com/apollographql/
 
 Apollo Client's cache locally replicates the parts of your data graph that your client cares about. This enables your client to query _itself_ for data if it's already present, dramatically improving performance by preventing unnecessary network requests.
 
-### Supported platforms
+### Supported Apollo Client platforms
 
 Apollo Client includes official support for React, and there are community-maintained libraries for [other popular view layers](https://www.apollographql.com/docs/react/integrations/integrations/).
 
@@ -57,11 +57,9 @@ In addition to its open-source libraries, the Apollo platform provides a cloud-h
 
 The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-registry/) powers many development tools, including Apollo Studio. By registering your graph's schema, you can use Studio to explore your schema's structure, track its change history, and lay the foundation for many other powerful features.
 
-### Apollo Studio features
+### Free Apollo Studio features
 
-#### Free for all Apollo users
-
-* A powerful **schema explorer** that helps your team build and run queries against your registered schema:
+* A powerful [schema explorer](https://www.apollographql.com/docs/studio/explorer/) that helps your team build and run queries against your registered schema:
 
     <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
@@ -71,9 +69,11 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 * Team collaboration via [organizations](https://www.apollographql.com/docs/studio/org/organizations/)
 * [Slack notifications](https://www.apollographql.com/docs/studio/slack-integration/) for schema changes and daily metrics reports
-* [Management of a federated data graph](https://www.apollographql.com/docs/studio/managed-federation/overview/)
+* [Management of a federated data graph](https://www.apollographql.com/docs/federation/managed-federation/overview/)
 
-#### Available with an Apollo Team or Enterprise plan
+### Paid Apollo Studio features
+
+> For details, see the [pricing page](https://www.apollographql.com/pricing/).
 
 * [Metrics reporting](https://www.apollographql.com/docs/studio/setup-analytics/) for arbitrary timeframes
 * [Metrics segmentation by distinct clients and versions](https://www.apollographql.com/docs/studio/client-awareness/)

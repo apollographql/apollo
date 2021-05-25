@@ -1,5 +1,5 @@
 ---
-title: Why GraphQL?
+title: Why adopt GraphQL?
 description: GraphQL and Apollo help you ship features faster
 ---
 
@@ -15,7 +15,7 @@ Even with many other advantages, **GraphQL's single greatest benefit is the deve
 
 Combined with [the Apollo platform](./platform/), complex considerations like caching, data normalization, and optimistic UI rendering become straightforward as well.
 
-## Declarative and efficient data fetching
+## GraphQL provides declarative, efficient data fetching
 
 GraphQL's declarative approach to data fetching provides significant performance and quality-of-life improvements over a REST API.
 
@@ -75,7 +75,7 @@ function MainPage() {
 
 Apollo Client's `useQuery` hook takes care of the request lifecycle from start to finish, including tracking loading and error states for you. There’s no middleware to set up or boilerplate to write before making your first request. All you need to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪
 
-## Powerful tooling
+## GraphQL enables powerful tooling
 
 Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-in support for  [introspection](https://graphql.org/learn/introspection/), developer tools for GraphQL are extremely powerful. These tools let you do things like:
 
@@ -83,7 +83,7 @@ Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-
 * Compose new operations with live validation and autocomplete
 * Register your schema with a management service that tracks and checks changes
 
-### Apollo Studio
+### What is Apollo Studio?
 
 Apollo provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/studio/).
 
@@ -97,24 +97,24 @@ The Apollo Client DevTools extension for [Chrome](https://chrome.google.com/webs
 
 <img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot" />
 
-## Production readiness
+## GraphQL is production-ready
 
 GraphQL's adoption has risen steadily since Facebook published the original [specification](https://spec.graphql.org/) in 2015. For more and more organizations, the benefits of GraphQL are taking it from a curious engineer's hack-week experiment to the heart of the application data layer.
 
-GraphQL scales with the requirements of even the largest organizations, largely because of its [powerful tooling](#powerful-tooling) and its compatibility with a **federated architecture** like [Apollo Federation](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+GraphQL scales with the requirements of even the largest organizations, largely because of its [powerful tooling](#graphql-enables-powerful-tooling) and its compatibility with a [federated architecture](https://www.apollographql.com/docs/federation/).
 
 In a federated architecture, a single GraphQL schema is split across multiple back-end services. Each team in an organization can then own exactly the services (and the corresponding parts of the schema) that they should.
 
-### Success stories
+### Organizations using GraphQL
 
 Here are a few blog posts from organizations that have benefited from adopting GraphQL in their production environment:
 
 * [PayPal](https://medium.com/paypal-engineering/scaling-graphql-at-paypal-b5b5ac098810)
-* [Netflix](https://netflixtechblog.com/our-learnings-from-adopting-graphql-f099de39ae5f)
+* [Netflix](https://netflixtechblog.com/how-netflix-scales-its-api-with-graphql-federation-part-1-ae3557c187e2)
 * [The New York Times](https://open.nytimes.com/the-new-york-times-now-on-apollo-b9a78a5038c)
 * [Nerdwallet](https://www.nerdwallet.com/blog/engineering/getting-started-with-graphql-and-apollo-part-1/)
 
-## Trade-offs
+## GraphQL trade-offs
 
 When deciding whether to adopt a technology, it's just as important to understand the technology's limitations as it is to understand its benefits.
 
@@ -128,7 +128,7 @@ GraphQL introduces a new conceptual model for representing and interacting with 
 * Back-end developers must come up to speed with how to handle incoming requests from the frontend.
 * Developers across the organization must collaborate on a single, product-driven GraphQL schema and appoint individuals as the official maintainers of that schema.
 
-The Apollo [docs](https://www.apollographql.com/docs/), [blog](https://www.apollographql.com/blog/), and [Spectrum community](https://spectrum.chat/apollo) are all here to help your organization master GraphQL and take full advantage of it.
+The Apollo [docs](https://www.apollographql.com/docs/), [blog](https://www.apollographql.com/blog/), and [forums](https://community.apollographql.com) are all here to help your organization adopt GraphQL and take full advantage of it.
 
 ### Potential for slow operations
 
