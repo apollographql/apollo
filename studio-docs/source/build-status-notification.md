@@ -28,7 +28,7 @@ interface Location {
 }
 
 interface ResponseShape {
-  eventType: 'Build_STATUS_UPDATE';
+  eventType: 'BUILD_STATUS_UPDATE';
   eventID: string;
   coreSchemaSDL: string | undefined; // See description below
   buildErrors: BuildError[] | undefined; // See description below
