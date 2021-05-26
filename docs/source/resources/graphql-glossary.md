@@ -1,10 +1,10 @@
 ---
 title: GraphQL Glossary
 sidebar_title: Glossary
-description: A comprehensive list of important GraphQL words and acronyms
+description: Familiarize yourself with common GraphQL terms
 ---
 
-When you start diving into the GraphQL ecosystem, you'll probably encounter some unfamiliar terms and phrases along the way. To help you on your journey, we've defined some of the most common GraphQL vocabulary here in this handy cheat sheet.
+As you explore the GraphQL ecosystem, you might encounter some unfamiliar terms and phrases along the way. To help you on your journey, we've defined some of the most common GraphQL vocabulary here in this handy cheat sheet.
 
 ## Apollo
 
@@ -12,26 +12,29 @@ An open-source implementation of GraphQL that helps you manage data between the 
 
 ## Automatic Persisted Queries (APQ)
 
-A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth utilization and speeds up client loading times. Apollo Server allows implementation of [Automatic Persisted Queries (APQ)](https://www.apollographql.com/docs/apollo-server/features/apq/).
+A technique for improving GraphQL network performance with zero build-time configuration by reducing request size over the wire. A smaller signature reduces bandwidth use and speeds up client loading times. [See the Apollo Server docs.](https://www.apollographql.com/docs/apollo-server/features/apq/).
 
 ## Argument
 
-A set of key-value pairs attached to a specific field. Arguments can be literal values or variables.
+A key-value pair associated with a particular [schema](#schema) field, enabling you to pass data to customize that field's return value. Argument values can be passed as literal values (as shown below for clarity) or via [variables](#variable) (recommended).
 
 ```graphql
-query GetHumanStats {
+query GetHuman {
   human(id: "200") {
-    weight(unit: "pounds")
-    height
+    name
+    height(unit: "meters")
   }
 }
 ```
 
-`id` is an argument to `human` in the query above.
+The query above provides two arguments:
+
+* The `id` argument for the `human` field (indicating which `Human` object to return)
+* The `unit` argument for the `height` field (indicating which unit of measurement to use for the return value)
 
 ## Alias
 
-An alternative name given to the result of a field to avoid conflicts during data fetching.
+An alternative name provided for a query field to avoid conflicts during data fetching. Use an alias if a query fetches multiple instances of the same field, as shown:
 
 ```graphql
 query AdminsAndManagers {
@@ -48,7 +51,7 @@ query AdminsAndManagers {
 }
 ```
 
-`admins` and `managers` are aliases on the `users` field in the example query above.
+The query above uses `admins` and `managers` as aliases for the `users` field.
 
 ## Data source
 
@@ -86,7 +89,7 @@ type User @auth {
 
 ## Docstring
 
-Provides the description of a types, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
+Provides the description of a type, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
 
 ```graphql
 """
@@ -111,9 +114,24 @@ type User {
 
 A file or request string that contains one or multiple definitions of a GraphQL type system and can be interpreted by a GraphQL execution engine.
 
+Most Apollo libraries use the `gql` template literal to create GraphQL documents:
+
+```js
+const typeDefs = gql`
+  type Book {
+    title: String
+    author: String
+  }
+
+  type Query {
+    books: [Book]
+  }
+`;
+```
+
 ## Extensions
 
-Special fields in the GraphQL response that allow you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension.
+Special fields in a GraphQL response that allow you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension.
 
 ## Field
 
@@ -127,11 +145,11 @@ type Author {
 }
 ```
 
-`id`, `firstName`, and `lastName` are fields of the `Author` type above.
+In the schema definition above, `id`, `firstName`, and `lastName` are fields of the `Author` type.
 
 ## Fragment
 
-A selection set that can be reused in multiple query operations. A [GraphQL fragment](https://www.apollographql.com/docs/react/advanced/fragments/) is a shared piece of query logic.
+A selection set of fields that can be shared between multiple query operations. [See the documentation.](https://www.apollographql.com/docs/react/data/fragments/)
 
 ```graphql
 fragment UserData on User {
@@ -147,16 +165,19 @@ query getUsers {
 }
 ```
 
-## gql function
+## `gql` function
 
 A [JavaScript template literal tag](https://github.com/apollographql/graphql-tag) that parses GraphQL queries into an abstract syntax tree (AST).
 
 ```js
 const typeDefs = gql`
-  type File {
-    filename: String!
-    mimetype: String!
-    encoding: String!
+  type Book {
+    title: String
+    author: String
+  }
+
+  type Query {
+    books: [Book]
   }
 `;
 ```
@@ -165,7 +186,7 @@ const typeDefs = gql`
 
 An in-browser IDE for GraphQL development and workflow. Provided [out-of-the-box in Apollo Server](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
 
-## GraphQL Service
+## GraphQL service
 
 The server that contains a GraphQL schema and the ability to run it. Services have runtime information, and through features of the Apollo Platform they can send metrics and maintain a history of the schemas that have been run on that service in the past.
 
@@ -175,7 +196,9 @@ An in-browser IDE for GraphQL development and workflow.
 
 ## Introspection
 
-A technique to provide detailed information about a GraphQL API's schema. Types and fields used in introspection are prefixed with "\_\_" two underscores.
+A special query that enables clients and tools to fetch a GraphQL server's complete schema. Types and fields used in introspection are prefixed with `__` (two underscores).
+
+Introspection should be [disabled in production](https://www.apollographql.com/blog/graphql/security/why-you-should-disable-graphql-introspection-in-production/).
 
 ```graphql
 {
@@ -189,7 +212,7 @@ A technique to provide detailed information about a GraphQL API's schema. Types 
 
 ## Mutation
 
-A GraphQL operation that creates, modifies, or destroys data.
+A GraphQL operation that creates, modifies, or destroys data. [See the documentation](https://www.apollographql.com/docs/react/data/mutations/).
 
 ```graphql
 mutation AddTodo($type: String!) {
@@ -202,28 +225,11 @@ mutation AddTodo($type: String!) {
 
 ## Normalization
 
-A technique for transforming the response of a query operation before saving it to [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching/#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure.
-
-```js
-import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
-
-const cache = new InMemoryCache({
-  dataIdFromObject: object => {
-    switch (object.__typename) {
-      case 'foo':
-        return object.key; // use `key` as the primary key
-      case 'bar':
-        return `bar:${object.blah}`; // use `bar` prefix and `blah` as the primary key
-      default:
-        return defaultDataIdFromObject(object); // fall back to default handling
-    }
-  }
-});
-```
+A technique for transforming the response of a query operation before saving it to [Apollo Client's `InMemoryCache`](https://www.apollographql.com/docs/react/advanced/caching/#normalization). The result is split into individual objects, creating a unique identifier for each object, and storing those objects in a flattened data structure. [See the documentation.](https://www.apollographql.com/docs/react/caching/cache-configuration/#data-normalization)
 
 ## Object Type
 
-A type in a GraphQL schema that has fields.
+A type in a GraphQL schema that has one or more fields.
 
 ```graphql
 type User {
@@ -231,7 +237,7 @@ type User {
 }
 ```
 
-`User` is an Object type in the example above.
+`User` is an object type in the example above.
 
 ## Operation
 
@@ -239,7 +245,7 @@ A single query, mutation, or subscription that can be interpreted by a GraphQL e
 
 ## Operation name
 
-The name of a particular query, mutation, or subscription. Identifying an operation by name is useful for logging and debugging when something goes wrong in a GraphQL server.
+The name of a particular query, mutation, or subscription. You should provide a name for every operation to improve logging and debugging output when an error occurs.
 
 ```graphql
 mutation AddTodo($type: String!) {
@@ -249,15 +255,15 @@ mutation AddTodo($type: String!) {
   }
 }
 
-query getHuman {
+query GetHuman {
   human(id: "200") {
-    weight(unit: "pounds")
-    height
+    name
+    height(unit: "meters")
   }
 }
 ```
 
-`AddTodo` and `getHuman` are names for the mutation and query operation respectively.
+The operations above are named `AddTodo` and `GetHuman`.
 
 ## Operation signature
 
@@ -290,27 +296,32 @@ A read-only fetch operation to request data from a GraphQL service.
 
 ## Query colocation
 
-A practice of placing a GraphQL query in the same location as the app component's view logic. Query co-location makes it easier to facilitate a smooth UI and chore of data retrieval. Jumping directly to the query and keeping the component in sync with its data dependencies is a pleasure.
+A practice of placing a GraphQL query in the same location as the app component that uses that query to render itself. This practice makes it easier to fetch data and render your UI responsively.
 
 ```jsx
-const GET_DOG_PHOTO = gql`
-  query dog($breed: String!) {
-    dog(breed: $breed) {
-      id
-      displayImage
+const EXCHANGE_RATES = gql`
+  query GetExchangeRates {
+    rates(currency: "USD") {
+      currency
+      rate
     }
   }
 `;
 
-export const queryComponent = ({ breed }) => (
-  <Query query={GET_DOG_PHOTO} variables={{ breed }}>
-    {({ loading, error, data }) => {
-      if (loading) return null;
-      if (error) return 'Error!';
-      return <img src={data.dog.displayImage} />;
-    }}
-  </Query>
-);
+function ExchangeRates() {
+  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
+  return data.rates.map(({ currency, rate }) => (
+    <div key={currency}>
+      <p>
+        {currency}: {rate}
+      </p>
+    </div>
+  ));
+}
 ```
 
 ## Query safelisting
