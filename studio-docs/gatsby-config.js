@@ -48,6 +48,7 @@ module.exports = {
             'daily-reports',
             'schema-change-integration',
             'performance-alerts',
+            'build-status-notification',
           ],
           'Security': [
             'api-keys',

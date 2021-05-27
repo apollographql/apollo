@@ -1,5 +1,5 @@
 ---
-title: Performance alerts
+title: Performance alerts from Apollo Studio
 sidebar_title: Performance alerts (experimental)
 ---
 
