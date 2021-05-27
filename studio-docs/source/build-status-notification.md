@@ -1,8 +1,11 @@
 ---
-title: Build status webhook (Preview)
+title: Build status notifications (preview)
+sidebar_title: Build status (preview)
 ---
 
-You can [configure Apollo Studio](./notification-setup) to notify your team whenever any changes are made to your graph's build:
+> Build status notifications require an [Enterprise plan](https://www.apollographql.com/pricing/). They are currently in preview.
+
+You can [configure Apollo Studio](./notification-setup) to notify your team via webhook whenever Apollo attempts to compose a new supergraph schema for your [federated graph](https://www.apollographql.com/docs/federation/). The notification indicates whether composition succeeded and provides a temporary URL to the new supergraph schema if so.
 
 You can configure separate change notifications for each [variant](./org/graphs/#managing-variants) of your graph.
 
@@ -12,7 +15,7 @@ See [Setting up Studio Notifications](./notification-setup).
 
 ## Webhook format
 
-If you receive build status notifications via a [custom webhook](./notification-setup/#custom-webhooks-enterprise-only), notification details are provided as a JSON object in the request body.
+Build status notifications are sent exclusively as [webhooks](./notification-setup/#custom-webhooks-enterprise-only). Details are provided as a JSON object in the request body.
 
 The JSON object conforms to the structure of the `ResponseShape` interface:
 
@@ -30,7 +33,7 @@ interface Location {
 interface ResponseShape {
   eventType: 'BUILD_STATUS_UPDATE';
   eventID: string;
-  coreSchemaSDL: string | undefined; // See description below
+  supergraphSchemaURL: string | undefined; // See description below
   buildErrors: BuildError[] | undefined; // See description below
   graphID: string;
   variantID: string; // See description below
@@ -38,8 +41,8 @@ interface ResponseShape {
 }
 ```
 
-* The value of `supergraphSchemaURL` is a short-lived (24-hour) URL that enables you to fetch the supergraph core schema _without_ authenticating (such as with an API key). This field will not be present if there is no valid supergraph schema.
+* **If composition succeeds**, the value of `supergraphSchemaURL` is a short-lived (24-hour) URL that enables you to fetch the supergraph core schema _without_ authenticating (such as with an API key). Otherwise, this field is not present.
 
-* The value of `buildErrors` will be an array of objects of type `BuildError`. These will be present if there were any errors when building the core schema.
+* **If composition fails**, `buildErrors` is an array of `BuildError` objects that describe the errors that occurred during composition. Otherwise, this field is not present.
 
-* The value of `variantID` is in the format `graphID@variantName` (e.g., `mygraph@staging`).
+* The value of `variantID` is in the format `graphID@variantName` (e.g., `mygraph@staging`). This format is known as a [graph ref](https://www.apollographql.com/docs/rover/conventions/#graph-refs).

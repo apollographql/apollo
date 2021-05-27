@@ -1,5 +1,6 @@
 ---
 title: Schema change notifications
+sidebar_title: Schema changes
 ---
 
 You can [configure Apollo Studio](./notification-setup) to notify your team whenever any changes (additions, deprecations, removals, etc.) are made to your graph's registered schema:
