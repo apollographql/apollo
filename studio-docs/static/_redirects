@@ -4,6 +4,9 @@
 
 # Move managed federation docs into Federation docset
 /docs/studio/managed-federation/overview/ /docs/federation/managed-federation/overview/
+/docs/studio/managed-federation/monitoring/ /docs/federation/managed-federation/monitoring/#metrics-and-observability
+/docs/studio/managed-federation/deployment/ /docs/federation/managed-federation/deployment/#the-servicepush-lifecycle
+/docs/studio/managed-federation/federated-schema-checks/ /docs/federation/managed-federation/federated-schema-checks/
 /docs/studio/managed-federation/setup/ /docs/federation/managed-federation/setup/
 /docs/studio/managed-federation/advanced-topics/ /docs/federation/managed-federation/advanced-topics/
 
