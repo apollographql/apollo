@@ -1,13 +1,18 @@
 const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
-  pathPrefix: '/docs/studio',
   plugins: [
     {
       resolve: 'gatsby-theme-apollo-docs',
       options: {
         ...themeOptions,
         root: __dirname,
+        pathPrefix: '/docs/studio',
+        algoliaConfig: {
+          appId: process.env.ALGOLIA_APP_ID,
+          apiKey: process.env.ALGOLIA_API_KEY,
+          indexName: process.env.ALGOLIA_INDEX_NAME
+        },
         baseDir: 'studio-docs',
         subtitle: 'Studio',
         description: 'How to use Apollo Studio',
