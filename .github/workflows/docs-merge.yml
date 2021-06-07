@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 12
       - run: npm install
-      - run: npm run merge
+      - run: node merge.js
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

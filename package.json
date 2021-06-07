@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "merge": "node merge.js"
+    "merge": "node -r dotenv/config merge.js"
   },
   "dependencies": {
     "algoliasearch": "^4.9.1",
@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.2.2",
+    "dotenv": "^10.0.0",
     "eslint": "^7.28.0"
   }
 }
