@@ -54,7 +54,7 @@ async function sendAll() {
 
 sendAll().then(results => {
   const totalObjs = results.reduce((acc, result) => acc + result, 0);
-  console.log('Docs index merge complete. %s objects merged.', totalObjs);
+  console.log('Docs index merge complete: %s objects merged', totalObjs);
 });
 
 // async function moveIndex(client, sourceIndex, targetIndex) {
