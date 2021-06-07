@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "merge": "node merge.js"
+  },
+  "dependencies": {
+    "algoliasearch": "^4.9.1",
+    "lodash": "^4.17.21"
+  },
+  "eslintConfig": {
+    "extends": "@trevorblades"
+  },
+  "devDependencies": {
+    "@trevorblades/eslint-config": "^7.2.2",
+    "eslint": "^7.28.0"
+  }
+}
