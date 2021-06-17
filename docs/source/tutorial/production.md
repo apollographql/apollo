@@ -4,7 +4,7 @@ sidebar_title: '5. Connect to Apollo Studio'
 description: Learn about essential developer tooling
 ---
 
-> Time to accomplish: 10 Minutes
+> Time to accomplish: 10 minutes
 
 Great work! We have a running GraphQL server that interacts with data from multiple sources. Now before we jump over to the client side, let's turn on some powerful tooling.
 

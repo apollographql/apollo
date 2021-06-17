@@ -12,6 +12,8 @@ We want you to feel empowered to build your own production-ready app with Apollo
 we're skipping "Hello World" in favor of an example that's closer to "Real
 World", complete with authentication, pagination, testing, and more. 
 
+Each section should take about 10-15 minutes (except the final section, which is closer to 20). 
+
 Ready? Let's dive in!
 
 ## What we'll build
