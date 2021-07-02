@@ -103,7 +103,9 @@ The Explorer currently enables you to authenticate via [request headers](#reques
 
 The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
 
-> **Beta feature:** You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer. To request access to this beta feature, please contact **support@apollographql.com**.
+#### Environment Variables
+
+The bottom of the Explorer editor includes a Environment Variables section so you can set sensitive information to be sent with your operation's HTTP request.
 
 #### Cookies
 
@@ -261,6 +263,14 @@ Mocked responses are helpful if you want to get a feel for the shape of a query'
 As you build your query, the Explorer runs partial queries under the hood and shows their results in-line. This is helpful when you want to get a sense of the data you'll get back in your full operation response. It can also help you retrieve a quick answer to a query without needing to click the Run button.
 
 The Explorer does not show response hints for mutations (this requires running partial mutations, which is unsafe).
+
+#### Default Headers
+
+> Set **Default Headers** from the Explorer's Settings tab.
+
+> **WARNING:** Default Headers should not be used to store sensitive information. Users should use the **Environment Variables** pane to set these.
+
+You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer.
 
 #### Field latency hints
 
