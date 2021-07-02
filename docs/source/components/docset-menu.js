@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { DocsetIcon } from 'apollo-algolia-autocomplete';
 import { MenuItem, MenuWrapper } from './menu';
 import { NavItemDescription, NavItemsContext } from 'gatsby-theme-apollo-docs';
-
+import './styles.css'
 const StyledLink = styled.a({
   color: 'inherit',
   textDecoration: 'none',
@@ -15,7 +15,7 @@ const StyledLink = styled.a({
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
-    <MenuWrapper>
+    <MenuWrapper className="menu-wrapper">
       {navItems
         .filter(navItem => !navItem.omitLandingPage)
         .map((navItem, index) => (
