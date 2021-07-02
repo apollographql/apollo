@@ -103,9 +103,9 @@ The Explorer currently enables you to authenticate via [request headers](#reques
 
 The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
 
-#### Environment Variables
+#### Environment variables
 
-The bottom of the Explorer editor includes a Environment Variables section so you can set sensitive information to be sent with your operation's HTTP request.
+The bottom of the Explorer editor includes an Environment Variables section where you can provide sensitive information that's sent with your operation's HTTP request.
 
 #### Cookies
 
@@ -264,11 +264,11 @@ As you build your query, the Explorer runs partial queries under the hood and sh
 
 The Explorer does not show response hints for mutations (this requires running partial mutations, which is unsafe).
 
-#### Default Headers
+#### Default headers
 
 > Set **Default Headers** from the Explorer's Settings tab.
 
-> **WARNING:** Default Headers should not be used to store sensitive information. Users should use the **Environment Variables** pane to set these.
+> **WARNING:** Do not use **default headers** to provide sensitive information, such as an access token. Instead, use [environment variables](#environment-variables)
 
 You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer.
 
