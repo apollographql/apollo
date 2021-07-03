@@ -84,6 +84,21 @@ schema @contact(
 
 Note that the `schema` object can’t be empty, so you need to add the `query` field as shown above if it isn’t already present.
 
+For schemas with a Mutation type, you will need to add `mutation: Mutation` to the `schema` object​ like so:
+
+```graphql:title=schema.graphql
+schema
+  @contact(
+    name: "Acephei Server Team"
+    url: "https://myteam.slack.com/archives/teams-chat-room-url"
+    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
+  ) {
+  query: Query
+  mutation: Mutation
+}
+```
+
+
 #### Supported `@contact` fields
 
 
