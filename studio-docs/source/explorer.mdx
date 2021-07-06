@@ -101,11 +101,11 @@ The Explorer currently enables you to authenticate via [request headers](#reques
 
 #### Request headers
 
-The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
+The bottom panel of the Explorer includes a Headers tab where you can set headers that are included in your operation's HTTP request.
 
-#### Environment variables
+Headers can include the values of [environment variables](#environment-variables), as shown:
 
-The bottom of the Explorer editor includes an Environment Variables section where you can provide sensitive information that's sent with your operation's HTTP request.
+<img class="screenshot" src="./img/explorer-headers.jpg" alt="Setting Explorer headers with environment variables" width="500"/>
 
 #### Cookies
 
@@ -119,6 +119,20 @@ Access-Control-Allow-Credentials: true
 ```
 
 Once configured, requests sent from `https://studio.apollographql.com` will carry the cookies from your domain when you run queries with the Explorer. If you're logged in on your domain, requests from the Explorer will also be logged in. If you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
+
+#### Environment variables
+
+The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in GraphQL variables, header values, or [preflight scripts](#preflight-scripts-beta). This enables you to share operations (including headers and variable values) with other team members _without_ exposing sensitive data.
+
+For example, you can define a `token` environment variable like so:
+
+<img class="screenshot" src="./img/explorer-env-vars.jpg" alt="Setting Explorer environment variables" width="500"/>
+
+You can then include that environment variable in header values and GraphQL variables with the following syntax:
+
+<img class="screenshot" src="./img/explorer-headers.jpg" alt="Setting Explorer headers with environment variables" width="500"/>
+
+When you share this operation, the value of `token` is _not_ shared, and other users can provide their own.
 
 #### Preflight Scripts (beta)
 
