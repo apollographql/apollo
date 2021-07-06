@@ -1,15 +1,39 @@
 ---
 title: The Apollo Studio Explorer
-sidebar_title: The Explorer
+sidebar_title: Explorer & Sandbox
 ---
 
 import { VideoFrame } from 'gatsby-theme-apollo-docs'
+import { Button } from '@apollo/space-kit/Button';
+import { Link } from 'gatsby';
+import { colors } from 'gatsby-theme-apollo-core';
 
 The Apollo Studio Explorer is a powerful web IDE for creating, running, and managing GraphQL operations:
 
 <VideoFrame src="https://www.youtube.com/embed/j8b0Bda_TIw"/>
 
 The Explorer is free for all Apollo Studio organizations. It supports all GraphQL operation types (`Query`, `Mutation`, and `Subscription`).
+
+## Account-free sandbox
+
+**Apollo Sandbox** is a special instance of the Explorer that doesn't require an Apollo account. Sandbox doesn't support advanced Explorer features like schema history, but it's great for local development.
+
+<p>
+  <Button
+    size="large"
+    color={colors.primary}
+    as={<Link to="https://studio.apollographql.com/sandbox/" target="_blank" />}
+  >
+    Launch Sandbox
+  </Button>
+</p>
+
+Sandbox automatically attempts to connect to a GraphQL server running at `http://localhost:4000`. You can use the box at the top of the page to change this URL to any local or remote GraphQL endpoint that's accessible by your browser:
+
+<img class="screenshot" src="./img/sandbox-url.jpg" alt="Sandbox URL field" width="300" />
+
+>To try out Sandbox with an example GraphQL API, you can set its URL to `https://swapi-graphql.netlify.app/.netlify/functions/index`.
+
 
 ## Setup
 
@@ -65,31 +89,25 @@ After you identify a type-field pair, the Explorer lists all of the _paths_ to t
 
 After you select which path you want, the Explorer opens that path in its Documentation tab. You can then click the **⊕** button to add that path to your query.
 
-## Additional features
+## Connecting to your server
+
+The Explorer automatically attempts to connect to your GraphQL server at the URL specified in the Explorer Settings tab. Depending on your server's settings, you might need to configure this connection to handle authentication or CORS requirements.
 
 ### Authentication
 
-The Explorer currently provides the following options for authentication. If your graph has authentication requirements that aren't covered by these options, please contact us at **support@apollographql.com** with questions or feedback.
+The Explorer currently enables you to authenticate via [request headers](#request-headers), [cookies](#cookies), and [preflight scripts](#preflight-scripts-beta).
+
+> If your graph has authentication requirements that aren't covered by these options, please contact **support@apollographql.com** with questions or feedback.
 
 #### Request headers
 
 The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
 
-For example, you can provide a bearer token in an `Authentication` header like so:
-
-```json
-{
-  "Authentication": "bearer <TOKEN>"
-}
-```
-
 > **Beta feature:** You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer. To request access to this beta feature, please contact **support@apollographql.com**.
 
 #### Cookies
 
-If your graph authenticates using cookies, you can configure your endpoint to share those cookies with https://studio.apollographql.com.
-
-Once configured, requests sent from https://studio.apollographql.com will carry the cookies from your domain when you run queries with the Explorer. If you're logged in on your domain, requests from the Explorer will also be logged in. If you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
+If your server uses cookies to authenticate, you can configure your endpoint to share those cookies with `https://studio.apollographql.com`.
 
 To set this up, your [cookie's value must contain `SameSite=None; Secure`](https://www.chromium.org/updates/same-site). Additionally, these CORS headers must be present in your server's response to Studio:
 
@@ -97,6 +115,8 @@ To set this up, your [cookie's value must contain `SameSite=None; Secure`](https
 Access-Control-Allow-Origin: https://studio.apollographql.com
 Access-Control-Allow-Credentials: true
 ```
+
+Once configured, requests sent from `https://studio.apollographql.com` will carry the cookies from your domain when you run queries with the Explorer. If you're logged in on your domain, requests from the Explorer will also be logged in. If you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
 
 #### Preflight Scripts (beta)
 
@@ -107,6 +127,25 @@ Access-Control-Allow-Credentials: true
 You can save preflight scripts to your organization, meaning all users in your organization can use them.
 
 For more information, see the [documentation for preflight scripts](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
+
+### CORS policies
+
+Requests from the Explorer go straight from your browser to your GraphQL server, so your endpoint will see requests coming from the `https://studio.apollographql.com` domain.
+
+It's common for public endpoints to have [CORS policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) that restrict which domains can query them. If your endpoint has CORS protections enabled, you probably need to safelist `https://studio.apollographql.com` in your CORS policy to use the Explorer.
+
+To do so, include the following header(s) in your server's responses:
+
+```bash
+Access-Control-Allow-Origin: https://studio.apollographql.com
+
+# Include this one only if your server also authenticates via cookies.
+Access-Control-Allow-Credentials: true
+```
+
+> If you can't change your CORS policy, you might be able to create a proxy for your endpoint and point the Explorer to the proxy instead. CORS policies are enforced by browsers, and the proxy won't have the same issues communicating to your endpoint.
+
+## Additional features
 
 ### Display
 
@@ -173,16 +212,6 @@ There are two display modes for query plans. You can switch between the "text" a
 You can use the Explorer for local development by creating a [development graph](./dev-graphs/) in Studio.
 
 Unlike _deployed_ graphs, dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever a dev graph detects schema changes, it pulls those changes and updates itself automatically. You can pause introspection polling at any time.
-
-### Networking
-
-#### CORS policies
-
-Requests from the Explorer go straight from your browser to your GraphQL server, so your endpoint will see requests coming from the `https://studio.apollographql.com` domain.
-
-It's common for public endpoints to have CORS policies that restrict which domains can query them. If your endpoint has CORS protections enabled, you probably need to safe-list https://studio.apollographql.com in your CORS policy to use the Explorer.
-
-If you can't change your CORS policy, you might be able to write a small proxy to your endpoint and point the Explorer to the proxy instead. CORS policies are enforced by browsers, and the proxy won't have the same issues communicating to your endpoint.
 
 ### Saving operations
 

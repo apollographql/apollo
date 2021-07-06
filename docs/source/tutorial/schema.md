@@ -199,7 +199,7 @@ server.listen().then(() => {
   console.log(`
     Server is running!
     Listening on port 4000
-    Explore at https://studio.apollographql.com/dev
+    Explore at https://studio.apollographql.com/sandbox
   `);
 });
 ```
@@ -212,43 +212,21 @@ Now that our server is running, we can **introspect** its schema types and field
 
 > Introspection is a helpful GraphQL feature that enables you to obtain a server's schema for development purposes. It should be **disabled** for servers running in production. Apollo Server disables introspection automatically if the `NODE_ENV` environment variable is set to `production`.
 
-### With Apollo Studio (recommended)
-
-The **Apollo Studio Explorer** is a powerful free web IDE for exploring your GraphQL schema and building queries against it:
+The **Apollo Studio Explorer** is a powerful, free web IDE for exploring your GraphQL schema and building queries against it:
 
 <img class="screenshot" src="../img/explorer-tab.jpg" />
 
-To use the Explorer with your locally running server, you create a **dev graph** in Apollo Studio, like so:
+Apollo provides a special version of the Explorer called **Apollo Sandbox**, which we can use without creating an Apollo account. Let's try it out!
 
-1. Visit [studio.apollographql.com/dev](https://studio.apollographql.com/dev).
+Visit [studio.apollographql.com/sandbox](https://studio.apollographql.com/sandbox). When Sandbox opens, it automatically attempts to connect to your server running at `http://localhost:4000`.
 
-    You'll be prompted to create an Apollo account if you don't already have one (again, Apollo accounts and the Explorer are completely free).
-
-2. In the form that appears, specify a name for your graph and your local server's URL (`http://localhost:4000` for this tutorial). **Note that your local server must be running.**
-
-    <img class="screenshot" src="../img/dev-graph.jpg" width="450" alt="Dev graph form" />
-
-3. Click **Create graph**. Studio automatically opens the Explorer to use with your server!
-
-To introspect your server's schema in the Explorer, click the Documentation tab on the left side:
+To introspect your server's schema in Sandbox, click the Documentation tab on the left side:
 
 <img class="screenshot" src="../img/explorer-documentation-tab.jpg" alt="Explorer documentation tab" width="200"/>
 
 Your schema's root types (`Query` and `Mutation`) appear. You can click any type to view its fields and step down into your schema. You'll see that the types and fields match what we provided to our server.
 
 > [Learn more about the Apollo Studio Explorer](https://www.apollographql.com/docs/studio/explorer/)
-
-### With GraphQL Playground
-
-[GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/) is an open-source tool for querying your GraphQL server. It provides fewer features than the Apollo Studio Explorer, but it does everything we need for this tutorial. It's also included in every Apollo Server installation.
-
-With your server running, visit `localhost:4000` in your browser to open GraphQL Playground. To introspect your server's schema, click the **Schema** button on the right side:
-
-<img src="../images/schematab.png" alt="Schema button">
-
-Your schema's queries, mutations, and object type definitions appear:
-
-<img src="../images/moredetailsonatype.png" alt="More details on a Schema Type">
 
 ---
 

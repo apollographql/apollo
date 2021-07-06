@@ -4,7 +4,7 @@ sidebar_title: '5. Connect to Apollo Studio'
 description: Learn about essential developer tooling
 ---
 
-> Time to accomplish: 10 Minutes
+> Time to accomplish: 10 minutes
 
 Great work! We have a running GraphQL server that interacts with data from multiple sources. Now before we jump over to the client side, let's turn on some powerful tooling.
 
@@ -26,7 +26,7 @@ In Apollo Studio, each **graph** is a distinct data graph with a corresponding G
 
 1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
 2. Provide a name for your graph and set the **Graph type** to **Deployed**.
-    > Earlier, we [created a private _development_ graph](./schema/#with-apollo-studio-recommended) with Studio. This time we're creating a _deployed_ graph, which is shared with other members of our organization.
+    > A deployed graph is shared with other members of your organization. A development graph is private to you.
 3. Click **Next**. A dialog appears instructing you to register your schema. We'll do that in the next step.
 
 ## Connect your server
@@ -74,7 +74,7 @@ Connecting your server to Apollo Studio activates a variety of powerful features
 
 ### The Explorer
 
-As shown [earlier in the tutorial](./schema/#explore-your-schema) the Apollo Studio Explorer provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
+As shown [earlier in the tutorial](./schema/#explore-your-schema) with Sandbox, the Apollo Studio Explorer provides a comprehensive view into your schema, including all documentation strings you include in it. Use it to build queries and execute them on your server.
 
 <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 

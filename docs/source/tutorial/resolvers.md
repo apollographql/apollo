@@ -94,7 +94,7 @@ server.listen().then(() => {
   console.log(`
     Server is running!
     Listening on port 4000
-    Explore at https://studio.apollographql.com/dev
+    Explore at https://studio.apollographql.com/sandbox
   `);
 });
 ```
@@ -103,12 +103,9 @@ By providing your resolver map to Apollo Server like so, it knows how to call re
 
 ## Run test queries
 
-Let's run a test query on our server! Start it up with `npm start` and open whichever tool you previously used to [explore your schema](./schema/#explore-your-schema):
+Let's run a test query on our server! Start it up with `npm start` and return to [Apollo Sandbox](https://studio.apollographql.com/sandbox/) (which we previously used to [explore our schema](./schema/#explore-your-schema)).
 
-* The Explorer in [Apollo Studio](https://studio.apollographql.com/dev)
-* GraphQL Playground at `localhost:4000`
-
-Paste the following query into the tool's editor panel:
+Paste the following query into the Operations panel:
 
 ```graphql
 # We'll cover more about the structure of a query later in the tutorial.
@@ -320,7 +317,7 @@ module.exports = {
 };
 ```
 
-Let's test the cursor-based pagination we just implemented. Restart your server with `npm start` and run this query in the Explorer/GraphQL Playground:
+Let's test the cursor-based pagination we just implemented. Restart your server with `npm start` and run this query in Apollo Sandbox:
 
 ```graphql
 query GetLaunches {

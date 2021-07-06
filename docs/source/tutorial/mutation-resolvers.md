@@ -121,7 +121,7 @@ To match our schema, these two resolvers both return an object that conforms to 
 
 ## Run test mutations
 
-We're ready to test out our mutations! Restart your server and return to the Apollo Studio Explorer or GraphQL Playground in your browser.
+We're ready to test out our mutations! Restart your server and return to [Apollo Sandbox](https://studio.apollographql.com/sandbox/).
 
 ### Obtain a login token
 

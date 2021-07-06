@@ -31,7 +31,7 @@ module.exports = LaunchAPI;
 
 The `RESTDataSource` class automatically caches responses from REST resources with no additional setup. We call this feature **partial query caching**. It enables you to take advantage of the caching logic that the REST API already exposes.
 
-> To learn more about partial query caching with Apollo data sources, check out [this blog post](https://blog.apollographql.com/easy-and-performant-graphql-over-rest-e02796993b2b).
+> To learn more about partial query caching with Apollo data sources, check out [this blog post](https://www.apollographql.com/blog/backend/easy-and-performant-graphql-over-rest-e02796993b2b/).
 
 ### Write data-fetching methods
 
@@ -177,7 +177,7 @@ server.listen().then(() => {
   console.log(`
     Server is running!
     Listening on port 4000
-    Explore at https://studio.apollographql.com/dev
+    Explore at https://studio.apollographql.com/sandbox
   `);
 });
 ```
