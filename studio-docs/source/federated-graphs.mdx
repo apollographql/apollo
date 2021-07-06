@@ -79,10 +79,15 @@ schema @contact(
   description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
 ) {
   query: Query
+
+  # Also include these if your schema defines
+  # the Mutation and/or Subscription type:
+  # mutation: Mutation
+  # subscription: Subscription
 }
 ```
 
-Note that the `schema` object can’t be empty, so you need to add the `query` field as shown above if it isn’t already present.
+As shown, the `schema` object must include a field for each root operation type (`Query`, `Mutation`, and/or `Subscription`) that's defined in your schema.
 
 #### Supported `@contact` fields
 
