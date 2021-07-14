@@ -41,6 +41,7 @@ module.exports = {
             '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
             'resources/faq',
+            'resources/release-stages',
           ],
         },
       },
