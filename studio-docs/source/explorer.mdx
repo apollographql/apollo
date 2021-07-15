@@ -49,7 +49,7 @@ When you execute your first query, the Explorer prompts you for the URL of your 
 
 The Explorer’s operation editor is built on [Monaco](https://microsoft.github.io/monaco-editor/). It provides common features of query-building tools, including:
 
-* Panels for specifying headers and variables
+* Panels for specifying headers, variables, and environment variables
 * Persistence across sessions
 * Keyboard shortcuts (click the keyboard icon in the bottom-right corner of the operation editor to view all available shortcuts)
 
@@ -101,9 +101,11 @@ The Explorer currently enables you to authenticate via [request headers](#reques
 
 #### Request headers
 
-The bottom of the Explorer editor provides a Headers section where you can set headers that are included in your operation's HTTP request.
+The bottom panel of the Explorer includes a Headers tab where you can set headers that are included in your operation's HTTP request.
 
-> **Beta feature:** You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer. To request access to this beta feature, please contact **support@apollographql.com**.
+Headers can include the values of [environment variables](#environment-variables), as shown:
+
+<img class="screenshot" src="./img/explorer-headers.jpg" alt="Setting Explorer headers with environment variables" width="500"/>
 
 #### Cookies
 
@@ -117,6 +119,20 @@ Access-Control-Allow-Credentials: true
 ```
 
 Once configured, requests sent from `https://studio.apollographql.com` will carry the cookies from your domain when you run queries with the Explorer. If you're logged in on your domain, requests from the Explorer will also be logged in. If you log out on your domain and the cookie is removed, requests from the Explorer will be logged out.
+
+#### Environment variables
+
+The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in header values or [preflight scripts](#preflight-scripts-beta). This enables you to share operations (including headers) with other team members _without_ exposing sensitive data.
+
+For example, you can define a `token` environment variable like so:
+
+<img class="screenshot" src="./img/explorer-env-vars.jpg" alt="Setting Explorer environment variables" width="500"/>
+
+You can then include that environment variable in header values with the following syntax:
+
+<img class="screenshot" src="./img/explorer-headers.jpg" alt="Setting Explorer headers with environment variables" width="500"/>
+
+When you share this operation, the value of `token` is _not_ shared, and other users can provide their own.
 
 #### Preflight Scripts (beta)
 
@@ -261,6 +277,14 @@ Mocked responses are helpful if you want to get a feel for the shape of a query'
 As you build your query, the Explorer runs partial queries under the hood and shows their results in-line. This is helpful when you want to get a sense of the data you'll get back in your full operation response. It can also help you retrieve a quick answer to a query without needing to click the Run button.
 
 The Explorer does not show response hints for mutations (this requires running partial mutations, which is unsafe).
+
+#### Default headers
+
+> Set **Default Headers** from the Explorer's Settings tab.
+
+> **WARNING:** Do not use **default headers** to provide sensitive information, such as an access token. Instead, use [environment variables](#environment-variables)
+
+You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer.
 
 #### Field latency hints
 
