@@ -49,7 +49,7 @@ When you execute your first query, the Explorer prompts you for the URL of your 
 
 The Explorer’s operation editor is built on [Monaco](https://microsoft.github.io/monaco-editor/). It provides common features of query-building tools, including:
 
-* Panels for specifying headers and variables
+* Panels for specifying headers, variables, and environment variables
 * Persistence across sessions
 * Keyboard shortcuts (click the keyboard icon in the bottom-right corner of the operation editor to view all available shortcuts)
 
@@ -122,13 +122,13 @@ Once configured, requests sent from `https://studio.apollographql.com` will carr
 
 #### Environment variables
 
-The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in GraphQL variables, header values, or [preflight scripts](#preflight-scripts-beta). This enables you to share operations (including headers and variable values) with other team members _without_ exposing sensitive data.
+The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in header values or [preflight scripts](#preflight-scripts-beta). This enables you to share operations (including headers) with other team members _without_ exposing sensitive data.
 
 For example, you can define a `token` environment variable like so:
 
 <img class="screenshot" src="./img/explorer-env-vars.jpg" alt="Setting Explorer environment variables" width="500"/>
 
-You can then include that environment variable in header values and GraphQL variables with the following syntax:
+You can then include that environment variable in header values with the following syntax:
 
 <img class="screenshot" src="./img/explorer-headers.jpg" alt="Setting Explorer headers with environment variables" width="500"/>
 
