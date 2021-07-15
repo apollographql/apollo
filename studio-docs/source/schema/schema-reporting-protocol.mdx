@@ -26,34 +26,6 @@ All requests to this endpoint require a **graph API key** as authentication.
 
 The following sections illustrate the communication sequence between a GraphQL server (hereafter referred to as the **edge server**) and the schema reporting endpoint (**Apollo**):
 
-### Diagram
-
-```mermaid
-sequenceDiagram
-    participant Edge Server
-    participant Apollo
-    Edge Server->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = false)
-    alt The specified schema ID is already registered
-        Apollo->>Edge Server: Response(withExecutableSchema = false, inSeconds = 57s)
-        Note over Edge Server: Wait 57 seconds
-        Note over Edge Server: Go to top
-    else The specified schema ID is NOT already registered
-        Apollo->>Edge Server: Response(withExecutableSchema = true, inSeconds = 0s)
-        Note over Edge Server: Wait 0 seconds
-        Edge Server->>Apollo: reportServerInfo(EdgeServerInfo(…) executableSchema = '…')
-        Note over Apollo: Persist schema
-        Apollo->>Edge Server: Response(withExecutableSchema = false, inSeconds = 62s)
-        Note over Edge Server: Wait 62 seconds
-        Note over Edge Server: Go to top
-    else reportServerInfo request is malformed or otherwise invalid
-        Apollo->>Edge Server: Error(code, message)
-        Note over Edge Server: Stop until error is fixed
-    else reportServerInfo request failed with non-2xx HTTP response
-        Note over Edge Server: Wait 20 seconds
-        Note over Edge Server: Go to top
-    end
-```
-
 ### Step-by-step description
 
 1. **On startup**, the edge server executes the `service.reportServerInfo` mutation, providing an `EdgeServerInfo` object with the server's details as input.
@@ -62,6 +34,7 @@ sequenceDiagram
 2. **If the mutation succeeds**, Apollo responds with a `ReportServerInfoResponse` object. This response tells the edge server:
     * How many seconds to wait before sending the next `reportServerInfo` request
     * Whether the next `reportServerInfo` request should include the `executableSchema` that corresponds to the `executableSchemaId` provided in the previous request.
+    * Whether the next `reportServerInfo` request should include the `recipeSchema` that corresponds to the `recipeSchemaId` provided in the previous request.
 
     **If the mutation fails**, Apollo responds with a `ReportServerInfoError` object. **In this case, the edge server should stop reporting its schema.**
     * The `message` field of `ReportServerInfoError` provides a human-readable message describing the error.
@@ -74,12 +47,15 @@ sequenceDiagram
 
 ```
 val info = EdgeServerInfo(..)
-val schema = normalize("type Query { .. }")
-var withSchema = false
+val executableSchema = normalize("type Query { .. }")
+val recipeSchema = "type Query { .. }"
+var withExecutableSchema = false
+var withRecipeSchema = false
 
 function sendReport() {
-  val executableSchema = if (withSchema) null else schema
-  val response = reportServerInfo(info, executableSchema)
+  val executableSchema = if (withExecutableSchema) null else executableSchema
+  val executableSchema = if (withRecipeSchema) null else recipeSchema
+  val response = reportServerInfo(info, executableSchema, recipeSchema)
 
   if (response.code) {
     throw exception
@@ -103,6 +79,7 @@ The schema reporting protocol uses the following GraphQL types, referred to in [
 input EdgeServerInfo {
   bootId: String!
   executableSchemaId: String!
+  recipeSchemaId: String
   graphVariant: String! = "current"
   libraryVersion: String
   platform: String
@@ -114,11 +91,13 @@ input EdgeServerInfo {
 interface ReportServerInfoResult {
   inSeconds: Int!
   withExecutableSchema: Boolean!
+  withRecipeSchema: Boolean!
 }
 
 type ReportServerInfoResponse implements ReportServerInfoResult {
   inSeconds: Int!
   withExecutableSchema: Boolean!
+  withRecipeSchema: Boolean!
 }
 
 type ReportServerInfoError implements ReportServerInfoResult {
@@ -126,6 +105,7 @@ type ReportServerInfoError implements ReportServerInfoResult {
   inSeconds: Int!
   message: String!
   withExecutableSchema: Boolean!
+  withRecipeSchema: Boolean!
 }
 
 type Mutation {
@@ -148,7 +128,8 @@ type ServiceMutation {
 | Name  | Type | Description  |
 |---|---|---|
 | `bootId` | `String!` | A randomly generated UUID that's unique for each instance of your edge server. Set this value on server startup (a given value should not persist across restarts). |
-| `executableSchemaId` | `String!` | A unique identifier for the edge server's schema. Should be the hexadecimal string representation of the schema document's SHA-256 hash. |
+| `executableSchemaId` | `String!` | A unique identifier for the edge server's executable schema. Should be the hexadecimal string representation of the schema document's SHA-256 hash. |
+| `recipeSchemaId` | `String!` | A unique identifier for the edge server's recipe schema (cSDL). Should be the hexadecimal string representation of the schema document's SHA-256 hash. |
 
 ### Recommended fields
 
