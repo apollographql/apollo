@@ -1,5 +1,6 @@
 ---
-title: The Apollo platform
+title: The Apollo GraphQL platform
+sidebar_title: The Apollo platform
 description: Bring your data graph from prototype to production
 ---
 

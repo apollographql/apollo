@@ -3,17 +3,70 @@ title: GraphQL FAQ
 sidebar_title: FAQ
 ---
 
-This article seeks to answer common questions about GraphQL, organized by different phases in the GraphQL adoption timeline.
+This article answers common questions about GraphQL, organized by phases in the GraphQL adoption timeline.
 
-## Learning GraphQL
+## 1. Learning GraphQL
 
 You're just getting started with GraphQL. You're learning about syntax, running queries, schemas, and how to connect your existing services to your GraphQL layer.
 
 ### What is GraphQL?
 
-GraphQL is a language for querying data. With GraphQL, your back-end services define a strongly-typed [schema](https://www.apollographql.com/docs/apollo-server/schema/schema/) that describes the data they can provide (via databases, REST APIs, and other sources). Clients then execute queries against that schema to describe the data they need.
+**GraphQL is a language for querying data.** Unlike most query languages (such as SQL), you _don't_ use GraphQL to query a particular type of data store (such as a MySQL database). Instead, **you use GraphQL to query data from any number of different sources.**
 
-GraphQL is _not_ a database.
+With GraphQL, a client (such as a web app) doesn't need to know which data store contains the information it needs. Instead, clients send queries to your **GraphQL server** (usually over HTTP), which then fetches data from the appropriate data stores.
+
+Here's an example query:
+
+```graphql
+# Fetches a list of Book objects, each with a title and author
+query GetBooks {
+  books {
+    title
+    author
+  }
+}
+```
+
+Your GraphQL server defines a strongly-typed [schema](https://www.apollographql.com/docs/apollo-server/schema/schema/) that describes the data that clients can query for. Clients execute queries that conform to this schema's structure.
+
+Here's an example GraphQL schema that supports the example query above:
+
+```graphql:title=schema.graphql
+type Book {
+  title: String
+  author: String
+  isbn: String
+}
+
+# The root fields of a query are always fields of the special
+# Query type. These root fields are also called "entry points"
+# into your schema.
+type Query {
+  # Returns a list of Book objects
+  books: [Book]
+}
+```
+
+> Notice that the example query above doesn't fetch the `isbn` field that's defined here. It doesn't need to! GraphQL enables clients to query for exactly the fields they need, with no overhead.
+
+Your GraphQL server uses a collection of special functions called [resolvers](https://www.apollographql.com/docs/apollo-server/data/resolvers/) that each know how to populate data for a particular schema field by communicating with different data sources (databases, REST APIs, etc.). When a query is fully resolved, your server responds to the client with the result, which matches the query's structure:
+
+```json
+{
+  "data": {
+    "books": [
+      {
+        "title": "The Awakening",
+        "author": "Kate Chopin"
+      },
+      {
+        "title": "City of Glass",
+        "author": "Paul Auster"
+      }
+    ]
+  }
+}
+```
 
 ### Why use GraphQL?
 
@@ -53,7 +106,7 @@ The Apollo platform has tools available to connect almost any kind of client to 
 
 For Apollo Client projects, there are also many view-layer integrations to make querying GraphQL schemas easier in [React](https://www.apollographql.com/docs/react/), [Vue](https://apollo.vuejs.org/), and [Angular](https://apollo-angular.com/docs/).
 
-## Building a proof of concept
+## 2. Building a proof of concept
 
 You understand how GraphQL works and the benefits it offers. You're trying to create a proof of concept for your project or company to test GraphQL's viability in production.
 
@@ -81,7 +134,7 @@ GraphQL is resilient to some of these errors. Because the schema is strongly typ
 
 For errors not prevented by the type system, it's helpful to know what exact queries were made, and with what variables. [Apollo Studio](https://www.apollographql.com/docs/studio/) is a tool that does exactly this. It can help discover and reproduce errors by showing the exact conditions in which the error occurred.
 
-## Moving a feature to GraphQL
+## 3. Moving a feature to GraphQL
 
 You've decided to use GraphQL in production. You don't want to immediately refactor the APIs or apps. You want to move a single feature over to GraphQL to learn how to use it and monitor it in production.
 
@@ -123,7 +176,7 @@ Many apps and sites are powered almost completely by an API such as a GraphQL sc
 
 Apollo Studio also has some integrations to make monitoring easier. The [Slack Integration](https://www.apollographql.com/docs/studio/integrations#slack) delivers daily reports to give teams a quick overview of the health of their schema. The [Datadog integration](https://www.apollographql.com/docs/studio/integrations#datadog)) works with existing Datadog accounts, to help teams track schema performance.
 
-## Moving a product to GraphQL
+## 4. Moving a product to GraphQL
 
 You have a good understanding of how to write, deploy, and monitor GraphQL in production. You are looking to scale GraphQL features to your entire product line.
 
