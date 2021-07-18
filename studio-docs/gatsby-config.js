@@ -53,6 +53,7 @@ module.exports = {
           'Security': [
             'api-keys',
             'operation-registry',
+            'audit-log',
             'data-privacy',
             'sub-processors'
           ],
