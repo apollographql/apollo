@@ -8,6 +8,7 @@ module.exports = {
         ...themeOptions,
         root: __dirname,
         pathPrefix: '/docs',
+        algoliaIndexName: 'basics',
         subtitle: 'Apollo Basics',
         description: 'How to use the Apollo GraphQL platform',
         githubRepo: 'apollographql/apollo',
