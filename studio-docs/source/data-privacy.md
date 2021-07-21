@@ -34,7 +34,7 @@ All data sent to Apollo Studio is sent to an endpoint with one of the following 
 | `https://edge-server-reporting.api.apollographql.com` | Schema registration via schema reporting in Apollo Server (v2.15.0-2.17.x) |
 | `https://engine-graphql.apollographql.com` | All Apollo CLI (v2.30 and earlier) commands that communicate with Studio |
 | `https://storage.googleapis.com` | Apollo Server with Apollo Gateway (v0.15.1 and earlier) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/), or with the [operation registry plugin](https://www.apollographql.com/docs/studio/operation-registry/) (v0.3.1 and earlier) |
-| `https://federation.api.apollographql.com` | Apollo Server with Apollo Gateway (v0.16.0-v0.34.0) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/) |
+| `https://federation.api.apollographql.com` | Apollo Server with Apollo Gateway (v0.16.0-v0.33.0) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/) |
 
 
 If your environment uses a corporate proxy or firewall, you might need to configure it to allow outbound traffic to these domains. Note that data might be sent to multiple endpoints in a given domain.
