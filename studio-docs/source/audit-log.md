@@ -15,3 +15,26 @@ Actions taken in your organization will appear in exported logs about 10-15 minu
 Audit exports can sometimes take a few minutes to process. Studio will email you with a link to your export when it's ready, and you will also be able to find that link in the audit exports table. Audit export files will be available to download for 30 days.
 
 Only **Organization Admins** can request audit exports.
+
+## Audited events
+
+All material changes to your Studio account are logged in the audit log. This includes:
+- Graph Changes
+  - graphs created and deleted
+  - graph titles, descriptions, or avatars changed
+  - API keys created, renamed, or deleted
+  - datadog configuration changed
+  - hidden/visible property changed
+  - graph role overrides changed
+  - variants created
+
+- User Changes
+  - user added to or removed from org
+  - user role changed in org
+  - beta features toggled on/off
+  - user API keys created, renamed, or deleted
+  - password changed or password reset attempted
+  - avatar or email changed
+  - submitted a support ticket
+  - email verified
+  - user deleted
