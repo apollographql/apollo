@@ -13,6 +13,8 @@ You're just getting started with GraphQL. You're learning about syntax, running 
 
 **GraphQL is a language for querying data.** Unlike most query languages (such as SQL), you _don't_ use GraphQL to query a particular type of data store (such as a MySQL database). Instead, **you use GraphQL to query data from any number of different sources.**
 
+> Also check out [this Apollo blog post](https://www.apollographql.com/blog/graphql/basics/what-is-graphql-introduction/).
+
 With GraphQL, a client (such as a web app) doesn't need to know which data store contains the information it needs. Instead, clients send queries to your **GraphQL server** (usually over HTTP), which then fetches data from the appropriate data stores.
 
 Here's an example query:
