@@ -1,8 +1,8 @@
-[dev]
-  command = "npm run build"
 [build]
   command = "gatsby build"
 [context.production.environment]
   PREFIX_PATHS = "true"
+[dev]
+  command = "npm run build"
 [context.dev.environment]
   SKIP_INDEXING = "false"
