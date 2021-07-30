@@ -18,10 +18,10 @@ export default function DocsetMenu() {
     <MenuWrapper className="menu-wrapper">
       {navItems
         .filter(navItem => !navItem.omitLandingPage)
-        .map((navItem, index) => (
+        .map((navItem) => (
           <MenuItem
             key={navItem.url}
-            icon={<DocsetIcon docset={navItem.docset} />}
+            icon={<DocsetIcon docset={navItem.docset === 'apollo-server' ? 'server' : navItem.docset} />}
             title={<StyledLink href={navItem.url}>{navItem.title}</StyledLink>}
           >
             <NavItemDescription>{navItem.description}</NavItemDescription>
