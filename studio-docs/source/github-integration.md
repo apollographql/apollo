@@ -9,7 +9,7 @@ To improve the convenience and helpfulness of [schema checks](/schema-checks/), 
 
 ## Install the GitHub application
 
-Go to [https://github.com/marketplace/apollo-studio](https://github.com/marketplace/apollo-studio) and click the `Install it for free` button at the bottom of the page to install the Apollo Studio integration on the GitHub profile or organization that you want to set up checks for.
+Go to [https://github.com/marketplace/apollo-studio#pricing-and-setup](https://github.com/marketplace/apollo-studio#pricing-and-setup) and click the `Install it for free` button to install the Apollo Studio integration on the GitHub profile or organization that you want to set up checks for.
 
 ## Run a check on each commit
 
