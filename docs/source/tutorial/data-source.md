@@ -146,6 +146,7 @@ Let's go over some of the methods in `src/datasources/user.js` that we use to fe
 - `cancelTrip({ launchId })`: Takes an object with a `launchId` and cancels that launch for the logged-in user.
 - `getLaunchIdsByUser()`: Returns all booked trips for the logged-in user.
 - `isBookedOnLaunch({ launchId })`: Determines whether the logged-in user has booked a trip on a particular launch.
+Don't worry too much about the functions that are used inside these methods such as `findOrCreate` or `findAll` - If you really want to know more about these querying functions you can look up their usage in the [Sequelize package](https://sequelize.org/master/manual/model-querying-basics.html). Sequelizer itself is initialized in the store and passed to the user api which we will do next.
 
 ## Add data sources to Apollo Server
 
