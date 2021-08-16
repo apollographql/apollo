@@ -1,5 +1,3 @@
-/ /docs/studio/
-
 /docs/studio/schema/registry/ /docs/studio/org/graphs/
 
 # Move managed federation docs into Federation docset
