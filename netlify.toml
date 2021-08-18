@@ -1,5 +1,4 @@
 [build]
-  publish = "public"
   command = "gatsby build"
 [context.production.environment]
   PREFIX_PATHS = "true"
