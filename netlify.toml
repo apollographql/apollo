@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 [build]
   command = "gatsby build"
 [context.production.environment]
   PREFIX_PATHS = "true"
-=======
->>>>>>> Upgrade docs theme and uncomment netlify.toml
 [dev]
   command = "npm run build"
 [context.dev.environment]
