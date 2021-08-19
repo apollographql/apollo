@@ -1,2 +1,4 @@
-[context.deploy-preview]
+[build]
   command = "gatsby build"
+[context.production.environment]
+  PREFIX_PATHS = "true"
