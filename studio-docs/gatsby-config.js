@@ -38,6 +38,7 @@ module.exports = {
             // operation usage
           ],
           'CI/CD': [
+            'launches',
             'schema-checks',
             'check-configurations',
             'validating-client-operations',
