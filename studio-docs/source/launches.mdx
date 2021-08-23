@@ -38,7 +38,7 @@ graph TB;
   subgraph "The steps of a launch"
   subgraphPublished(You publish a subgraph <br/>schema update to Apollo) --> composition(Apollo performs supergraph schema<br/>composition with latest subgraph schemas);
   composition --"If composition succeeds..."-->checks(Apollo runs schema checks if enabled);
-  checks-->uplink(Updated supergraph schema<br/>is published to Apollo Uplink);
+  checks-->uplink(Updated supergraph schema is<br/>made available via Apollo Uplink);
   uplink-->studio(Studio updates UI and sends<br/>build status webhook notifications<br/>to reflect new published schema);
   uplink --> gateways(Your gateway instances poll Uplink<br/>and fetch new published schema);
   studio --> complete(Launch complete);
