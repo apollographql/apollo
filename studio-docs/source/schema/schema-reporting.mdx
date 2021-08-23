@@ -73,10 +73,10 @@ Any GraphQL server can (and is encouraged to!) support automatic schema registra
 Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to the schema registry. If this occurs, the registry uses the following algorithm to choose which schema to register:
 
 ```mermaid
-graph TB;
-  activeSchema(Does the specified variant already have an active schema?);
-  exactReported("Does the active schema match any schema reported in the last 90 seconds?");
-  registerRecent(Register the schema most recently received by the registry);
+flowchart TB;
+  activeSchema(Does the specified variant already<br/>have an active schema?);
+  exactReported("Does the active schema match any schema<br/>reported in the last 90 seconds?");
+  registerRecent(Register the schema most recently<br/>received by the registry);
   keepActive(Keep the current active schema);
   activeSchema --"No"-->registerRecent;
   activeSchema --"Yes"-->exactReported;

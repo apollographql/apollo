@@ -1,0 +1,48 @@
+---
+title: Launches
+sidebar_title: Launches
+---
+
+> **Important:** Launch-related features are currently available only for [federated graphs](https://www.apollographql.com/docs/federation/).
+
+In Apollo Studio, a **launch** represents the complete process of making a set of updates to your deployed graph.
+
+For a federated graph, these updates might include:
+
+* Adding, removing, or modifying types and fields in a subgraph schema
+* Adding or removing entire subgraphs
+* Migrating types or fields between subgraphs
+
+In some cases, a launch might consist entirely of changes that don't affect your graph's public API (such as migrating fields between subgraphs).
+
+## Launch status
+
+Your graph's Launches page in Studio enables you to observe and monitor the schema delivery process for both in-progress and past launches:
+
+<img class="screenshot" src="./img/launches-page.jpg" width="500" />
+
+The green **PUBLISHED** badge indicates which launch corresponds to your graph's current published schema.
+
+Selecting a launch provides a breakdown of its individual steps and any errors or warnings that occurred during it:
+
+<img class="screenshot" src="./img/launch-details.jpg" width="500" />
+
+From this detail view, you can view the timestamp and other details for each step in the launch process, including any [schema checks](./schema-checks) that failed. You can also view the launch's associated supergraph schema (or any build errors if composition failed).
+
+## What's in a launch?
+
+For a federated graph, a launch encapsulates the following steps:
+
+```mermaid
+graph TB;
+  subgraph "The steps of a launch"
+  subgraphPublished(You publish a subgraph <br/>schema update to Apollo) --> composition(Apollo performs supergraph schema<br/>composition with latest subgraph schemas);
+  composition --"If composition succeeds..."-->checks(Apollo runs schema checks if enabled);
+  checks-->uplink(Updated supergraph schema is<br/>made available via Apollo Uplink);
+  uplink-->studio(Studio updates UI and sends<br/>build status webhook notifications<br/>to reflect new published schema);
+  uplink --> gateways(Your gateway instances poll Uplink<br/>and fetch new published schema);
+  studio --> complete(Launch complete);
+  gateways-->complete;
+  composition --"If composition fails,<br/>the launch fails"--> complete;
+  end
+```
