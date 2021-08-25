@@ -60,10 +60,10 @@ Set your graph API key as the value of the `APOLLO_KEY` environment variable in 
 
 If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add these definitions to the `.env` file in your project's root directory, like so:
 
-```bash:title=.env
+```bash{1-2}:title=.env
 APOLLO_KEY=YOUR_KEY_HERE
 APOLLO_SCHEMA_REPORTING=true
-APOLLO_GRAPH_REF=your-graph-id@your-graph-variant
+APOLLO_GRAPH_ID=your-graph-id
 ```
 
 > **Important:** If you use a `.env` file, **do not commit it to version control**. Always use `.gitignore` or a similar method to omit files that include secret credentials.
