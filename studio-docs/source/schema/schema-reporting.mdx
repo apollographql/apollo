@@ -17,15 +17,19 @@ Schema reporting is available in Apollo Server version 2.15 and later. To enable
 
     <ObtainGraphApiKey />
 
-2. Set this API key as the value of the `APOLLO_KEY` environment variable in your server's environment, and set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`.
+2. Set this API key as the value of the `APOLLO_KEY` environment variable in your server's environment, and also set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`.
 
-    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+    If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add these definitions to the `.env` file in your project's root directory, like so:
 
-    ```none:title=.env
+    ```bash{1-2}:title=.env
     APOLLO_KEY=YOUR_KEY_HERE
-    APOLLO_GRAPH_ID=your-graph-id
     APOLLO_SCHEMA_REPORTING=true
+    APOLLO_GRAPH_REF=your-graph-id@your-graph-variant
     ```
+
+    > **Important:** If you use a `.env` file, **do not commit it to version control**. Always use `.gitignore` or a similar method to omit files that include secret credentials.
+    >
+    > You can alternatively provide these values to Apollo Server via the [`apollo` constructor option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#apollo), but again, **do not add secret credentials to your application source**.
 
 Now every time your server finishes starting up, it waits a random amount of time between zero and ten seconds before automatically registering its schema ([you can customize this time range](#customizing-schema-reporting-behavior-in-apollo-server)).
 
@@ -33,13 +37,12 @@ Now every time your server finishes starting up, it waits a random amount of tim
 
 Your server can register its schema to a particular [variant of your graph](../org/graphs/#managing-variants). Each of your server's environments (development, staging, production, etc.) should register to a different variant.
 
-To do so with Apollo Server, set the `APOLLO_GRAPH_VARIANT` environment variable in each server environment:
+To do so with Apollo Server, you specify a variant as part of the `APOLLO_GRAPH_REF` environment variable:
 
-```none:title=.env
+```bash{3}:title=.env
 APOLLO_KEY=YOUR_KEY_HERE
-APOLLO_GRAPH_ID=your-graph-id
-APOLLO_GRAPH_VARIANT=staging
 APOLLO_SCHEMA_REPORTING=true
+APOLLO_GRAPH_REF=your-graph-id@your-graph-variant
 ```
 
 If you don't specify a variant, Apollo Server reports its schema to the default variant (named `current`).
