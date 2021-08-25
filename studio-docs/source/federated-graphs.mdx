@@ -22,6 +22,35 @@ Apollo Studio provides tools to help multiple teams collaborate on a federated g
 
 <VideoFrame src="https://www.youtube.com/embed/QaxmqfXl8HI"/>
 
+## Variants and federated graphs
+
+Just like any other graph in Studio, a federated graph can have multiple [variants](./org/graphs/#managing-variants). Each variant has its own schema, change history, and metrics.
+
+In addition, different variants of a federated graph can have completely different sets of subgraphs:
+
+```mermaid
+graph BT;
+  subgraph "Staging"
+  gateway2(["Gateway"]);
+  users2[Users];
+  products2[Products];
+  reviews2[Reviews];
+  gateway2 --- users2 & products2 & reviews2;
+  end
+
+  subgraph "Production"
+  gateway(["Gateway"]);
+  users[Users];
+  products[Products];
+  gateway --- users & products;
+  end
+```
+
+This helps you test out adding new subgraphs (or removing existing ones) in non-production environments.
+
+You specify a subgraph instance's associated variant when you [register its schema](https://www.apollographql.com/docs/federation/managed-federation/setup/#2-register-all-subgraph-schemas).
+
+
 ## Viewing a field's originating subgraph
 
 The **Schema > Reference** tab in Studio displays a table of your federated schema’s types and fields. This table includes a Subgraph column:
