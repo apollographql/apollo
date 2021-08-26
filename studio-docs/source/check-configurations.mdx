@@ -27,9 +27,9 @@ In [Apollo Studio](https://studio.apollographql.com), you can configure default 
 
 You can customize a single run of schema checks by providing options to the CLI command you use. If you've _also_ [configured default rules](#using-apollo-studio-recommended) for schema checks, any command-line options you provide take precedence over those rules.
 
-> **Note:** The examples below use the Rover CLI command `rover graph check`. If you're using the Apollo CLI command `apollo service:check`, option names differ slightly (e.g., `--queryCountThresholdPercentage` instead of `--query-percentage-threshold`).
+> **Note:** The examples below use the Rover CLI command `rover graph check`.
 >
->Run `apollo help service:check` for details.
+> If you're using the now-deprecated Apollo CLI command `apollo service:check`, option names differ slightly (e.g., `--queryCountThresholdPercentage` instead of `--query-percentage-threshold`). Run `apollo help service:check` for details.
 
 ### Validation period
 
@@ -63,7 +63,7 @@ Here's an example of running `rover graph:check` with threshold values:
 ```bash
 rover graph check docs-example-graph@current \
 # Path to schema file
---schema ./schema.graphql 
+--schema ./schema.graphql
 # Check the schema against operations that have run in the last 5 days
 --validation-period=P5D \
 # Only check against operations that have run at least 5 times during the 5-day duration
@@ -85,7 +85,7 @@ rover graph check docs-example-graph@staging --schema ./schema.graphql
 ```
 
 The graph ref `docs-example-graph@staging` specifies the `staging` variant of the `docs-example-graph` graph.
- 
+
 > In the Apollo CLI, you instead provide a `--variant` option to `apollo service:check`.
 
 To check your schema against multiple variants, call `rover graph check` once for each variant. Doing so results in status checks similar to the following:
