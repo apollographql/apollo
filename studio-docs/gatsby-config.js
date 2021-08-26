@@ -37,9 +37,10 @@ module.exports = {
             // field usage
             // operation usage
           ],
-          'CI/CD': [
+          'Schema Delivery': [
             'schema-checks',
             'check-configurations',
+            'launches',
             'validating-client-operations',
             'github-integration',
           ],
