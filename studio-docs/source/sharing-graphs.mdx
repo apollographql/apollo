@@ -1,0 +1,50 @@
+---
+title: Sharing your graph
+---
+
+import {
+  ExpansionPanel,
+} from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
+
+Apollo Studio provides features that help you share your graph with both teammates and external consumers.
+
+
+## Making a graph public
+
+You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, people _outside_ your organization can view the following pages for that variant in Studio:
+
+* Home
+* Schema
+* Explorer
+
+This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the variant's README](#customizing-a-graphs-homepage). They can also run operations against your graph with the Explorer.
+
+People outside your organization can't view any _other_ pages for a public variant (Fields, Operations, etc.), and they can never view _any_ pages for private variants. New variants always start as private.
+
+> **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can set a variant's visibility.
+
+**To make a variant public:**
+
+1. Go to your graph's Settings page and open the Access tab.
+2. Under the Variants section, toggle the switch for the variant you want to make public.
+3. Confirm your selection.
+
+You can make a public variant private by toggling the switch back.
+
+## Embedding the Explorer
+
+TODO
+
+## Customizing a graph's homepage
+
+When a user opens one of your graph's variants in Apollo Studio, its **homepage** is shown:
+
+Like a typical Git repository's homepage, this page displays a Markdown-based README that you can edit with any content you like.
+
+> **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
+
+**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to your graph's other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
+
+### README shortcodes
+
+The README supports a collection of variables that you can include in its text. These variables are rendered with the correct value for the current variant.
