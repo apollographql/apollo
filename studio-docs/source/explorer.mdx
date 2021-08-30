@@ -7,7 +7,6 @@ import { VideoFrame } from 'gatsby-theme-apollo-docs'
 import { Button } from '@apollo/space-kit/Button';
 import { Link } from 'gatsby';
 import { colors } from 'gatsby-theme-apollo-core';
-import { EmbeddedExplorer } from "../components/embedded-explorer";
 
 The Apollo Studio Explorer is a powerful web IDE for creating, running, and managing GraphQL operations:
 
@@ -316,64 +315,157 @@ query StarWarsGenderStats {
 
 You can embed The Explorer into your websites, so folks can query your public variants. This example allows you to make queries to our Acephei example graph.
 
-<EmbeddedExplorer/>
+// TODO: (MAYA) add the gatsby theme embedded explorer here <EmbeddedExplorer/>
 
 You will need to configure the parent app that embeds The Explorer to accept post messaged network requests from The Explorer, and to post message the responses back to The Explorer. You can do so with the following code snippet. You will need to replace the url to fetch from with your graphs url, and the graph ref in the EMBEDDABLE_EXPLORER_URL with your graph ref.
 
 ```none:
-const EMBEDDABLE_EXPLORER_URL = 'https://embed.apollo.local:3000/?graphRef=acephei@current&docsPanelState=closed';
+import { SubscriptionClient } from "subscriptions-transport-ws";
+
+const EMBEDDABLE_EXPLORER_URL =
+  "https://explorer.embed.apollographql.com/?graphRef=Apollo-Fullstack-Demo-o3tsz8@current&docsPanelState=closed";
+
+const SUBSCRIPTION_TERMINATION = "ExplorerSubscriptionTermination";
+const EXPLORER_QUERY_MUTATION_REQUEST = "ExplorerRequest";
+const EXPLORER_SUBSCRIPTION_REQUEST = "ExplorerSubscriptionRequest";
+const EXPLORER_QUERY_MUTATION_RESPONSE = "ExplorerResponse";
+const EXPLORER_SUBSCRIPTION_RESPONSE = "ExplorerSubscriptionResponse";
+
+function getHeadersWithContentType(headers) {
+  const headersWithContentType = headers ?? {};
+  if (
+    Object.keys(headersWithContentType).every(
+      (key) => key.toLowerCase() !== "content-type"
+    )
+  ) {
+    headersWithContentType["content-type"] = "application/json";
+  }
+  return headersWithContentType;
+}
+
 async function executeOperation({
   operation,
   operationName,
   variables,
   headers,
+  embeddedExplorerIFrame,
+  operationId,
 }) {
-  if (
-    headers &&
-    Object.keys(headers).every(
-      (key) => key.toLowerCase() !== 'content-type',
-    )
-  ) {
-    headers['content-type'] = 'application/json';
-  }
   const response = await fetch(
-    "https://acephei-gateway.herokuapp.com",
+    "https://apollo-fullstack-tutorial.herokuapp.com/",
     {
-      method: 'POST',
-      headers,
+      method: "POST",
+      headers: getHeadersWithContentType(headers),
       body: JSON.stringify({
         query: operation,
         variables,
         operationName,
       }),
-    },
-  )
-  return await response.json();
+    }
+  );
+  await response.json().then((response) => {
+    embeddedExplorerIFrame?.contentWindow?.postMessage(
+      {
+        name: `${EXPLORER_QUERY_MUTATION_RESPONSE}:${operationId}`,
+        response,
+      },
+      EMBEDDABLE_EXPLORER_URL
+    );
+  });
 }
+
+async function executeSubscription({
+  operation,
+  operationName,
+  variables,
+  headers,
+  embeddedExplorerIFrame,
+  operationId,
+}) {
+  const getClient = () => {
+    try {
+      return new SubscriptionClient(
+        "wss://apollo-fullstack-tutorial.herokuapp.com/graphql",
+        {
+          reconnect: true,
+          lazy: true,
+          connectionParams: headers ?? {},
+        }
+      );
+    } catch {
+      return undefined;
+    }
+  };
+  const client = getClient();
+
+  client
+    ?.request({
+      query: operation,
+      operationName,
+      variables: variables ?? undefined,
+    })
+    .subscribe({
+      next(response) {
+        embeddedExplorerIFrame?.contentWindow?.postMessage(
+          {
+            name: `${EXPLORER_SUBSCRIPTION_RESPONSE}:${operationId}`,
+            response,
+          },
+          EMBEDDABLE_EXPLORER_URL
+        );
+      },
+    });
+
+  const checkForSubscriptionTermination = (event) => {
+    if (event.data.name?.startsWith(SUBSCRIPTION_TERMINATION)) {
+      client?.unsubscribeAll();
+      window.removeEventListener("message", checkForSubscriptionTermination);
+    }
+  };
+
+  window.addEventListener("message", checkForSubscriptionTermination);
+}
+
 const onPostMessageReceived = (event) => {
-  const isQueryOrMutation = event.data.name?.startsWith('ExplorerRequest:');
-  const isSubscription = event.data.name?.startsWith('ExplorerSubscriptionRequest:');
-  const currentOperationId = event.data.name?.split(':')[1]
-  if(isQueryOrMutation || isSubscription) {
-    if(event.data.operation){
+  const isQueryOrMutation =
+    "name" in event.data &&
+    event.data.name?.startsWith(`${EXPLORER_QUERY_MUTATION_REQUEST}:`);
+  const isSubscription =
+    "name" in event.data &&
+    event.data.name?.startsWith(`${EXPLORER_SUBSCRIPTION_REQUEST}:`);
+
+  if (
+    (isQueryOrMutation || isSubscription) &&
+    event.data.name &&
+    event.data.operation
+  ) {
+    const operationId = event.data.name.split(":")[1];
+    const embeddedExplorerIFrame =
+      document.getElementById("embedded-explorer") ?? undefined;
+    const { operation, operationName, variables, headers } = event.data;
+    if (isQueryOrMutation) {
       executeOperation({
         operation: event.data.operation,
-        operationName: event.data.operationName,
-        variables: event.data.variables,
-        headers: event.data.headers,
-      }).then((response) => {
-        const embeddedExplorerIFrame = document.getElementById('embedded-explorer');
-        embeddedExplorerIFrame?.contentWindow?.postMessage({
-          name: isQueryOrMutation ?
-            `ExplorerResponse:${currentOperationId}` :
-            `ExplorerSubscriptionResponse:${currentOperationId}`,
-          response,
-        }, EMBEDDABLE_EXPLORER_URL);
+        operationName,
+        variables,
+        headers,
+        embeddedExplorerIFrame,
+        operationId,
+      });
+    } else {
+      executeSubscription({
+        operation,
+        operationName,
+        variables,
+        headers,
+        embeddedExplorerIFrame,
+        operationId,
       });
     }
   }
-}
-window.addEventListener('message', onPostMessageReceived);
+};
+window.addEventListener("message", onPostMessageReceived);
+
 ```
 
 ## FAQ
