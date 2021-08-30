@@ -9,21 +9,21 @@ import {
 Apollo Studio provides features that help you share your graph with external consumers.
 
 
-## Making a graph public
+## Public graphs
 
-You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, people _outside_ your organization can view the following pages for that variant in Studio:
+You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, **anyone with the link** can view the following pages for that variant in Studio:
 
 * Home
 * Schema
 * Explorer
 
-This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the variant's README](#customizing-a-graphs-homepage). They can also run operations against your graph with the Explorer.
+This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the variant's README](#customizing-a-graphs-homepage). They can also run properly authenticated operations against your graph with the Explorer.
 
 People outside your organization can't view any _other_ pages for a public variant (Fields, Operations, etc.), and they can never view _any_ pages for private variants. New variants always start as private.
 
-> **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can set a variant's visibility.
+### Making a variant public
 
-**To make a variant public:**
+> **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can toggle a variant's visibility.
 
 1. Go to your graph's Settings page and open the Access tab.
 2. Under the Variants section, toggle the switch for the variant you want to make public.
