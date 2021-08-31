@@ -150,4 +150,4 @@ Sometimes errors will show up as a notification at the bottom of your editor. Ot
 
 <img src="../img//editors/stats.gif" width="80%" style="margin: 5%" alt="Clicking the status bar icon to open the output pane">
 
-If problems persist or the error messages are unhelpful, an [issue](https://github.com/apollographql/apollo-tooling/issues) can be opened on the `apollo-tooling` repository.
+If problems persist or the error messages are unhelpful, an [issue](https://github.com/apollographql/vscode-graphql/issues) can be opened on the `vscode-graphql` repository.
