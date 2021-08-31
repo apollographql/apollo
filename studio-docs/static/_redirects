@@ -1,30 +1,30 @@
-/docs/studio/schema/registry/ /docs/studio/org/graphs/
+/schema/registry/ /docs/studio/org/graphs/
 
 # Move managed federation docs into Federation docset
-/docs/studio/managed-federation/overview/ /docs/federation/managed-federation/overview/
-/docs/studio/managed-federation/monitoring/ /docs/federation/managed-federation/monitoring/#metrics-and-observability
-/docs/studio/managed-federation/deployment/ /docs/federation/managed-federation/deployment/#the-servicepush-lifecycle
-/docs/studio/managed-federation/federated-schema-checks/ /docs/federation/managed-federation/federated-schema-checks/
-/docs/studio/managed-federation/setup/ /docs/federation/managed-federation/setup/
-/docs/studio/managed-federation/advanced-topics/ /docs/federation/managed-federation/advanced-topics/
+/managed-federation/overview/ /docs/federation/managed-federation/overview/
+/managed-federation/monitoring/ /docs/federation/managed-federation/monitoring/#metrics-and-observability
+/managed-federation/deployment/ /docs/federation/managed-federation/deployment/#the-servicepush-lifecycle
+/managed-federation/federated-schema-checks/ /docs/federation/managed-federation/federated-schema-checks/
+/managed-federation/setup/ /docs/federation/managed-federation/setup/
+/managed-federation/advanced-topics/ /docs/federation/managed-federation/advanced-topics/
 
 # Slack content folded into Notifications article
-/docs/studio/slack-integration/ /docs/studio/notification-setup/#slack
+/slack-integration/ /docs/studio/notification-setup/#slack
 
 # Migrate schema validation to schema checks
-/docs/studio/schema-validation/ /docs/studio/schema-checks/
+/schema-validation/ /docs/studio/schema-checks/
 
-/docs/studio/graph-manager-data-privacy/ /docs/studio/data-privacy/
-/docs/studio/schema-registry/ /docs/studio/schema/registry/
-/docs/studio/accounts-organizations/ /docs/studio/org/account/
+/graph-manager-data-privacy/ /docs/studio/data-privacy/
+/schema-registry/ /docs/studio/schema/registry/
+/accounts-organizations/ /docs/studio/org/account/
 
-/docs/studio/federation/ /docs/studio/managed-federation/overview/
+/federation/ /docs/studio/managed-federation/overview/
 
-/docs/studio/integrations/ /docs/studio/github-integration/
+/integrations/ /docs/studio/github-integration/
 
-/docs/studio/editor-plugins/ /docs/devtools/editor-plugins/
+/editor-plugins/ /docs/devtools/editor-plugins/
 
-/docs/studio/graph-manager-overview /docs/studio
-/docs/studio/tracing /docs/studio/performance
-/docs/studio/errors /docs/studio/performance
-/docs/studio/vscode /docs/studio/editor-plugins
+/graph-manager-overview /docs/studio
+/tracing /docs/studio/performance
+/errors /docs/studio/performance
+/vscode /docs/studio/editor-plugins
