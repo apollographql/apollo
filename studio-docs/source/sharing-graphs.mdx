@@ -5,8 +5,24 @@ title: Sharing your graph
 import {
   ExpansionPanel,
 } from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
+import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
 
-Apollo Studio provides features that help you share your graph with external consumers.
+Apollo Studio provides features that help you share your graph with both teammates and external consumers.
+
+## Customizing a graph's homepage
+
+When a user opens one of your graph's variants in Apollo Studio, its **homepage** is shown:
+
+Like a typical Git repository's homepage, this page displays a Markdown-based README that you can edit with any content you like.
+
+> **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
+
+**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to your graph's other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
+
+### README shortcodes
+
+The README supports a collection of variables that you can include in its text. These variables are rendered with the correct value for the current variant.
+
 
 
 ## Public graphs
@@ -29,22 +45,147 @@ People outside your organization can't view any _other_ pages for a public varia
 2. Under the Variants section, toggle the switch for the variant you want to make public.
 3. Confirm your selection.
 
-You can make a public variant private by toggling the switch back.
+You can toggle the switch back to make the variant private again.
 
 ## Embedding the Explorer
 
-TODO
+If you have a [public variant](#public-graphs) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
 
-## Customizing a graph's homepage
+For example, here's an embedded Explorer for an Apollo example graph:
 
-When a user opens one of your graph's variants in Apollo Studio, its **homepage** is shown:
 
-Like a typical Git repository's homepage, this page displays a Markdown-based README that you can edit with any content you like.
+### How it works
 
-> **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
+**The embedded Explorer does not send network requests directly to your graph.** Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. Your webpage is responsible for executing the operation (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
 
-**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to your graph's other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
+### Implementation
 
-### README shortcodes
+#### 1. Listen for a request
 
-The README supports a collection of variables that you can include in its text. These variables are rendered with the correct value for the current variant.
+First, we need to listen for messages from our embedded Explorer. Let's add an event listener to our webpage, like so:
+
+<MultiCodeBlock>
+
+```ts:title=explorer-listener.ts
+window.addEventListener('message', onPostMessageReceived);
+```
+
+</MultiCodeBlock>
+
+The page begins listening for `message` events, and it calls the `onPostMessageReceived` callback whenever one occurs. Now, we need to define that callback:
+
+<MultiCodeBlock>
+
+```ts:title=explorer-listener.ts
+// This is the name prefix for relevant messages posted by the iframe
+const EXPLORER_QUERY_MUTATION_REQUEST = "ExplorerRequest";
+
+// Callback definition
+const onPostMessageReceived = (event:MessageEvent<{
+  name?: string,
+  operation?: string,
+  operationName?: string,
+  variables?: string,
+  headers?: Record<string, string>
+}>) => {
+
+  // Make sure the message's name starts with `ExplorerRequest`
+  const isQueryOrMutation = 'name' in event.data && event.data.name?.startsWith(`${EXPLORER_QUERY_MUTATION_REQUEST}:`);
+
+  if (isQueryOrMutation && event.data.name && event.data.operation) {
+
+    // Extract the operation ID from the message name
+    const operationId = event.data.name.split(":")[1];
+    // Identify the embedded Explorer iframe
+    const embeddedExplorerIFrame = document.getElementById("embedded-explorer") as HTMLIFrameElement ?? undefined;
+    const { operation, operationName, variables, headers } = event.data;
+    // Execute the corresponding GraphQL operation via fetch (shown below)
+    executeOperation({
+      operation: event.data.operation,
+      operationName,
+      variables,
+      headers,
+      embeddedExplorerIFrame,
+      operationId,
+    });
+  }
+};
+```
+
+</MultiCodeBlock>
+
+As shown above, when a user initiates a query or mutation operation, the Explorer `iframe` posts a message with a name that starts with the string `ExplorerRequest:`. Whenever we receive a message with a matching name, we extract the operation's details from the event and use them to execute the operation.
+
+#### 2. Execute the operation
+
+Our `executeOperation` method looks like this:
+
+<MultiCodeBlock>
+
+```ts:title=explorer-listener.ts
+// This is the name prefix for response messages expected by the iframe
+const EXPLORER_QUERY_MUTATION_RESPONSE = "ExplorerResponse";
+
+// Replace this with your public variant's GraphQL endpoint URL!
+const GRAPHQL_ENDPOINT = "https://apollo-fullstack-tutorial.herokuapp.com/";
+
+// Replace the value of this URL's `graphRef` query parameter
+// with your public variant's graph ref
+const EMBEDDABLE_EXPLORER_URL = "https://explorer.embed.apollographql.com/?graphRef=Apollo-Fullstack-Demo-o3tsz8@current";
+
+async function executeOperation({
+  operation,
+  operationName,
+  variables,
+  headers,
+  embeddedExplorerIFrame,
+  operationId,
+}: {
+  operation: string,
+  operationName?: string,
+  variables?: JSONValue,
+  headers?: Record<string, string>,
+  embeddedExplorerIFrame?: HTMLIFrameElement,
+  operationId: string
+}) {
+  // Send the operation to the GraphQL server via fetch
+  const response = await fetch(
+    GRAPHQL_ENDPOINT,
+    {
+      method: "POST",
+      headers: getHeadersWithContentType(headers),
+      // Include the operation string, variables, and operation
+      // name in the request body
+      body: JSON.stringify({
+        query: operation,
+        variables,
+        operationName,
+      }),
+    }
+  );
+  // After the operation completes, post a message back to
+  // the Explorer's iframe
+  await response.json().then((response) => {
+    embeddedExplorerIFrame?.contentWindow?.postMessage(
+      {
+        name: `${EXPLORER_QUERY_MUTATION_RESPONSE}:${operationId}`,
+        response,
+      },
+      EMBEDDABLE_EXPLORER_URL
+    );
+  });
+}
+```
+
+</MultiCodeBlock>
+
+The `executeOperation` method takes all of the parameters it needs to execute the GraphQL operation and post its result back to the `iframe`.
+
+As shown, the `iframe` expects a `message` event with the name format `ExplorerResponse:OPERATION_ID`, where `OPERATION_ID` is the same value provided by the `iframe` in its `ExplorerRequest` message.
+
+#### Add the `iframe`
+
+All that remains is to add the Explorer `iframe` to our web content:
+
+
+### Combined example
