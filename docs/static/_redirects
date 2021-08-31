@@ -36,7 +36,7 @@
 
 # Move Graph Manager docs to their own website
 /docs/platform/* /docs/studio/:splat
-/docs/references/graph-manager-data-privacy/ /docs/studio/data-privacy/
+/references/graph-manager-data-privacy/ /docs/studio/data-privacy/
 
 # Move Angular docs to Apollo Angular website
 /docs/angular/* https://apollo-angular.com/
