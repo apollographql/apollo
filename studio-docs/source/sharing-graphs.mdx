@@ -6,6 +6,7 @@ import {
   ExpansionPanel,
 } from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
+import {EmbeddableExplorer} from 'gatsby-theme-apollo-docs';
 
 Apollo Studio provides features that help you share your graph with both teammates and external consumers.
 
@@ -53,16 +54,36 @@ If you have a [public variant](#public-graphs) of your graph, you can embed the 
 
 For example, here's an embedded Explorer for an Apollo example graph:
 
+<EmbeddableExplorer
+  graphRef="Apollo-Fullstack-Demo-o3tsz8@current"
+  graphEndpoint="https://apollo-fullstack-tutorial.herokuapp.com/"
+  graphSubscriptionEndpoint="wss://apollo-fullstack-tutorial.herokuapp.com/graphql"
+  styles={{width: '100%', height:'450px'}}
+/>
+
+> This embedded Explorer collapses its left column by default because the full three-column layout is a little cramped on this page. You can [customize the embedded Explorer's appearance](#options) to suit the page it's on.
 
 ### How it works
 
-**The embedded Explorer does not send network requests directly to your graph.** Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. Your webpage is responsible for executing the operation (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
+**The embedded Explorer does not send network requests directly to your GraphQL server!**
 
-### Implementation
+Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. _Your webpage_ is then responsible for sending the operation to your GraphQL server (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
+
+Because of this, embedding the Explorer requires a little more setup than just adding an `iframe` to your page.
+
+### Examples
+
+* [This repo](https://github.com/apollographql/embeddable-explorer-demo-react) demonstrates a React app that embeds the Explorer.
+
+    * See in particular [`setupEmbedRelay.ts`](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts), which contains logic for communicating between the `iframe`, your own page, and your GraphQL server.
+
+* The Explorer embedded [above](#embedding-the-explorer) uses [this component](https://github.com/apollographql/gatsby-theme-apollo/blob/main/packages/gatsby-theme-apollo-docs/src/components/embeddable-explorer.js) from Apollo's Gatsby documentation theme.
+
+### Setup
 
 #### 1. Listen for a request
 
-First, we need to listen for messages from our embedded Explorer. Let's add an event listener to our webpage, like so:
+First, our page needs to listen for messages from our embedded Explorer. Let's add an event listener to our webpage, like so:
 
 <MultiCodeBlock>
 
@@ -77,7 +98,7 @@ The page begins listening for `message` events, and it calls the `onPostMessageR
 <MultiCodeBlock>
 
 ```ts:title=explorer-listener.ts
-// This is the name prefix for relevant messages posted by the iframe
+// This is the message type for relevant messages posted by the iframe
 const EXPLORER_QUERY_MUTATION_REQUEST = "ExplorerRequest";
 
 // Callback definition
@@ -123,7 +144,7 @@ Our `executeOperation` method looks like this:
 <MultiCodeBlock>
 
 ```ts:title=explorer-listener.ts
-// This is the name prefix for response messages expected by the iframe
+// This is the message type for response messages expected by the iframe
 const EXPLORER_QUERY_MUTATION_RESPONSE = "ExplorerResponse";
 
 // Replace this with your public variant's GraphQL endpoint URL!
@@ -188,4 +209,194 @@ As shown, the `iframe` expects a `message` event with the name format `ExplorerR
 All that remains is to add the Explorer `iframe` to our web content:
 
 
-### Combined example
+### Options
+
+When you embed the Explorer, you set options for it by including query parameters in the `src` URL of the `iframe`, like so:
+
+```jsx:title=EmbeddedExplorer.jsx
+return (
+  <iframe src={`https://explorer.embed.apollographql.com/?graphRef=${myGraphRef}&docsPanelState=closed`} />
+);
+```
+
+The following options are supported:
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name /<br/>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
+<tr class="required">
+<td>
+
+##### `graphRef`
+
+`string`
+
+</td>
+<td>
+
+**Recommended.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+
+The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
+
+If you omit this option, the Explorer still loads, but it is much less helpful to your graph's consumers.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `docsPanelState`
+
+`"open" | "closed"`
+
+</td>
+<td>
+
+If `open`, the Explorer's Documentation panel (the left column) is initially expanded. If `closed`, the panel is initially collapsed.
+
+The default value is `open`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `showHeadersAndEnvVars`
+
+`"true" | "false"`
+
+</td>
+<td>
+
+If `true`, the embedded Explorer includes the panels for [setting request headers and environment variables](./explorer/#authentication). If `false`, those panels are not present.
+
+The default value is `true`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `theme`
+
+`"dark" | "light"`
+
+</td>
+<td>
+
+If `dark`, the Explorer's dark theme is used. If `light`, the light theme is used.
+
+The default value is `dark`.
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Message types
+
+Your webpage and the embedded Explorer use the `postMessage` API to send messages to each other. Every message posted this way has an `event.data.name` with the following format:
+
+```
+MESSAGE_TYPE:OPERATION_ID
+```
+
+* `MESSAGE_TYPE` indicates the type of message being sent (e.g., `ExplorerRequest`).
+* `OPERATION_ID` is a unique generated ID for a particular operation that the user initiates in the embedded Explorer.
+    * You include this same operation ID in the names of messages you post from your page so the Explorer knows which operation the message pertains to.
+
+These are all of the message types used by the embedded Explorer's `iframe` and your page:
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
+<tr>
+<td>
+
+##### `ExplorerRequest`
+
+</td>
+<td>
+
+Posted by the `iframe` to notify your page that the user wants to execute a query or mutation.
+
+The following operation details are included in the associated `event.data` object:
+
+* `operation` (string)
+* `operationName` (string)
+* `variables` (object)
+* `headers` (object)
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `ExplorerResponse`
+
+</td>
+<td>
+
+Posted by your page to notify the `iframe` of a query or mutation result. The message should be the operation's JSON response object.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `ExplorerSubscriptionRequest`
+
+</td>
+<td>
+
+Posted by the `iframe` to notify your page that the user wants to execute a subscription operation.
+
+The same operation details are included in the `event.data` object that are included in [`ExplorerRequest` messages](#explorerrequest).
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `ExplorerSubscriptionResponse`
+
+</td>
+<td>
+
+Posted by your page to notify the `iframe` of a new subscription result. The message should be the subscription's new JSON response object.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `ExplorerSubscriptionTermination`
+
+</td>
+<td>
+
+Posted by the `iframe` to notify your page that the user wants to terminate an active subscription operation.
+
+</td>
+</tr>
+</tbody>
+</table>
