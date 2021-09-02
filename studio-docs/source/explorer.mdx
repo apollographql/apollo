@@ -234,9 +234,15 @@ There are two display modes for query plans. You can switch between the "text" a
 
 ### Local development
 
-You can use the Explorer for local development by creating a [development graph](./dev-graphs/) in Studio.
+You can use the Explorer for local development by opening [Sandbox](#account-free-sandbox), or by creating a [development graph](./dev-graphs/) in Studio.
 
-Unlike _deployed_ graphs, dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever a dev graph detects schema changes, it pulls those changes and updates itself automatically. You can pause introspection polling at any time.
+Unlike _deployed_ graphs, both Sandbox and dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever schema changes are detected, they're pulled in automatically. You can pause introspection polling at any time.
+
+### Embedding
+
+If you have a [public variant of a graph](./sharing-graphs/#public-graphs), you can embed the Explorer in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+
+See [Embedding the Explorer](./sharing-graphs/#embedding-the-explorer).
 
 ### Saving operations
 
