@@ -28,7 +28,7 @@ The README supports a collection of variables that you can include in its text. 
 
 ## Public graphs
 
-You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, **anyone with the link** can view the following pages for that variant in Studio:
+You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, **anyone with that variant's public link** can view the following pages for that variant in Studio:
 
 * Home
 * Schema
@@ -69,7 +69,7 @@ For example, here's an embedded Explorer for an Apollo example graph:
 
 Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. _Your webpage_ is then responsible for sending the operation to your GraphQL server (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
 
-Because of this, embedding the Explorer requires a little more setup than just adding an `iframe` to your page.
+Because of this, embedding the Explorer requires additional setup beyond adding an `iframe` to your page.
 
 ### Examples
 
@@ -77,83 +77,139 @@ Because of this, embedding the Explorer requires a little more setup than just a
 
     * See in particular [`setupEmbedRelay.ts`](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts), which contains logic for communicating between the `iframe`, your own page, and your GraphQL server.
 
+    * This example is also available on CodeSandbox:
+
+    <a href="https://codesandbox.io/s/github/apollographql/embeddable-explorer-demo-react/tree/main/?fontsize=14&hidenavigation=1&theme=dark">
+      <img alt="Edit embedded-explorer-demo" src="https://codesandbox.io/static/img/play-codesandbox.svg" />
+    </a>
+
+
+
 * The Explorer embedded [above](#embedding-the-explorer) uses [this component](https://github.com/apollographql/gatsby-theme-apollo/blob/main/packages/gatsby-theme-apollo-docs/src/components/embeddable-explorer.js) from Apollo's Gatsby documentation theme.
 
 ### Setup
 
-#### 1. Listen for a request
+> Before you proceed, make sure you have a [public variant](#public-graphs) of your graph in Apollo Studio.
 
-First, our page needs to listen for messages from our embedded Explorer. Let's add an event listener to our webpage, like so:
+This section walks you through the code to set up an embedded Explorer. It borrows code from [this `setupEmbedRelay.ts` example](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts) and removes some optional portions for clarity.
 
-<MultiCodeBlock>
+#### 1. Define Explorer constants
 
-```ts:title=explorer-listener.ts
-window.addEventListener('message', onPostMessageReceived);
-```
+Your webpage and the embedded Explorer use the `postMessage` API to send messages to each other. Those messages each have a name that indicates the _type_ of message being posted.
 
-</MultiCodeBlock>
-
-The page begins listening for `message` events, and it calls the `onPostMessageReceived` callback whenever one occurs. Now, we need to define that callback:
+Let's define constants for each of those message types, along with a constant for our `iframe`'s `src` URL:
 
 <MultiCodeBlock>
 
-```ts:title=explorer-listener.ts
-// This is the message type for relevant messages posted by the iframe
+```ts:title=setupEmbedRelay.ts
+// URL for any embedded Explorer iframe
+export const EMBEDDABLE_EXPLORER_URL =
+  "https://explorer.embed.apollographql.com";
+
+// Message types for queries and mutations
 const EXPLORER_QUERY_MUTATION_REQUEST = "ExplorerRequest";
-
-// Callback definition
-const onPostMessageReceived = (event:MessageEvent<{
-  name?: string,
-  operation?: string,
-  operationName?: string,
-  variables?: string,
-  headers?: Record<string, string>
-}>) => {
-
-  // Make sure the message's name starts with `ExplorerRequest`
-  const isQueryOrMutation = 'name' in event.data && event.data.name?.startsWith(`${EXPLORER_QUERY_MUTATION_REQUEST}:`);
-
-  if (isQueryOrMutation && event.data.name && event.data.operation) {
-
-    // Extract the operation ID from the message name
-    const operationId = event.data.name.split(":")[1];
-    // Identify the embedded Explorer iframe
-    const embeddedExplorerIFrame = document.getElementById("embedded-explorer") as HTMLIFrameElement ?? undefined;
-    const { operation, operationName, variables, headers } = event.data;
-    // Execute the corresponding GraphQL operation via fetch (shown below)
-    executeOperation({
-      operation: event.data.operation,
-      operationName,
-      variables,
-      headers,
-      embeddedExplorerIFrame,
-      operationId,
-    });
-  }
-};
-```
-
-</MultiCodeBlock>
-
-As shown above, when a user initiates a query or mutation operation, the Explorer `iframe` posts a message with a name that starts with the string `ExplorerRequest:`. Whenever we receive a message with a matching name, we extract the operation's details from the event and use them to execute the operation.
-
-#### 2. Execute the operation
-
-Our `executeOperation` method looks like this:
-
-<MultiCodeBlock>
-
-```ts:title=explorer-listener.ts
-// This is the message type for response messages expected by the iframe
 const EXPLORER_QUERY_MUTATION_RESPONSE = "ExplorerResponse";
 
-// Replace this with your public variant's GraphQL endpoint URL!
-const GRAPHQL_ENDPOINT = "https://apollo-fullstack-tutorial.herokuapp.com/";
+// Message types for subscriptions (not covered in this setup)
+const EXPLORER_SUBSCRIPTION_REQUEST = "ExplorerSubscriptionRequest";
+const EXPLORER_SUBSCRIPTION_RESPONSE = "ExplorerSubscriptionResponse";
+const SUBSCRIPTION_TERMINATION = "ExplorerSubscriptionTermination";
+```
 
-// Replace the value of this URL's `graphRef` query parameter
-// with your public variant's graph ref
-const EMBEDDABLE_EXPLORER_URL = "https://explorer.embed.apollographql.com/?graphRef=Apollo-Fullstack-Demo-o3tsz8@current";
+</MultiCodeBlock>
 
+#### 2. Set up communication
+
+Next, let's define a function that sets up communication between a webpage and the embedded Explorer's `iframe`. This function defines a callback that will execute whenever `window.postMessage` is called by the `iframe`.
+
+<MultiCodeBlock>
+
+```ts:title=setupEmbedRelay.ts
+export function setUpEmbedRelay() {
+
+  // Callback definition
+  const onPostMessageReceived = (
+    event: MessageEvent<{
+      name?: string;
+      operation?: string;
+      operationName?: string;
+      variables?: string;
+      headers?: Record<string, string>;
+    }>
+  ) => {
+
+    // Obtain the iframe element by any applicable logic for your page.
+    // This obtains an element with ID `embedded-explorer`.
+    const embeddedExplorerIFrame =
+      (document.getElementById("embedded-explorer") as HTMLIFrameElement) ??
+      undefined;
+
+    // Check to see if the posted message indicates that the user is
+    // executing a query or mutation in the Explorer
+    const isQueryOrMutation =
+      "name" in event.data &&
+      event.data.name?.startsWith(`${EXPLORER_QUERY_MUTATION_REQUEST}:`);
+
+    // If the user is executing a query or mutation...
+    if (
+      isQueryOrMutation &&
+      event.data.name &&
+      event.data.operation
+    ) {
+
+      // Extract the operation's unique ID from the message's name
+      // (the ID is after the colon)
+      const operationId = event.data.name.split(":")[1];
+
+      // Extract the operation's other details from the event.data object
+      const { operation, operationName, variables, headers } = event.data;
+
+      // Execute the operation, providing all required details
+      // (we'll define executeOperation next)
+      executeOperation({
+        operation: event.data.operation,
+        operationName,
+        variables,
+        headers,
+        embeddedExplorerIFrame,
+        operationId,
+      });
+    }
+  };
+
+  // Execute our callback whenever window.postMessage is called
+  window.addEventListener("message", onPostMessageReceived);
+}
+```
+
+</MultiCodeBlock>
+
+Now we can import and call `setupEmbedRelay` on any page where we'll embed the Explorer. However, we still need to define the `executeOperation` function that's called by our callback.
+
+#### 3. Define operation execution logic
+
+Our webpages can use the `fetch` API to send operations to our GraphQL server. To do this, we need the URL of our server's GraphQL endpoint. Substitute it in the `executeOperation` function below, where indicated.
+
+<MultiCodeBlock>
+
+```ts:title=setupEmbedRelay.ts
+// Helper function that adds content-type: application/json
+// to each request's headers if not present
+function getHeadersWithContentType(
+  headers: Record<string, string> | undefined
+) {
+  const headersWithContentType = headers ?? {};
+  if (
+    Object.keys(headersWithContentType).every(
+      (key) => key.toLowerCase() !== "content-type"
+    )
+  ) {
+    headersWithContentType["content-type"] = "application/json";
+  }
+  return headersWithContentType;
+}
+
+// Function for executing operations
 async function executeOperation({
   operation,
   operationName,
@@ -162,21 +218,19 @@ async function executeOperation({
   embeddedExplorerIFrame,
   operationId,
 }: {
-  operation: string,
-  operationName?: string,
-  variables?: JSONValue,
-  headers?: Record<string, string>,
-  embeddedExplorerIFrame?: HTMLIFrameElement,
-  operationId: string
+  operation: string;
+  operationName?: string;
+  variables?: JSONValue;
+  headers?: Record<string, string>;
+  embeddedExplorerIFrame?: HTMLIFrameElement;
+  operationId: string;
 }) {
-  // Send the operation to the GraphQL server via fetch
   const response = await fetch(
-    GRAPHQL_ENDPOINT,
+    // Substitute your server's URL for this example URL.
+    "https://apollo-fullstack-tutorial.herokuapp.com/",
     {
       method: "POST",
       headers: getHeadersWithContentType(headers),
-      // Include the operation string, variables, and operation
-      // name in the request body
       body: JSON.stringify({
         query: operation,
         variables,
@@ -184,11 +238,14 @@ async function executeOperation({
       }),
     }
   );
-  // After the operation completes, post a message back to
-  // the Explorer's iframe
+
+  // After the operation completes, post a response message to the
+  // iframe that includes the response data
   await response.json().then((response) => {
     embeddedExplorerIFrame?.contentWindow?.postMessage(
       {
+        // Include the same operation ID in the response message's name
+        // so the Explorer knows which operation it's associated with
         name: `${EXPLORER_QUERY_MUTATION_RESPONSE}:${operationId}`,
         response,
       },
@@ -200,14 +257,53 @@ async function executeOperation({
 
 </MultiCodeBlock>
 
-The `executeOperation` method takes all of the parameters it needs to execute the GraphQL operation and post its result back to the `iframe`.
+Instead of hardcoding your server's URL as shown, you can modify `executeOperation` to take a server URL parameter if you'll be embedding Explorers for multiple graphs.
 
-As shown, the `iframe` expects a `message` event with the name format `ExplorerResponse:OPERATION_ID`, where `OPERATION_ID` is the same value provided by the `iframe` in its `ExplorerRequest` message.
+#### 4. Embed the `iframe`
 
-#### Add the `iframe`
+We're ready to add an embedded Explorer to our page! Here's an example `App.tsx` file that uses our `setupEmbedRelay` function to wire up an embedded Explorer `iframe`:
 
-All that remains is to add the Explorer `iframe` to our web content:
+<MultiCodeBlock>
 
+```tsx:title=App.tsx
+import React, { useEffect } from 'react';
+import { EMBEDDABLE_EXPLORER_URL, setUpEmbedRelay } from './setupEmbedRelay';
+
+export const App = ()=> {
+
+  useEffect(() => {
+    setUpEmbedRelay();
+  }, [])
+
+  // Provide iframe options via URL query parameters
+  const explorerURL = EMBEDDABLE_EXPLORER_URL +
+    '?graphRef=Apollo-Fullstack-Demo-o3tsz8@current' +
+    '&docsPanelState=closed';
+
+  return (
+    <div className="App">
+      <h1 className="demo-app-title">Apollo's Embedded Explorer Demo App</h1>
+      <iframe id="embedded-explorer" className="embedded-explorer-iframe" title="embedded-explorer" src={explorerURL} />
+    </div>
+  );
+}
+```
+
+</MultiCodeBlock>
+
+Notice that we append some query parameters to our `iframe`'s URL, most importantly `graphRef`. This tells the Explorer which [public variant's](#public-graphs) schema to download to populate the Docuentation panel and enable symbol completion.
+
+All supported query parameters are listed in [Options](#options).
+
+#### 5. Run the example
+
+You can view and run a complete example that uses code very similar to the above on Codesandbox:
+
+<a href="https://codesandbox.io/s/github/apollographql/embeddable-explorer-demo-react/tree/main/?fontsize=14&hidenavigation=1&theme=dark">
+  <img alt="Edit embedded-explorer-demo" src="https://codesandbox.io/static/img/play-codesandbox.svg" />
+</a>
+
+The example includes support for subscriptions, which are omitted from this Setup section for clarity. The subscription-specific logic should be more straightforward after familiarizing yourself with the logic for queries and mutations.
 
 ### Options
 
@@ -244,7 +340,7 @@ The following options are supported:
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
 
-If you omit this option, the Explorer still loads, but it is much less helpful to your graph's consumers.
+If you omit this option, the Explorer still loads, but it can't provide any useful information about the graph the user is querying against.
 
 </td>
 </tr>
