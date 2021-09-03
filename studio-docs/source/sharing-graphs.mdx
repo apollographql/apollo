@@ -18,7 +18,7 @@ Like the typical homepage for a Git repository, this page displays a Markdown-ba
 
 > **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
 
-**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to your graph's other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
+**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
 
 ### README shortcodes
 
@@ -75,9 +75,9 @@ Because of this, embedding the Explorer requires additional setup beyond adding 
 
 * [This repo](https://github.com/apollographql/embeddable-explorer-demo-react) demonstrates a React app that embeds the Explorer.
 
-    * See in particular [`setupEmbedRelay.ts`](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts), which contains logic for communicating between the `iframe`, your own page, and your GraphQL server.
+    * See in particular [`setupEmbedRelay.ts`](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts), which defines view-layer-agnostic logic for communicating between the `iframe`, your own page, and your GraphQL server.
 
-    * This example is also available on CodeSandbox:
+    * You can also run this example on CodeSandbox:
 
     <a href="https://codesandbox.io/s/github/apollographql/embeddable-explorer-demo-react/tree/main/?fontsize=14&hidenavigation=1&theme=dark">
       <img alt="Edit embedded-explorer-demo" src="https://codesandbox.io/static/img/play-codesandbox.svg" />
@@ -85,7 +85,7 @@ Because of this, embedding the Explorer requires additional setup beyond adding 
 
 
 
-* The Explorer embedded [above](#embedding-the-explorer) uses [this component](https://github.com/apollographql/gatsby-theme-apollo/blob/main/packages/gatsby-theme-apollo-docs/src/components/embeddable-explorer.js) from Apollo's Gatsby documentation theme.
+* The Explorer embedded in this article uses [this component](https://github.com/apollographql/gatsby-theme-apollo/blob/main/packages/gatsby-theme-apollo-docs/src/components/embeddable-explorer.js) from Apollo's Gatsby documentation theme.
 
 ### Setup
 
@@ -261,7 +261,9 @@ Instead of hardcoding your server's URL as shown, you can modify `executeOperati
 
 #### 4. Embed the `iframe`
 
-We're ready to add an embedded Explorer to our page! Here's an example `App.tsx` file that uses our `setupEmbedRelay` function to wire up an embedded Explorer `iframe`:
+We're ready to add an embedded Explorer to our page! Below is an example `App.tsx` file that uses our `setupEmbedRelay` function to wire up an embedded Explorer `iframe`.
+
+> This example uses React, but you can use any view layer you like. If you _do_ use React, you should also modify your code to remove your `message` event listener when your component unmounts.
 
 <MultiCodeBlock>
 
@@ -414,7 +416,7 @@ MESSAGE_TYPE:OPERATION_ID
 * `OPERATION_ID` is a unique generated ID for a particular operation that the user initiates in the embedded Explorer.
     * You include this same operation ID in the names of messages you post from your page so the Explorer knows which operation the message pertains to.
 
-These are all of the message types used by the embedded Explorer's `iframe` and your page:
+These are the message types used by the embedded Explorer's `iframe` and your page:
 
 <table class="field-table api-ref">
   <thead>
