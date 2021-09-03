@@ -58,7 +58,7 @@ For example, here's an embedded Explorer for an Apollo example graph:
   graphRef="Apollo-Fullstack-Demo-o3tsz8@current"
   graphEndpoint="https://apollo-fullstack-tutorial.herokuapp.com/"
   graphSubscriptionEndpoint="wss://apollo-fullstack-tutorial.herokuapp.com/graphql"
-  styles={{width: '100%', height:'450px'}}
+  styles={{width: '100%', height:'450px', border: '0px', borderRadius: '4px'}}
 />
 
 > This embedded Explorer collapses its left column by default because the full three-column layout is a little cramped on this page. You can [customize the embedded Explorer's appearance](#options) to suit the page it's on.
@@ -291,9 +291,13 @@ export const App = ()=> {
 
 </MultiCodeBlock>
 
-Notice that we append some query parameters to our `iframe`'s URL, most importantly `graphRef`. This tells the Explorer which [public variant's](#public-graphs) schema to download to populate the Docuentation panel and enable symbol completion.
+##### Providing a `graphRef`
 
-All supported query parameters are listed in [Options](#options).
+Notice above that we append some query parameters to our `iframe`'s URL. The most important of these is `graphRef`. This tells the Explorer which [public variant's](#public-graphs) schema to download to populate the Documentation panel and enable symbol completion.
+
+> **Always provide a `graphRef`!** If you don't, the embedded Explorer can't download your schema to enable features like symbol completion and documentation.
+
+Other supported query parameters (like `docsPanelState` used above) are listed in [Options](#options).
 
 #### 5. Run the example
 
@@ -336,11 +340,11 @@ The following options are supported:
 </td>
 <td>
 
-**Recommended.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+**Required.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
 
-If you omit this option, the Explorer still loads, but it can't provide any useful information about the graph the user is querying against.
+If you omit this option, the Explorer _does_ still load, but it doesn't know which schema to fetch. This prevents the Explorer from providing critical features like documentation and symbol completion.
 
 </td>
 </tr>

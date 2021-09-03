@@ -236,7 +236,12 @@ There are two display modes for query plans. You can switch between the "text" a
 
 You can use the Explorer for local development by opening [Sandbox](#account-free-sandbox), or by creating a [development graph](./dev-graphs/) in Studio.
 
-Unlike _deployed_ graphs, both Sandbox and dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever schema changes are detected, they're pulled in automatically. You can pause introspection polling at any time.
+Unlike _deployed_ graphs, both Sandbox and dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever schema changes are detected, they're pulled in automatically.
+
+You can pause introspection polling at any time. To do so:
+
+* **In Sandbox**, edit your connection settings and disable **Auto Update**.
+* **In dev graphs**, open the **DEV GRAPH** menu at the top and disable **Auto Update**.
 
 ### Embedding
 
