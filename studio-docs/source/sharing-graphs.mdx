@@ -77,17 +77,146 @@ For example, here's an embedded Explorer for an Apollo example graph:
 
 > This embedded Explorer collapses its left column by default because the full three-column layout is a little cramped on this page. You can [customize the embedded Explorer's appearance](#options) to suit the page it's on.
 
-### How it works
+### Basics
 
-**The embedded Explorer does not send network requests directly to your GraphQL server!**
+You embed the Explorer in an `iframe` that points to `https://explorer.embed.apollographql.com`. You add a `graphRef` query parameter to this URL to indicate which [public variant](#public-graphs) the Explorer should use:
 
-Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. _Your webpage_ is then responsible for sending the operation to your GraphQL server (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
+```jsx
+<iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant" />
+```
+
+The embedded Explorer uses this `graphRef` to fetch your public variant's schema and its GraphQL endpoint URL from Apollo Studio.
+
+#### Handling CORS
+
+By default, the embedded Explorer sends user-executed operations directly to your variant's GraphQL endpoint. Because the Explorer is embedded in an `iframe`, the origin of those network requests is `https://explorer.embed.apollographql.com`.
+
+Because of this, you need to do one of the following:
+
+* Update your GraphQL server's CORS configuration (such as with the [`cors` `ApolloServer` option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#cors)) to accept requests from `https://explorer.embed.apollographql.com`
+    * This method is more straightforward if your organization allows it.
+* Use the `postMessage` API to send requests from your webpage _instead of_ the `iframe` (advanced)
+
+**If you update your server's CORS configuration,** you're all set! You can now add an embedded Explorer `iframe` to any webpage and set its dimensions as you like. Also check out [additional supported URL parameters](#options).
+
+**If you need requests to originate from your webpage**, additional setup is required. See [Using `postMessage`](#using-postmessage).
+
+### Options
+
+When you embed the Explorer, you set options for it by including query parameters in the `src` URL of the `iframe`, like so:
+
+```jsx:title=EmbeddedExplorer.jsx
+return (
+  <iframe src={`https://explorer.embed.apollographql.com/?graphRef=${myGraphRef}&docsPanelState=closed`} />
+);
+```
+
+The following options are supported:
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name /<br/>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
+<tr class="required">
+<td>
+
+##### `graphRef`
+
+`string`
+
+</td>
+<td>
+
+**Required.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+
+The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
+
+If you omit this option, the Explorer _does_ still load, but it doesn't know which schema to fetch. This prevents the Explorer from providing critical features like documentation and symbol completion.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `docsPanelState`
+
+`"open" | "closed"`
+
+</td>
+<td>
+
+If `open`, the Explorer's Documentation panel (the left column) is initially expanded. If `closed`, the panel is initially collapsed.
+
+The default value is `open`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `showHeadersAndEnvVars`
+
+`"true" | "false"`
+
+</td>
+<td>
+
+If `true`, the embedded Explorer includes the panels for [setting request headers and environment variables](./explorer/#authentication). If `false`, those panels are not present.
+
+The default value is `true`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `theme`
+
+`"dark" | "light"`
+
+</td>
+<td>
+
+If `dark`, the Explorer's dark theme is used. If `light`, the light theme is used.
+
+The default value is `dark`.
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Using `postMessage`
+
+Some GraphQL servers can't accept requests from `https://explorer.embed.apollographql.com` due to organizational policies. In these cases, your webpage can use the `postMessage` API to act as an intermediary between the embedded Explorer and your server:
+
+```mermaid
+sequenceDiagram
+  Note over Embedded Explorer: User executes query
+  Embedded Explorer->>Your Webpage: Posts ExplorerRequest message
+  Note over Your Webpage: Extracts query details<br/>from event object
+  Your Webpage->>GraphQL Server: Transmits query to GraphQL server
+  GraphQL Server->>Your Webpage: Resolves query and responds
+  Your Webpage->>Embedded Explorer: Posts ExplorerResponse message
+  Note over Embedded Explorer: Extracts response data<br/>from event object
+  Note over Embedded Explorer: Displays response data
+```
+
+In this case, the embedded Explorer never sends network requests to your GraphQL server. Instead, the Explorer's `iframe` uses the `window.postMessage` method to tell your webpage when the user wants to execute a GraphQL operation. _Your webpage_ is then responsible for sending the operation to your GraphQL server (for example, via `fetch`) and then providing the operation result back to the `iframe` via another `postMessage` call.
 
 Because of this, embedding the Explorer requires additional setup beyond adding an `iframe` to your page.
 
-### Examples
+### `postMessage` examples
 
-* [This repo](https://github.com/apollographql/embeddable-explorer-demo-react) demonstrates a React app that embeds the Explorer.
+* [This repo](https://github.com/apollographql/embeddable-explorer-demo-react) demonstrates a React app that embeds the Explorer and uses `postMessage`.
 
     * See in particular [`setupEmbedRelay.ts`](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts), which defines view-layer-agnostic logic for communicating between the `iframe`, your own page, and your GraphQL server.
 
@@ -101,11 +230,11 @@ Because of this, embedding the Explorer requires additional setup beyond adding 
 
 * The Explorer embedded in this article uses [this component](https://github.com/apollographql/gatsby-theme-apollo/blob/main/packages/gatsby-theme-apollo-docs/src/components/embeddable-explorer.js) from Apollo's Gatsby documentation theme.
 
-### Setup
+### `postMessage` setup
 
 > Before you proceed, make sure you have a [public variant](#public-graphs) of your graph in Apollo Studio.
 
-This section walks you through the code to set up an embedded Explorer. It borrows code from [this `setupEmbedRelay.ts` example](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts) and removes some optional portions for clarity.
+This section walks you through the code to set up an embedded Explorer that uses `postMessage`. It borrows code from [this `setupEmbedRelay.ts` example](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts) and removes some optional portions for clarity.
 
 #### 1. Define Explorer constants
 
@@ -325,102 +454,9 @@ You can view and run a complete example that uses code very similar to the above
 
 The example includes support for subscriptions, which are omitted from this Setup section for clarity. The subscription-specific logic should be more straightforward after familiarizing yourself with the logic for queries and mutations.
 
-### Options
-
-When you embed the Explorer, you set options for it by including query parameters in the `src` URL of the `iframe`, like so:
-
-```jsx:title=EmbeddedExplorer.jsx
-return (
-  <iframe src={`https://explorer.embed.apollographql.com/?graphRef=${myGraphRef}&docsPanelState=closed`} />
-);
-```
-
-The following options are supported:
-
-<table class="field-table api-ref">
-  <thead>
-    <tr>
-      <th>Name /<br/>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-<tbody>
-<tr class="required">
-<td>
-
-##### `graphRef`
-
-`string`
-
-</td>
-<td>
-
-**Required.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
-
-The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
-
-If you omit this option, the Explorer _does_ still load, but it doesn't know which schema to fetch. This prevents the Explorer from providing critical features like documentation and symbol completion.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-##### `docsPanelState`
-
-`"open" | "closed"`
-
-</td>
-<td>
-
-If `open`, the Explorer's Documentation panel (the left column) is initially expanded. If `closed`, the panel is initially collapsed.
-
-The default value is `open`.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-##### `showHeadersAndEnvVars`
-
-`"true" | "false"`
-
-</td>
-<td>
-
-If `true`, the embedded Explorer includes the panels for [setting request headers and environment variables](./explorer/#authentication). If `false`, those panels are not present.
-
-The default value is `true`.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-##### `theme`
-
-`"dark" | "light"`
-
-</td>
-<td>
-
-If `dark`, the Explorer's dark theme is used. If `light`, the light theme is used.
-
-The default value is `dark`.
-
-</td>
-</tr>
-</tbody>
-</table>
-
 ### Message types
 
-Your webpage and the embedded Explorer use the `postMessage` API to send messages to each other. Every message posted this way has an `event.data.name` with the following format:
+If you're using the `postMessage` API with your embedded Explorer, every message posted this way has an `event.data.name` with the following format:
 
 ```
 MESSAGE_TYPE:OPERATION_ID
