@@ -20,10 +20,24 @@ Like the typical homepage for a Git repository, this page displays a Markdown-ba
 
 **Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
 
-### README shortcodes
+### Supported Markdown
 
-The README supports a collection of variables that you can include in its text. These variables are rendered with the correct value for the current variant.
+The README supports all [basic Markdown syntax](https://www.markdownguide.org/cheat-sheet/#basic-syntax). Most [extended syntax](https://www.markdownguide.org/cheat-sheet/#extended-syntax) is _not_ fully supported, except for code blocks.
 
+You can define a GraphQL code block with the following syntax:
+
+    ```graphql
+    query MyQuery {
+      users {
+        id
+        name
+      }
+    }
+    ```
+
+This renders the code block with buttons you can use to copy an operation or open it in the Explorer:
+
+<img class="screenshot" alt="GraphQL codeblock in README" src="./img/readme-codeblock.jpg" width="300" />
 
 
 ## Public graphs
