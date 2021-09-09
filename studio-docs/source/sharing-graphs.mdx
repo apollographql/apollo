@@ -52,15 +52,15 @@ Graph ref: {{ graph.ref }}
 For a list of all supported shortcodes, click **Graph shortcodes** in the bottom-left corner of the README editor.
 
 
-## Public graphs
+## Public graph access
 
-You can make individual [variants](./org/graphs/#managing-variants) of your graph public. If you do, **anyone with that variant's public link** can view the following pages for that variant in Studio:
+You can enable public access to individual [variants](./org/graphs/#managing-variants) of your graph. If you do, **anyone with that variant's public link** can view the following pages for that variant in Studio:
 
 * Home
 * Schema
 * Explorer
 
-This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the variant's README](#the-readme-page). They can also run properly authenticated operations against your graph with the Explorer.
+This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the public variant's README](#the-readme-page). They can also run properly authenticated operations against your graph with the Explorer.
 
 People outside your organization can't view any _other_ pages for a public variant (Fields, Operations, etc.), and they can never view _any_ pages for private variants. New variants always start as private.
 
@@ -76,7 +76,7 @@ You can toggle the switch back to make the variant private again.
 
 ## Embedding the Explorer
 
-If you have a [public variant](#public-graphs) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+If you have a [public variant](#public-graph-access) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
 
 For example, here's an embedded Explorer for an Apollo example graph:
 
@@ -91,7 +91,7 @@ For example, here's an embedded Explorer for an Apollo example graph:
 
 ### Basics
 
-You embed the Explorer in an `iframe` that points to `https://explorer.embed.apollographql.com`. You add a `graphRef` query parameter to this URL to indicate which [public variant](#public-graphs) the Explorer should use:
+You embed the Explorer in an `iframe` that points to `https://explorer.embed.apollographql.com`. You add a `graphRef` query parameter to this URL to indicate which [public variant](#public-graph-access) the Explorer should use:
 
 ```jsx
 <iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant" />
@@ -142,7 +142,7 @@ The following options are supported:
 </td>
 <td>
 
-**Required.** The graph ref for the [public variant](#public-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+**Required.** The graph ref for the [public variant](#public-graph-access) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
 
@@ -242,7 +242,7 @@ Because of this, embedding the Explorer requires additional setup beyond adding 
 
 ### `postMessage` setup
 
-> Before you proceed, make sure you have a [public variant](#public-graphs) of your graph in Apollo Studio.
+> Before you proceed, make sure you have a [public variant](#public-graph-access) of your graph in Apollo Studio.
 
 This section walks you through the code to set up an embedded Explorer that uses `postMessage`. It borrows code from [this `setupEmbedRelay.ts` example](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts) and removes some optional portions for clarity.
 
@@ -446,7 +446,7 @@ export const App = ()=> {
 
 ##### Providing a `graphRef`
 
-Notice above that we append some query parameters to our `iframe`'s URL. The most important of these is `graphRef`. This tells the Explorer which [public variant's](#public-graphs) schema to download to populate the Documentation panel and enable symbol completion.
+Notice above that we append some query parameters to our `iframe`'s URL. The most important of these is `graphRef`. This tells the Explorer which [public variant's](#public-graph-access) schema to download to populate the Documentation panel and enable symbol completion.
 
 > **Always provide a `graphRef`!** If you don't, the embedded Explorer can't download your schema to enable features like symbol completion and documentation.
 
