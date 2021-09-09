@@ -39,6 +39,18 @@ This renders the code block with buttons you can use to copy an operation or ope
 
 <img class="screenshot" alt="GraphQL codeblock in README" src="./img/readme-codeblock.jpg" width="300" />
 
+### README shortcodes
+
+The README supports a set of shortcodes you can use to populate it with data that's specific to your variant, such as the graph's name and the variant's graph ref:
+
+```md
+# Overview of {{ graph.name }}
+
+Graph ref: {{ graph.ref }}
+```
+
+For a list of all supported shortcodes, click **Graph shortcodes** in the bottom-left corner of the README editor.
+
 
 ## Public graphs
 
@@ -452,7 +464,7 @@ The example includes support for subscriptions, which are omitted from this Setu
 
 ### Message types
 
-If you're using the `postMessage` API with your embedded Explorer, every message posted this way has an `event.data.name` which denotes the type of message.
+If you're using the `postMessage` API with your embedded Explorer, every message posted this way has an `event.data.name` which indicates the type of message.
 
 These are the message types used by the embedded Explorer's `iframe` and your page:
 
@@ -548,7 +560,7 @@ Posted by the `iframe` to notify your page that the user wants to terminate an a
 </td>
 <td>
 
-Posted by your page to notify the `iframe` of an operation to fill in the Explorer. You might want to do this on load, so folks can see a default operation for your graph.
+Posted by your page to provide the `iframe` with an operation string to populate the Explorer's editor. You might want to use this to populate a default operation on page load.
 
 </td>
 </tr>
@@ -561,7 +573,9 @@ Posted by your page to notify the `iframe` of an operation to fill in the Explor
 </td>
 <td>
 
-Posted by the `iframe` to notify your page that the Explorer is ready for you to send a `SetOperation` request.
+Posted by the `iframe` to notify your page when the Explorer is ready for you to post a `SetOperation` message.
+
+If you post a `SetOperation` message before the Explorer is ready, the Explorer does not populate its editor with the operation you provide.
 
 </td>
 </tr>
