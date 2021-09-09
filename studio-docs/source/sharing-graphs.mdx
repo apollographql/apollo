@@ -273,6 +273,7 @@ export function setUpEmbedRelay() {
     event: MessageEvent<{
       name?: string;
       operation?: string;
+      operationId?: string;
       operationName?: string;
       variables?: string;
       headers?: Record<string, string>;
@@ -289,21 +290,17 @@ export function setUpEmbedRelay() {
     // executing a query or mutation in the Explorer
     const isQueryOrMutation =
       "name" in event.data &&
-      event.data.name?.startsWith(`${EXPLORER_QUERY_MUTATION_REQUEST}:`);
+      event.data.name === EXPLORER_QUERY_MUTATION_REQUEST;
 
     // If the user is executing a query or mutation...
     if (
       isQueryOrMutation &&
       event.data.name &&
-      event.data.operation
+      event.data.operation &&
+      event.data.operationId
     ) {
-
-      // Extract the operation's unique ID from the message's name
-      // (the ID is after the colon)
-      const operationId = event.data.name.split(":")[1];
-
-      // Extract the operation's other details from the event.data object
-      const { operation, operationName, variables, headers } = event.data;
+      // Extract the operation details from the event.data object
+      const { operation, operationId, operationName, variables, headers } = event.data;
 
       // Execute the operation, providing all required details
       // (we'll define executeOperation next)
@@ -353,18 +350,18 @@ function getHeadersWithContentType(
 // Function for executing operations
 async function executeOperation({
   operation,
+  operationId,
   operationName,
   variables,
   headers,
   embeddedExplorerIFrame,
-  operationId,
 }: {
   operation: string;
+  operationId: string;
   operationName?: string;
   variables?: JSONValue;
   headers?: Record<string, string>;
   embeddedExplorerIFrame?: HTMLIFrameElement;
-  operationId: string;
 }) {
   const response = await fetch(
     // Substitute your server's URL for this example URL.
@@ -387,7 +384,8 @@ async function executeOperation({
       {
         // Include the same operation ID in the response message's name
         // so the Explorer knows which operation it's associated with
-        name: `${EXPLORER_QUERY_MUTATION_RESPONSE}:${operationId}`,
+        name: EXPLORER_QUERY_MUTATION_RESPONSE,
+        operationId,
         response,
       },
       EMBEDDABLE_EXPLORER_URL
@@ -454,15 +452,7 @@ The example includes support for subscriptions, which are omitted from this Setu
 
 ### Message types
 
-If you're using the `postMessage` API with your embedded Explorer, every message posted this way has an `event.data.name` with the following format:
-
-```
-MESSAGE_TYPE:OPERATION_ID
-```
-
-* `MESSAGE_TYPE` indicates the type of message being sent (e.g., `ExplorerRequest`).
-* `OPERATION_ID` is a unique generated ID for a particular operation that the user initiates in the embedded Explorer.
-    * You include this same operation ID in the names of messages you post from your page so the Explorer knows which operation the message pertains to.
+If you're using the `postMessage` API with your embedded Explorer, every message posted this way has an `event.data.name` which denotes the type of message.
 
 These are the message types used by the embedded Explorer's `iframe` and your page:
 
@@ -488,6 +478,7 @@ Posted by the `iframe` to notify your page that the user wants to execute a quer
 The following operation details are included in the associated `event.data` object:
 
 * `operation` (string)
+* `operationId` (string)
 * `operationName` (string)
 * `variables` (object)
 * `headers` (object)
