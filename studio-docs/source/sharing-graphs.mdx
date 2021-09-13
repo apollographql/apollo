@@ -150,7 +150,82 @@ If you omit this option, the Explorer _does_ still load, but it doesn't know whi
 
 </td>
 </tr>
+<tr>
+<td>
 
+##### `document`
+
+URI encoded operation to populate in the explorer editor on load.
+
+</td>
+<td>
+
+If you omit this, the explorer loads an example query from your schema on first load, and then saves the users last operation in local storage for the future.
+
+Example: `?document=${window.encodeURIComponent(`
+query ExampleQuery {
+  id
+}`)}`
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `variables`
+
+URI encoded variables to populate in the explorer editor on load.
+
+</td>
+<td>
+
+You can set both `variables` and `document` to allow your users to run a query with example variables on load.
+
+Example:  `?variables=${window.encodeURIComponent(
+      JSON.stringify({
+        ExampleVariable: "Hello World"
+      })
+    )}`
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `headers`
+
+URI encoded headers as JSON to populate in the explorer editor on load.
+
+</td>
+<td>
+
+You can set `headers` to allow your users to run a query with example headers on load.
+
+Example: `?headers=${window.encodeURIComponent(
+      JSON.stringify({
+        ExampleHeader: "hello"
+      })
+    )}`
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `searchQuery`
+
+A schema entity to be pre-populated in explorer spotlight search on load. 
+
+</td>
+<td>
+
+Example: `?searchQuery=Query.id` will open the spotlight search with `Query.id` in the search bar.
+
+</td>
+</tr>
 <tr>
 <td>
 
