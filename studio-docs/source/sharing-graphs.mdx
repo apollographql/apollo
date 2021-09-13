@@ -155,17 +155,24 @@ If you omit this option, the Explorer _does_ still load, but it doesn't know whi
 
 ##### `document`
 
-URI encoded operation to populate in the explorer editor on load.
+`string`
 
 </td>
 <td>
 
-If you omit this, the explorer loads an example query from your schema on first load, and then saves the users last operation in local storage for the future.
+A URI-encoded operation to populate in the Explorer's editor on load.
 
-Example: `?document=${window.encodeURIComponent(`
-query ExampleQuery {
-  id
-}`)}`
+If you omit this, the Explorer initially loads an example query from your schema. It then saves the user's last operation in local storage for future page loads.
+
+Example:
+
+```jsx
+?document=${window.encodeURIComponent(`
+  query ExampleQuery {
+    id
+  }
+`)}
+```
 
 </td>
 </tr>
@@ -175,18 +182,24 @@ query ExampleQuery {
 
 ##### `variables`
 
-URI encoded variables to populate in the explorer editor on load.
+`string`
 
 </td>
 <td>
 
-You can set both `variables` and `document` to allow your users to run a query with example variables on load.
+A URI-encoded, stringified object containing initial variable values to populate in the Explorer on load.
 
-Example:  `?variables=${window.encodeURIComponent(
-      JSON.stringify({
-        ExampleVariable: "Hello World"
-      })
-    )}`
+If provided, these variables should apply to the initial query you provide for [`document`](#document).
+
+Example:
+
+```jsx
+?variables=${window.encodeURIComponent(
+  JSON.stringify({
+    userID: "abc123"
+  })
+)}
+```
 
 </td>
 </tr>
@@ -196,18 +209,24 @@ Example:  `?variables=${window.encodeURIComponent(
 
 ##### `headers`
 
-URI encoded headers as JSON to populate in the explorer editor on load.
+`string`
+
+
 
 </td>
 <td>
 
-You can set `headers` to allow your users to run a query with example headers on load.
+A URI-encoded, stringified object containing initial HTTP header values to populate in the Explorer on load.
 
-Example: `?headers=${window.encodeURIComponent(
-      JSON.stringify({
-        ExampleHeader: "hello"
-      })
-    )}`
+Example:
+
+```jsx
+?headers=${window.encodeURIComponent(
+  JSON.stringify({
+    authentication: "Bearer abc123"
+  })
+)}
+```
 
 </td>
 </tr>
@@ -217,12 +236,14 @@ Example: `?headers=${window.encodeURIComponent(
 
 ##### `searchQuery`
 
-A schema entity to be pre-populated in explorer spotlight search on load. 
+`string`
 
 </td>
 <td>
 
-Example: `?searchQuery=Query.id` will open the spotlight search with `Query.id` in the search bar.
+A string to populate in the Explorer's search bar on load. You can use this to direct users to a particular type or field.
+
+Example: `?searchQuery=Query.id`
 
 </td>
 </tr>
