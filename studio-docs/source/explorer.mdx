@@ -14,7 +14,7 @@ The Apollo Studio Explorer is a powerful web IDE for creating, running, and mana
 
 The Explorer is free for all Apollo Studio organizations. It supports all GraphQL operation types (`Query`, `Mutation`, and `Subscription`).
 
-## Account-free sandbox
+## Sandbox (no account required)
 
 **Apollo Sandbox** is a special instance of the Explorer that doesn't require an Apollo account. Sandbox doesn't support advanced Explorer features like schema history, but it's great for local development.
 
@@ -34,6 +34,15 @@ Sandbox automatically attempts to connect to a GraphQL server running at `http:/
 
 >To try out Sandbox with an example GraphQL API, you can set its URL to `https://swapi-graphql.netlify.app/.netlify/functions/index`.
 
+### Offline Sandbox
+
+You can use Sandbox _without_ an internet connection if you're querying a graph running on `localhost`. To do so, [open Sandbox in your browser](https://studio.apollographql.com/sandbox/) at least once while connected to the internet. You can then use that browser to open Sandbox while offline.
+
+#### Reconnecting
+
+Sandbox automatically reconnects to Apollo Studio whenever your internet connection is restored. When it does, it might display a notification that your Apollo Studio application version is stale by at least 24 hours. You can click the notification to update _all_ of your browser's open Apollo Studio tabs to the latest version.
+
+> This notification indicates only that the Apollo Studio _UI_ is out of date. Your Studio _data_ is always kept up to date.
 
 ## Setup
 
@@ -85,7 +94,7 @@ If you know exactly which type and which field you're looking for, you can separ
 
 After you identify a type-field pair, the Explorer lists all of the _paths_ to that field that start at your schema's entry points (`Query`, `Mutation` and `Subscription`). These paths are ordered by depth.
 
-> Finding the path to a field is particularly important with GraphQL, because you can only query a field if that field's position within your query is valid. 
+> Finding the path to a field is particularly important with GraphQL, because you can only query a field if that field's position within your query is valid.
 
 After you select which path you want, the Explorer opens that path in its Documentation tab. You can then click the **⊕** button to add that path to your query.
 
@@ -315,7 +324,7 @@ query StarWarsGenderStats {
 
 ### Does the Explorer support subscription operations?
 
-Yes. You can run queries, mutations, and subscriptions all from the same Explorer page. You can start and stop listening to subscriptions, and you can see new subscription data as it comes in and old information as it becomes stale. 
+Yes. You can run queries, mutations, and subscriptions all from the same Explorer page. You can start and stop listening to subscriptions, and you can see new subscription data as it comes in and old information as it becomes stale.
 
 You can also set your server's subscription websocket endpoint independently from the HTTP endpoint for queries and mutations.
 
