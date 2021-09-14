@@ -4,7 +4,7 @@ sidebar_title: Segmenting by client
 description: Understand how each of your clients is using your graph
 ---
 
-Apollo Studio enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your data graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
+Apollo Studio enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
 
 ![client overview](./img/client-awareness/overview.png)
 
@@ -76,7 +76,7 @@ client awareness support to your preferred GraphQL server.
 
 ### Diagnose client-specific issues
 
-By filtering your data graph's metrics by client and client version, you can identify when a high failure rate for an operation is tied to a particular version. This helps you isolate the underlying cause of the failure and push an update for the affected client.
+By filtering your graph's metrics by client and client version, you can identify when a high failure rate for an operation is tied to a particular version. This helps you isolate the underlying cause of the failure and push an update for the affected client.
 
 ### Deprecate, change, and remove fields safely
 

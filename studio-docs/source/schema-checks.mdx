@@ -21,7 +21,7 @@ Apollo Studio can perform the following types of schema checks:
 
 > Most of this article covers operation checks. For details on composition checks, [see this section](#federated-composition-checks).
 
-## Prerequisites 
+## Prerequisites
 
 To enable schema checks for your graph, do the following if you haven't yet:
 
@@ -193,7 +193,7 @@ jobs:
       # commands against it.
       - run: sleep 5
 
-      # In CI environments, this command authenticates with the `APOLLO_KEY` 
+      # In CI environments, this command authenticates with the `APOLLO_KEY`
       # environment variable.
       - run: rover graph check docs-example-graph@current --schema ./schema.graphql
 ```
@@ -220,7 +220,7 @@ Not every change to a schema is a potentially breaking change. Additive changes 
 
 #### Removals
 
-These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
+These changes remove a schema element. If a removed element is actively being used by an operation, your graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -234,7 +234,7 @@ These changes remove a schema element. If a removed element is actively being us
 
 #### Addition of required arguments
 
-These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
+These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -243,7 +243,7 @@ These changes add a required input to a schema element. If an operation is activ
 
 #### In-place updates
 
-These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
+These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your graph. It also might receive an unexpected result.
 
 > **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 
