@@ -89,36 +89,39 @@ For example, here's an embedded Explorer for an Apollo example graph:
 
 > This embedded Explorer collapses its left column by default because the full three-column layout is a little cramped on this page. You can [customize the embedded Explorer's appearance](#options) to suit the page it's on.
 
-### Basics
+### Basic setup
 
-You embed the Explorer in an `iframe` that points to `https://explorer.embed.apollographql.com`. You add a `graphRef` query parameter to this URL to indicate which [public variant](#public-graph-access) the Explorer should use:
+You embed the Explorer in an `iframe` that points to `https://explorer.embed.apollographql.com`:
 
 ```jsx
-<iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant" />
+<iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant&postMessageOperations=false" />
 ```
 
-The embedded Explorer uses this `graphRef` to fetch your public variant's schema and its GraphQL endpoint URL from Apollo Studio.
+As shown, the `iframe`'s `src` URL requires two query parameters:
+
+* `graphRef`, which indicates which [public variant's](#public-graph-access) schema the Explorer should download from Apollo Studio (e.g., `my-graph@my-variant`)
+* `postMessageOperations`, which indicates whether the `iframe` is responsible for sending its own network requests to your GraphQL server (this depends on how you [handle CORS](#handling-cors))
 
 #### Handling CORS
 
-By default, the embedded Explorer sends user-executed operations directly to your variant's GraphQL endpoint. Because the Explorer is embedded in an `iframe`, the origin of those network requests is `https://explorer.embed.apollographql.com`.
+The embedded Explorer can transmit GraphQL operations directly to your GraphQL server. Because the Explorer is embedded in an `iframe`, the origin of its network requests is `https://explorer.embed.apollographql.com`.
 
 Because of this, you need to do one of the following:
 
 * Update your GraphQL server's CORS configuration (such as with the [`cors` `ApolloServer` option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#cors)) to accept requests from `https://explorer.embed.apollographql.com`
     * This method is more straightforward if your organization allows it.
-* Use the `postMessage` API to send requests from your webpage _instead of_ the `iframe` (advanced)
+* Use the `postMessage` API to send requests from your webpage's domain _instead of_ the `iframe` (advanced)
 
-**If you update your server's CORS configuration,** you're all set! You can now add an embedded Explorer `iframe` to any webpage and set its dimensions as you like. Also check out [additional supported URL parameters](#options).
+**If you're sending requests from the `iframe`**, set the `iframe` URL's `postMessageOperations` parameter to `false`. You can now add the `iframe` to any webpage and set its dimensions as you like. Also check out [additional supported options](#options).
 
-**If you need requests to originate from your webpage**, additional setup is required. See [Using `postMessage`](#using-postmessage).
+**If you're sending requests from your webpage's domain**, set the `iframe` URL's `postMessageOperations` parameter to `true`. Then proceed to the additional setup in [Using `postMessage`](#using-postmessage-advanced).
 
 ### Options
 
 When you embed the Explorer, you set options for it by including query parameters in the `src` URL of the `iframe`, like so:
 
 ```jsx
-<iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant&theme=light" />
+<iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant&postMessageOperations=false" />
 ```
 
 The following options are supported:
@@ -150,6 +153,26 @@ If you omit this option, the Explorer _does_ still load, but it doesn't know whi
 
 </td>
 </tr>
+
+<tr class="required">
+<td>
+
+##### `postMessageOperations`
+
+`"true" | "false"`
+
+</td>
+<td>
+
+**Required.** If `true`, the embedded Explorer uses the `postMessage` API to notify your webpage when a user initiates a GraphQL operation. Your webpage is then responsible for transmitting the operation to your GraphQL server.
+
+If `false`, the embedded Explorer transmits operations directly to your GraphQL server from the origin `https://explorer.embed.apollographql.com`.
+
+For details, see [Using `postMessage`](#using-postmessage-advanced).
+
+</td>
+</tr>
+
 <tr>
 <td>
 
@@ -187,7 +210,7 @@ Example:
 </td>
 <td>
 
-A URI-encoded, stringified object containing initial variable values to populate in the Explorer on load.
+A URI-encoded, serialized object containing initial variable values to populate in the Explorer on load.
 
 If provided, these variables should apply to the initial query you provide for [`document`](#document).
 
@@ -211,19 +234,17 @@ Example:
 
 `string`
 
-
-
 </td>
 <td>
 
-A URI-encoded, stringified object containing initial HTTP header values to populate in the Explorer on load.
+A URI-encoded, serialized object containing initial HTTP header values to populate in the Explorer on load.
 
 Example:
 
 ```jsx
 ?headers=${window.encodeURIComponent(
   JSON.stringify({
-    authentication: "Bearer abc123"
+    authorization: "Bearer abc123"
   })
 )}
 ```
@@ -300,7 +321,7 @@ The default value is `dark`.
 </tbody>
 </table>
 
-### Using `postMessage`
+### Using `postMessage` (advanced)
 
 Some GraphQL servers can't accept requests from `https://explorer.embed.apollographql.com` due to organizational policies. In these cases, your webpage can use the `postMessage` API to act as an intermediary between the embedded Explorer and your server:
 
@@ -527,7 +548,7 @@ export const App = ()=> {
   // Provide iframe options via URL query parameters
   const explorerURL = EMBEDDABLE_EXPLORER_URL +
     '?graphRef=Apollo-Fullstack-Demo-o3tsz8@current' +
-    '&docsPanelState=closed';
+    '&postMessageOperations=true';
 
   return (
     <div className="App">
@@ -539,14 +560,6 @@ export const App = ()=> {
 ```
 
 </MultiCodeBlock>
-
-##### Providing a `graphRef`
-
-Notice above that we append some query parameters to our `iframe`'s URL. The most important of these is `graphRef`. This tells the Explorer which [public variant's](#public-graph-access) schema to download to populate the Documentation panel and enable symbol completion.
-
-> **Always provide a `graphRef`!** If you don't, the embedded Explorer can't download your schema to enable features like symbol completion and documentation.
-
-Other supported query parameters (like `docsPanelState` used above) are listed in [Options](#options).
 
 #### 5. Run the example
 
