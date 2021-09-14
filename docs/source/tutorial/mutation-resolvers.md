@@ -77,7 +77,7 @@ Now back in `resolvers.js`, let's add resolvers for `bookTrips` and `cancelTrip`
 
 ```js:title=src/resolvers.js
 //Mutation: {
-  
+
   // login: ...
 
   bookTrips: async (_, { launchIds }, { dataSources }) => {
@@ -135,7 +135,7 @@ mutation LoginUser {
 }
 ```
 
-The server will respond like this: 
+The server will respond like this:
 
 ```
 "data": {
@@ -175,4 +175,4 @@ Next, paste the following into the tool's Headers tab (a separate text area in t
 
 Run the mutation. You should see a success message, along with the `id`s of the trips we just booked.
 
-Running mutations manually like this is a helpful way to test out our API, but a real-world application needs additional tooling to make sure its data graph grows and changes safely. In the next section, we'll connect our server to Apollo Studio to activate that tooling.
+Running mutations manually like this is a helpful way to test out our API, but a real-world graph needs additional tooling to make sure it grows and changes safely. In the next section, we'll connect our server to Apollo Studio to activate that tooling.
