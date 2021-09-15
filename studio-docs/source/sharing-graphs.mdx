@@ -18,7 +18,7 @@ Like the typical homepage for a Git repository, this page displays a Markdown-ba
 
 > **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
 
-**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-graph-public).
+**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-variant-public).
 
 ### Supported Markdown
 
@@ -75,7 +75,7 @@ You can toggle the switch back to make the variant private again.
 
 ## Embedding the Explorer
 
-If you have a [public variant](#public-graph-access) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+If you have a [public variant](#public-access-for-graphs) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
 
 For example, here's an embedded Explorer for an Apollo example graph:
 
@@ -98,7 +98,7 @@ You embed the Explorer in an `iframe` that points to `https://explorer.embed.apo
 
 As shown, the `iframe`'s `src` URL requires two query parameters:
 
-* `graphRef`, which indicates which [public variant's](#public-graph-access) schema the Explorer should download from Apollo Studio (e.g., `my-graph@my-variant`)
+* `graphRef`, which indicates which [public variant's](#public-access-for-graphs) schema the Explorer should download from Apollo Studio (e.g., `my-graph@my-variant`)
 * `postMessageOperations`, which indicates whether the `iframe` is responsible for sending its own network requests to your GraphQL server (this depends on how you [handle CORS](#handling-cors))
 
 #### Handling CORS
@@ -144,7 +144,7 @@ The following options are supported:
 </td>
 <td>
 
-**Required.** The graph ref for the [public variant](#public-graph-access) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+**Required.** The graph ref for the [public variant](#public-access-for-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
 
@@ -358,7 +358,7 @@ Because of this, embedding the Explorer requires additional setup beyond adding 
 
 ### `postMessage` setup
 
-> Before you proceed, make sure you have a [public variant](#public-graph-access) of your graph in Apollo Studio.
+> Before you proceed, make sure you have a [public variant](#making-a-variant-public) of your graph in Apollo Studio.
 
 This section walks you through the code to set up an embedded Explorer that uses `postMessage`. It borrows code from [this `setupEmbedRelay.ts` example](https://github.com/apollographql/embeddable-explorer-demo-react/blob/main/src/setupEmbedRelay.ts) and removes some optional portions for clarity.
 
