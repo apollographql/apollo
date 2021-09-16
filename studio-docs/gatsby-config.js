@@ -44,6 +44,7 @@ module.exports = {
             'schema-checks',
             'check-configurations',
             'launches',
+            'contracts',
             'validating-client-operations',
             'github-integration'
           ],
