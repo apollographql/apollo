@@ -1,6 +1,9 @@
 ---
 title: Contracts
+sidebar_title: Contracts (preview)
 ---
+
+> Contracts are currently available in [public preview](https://www.apollographql.com/docs/resources/release-stages/#public-preview).
 
 Apollo Studio **contracts** enable you to deliver different **schema subsets** to different consumers of your federated graph. Each subset can exclude a different set of symbols from your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
 
@@ -17,6 +20,14 @@ You can use contracts to hide "experimental" symbols that are still in developme
 
 > Contracts are currently available _only_ for federated graphs.
 
+## Use cases
+
+Contracts have the follwing primary use cases:
+
+**Scoped gateway.** You can deploy an instance of your gateway that uses your contract variant's schema _instead of_ your source variant's API schema. Developers who use this scoped gateway can only execute operations that the contract schema supports. Scoped gateways can safely connect to the same subgraph instances as non-scoped gateways.
+
+**Documentation.** Your contract variant has its own schema reference, changelog, and Explorer. You can provide these resources to client developers to help them interact with a specific portion of your graph while omitting unnecessary symbols.
+
 ## Setup
 
 ### Update `@apollo/gateway`
@@ -27,7 +38,7 @@ Older versions of the library don't support the required `@tag` directive.
 
 ### Tag symbols
 
-With contracts, you include and exclude symbols from your API schema based on **tags** you apply in your individual subgraph schemas.
+With contracts, you include and exclude symbols from your **contract schema** based on **tags** you apply in your individual subgraph schemas.
 
 For example, let's take a look at this Products subgraph schema:
 
@@ -55,12 +66,19 @@ type Product @key(fields: "upc") {
 
 This schema applies the `@tag` directive to two object fields: `internalId` and `percentageMatch`.
 
-* A tag can have any string name.
+* A tag can have any string name (you specify a contract's behavior for a given tag name).
     * We *strongly* recommend avoiding whitespace and special characters, because we might introduce tag name validations in the future.
-* You give symbols the _same_ tag name if those symbols should be included or excluded as a group by a particular contract.
+* Give symbols the _same_ tag name if those symbols should be included or excluded as a group by a particular contract.
 * A single symbol can have multiple tags.
 
-Whenever your graph's [supergraph schema](https://www.apollographql.com/docs/federation/#federated-schemas) is composed, that schema retains all of the `@tag`s from your subgraph schemas.
+You can tag the following symbols in your schema:
+
+* Fields of object types (as shown above)
+* Object types
+* Interface types
+* Union types
+
+Whenever your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
 
 
 
@@ -73,10 +91,9 @@ Each contract you define consists of the following:
 * A contract name
     * The name cannot be changed after it's set. It will correspond to a new **contract [variant](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants)** of your graph.
 * An existing **source variant** of your graph
-    * The contract uses the source variant's API schema to determine which symbols to include and exclude.
-    * The source variant _cannot_ also be a contract variant for a _different_ contract.
-* A list of tag names to `include`
-* A list of tag names to `exclude`
+    * The contract uses tags in the source variant's API schema to determine which symbols to include and exclude.
+    * The source variant _cannot_ be a contract variant for a _different_ contract.
+* Lists of tag names to `include` and `exclude` from the **contract schema**
 
 Here's an example contract's details:
 
@@ -101,14 +118,10 @@ Our example contract excludes the `internalId` field from [the subgraph schema a
 
 ### Add the contract to Studio
 
-TODO
+TODOO
 
 
-## Deployed vs Documentation Variants
 
-Your Contract Variant can be used in two primary ways:
-1) Documentation that you provide to your client developers to help them focus on just the parts of the graph which are relevant to them. They’ll be able to use the Apollo Studio schema reference, changelog, and Explorer all in the context of their subset of the graph.
-2) Deploy the variant to an instance of Apollo Gateway (note you can run multiple gateway instances in parallel, e.g. through Express) so that it becomes an actual GraphQL API scoped to a subset of your larger schema. This gives you all the benefits of a documentation variant as well as enforcement of the Contract schema. Developers whose requests go to the Contract gateway will only have access to the defined subset of the graph.
 
 ## Using the Studio API
 
@@ -122,16 +135,17 @@ apollographql-client-name = <your-email-address> // Identify your traffic
 
 This will help us to identify your traffic and understand your usage, so that we can reach out if we make any changes that will affect you. The Studio API does not come with any stability guarantees at this time, though we do our best to make all changes backwards compatible, when possible.
 
-## Nuances, Known Limitations, & Issues
+## Important cases and considerations
 
-* Tag can only be applied to fields of an object type directly.
-* Tag filtering behavior when every field on an object type is excluded.
-    * If every field for an object type is removed, the entire object type is removed. This is the only way to remove an object type today.
+* If a contract excludes _every field_ of a particular object type, that object type's definition is excluded from the contract schema entirely.
 
+* If a contract excludes an object, interface, or union type, it **must** also exclude all schema fields that _return_ that type. Otherwise, generation of the contract schema fails.
 
-* Tag filtering behavior with interfaces and unions.
-    * If one of the object types which implements an interface or belongs to a union is removed by a filter, we suggest you ensure that your subgraph resolvers are aware and do not attempt to return the filtered object type.
-    * Runtime errors can occur in the gateway when subgraphs return fields / types not included in the Contract Schema, for example a query for an interface which returns multiple object types.
+* If a contract excludes an object that implements an interface or is included in a union:
+
+    * The contract is _not_ required to exclude schema fields that return that interface or union.
+
+    * _However_, if a subgraph resolves one of these fields by returning the excluded object, a runtime error occurs in the gateway and the operation fails.
 
 ## TODO
 
