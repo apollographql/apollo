@@ -5,15 +5,15 @@ sidebar_title: Contracts (preview)
 
 > Contracts are currently available in [public preview](https://www.apollographql.com/docs/resources/release-stages/#public-preview).
 
-Apollo Studio **contracts** enable you to deliver different **schema subsets** to different consumers of your federated graph. Each subset can exclude a different set of symbols from your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
+Apollo Studio **contracts** enable you to deliver different **schema subsets** to different consumers of your federated graph. Each subset can exclude a different set of types and fields from your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
 
 ```mermaid
 graph LR;
   api("API schema<br/>▉");
   contractA("Contract schema A<br/>▛");
   contractB("Contract schema B<br/>▟")
-  api -."Exclude symbols<br/>according to contract A".->contractA
-  api -."Exclude symbols<br/>according to contract B".->contractB
+  api -."Exclude types and fields<br/>according to contract A".->contractA
+  api -."Exclude types and fields<br/>according to contract B".->contractB
 ```
 
 > Contracts are currently available _only_ for federated graphs.
@@ -22,11 +22,11 @@ graph LR;
 
 Contracts have the follwing primary use cases:
 
-**Scoped gateways.** You can deploy a managed instance of your gateway that uses your contract schema. Developers who use this "scoped" gateway can only execute operations that the contract schema supports. This enables you to hide experimental symbols that are still in development, or to limit a particular audience's access to only the portions of your schema that they need.
+**Scoped gateways.** You can deploy a managed instance of your gateway that uses your contract schema. Developers who use this "scoped" gateway can only execute operations that the contract schema supports. This enables you to hide experimental types and fields that are still in development, or to limit a particular audience's access to only the portions of your schema that they need.
 
 Scoped gateways can safely connect to the same subgraph instances as non-scoped gateways, because they can only request data that's represented in the contract schema.
 
-**Documentation.** Your contract variant has its own schema reference, changelog, and Explorer. You can provide these resources to client developers to help them interact with a specific portion of your graph while omitting unnecessary symbols.
+**Documentation.** Your contract variant has its own schema reference, changelog, and Explorer. You can provide these resources to client developers to help them interact with a specific portion of your graph while omitting unnecessary types and fields.
 
 ## Setup
 
@@ -48,7 +48,7 @@ Click **Edit Supported Directives** for the variant you want to use, and enable 
 
 ### 3. Add `@tag`s
 
-With contracts, you include and exclude symbols from your **contract schema** based on **tags** you apply in your subgraph schemas.
+With contracts, you include and exclude types and fields from your **contract schema** based on **tags** you apply in your subgraph schemas.
 
 For example, let's take a look at this Products subgraph schema:
 
@@ -78,10 +78,10 @@ This schema applies the `@tag` directive to two object fields: `internalId` and 
 
 * A tag can have any string name (you specify a contract's behavior for a given tag name).
     * We *strongly* recommend avoiding whitespace and special characters, because we might introduce tag name validations in the future.
-* Give symbols the _same_ tag name if those symbols should be included or excluded as a group by a particular contract.
-* A single symbol can have multiple tags.
+* Give types and fields the _same_ tag name if they should be included or excluded as a group by a particular contract.
+* A single type or field can have multiple tags.
 
-You can tag the following symbols in your schema:
+You can apply tags to the following in your schema:
 
 * Fields of object types (as shown above)
 * Object types
@@ -92,7 +92,7 @@ Whenever your graph's [API schema](https://www.apollographql.com/docs/federation
 
 ### 4. Register updated subgraph schemas
 
-After you're done tagging symbols, update your source variant by registering your updated subgraph schemas to Apollo Studio. Now you're ready to define your first contract!
+After you're done adding tags, update your source variant by registering your updated subgraph schemas to Apollo Studio. Now you're ready to define your first contract!
 
 ### 5. Define a contract
 
@@ -110,19 +110,19 @@ A contract definition includes:
 * A contract name
     * The name cannot be changed after it's set. It will correspond to a new **contract [variant](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants)** of your graph.
 * An existing **source variant** of your graph
-    * The contract uses tags in the source variant's API schema to determine which symbols to include and exclude.
+    * The contract uses tags in the source variant's API schema to determine which types and fields to include and exclude.
     * The source variant _cannot_ be a contract variant for a _different_ contract.
 * Lists of tag names to `include` and `exclude` from the **contract schema**
 
-Each contract generates a **contract schema** that's a subset of its source variant's API schema. Symbols from the API schema are included in the contract schema according to the following rules:
+Each contract generates a **contract schema** that's a subset of its source variant's API schema. Types and fields from the API schema are included in the contract schema according to the following rules:
 
-* **If the `include` list is empty**, the contract schema _includes_ each symbol _unless_ it's tagged with a name in the `exclude` list.
-* **If the `include` list is non-empty**, the contract schema _excludes_ each symbol _unless_ it's tagged with a name in the `include` list.
-* The contract schema _excludes_ a symbol if it's tagged with both a name in the `include` list _and_ a name in the `exclude` list.
+* **If the `include` list is empty**, the contract schema _includes_ each type and field _unless_ it's tagged with a name in the `exclude` list.
+* **If the `include` list is non-empty**, the contract schema _excludes_ each type and field _unless_ it's tagged with a name in the `include` list.
+* The contract schema _excludes_ a type or field if it's tagged with both a name in the `include` list _and_ a name in the `exclude` list.
 
-Our example contract excludes the `internalId` field from [the subgraph schema above](#tagging-fields). It _includes_ all other symbols in the schema.
+Our example contract excludes the `internalId` field from [the subgraph schema above](#tagging-fields). It _includes_ all other types and fields in the schema.
 
-> Whenever a contract's source variant successfully updates its API schema, Apollo automatically updates the contract schema to reflect modifications to symbols and tags.
+> Whenever a contract's source variant successfully updates its API schema, Apollo automatically updates the contract schema to reflect modifications to definitions and tags.
 >
 > Configuration updates to a source variant do _not_ yet trigger new contract variant builds. This functionality is coming soon.
 
@@ -144,7 +144,7 @@ apollographql-client-name = <your-email-address>
 
 This enables us to identify your traffic and understand your usage during this preview period. We can also reach out to you if we make any API changes that might affect your implementation.
 
-> The Studio API does not provide any symbol stability guarantees at this time.
+> The Studio API does not provide any schema stability guarantees at this time.
 
 #### Mutation structure
 
