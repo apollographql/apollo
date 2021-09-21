@@ -30,6 +30,49 @@ to view its schema, data, and settings. All of a Studio organization's members c
 
 > Enterprise accounts can set [member roles](./members/#organization-wide-member-roles) to configure access for individual members of their organization.
 
+### The README page
+
+When a user opens one of your graph's variants in Apollo Studio, its **README page** is shown:
+
+<img class="screenshot" alt="GraphQL codeblock in README" src="../img/readme-example.jpg" width="500" />
+
+Like the typical homepage for a Git repository, this page displays a Markdown-based README that you can edit with any content you like.
+
+> **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
+
+**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants.
+
+#### Supported Markdown
+
+The README supports all [basic Markdown syntax](https://www.markdownguide.org/cheat-sheet/#basic-syntax) and _most_ [extended syntax](https://www.markdownguide.org/cheat-sheet/#extended-syntax) (including tables, code blocks, and footnotes).
+
+You can define a GraphQL code block with the following syntax:
+
+    ```graphql
+    query MyQuery {
+      users {
+        id
+        name
+      }
+    }
+    ```
+
+This renders the code block with buttons you can use to copy an operation or open it in the Explorer:
+
+<img class="screenshot" alt="GraphQL codeblock in README" src="../img/readme-codeblock.jpg" width="300" />
+
+#### README shortcodes
+
+The README supports a set of shortcodes you can use to populate it with data that's specific to your variant, such as the graph's name and the variant's graph ref:
+
+```md
+# Overview of {{ graph.name }}
+
+Graph ref: {{ graph.ref }}
+```
+
+For a list of all supported shortcodes, click **Graph shortcodes** in the bottom-left corner of the README editor.
+
 ### Exploring your schema
 
 Apollo Studio provides a powerful **Explorer** IDE that helps you visualize your graph and run queries against it. It's available from your graph's Explorer tab in Studio.
