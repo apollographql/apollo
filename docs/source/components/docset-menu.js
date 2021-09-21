@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { DocsetIcon } from 'apollo-algolia-autocomplete';
 import { MenuItem, MenuWrapper } from './menu';
 import { NavItemDescription, NavItemsContext } from 'gatsby-theme-apollo-docs';
+import { colors } from 'gatsby-theme-apollo-core';
 import './styles.css'
 const StyledLink = styled.a({
   color: 'inherit',
@@ -27,9 +28,13 @@ const ArticleListItem = styled.li({
 });
 
 const ArticleListLink = styled.a({
+  color: colors.primary,
   textDecoration: 'none',
   ':hover': {
     textDecoration: 'underline'
+  },
+  ':visited': {
+    color: '#3f20ba'
   }
 });
 
