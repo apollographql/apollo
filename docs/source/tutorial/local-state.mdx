@@ -173,12 +173,12 @@ export const cache: InMemoryCache = new InMemoryCache({
         isLoggedIn: {
           read() {
             return isLoggedInVar();
-          } 
+          }
         },
         cartItems: {
           read() {
             return cartItemsVar();
-          } 
+          }
         },
         launches: {
           // ...field policy definitions...
@@ -378,7 +378,7 @@ The important part of this code is the logout button's `onClick` handler. It doe
 
 1. It uses the [`evict` and `gc` methods](https://www.apollographql.com/docs/react/caching/garbage-collection/) to purge the `Query.me` field from our in-memory cache. This field includes data that's specific to the logged-in user, all of which should be removed on logout.
 2. It clears `localStorage`, where we persist the logged-in user's ID and session token between visits.
-3. It sets the value of our `isLoggedInVar` reactive variable to `false`. 
+3. It sets the value of our `isLoggedInVar` reactive variable to `false`.
 
 When the reactive variable's value changes, that change is automatically broadcast to every query that depends on the variable's value (specifically, the `IS_LOGGED_IN` query we [defined earlier](#login-status)).
 
@@ -571,7 +571,7 @@ export default ActionButton;
 
 </ExpansionPanel>
 
-This code defines two complex components: 
+This code defines two complex components:
 
 * A `CancelTripButton`, which is displayed only for trips that the user has already booked
 * A `ToggleTripButton`, which enables the user to add or remove a trip from their cart
@@ -607,4 +607,4 @@ You can also start up the version of the client in `final/client` to compare it 
 
 ---
 
-Congratulations! 🎉 You've completed the Apollo full-stack tutorial. You're ready to dive into each individual part of the Apollo platform. Return to the [documentation homepage](/) for quick links to each part's documentation, along with "recommended workouts" to get you going.
+Congratulations! 🎉 You've completed the Apollo full-stack tutorial. You're ready to dive into each individual part of the Apollo platform. Return to the [documentation homepage](/) for quick links to recommended articles in each documentation set.
