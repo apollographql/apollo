@@ -14,6 +14,7 @@ You can enable public access for individual [variants](./org/graphs/#managing-va
 * Home
 * Schema
 * Explorer
+    * You can also [embed the Explorer](#embedding-the-explorer) on your own webpage.
 
 This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the public variant's README](./org/graphs/#the-readme-page). They can also run properly authenticated operations against your graph with the Explorer.
 
@@ -21,13 +22,20 @@ People outside your organization can't view any _other_ pages for a public varia
 
 ## Making a variant public
 
-> **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can toggle a variant's visibility.
+> **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can toggle a variant's public visibility.
 
 1. Go to your graph's Settings page and open the Access tab.
-2. Under the Variants section, toggle the switch for the variant you want to make public.
+2. Under the Variants section, toggle the switch for the variant you want to make public:
+
+    <img class="screenshot" src="./img/toggle-public-variant.jpg" alt="Toggle public variant in Studio" width="400" />
+
 3. Confirm your selection.
 
 You can toggle the switch back to make the variant private again.
+
+After you make a variant public, you can click the variant's **PUBLIC** label at the top of Apollo Studio to get its public link:
+
+<img class="screenshot" src="./img/public-variant-label.jpg" alt="Public variant label in Studio" width="400" />
 
 ## Embedding the Explorer
 
