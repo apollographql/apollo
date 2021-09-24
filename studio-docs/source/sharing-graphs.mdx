@@ -1,57 +1,13 @@
 ---
-title: Sharing your graph
+title: Public access for graphs
+sidebar_title: Public access
 ---
 
 import {
   ExpansionPanel,
 } from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
 import { MultiCodeBlock } from 'gatsby-theme-apollo-docs';
-import {EmbeddableExplorer} from 'gatsby-theme-apollo-docs';
-
-Apollo Studio provides features that help you share your graph with both teammates and external consumers.
-
-## The README page
-
-When a user opens one of your graph's variants in Apollo Studio, its **README page** is shown:
-
-Like the typical homepage for a Git repository, this page displays a Markdown-based README that you can edit with any content you like.
-
-> **Note:** Only organization members with the [`Org Admin`, `Graph Admin`, or `Contributor` role](./org/members/) can edit a variant's README. If a variant is [protected](./org/graphs/#protected-variants-enterprise-only), `Contributor`s _cannot_ edit its README.
-
-**Each variant has its own README.** If you edit one variant's README, those edits are _not_ applied to other variants. Among other uses, this enables you to provide different information to external consumers in a [public variant](#making-a-variant-public).
-
-### Supported Markdown
-
-The README supports all [basic Markdown syntax](https://www.markdownguide.org/cheat-sheet/#basic-syntax). Most [extended syntax](https://www.markdownguide.org/cheat-sheet/#extended-syntax) is _not_ fully supported, except for code blocks.
-
-You can define a GraphQL code block with the following syntax:
-
-    ```graphql
-    query MyQuery {
-      users {
-        id
-        name
-      }
-    }
-    ```
-
-This renders the code block with buttons you can use to copy an operation or open it in the Explorer:
-
-<img class="screenshot" alt="GraphQL codeblock in README" src="./img/readme-codeblock.jpg" width="300" />
-
-### README shortcodes
-
-The README supports a set of shortcodes you can use to populate it with data that's specific to your variant, such as the graph's name and the variant's graph ref:
-
-```md
-# Overview of {{ graph.name }}
-
-Graph ref: {{ graph.ref }}
-```
-
-For a list of all supported shortcodes, click **Graph shortcodes** in the bottom-left corner of the README editor.
-
-## Public access for graphs
+import { EmbeddableExplorer } from 'gatsby-theme-apollo-docs';
 
 You can enable public access for individual [variants](./org/graphs/#managing-variants) of your graph. If you do, **anyone with that variant's public link** can view the following pages for that variant in Studio:
 
@@ -59,11 +15,11 @@ You can enable public access for individual [variants](./org/graphs/#managing-va
 * Schema
 * Explorer
 
-This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the public variant's README](#the-readme-page). They can also run properly authenticated operations against your graph with the Explorer.
+This enables consumers of your graph to learn about your graph's schema and any special usage information (such as authentication details) that you've documented in [the public variant's README](./org/graphs/#the-readme-page). They can also run properly authenticated operations against your graph with the Explorer.
 
 People outside your organization can't view any _other_ pages for a public variant (Fields, Operations, etc.), and they can never view _any_ pages for private variants. New variants always start as private.
 
-### Making a variant public
+## Making a variant public
 
 > **Note:** Only organization members with the [`Org Admin` or `Graph Admin` role](./org/members/) can toggle a variant's visibility.
 
@@ -75,7 +31,7 @@ You can toggle the switch back to make the variant private again.
 
 ## Embedding the Explorer
 
-If you have a [public variant](#public-access-for-graphs) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+If you have a [public variant](#making-a-variant-public) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
 
 For example, here's an embedded Explorer for an Apollo example graph:
 
@@ -96,10 +52,10 @@ You embed the Explorer in an `iframe` that points to `https://explorer.embed.apo
 <iframe src="https://explorer.embed.apollographql.com/?graphRef=my-graph@my-variant&postMessageOperations=false" />
 ```
 
-As shown, the `iframe`'s `src` URL requires two query parameters:
+As shown, the `iframe`'s `src` URL requires the following query parameters:
 
 * `graphRef`, which indicates which [public variant's](#public-access-for-graphs) schema the Explorer should download from Apollo Studio (e.g., `my-graph@my-variant`)
-* `postMessageOperations`, which indicates whether the `iframe` is responsible for sending its own network requests to your GraphQL server (this depends on how you [handle CORS](#handling-cors))
+* `postMessageOperations`, which indicates whether the `iframe` is responsible for sending network requests directly to your public variant's GraphQL endpoint (you set this according to how you [handle CORS](#handling-cors))
 
 #### Handling CORS
 
@@ -111,7 +67,9 @@ Because of this, you need to do one of the following:
     * This method is more straightforward if your organization allows it.
 * Use the `postMessage` API to send requests from your webpage's domain _instead of_ the `iframe` (advanced)
 
-**If you're sending requests from the `iframe`**, set the `iframe` URL's `postMessageOperations` parameter to `false`. You can now add the `iframe` to any webpage and set its dimensions as you like. Also check out [additional supported options](#options).
+**If you're sending requests from the `iframe`**, set the `iframe` URL's `postMessageOperations` parameter to `false`. Also make sure you've set your public variant's endpoint URL in Apollo Studio.
+
+You can now add the `iframe` to any webpage and set its dimensions as you like. Also check out [additional supported options](#options).
 
 **If you're sending requests from your webpage's domain**, set the `iframe` URL's `postMessageOperations` parameter to `true`. Then proceed to the additional setup in [Using `postMessage`](#using-postmessage-advanced).
 
@@ -144,7 +102,7 @@ The following options are supported:
 </td>
 <td>
 
-**Required.** The graph ref for the [public variant](#public-access-for-graphs) you want to use the embedded Explorer with. Has the format `graph-name@variant-name`.
+**Required.** The graph ref for the [public variant](#public-access-for-graphs) you want to use the embedded Explorer with. Has the format `graph-id@variant-name`.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable symbol completion.
 
@@ -403,7 +361,7 @@ export function setUpEmbedRelay() {
       operation?: string;
       operationId?: string;
       operationName?: string;
-      variables?: string;
+      variables?: Record<string, string>;
       headers?: Record<string, string>;
     }>
   ) => {
@@ -433,7 +391,7 @@ export function setUpEmbedRelay() {
       // Execute the operation, providing all required details
       // (we'll define executeOperation next)
       executeOperation({
-        operation: event.data.operation,
+        operation,
         operationName,
         variables,
         headers,
@@ -487,7 +445,7 @@ async function executeOperation({
   operation: string;
   operationId: string;
   operationName?: string;
-  variables?: JSONValue;
+  variables?: Record<string, string>;
   headers?: Record<string, string>;
   embeddedExplorerIFrame?: HTMLIFrameElement;
 }) {
@@ -668,7 +626,7 @@ Posted by the `iframe` to notify your page that the user wants to terminate an a
 </td>
 <td>
 
-Posted by your page to provide the `iframe` with an operation string to populate the Explorer's editor. You might want to use this to populate a default operation on page load.
+Posted by your page to provide the `iframe` with an operation string to populate in a new tab of the Explorer's editor. You might want to use this to populate a default operation on page load.
 
 </td>
 </tr>
