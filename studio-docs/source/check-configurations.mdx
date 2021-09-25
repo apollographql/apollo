@@ -38,10 +38,13 @@ You can provide the `--validation-period` option to specify how far back in time
 This command checks schema changes against the past two weeks of operations:
 
 ```bash
-rover graph check docs-example-graph@current --schema ./schema.graphql --validation-period=P2W
+rover graph check docs-example-graph@current --schema ./schema.graphql --validation-period="2 weeks"
 ```
 
-Valid durations are represented in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations). You can also provide a number in seconds (e.g., `86400` for a single day).
+Valid durations are represented as any combination of `years`, `months`, `weeks`, `days`, `min`, and `sec`:
+
+* `1 month 2 weeks`
+* `525600 min`
 
 > If you specify a `validationPeriod` that exceeds your organization's operation retention period, the `service:check` command fails with an error.
 
