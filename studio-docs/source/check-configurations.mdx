@@ -46,7 +46,7 @@ Valid durations are represented as any combination of `years`, `months`, `weeks`
 * `1 month 2 weeks`
 * `525600 min`
 
-> If you specify a `validationPeriod` that exceeds your organization's operation retention period, the `service:check` command fails with an error.
+> If you specify a `--validation-period` that exceeds your organization's operation retention period, the `graph check` command fails with an error.
 
 ### Threshold values
 
@@ -61,14 +61,14 @@ Provide threshold values with the following flags:
 
 > **Note:** You can provide values for both of these flags. If you do, an operation must meet or exceed _both_ thresholds for schema checks to include it.
 
-Here's an example of running `rover graph:check` with threshold values:
+Here's an example of running `rover graph check` with threshold values:
 
 ```bash
 rover graph check docs-example-graph@current \
 # Path to schema file
 --schema ./schema.graphql
 # Check the schema against operations that have run in the last 5 days
---validation-period=P5D \
+--validation-period="5 days" \
 # Only check against operations that have run at least 5 times during the 5-day duration
 --query-count-threshold=5 \
 # Only check against operations that account for at least 3% of total operation volume
