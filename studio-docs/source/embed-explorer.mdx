@@ -145,7 +145,7 @@ A URI-encoded operation to populate in the Explorer's editor on load.
 
 If you omit this, the Explorer initially loads an example query based on your schema.
 
-If [`shouldPersistState`](#shouldpersiststate) is `true`, the editor is _also_ populated with user-defined operations from `localStorage`.
+If [`shouldPersistState`](#shouldpersiststate) is `true` _and_ you provide this option, the Explorer loads any of the user's tabs from `localStorage`, and it _also_ opens a _new_ tab with this operation.
 
 Example:
 
@@ -201,6 +201,8 @@ Example:
 
 A URI-encoded, serialized object containing initial HTTP header values to populate in the Explorer on load.
 
+Note that if you [route requests through the parent page](#route-requests-through-the-parent-page-advanced), you need to specify headers in your request handler, not just in the Explorer.
+
 Example:
 
 ```jsx
@@ -224,7 +226,7 @@ Example:
 </td>
 <td>
 
-If `true`, the embedded Explorer uses `localStorage` to persist user-defined operations between sessions. These operations are automatically populated in the Explorer on page load.
+If `true`, the embedded Explorer uses `localStorage` to persist its state (including operations, tabs, variables, and headers) between user sessions. This state is automatically populated in the Explorer on page load.
 
 If `false`, the embedded Explorer loads with an example query based on your schema (unless you provide [`document`](#document)).
 
