@@ -131,7 +131,27 @@ const typeDefs = gql`
 
 ## Extensions
 
-Special fields in a GraphQL response that allow you to attach extra metadata. [Apollo tracing](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-tracing) is an example of an extension.
+A GraphQL operation's response can include an `extensions` object to provide metadata about the operation:
+
+```json{12-14}
+{
+  "data": {
+    "books": [
+      {
+        "title": "The Awakening"
+      },
+      {
+        "title": "City of Glass"
+      }
+    ]
+  },
+  "extensions": {
+    "timestamp": 1633038919
+  }
+}
+```
+
+The `extensions` object can have any structure. GraphQL servers can use this object to include timing data, additional error details, or any other helpful information.
 
 ## Field
 
