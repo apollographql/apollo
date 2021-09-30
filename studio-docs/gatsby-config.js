@@ -23,6 +23,7 @@ module.exports = {
           'Working with Graphs': [
             'org/graphs',
             'explorer',
+            'embed-explorer',
             'dev-graphs',
             'federated-graphs'
           ],
