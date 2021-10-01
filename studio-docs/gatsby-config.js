@@ -9,6 +9,7 @@ module.exports = {
         root: __dirname,
         pathPrefix: '/docs/studio',
         algoliaIndexName: 'studio',
+        algoliaFilters: ['docset:studio', ['docset:rover', 'docset:federation']],
         baseDir: 'studio-docs',
         subtitle: 'Studio',
         description: 'How to use Apollo Studio',
