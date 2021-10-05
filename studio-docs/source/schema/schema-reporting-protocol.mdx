@@ -48,7 +48,7 @@ This mutation always requires a `report` input argument, which has the following
 }
 ```
 
-We'll cover the details of this operation and its inputs in [Protocol sequence](#protocol-sequence).
+The details of this operation and its inputs are described below.
 
 ## Required information
 
@@ -88,7 +88,13 @@ An instance's boot ID should _not_ persist across restarts.
 
 ### Schema hash
 
-Every `reportSchema` mutation requires the SHA-256 hash of the schema string you're reporting to Apollo. You should always **normalize** your schema before generating its hash, as [described below](#schema-normalization).
+Every `reportSchema` mutation requires the SHA-256 hash of the schema string you're reporting to Apollo, as a hexadecimal string:
+
+```
+F908D0B24486E2B2A032ED019A657E7243BCDB7DC5D939AF69820FE7BADFB200
+```
+
+You should always **normalize** your schema before generating this hash, as [explained below](#schema-normalization).
 
 ## Protocol sequence
 
@@ -126,15 +132,15 @@ sequenceDiagram
 ### Step-by-step description
 
 1. **On startup**, the edge server executes the `reportSchema` mutation, providing a `SchemaReport` object with the server's details as input.
-    * See the `SchemaReport` object's [required fields](#required-fields).
+    * See the `SchemaReport` object's [fields](#schemareport-fields), and its [minimum shape](#the-reportschema-mutation).
     * In this initial call, set the `coreSchema` argument of `reportSchema` to `null`.
     * If this or any other `reportSchema` request fails with a non-2xx response, the edge server should retry after 20 seconds.
 2. **If the mutation succeeds**, Apollo responds with a `ReportSchemaResponse` object. This response tells the edge server:
     * How many seconds to wait before sending the next `reportSchema` request (`inSeconds`)
     * Whether the next `reportSchema` request should include the `coreSchema` that corresponds to the `coreSchemaHash` provided in the previous request (`withCoreSchema`)
 
-    **If the mutation fails**, Apollo responds with a `ReportSchemaError` object. **In this case, the edge server should stop reporting its schema.**
-    * The `message` field of `ReportServerInfoError` provides a human-readable message describing the error.
+    **If the mutation fails**, Apollo responds with a `ReportSchemaError` object. **In this case, the edge server should stop reporting its schema.** This error should _not_ cause the server to crash.
+    * The `message` field of `ReportSchemaError` provides a human-readable message describing the error.
     * Correct the error and deploy a new version of your edge server to resume schema reporting.
 3. **Assuming success in step 2**, the edge server waits the specified number of seconds, then executes the `reportSchema` mutation again.
     * This request includes a [normalized `coreSchema` string](#schema-normalization) if and only if `withCoreSchema` was `true` in Apollo's most recent `ReportSchemaResponse`.
