@@ -5,6 +5,20 @@ sidebar_title: Datadog forwarding
 
 The **Apollo Datadog integration** enables you to forward Studio performance metrics to your Datadog account. Datadog supports an advanced function API, which enables you to create sophisticated graphs and alerts for GraphQL metrics.
 
+> **Important:** Studio only forwards metrics for **named GraphQL operations**. Metrics for _anonymous_ operations are not forwarded. Make sure your graph's clients name all operations:
+>
+> ```graphql
+> ❌
+> query {
+>   hello
+> }
+>
+> ✅
+> query HelloQuery {
+>   hello
+> }
+> ```
+
 ## Setup
 
 To integrate with Datadog, you provide your Datadog API key and region to Studio. A Datadog account with administrator privileges is required to obtain an API key.
