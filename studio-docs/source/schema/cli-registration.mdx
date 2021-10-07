@@ -9,7 +9,7 @@ import RegisterFederatedCli from '../../shared/register-federated-cli.mdx'
 
 If you're using a GraphQL server that doesn't support [schema reporting](./schema-reporting/), you can register your schema via the [Rover CLI](https://www.apollographql.com/docs/rover/).
 
-> **Do not use both schema reporting and Rover to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different. For example, schema reporting preserves a schema's comments and directives, whereas CLI registration does not.
+> **Do not use both schema reporting and Rover to register schemas for the same graph.** Doing so can cause you to register "no-op" schema changes that are semantically identical but cosmetically different.
 
 ## Registering a non-federated schema
 
@@ -37,8 +37,15 @@ jobs:
       - checkout
 
       - run: npm install
-      # CircleCI needs global installs to be sudo
-      - run: sudo npm install --global @apollo/rover
+      
+      - run:
+          name: Install Rover
+          command: |
+            # download and install Rover
+            curl -sSL https://rover.apollo.dev/nix/v0.3.0 | sh
+            
+            # This allows the PATH changes to persist to the next `run` step
+            echo 'export PATH=$HOME/.rover/bin:$PATH' >> $BASH_ENV
 
       # Start the GraphQL server.  If a different command is used to
       # start the server, use it in place of `npm start` here.
@@ -51,10 +58,10 @@ jobs:
       # commands against it
       - run: sleep 5
 
-      # When running on the 'master' branch, push the latest version
+      # When running on the 'main' branch, push the latest version
       # of the schema to Apollo Studio.
       - run: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+          if [ "${CIRCLE_BRANCH}" == "main" ]; then
             rover graph publish my-graph@my-variant --schema ./schema.graphql
           fi
 ```
