@@ -15,6 +15,12 @@ module.exports = {
         description: 'How to use Apollo Studio',
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/apollo-platform',
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-mermaid',
+            options: { mermaidOptions }
+          }
+        ],
         sidebarCategories: {
           null: [
             'index',

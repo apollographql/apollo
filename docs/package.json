@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "gatsby": "2.32.13",
-    "gatsby-theme-apollo-docs": "5.1.0",
+    "gatsby-remark-mermaid": "^2.1.0",
+    "gatsby-theme-apollo-docs": "^5.2.0-alpha.0",
+    "puppeteer": "^10.4.0",
     "react": "16.13.1",
     "react-dom": "16.12.0"
   }
