@@ -1,4 +1,4 @@
-const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
+const {mermaidOptions, ...themeOptions} = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
   plugins: [
