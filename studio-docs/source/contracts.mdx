@@ -1,9 +1,12 @@
 ---
 title: Contracts
-sidebar_title: Contracts (preview)
+sidebar_title: Contracts (enterprise preview)
+description: Create scoped representations of your enterprise graph
 ---
 
-> Contracts are currently available in [public preview](https://www.apollographql.com/docs/resources/release-stages/#public-preview).
+> Contracts are currently available as a [public preview](https://www.apollographql.com/docs/resources/release-stages/#public-preview) feature for [Enterprise plans](https://www.apollographql.com/pricing/).
+>
+> Contracts currently only support [federated graphs](https://www.apollographql.com/docs/federation/).
 
 Apollo Studio **contracts** enable you to deliver different **schema subsets** to different consumers of your federated graph. Each subset can exclude a different set of types and fields from your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
 
@@ -16,39 +19,63 @@ graph LR;
   api -."Exclude types and fields<br/>according to contract B".->contractB
 ```
 
-> Contracts are currently available _only_ for federated graphs.
-
 ## Use cases
 
-Contracts have the follwing primary use cases:
+Contracts have the following primary use cases:
 
-**Scoped gateways.** You can deploy a managed instance of your gateway that uses your contract schema. Developers who use this "scoped" gateway can only execute operations that the contract schema supports. This enables you to hide experimental types and fields that are still in development, or to limit a particular audience's access to only the portions of your schema that they need.
+### Scoped gateways
+
+You can deploy a [managed instance](https://www.apollographql.com/docs/federation/managed-federation/overview/) of your gateway that uses your contract schema. Developers who use this "scoped" gateway can only execute operations that the contract schema supports:
+
+```mermaid
+graph BT;
+  adminapp(Admin app);
+  userapp(User app);
+  subgraph " ";
+    scopedgateway(["Scoped gateway<br/>▟"]);
+    unscopedgateway(["Unscoped gateway<br/>▉"]);
+    subgraphs[["(All subgraphs)"]];
+  end;
+  adminapp -.- unscopedgateway;
+  userapp -.- scopedgateway;
+  unscopedgateway & scopedgateway  --- subgraphs;
+  class adminapp,userapp secondary;
+```
+
+This enables you to hide experimental types and fields that are still in development, or to limit a particular audience's access to only the portions of your graph that they need.
 
 Scoped gateways can safely connect to the same subgraph instances as non-scoped gateways, because they can only request data that's represented in the contract schema.
 
-**Documentation.** Your contract variant has its own schema reference, changelog, and Explorer. You can provide these resources to client developers to help them interact with a specific portion of your graph while omitting unnecessary types and fields.
+### Scoped documentation
+
+Each contract variant has its own README, schema reference, and Explorer. If you [make a contract variant public](./org/graphs/#public-variants), you can provide these resources to external client developers to help them interact with a specific portion of your graph (while omitting irrelevant types and fields).
 
 ## Setup
 
-### 1. Update `@apollo/gateway`
+### 1. Update your gateway and subgraphs
 
-Before you define any contracts, update your gateway's `@apollo/gateway` library to version 0.34 or later.
+**Before you create any contracts:**
 
-Older versions of the library don't support the required `@tag` directive.
+1. Update your gateway's `@apollo/gateway` library to version 0.34 or later.
+2. Update your Apollo Server subgraphs to use version 0.1.1 or later of the `@apollo/subgraph` library.
+    * `@apollo/subgraph` recently replaced `@apollo/federation` for Apollo Server instances acting as subgraphs. Symbol names are unchanged.
+3. If you're still using the Apollo CLI to register subgraph schemas (via `apollo service:push`), [install the Rover CLI](https://www.apollographql.com/docs/rover/getting-started/) and begin using [`rover subgraph publish`](https://www.apollographql.com/docs/rover/subgraphs/#publishing-a-subgraph-schema-to-apollo-studio) instead.
+
+Older versions of the above libraries and tools don't fully support the required `@tag` directive.
 
 ### 2. Enable variant support for `@tag`
 
-A contract uses one of your graph's existing [variants](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants) (called the **source variant**) to generate its schema subset. You need to enable your source variant's support for the `@tag` directive in Apollo Studio.
+A contract uses one of your graph's existing [variants](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants) (called the **source variant**) to generate its contract schema. You need to enable the source variant's support for the `@tag` directive in Apollo Studio.
 
 Open your graph's Settings page and find the Manage Variants section:
 
 <img class="screenshot" alt="Edit supported directives in Studio" src="./img/edit-supported-directives.jpg" width="600"/>
 
-Click **Edit Supported Directives** for the variant you want to use, and enable support for `@tag`.
+Click **Edit Supported Directives** for the variant you want to use as a source variant, and enable support for `@tag`.
 
 ### 3. Add `@tag`s
 
-With contracts, you include and exclude types and fields from your **contract schema** based on **tags** you apply in your subgraph schemas.
+With contracts, you apply **tags** to types and fields in your subgraph schemas to indicate whether to include or exclude them from your **contract schema**.
 
 For example, let's take a look at this Products subgraph schema:
 
@@ -76,124 +103,107 @@ type Product @key(fields: "upc") {
 
 This schema applies the `@tag` directive to two object fields: `internalId` and `percentageMatch`.
 
-* A tag can have any string name (you specify a contract's behavior for a given tag name).
-    * We *strongly* recommend avoiding whitespace and special characters, because we might introduce tag name validations in the future.
-* Give types and fields the _same_ tag name if they should be included or excluded as a group by a particular contract.
-* A single type or field can have multiple tags.
+Each tag has a string `name`. You tag types and fields with the _same_ `name` if they should be included or excluded as a group by a particular contract.
 
-You can apply tags to the following in your schema:
+Whenever your source variant's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
 
-* Fields of object types (as shown above)
-* Object types
-* Interface types
-* Union types
+#### Tagging rules
 
-Whenever your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
+* You can apply tags to the following in your schema:
+    * Fields of object types (as shown above)
+    * Definitions of object, interface, and union types
+* Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
+* Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
+    * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
+
+Additional guidance is provided in [Special cases](#special-cases).
 
 ### 4. Register updated subgraph schemas
 
-After you're done adding tags, update your source variant by registering your updated subgraph schemas to Apollo Studio. Now you're ready to define your first contract!
+After you're done adding tags, update your source variant by registering your updated subgraph schemas to Apollo Studio.
 
-### 5. Define a contract
+> After registering, if Studio doesn't reflect the the tags that you've added in your subgraphs schemas, make sure you've [updated all required libraries and tools](#update-your-gateway-and-subgraphs). If you obtain your subgraph schemas via introspection, older subgraph libraries might strip the `@tag` variant.
 
-Here's an example contract definition:
+Now you're ready to create your first contract!
 
-```yaml
-name: "staging-public"
-sourceVariant: "staging"
-include: []
-exclude: ["private"]
-```
+### 5. Create a contract
 
-A contract definition includes:
+Open your graph's Settings page and find the same Manage Variants section where you added support for the `@tag` directive. Below your list of registered schemas, you'll see a Contracts section.
 
-* A contract name
-    * The name cannot be changed after it's set. It will correspond to a new **contract [variant](https://www.apollographql.com/docs/studio/org/graphs/#managing-variants)** of your graph.
-* An existing **source variant** of your graph
-    * The contract uses tags in the source variant's API schema to determine which types and fields to include and exclude.
-    * The source variant _cannot_ be a contract variant for a _different_ contract.
-* Lists of tag names to `include` and `exclude` from the **contract schema**
+Click **Create Contract** to open the following dialog:
 
-Each contract generates a **contract schema** that's a subset of its source variant's API schema. Types and fields from the API schema are included in the contract schema according to the following rules:
+<img class="screenshot" alt="Create contract dialog" src="./img/contracts-dialog.jpg" width="550"/>
 
-* **If the `include` list is empty**, the contract schema _includes_ each type and field _unless_ it's tagged with a name in the `exclude` list.
-* **If the `include` list is non-empty**, the contract schema _excludes_ each type and field _unless_ it's tagged with a name in the `include` list.
-* The contract schema _excludes_ a type or field if it's tagged with both a name in the `include` list _and_ a name in the `exclude` list.
+#### Basic details
 
-Our example contract excludes the `internalId` field from [the subgraph schema above](#tagging-fields). It _includes_ all other types and fields in the schema.
+In the first step of the dialog, provide the following:
 
-> Whenever a contract's source variant successfully updates its API schema, Apollo automatically updates the contract schema to reflect modifications to definitions and tags.
->
+* A name for your new contract variant
+    * You can't change the name after the contract is created.
+* The source variant to use
+* An optional description for the contract
+
+Then click **Continue**.
+
+#### Contract filters
+
+Next, you specify tag-based filters for your contract:
+
+<img class="screenshot" alt="Create contract dialog" src="./img/contract-tags.jpg" width="550"/>
+
+The dialog detects all tag names that are used in your source variant's schema, and it populates its dropdown lists with those names. You can add any number of tag names to each list.
+
+> You can also add tag names that are not yet present in your source variant's schema. If you later add tags with that name, the contract honors them.
+
+Your contract will filter types and fields from its source variant according to the following rules:
+
+* **If the Included Tags list is empty**, the contract schema _includes_ each type and field _unless_ it's tagged with an _excluded_ tag.
+* **If the Included Tags list is non-empty**, the contract schema _excludes_ each type and field _unless_ it's tagged with an _included_ tag.
+    * The contract schema _excludes_ a type or field if it's tagged with both an included tag _and_ an excluded tag.
+
+When you're done adding tag names, click **Continue**.
+
+#### Review and launch
+
+You can now review all of the details of your contract:
+
+<img class="screenshot" alt="Create contract dialog" src="./img/contract-review.jpg" width="550"/>
+
+If everything looks right, click **Create**. This kicks off the generation of your contract variant and its initial contract schema as a [launch](./launches).
+
+> Studio might encounter an error while generating your contract schema. For descriptions of these errors, see [Contract errors](#contract-errors).
+
+### 6. Use your new contract variant
+
+Congratulations! You've created a contract in Apollo Studio. You can now use your contract variant to provide a [scoped gateway or scoped documentation](#use-cases) to your users.
+
+For example, you can complete the [managed federation setup](https://www.apollographql.com/docs/federation/managed-federation/setup/) for a new gateway instance that uses your contract variant.
+
+Whenever your contract's source variant successfully updates its API schema, Apollo updates your contract schema to reflect changes to definitions and tags. These updates are automatically picked up by a managed gateway.
+
 > Configuration updates to a source variant do _not_ yet trigger new contract variant builds. This functionality is coming soon.
 
-### 6. Add the contract to Studio
+## Contract errors
 
-During this public preview, you add contracts to Studio by executing a mutation with the Apollo Studio API. You can execute this mutation from your own code, or via a tool like [Apollo Sandbox](https://studio.apollographql.com/sandbox).
+Whenever Apollo Studio attempts to create or update your contract schema, it might encounter an error. Errors are identified by the step in the creation process where they occurred:
 
-#### API details
+| Error | Description |
+|-------|-------------|
+| `INPUT_VALIDATION` | The contract is attempting to include and exclude the same tag.  |
+| `PARSING` | After including and excluding fields, the resulting contract schema failed to parse. |
+| `PARSING_TAG_DIRECTIVES` | Studio encountered an error while trying to obtain all uses of `@tag` from the source variant schema. |
+| `EMPTY_OBJECT_AND_INTERFACE_MASKING` | All of an object or interface type's fields were excluded, and an error occurred while excluding the entire type.  |
+| `EMPTY_UNION_MASKING` | All of a union type's included types were excluded, and an error occurred while excluding the entire union. |
+| `PARTIAL_INTERFACE_MASKING` | ? |
+| `SCHEMA_RETRIEVAL` | Studio encountered an error while retrieving the source variant's schema. It might not yet have a valid composed schema. |
+| `TAG_MATCHING` | Studio encountered an error while determining which tags to include and exclude. The contract might be attempting to include and exclude the same tag. |
+| `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
+| `TO_API_SCHEMA` | Studio encountered an error while attempting to generate an API schema from the contract variant's supergraph schema. |
+| `UNKNOWN` | An unknown error occurred. |
 
-The Apollo Studio API is hosted at: `https://graphql.api.apollographql.com/api/graphql`
+## Special cases
 
-All requests to the Studio API require an `X-API-KEY` header. The value of this header must be an API key (graph or personal) with sufficient permissions for your graph. [Learn how to obtain an API key.](./api-keys/)
-
-We also recommend setting the following header for all Studio API requests:
-
-```
-apollographql-client-name = <your-email-address>
-```
-
-This enables us to identify your traffic and understand your usage during this preview period. We can also reach out to you if we make any API changes that might affect your implementation.
-
-> The Studio API does not provide any schema stability guarantees at this time.
-
-#### Mutation structure
-
-Here's the structure of the mutation for adding a contract to Studio (which creates the associated contract variant):
-
-```graphql
-mutation UpsertContractVariant(
-  $graphId: ID!,                    # Your Studio graph's ID
-  $sourceVariant: String!,          # The contract's source variant
-  $contractVariantName: String!,    # The contract variant to add
-  $filterConfig: FilterConfigInput! # The tags to include and exclude
-) {
-  service(id: $graphId) {
-    upsertContractVariant(
-      sourceVariant: $sourceVariant
-      contractVariantName: $contractVariantName
-      filterConfig: $filterConfig
-    ) {
-      ... on ContractVariantUpsertSuccess {
-        contractVariant {
-          id
-          name
-        }
-      }
-      ... on ContractVariantUpsertErrors {
-        errorMessages
-      }
-    }
-  }
-}
-```
-
-Here are example values for the variables required by this mutation:
-
-```json
-{
-  "graphId": "docs-example-graph",
-  "sourceVariant": "staging",
-  "contractVariantName": "staging-public",
-  "filterConfig": {
-    "include": [],
-    "exclude": ["private"]
-  }
-}
-```
-
-## Important cases and considerations
-
-* If a contract excludes _every field_ of a particular object type, that object type's definition is excluded from the contract schema entirely.
+* If a contract excludes _every field_ of a particular object type, the entire type definition is excluded from the contract schema.
 
 * If a contract excludes an object, interface, or union type, it **must** also exclude all schema fields that _return_ that type. Otherwise, generation of the contract schema fails.
 
