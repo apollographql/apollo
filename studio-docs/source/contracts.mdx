@@ -194,7 +194,7 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 | `PARSING_TAG_DIRECTIVES` | Studio encountered an error while trying to obtain all uses of `@tag` from the source variant schema. |
 | `EMPTY_OBJECT_AND_INTERFACE_MASKING` | All of an object or interface type's fields were excluded, and an error occurred while excluding the entire type.  |
 | `EMPTY_UNION_MASKING` | All of a union type's included types were excluded, and an error occurred while excluding the entire union. |
-| `PARTIAL_INTERFACE_MASKING` | ? |
+| `PARTIAL_INTERFACE_MASKING` | An interface field's return type was excluded, and an error occurred while excluding that interface field. |
 | `SCHEMA_RETRIEVAL` | Studio encountered an error while retrieving the source variant's schema. It might not yet have a valid composed schema. |
 | `TAG_MATCHING` | Studio encountered an error while determining which tags to include and exclude. The contract might be attempting to include and exclude the same tag. |
 | `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
