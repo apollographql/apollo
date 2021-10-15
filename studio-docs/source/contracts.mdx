@@ -1,54 +1,54 @@
 ---
 title: Contracts
 sidebar_title: Contracts (enterprise preview)
-description: Create scoped representations of your enterprise graph
+description: Deliver subsets of your enterprise graph
 ---
 
 > Contracts are currently available as a [public preview](https://www.apollographql.com/docs/resources/release-stages/#public-preview) feature for [Enterprise plans](https://www.apollographql.com/pricing/).
 >
 > Contracts currently only support [federated graphs](https://www.apollographql.com/docs/federation/).
 
-Apollo Studio **contracts** enable you to deliver different **schema subsets** to different consumers of your federated graph. Each subset can exclude a different set of types and fields from your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
+Apollo Studio **contracts** enable you to deliver different subsets of your graph to different consumers. Each contract filters specific portions of your graph's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas):
 
 ```mermaid
 graph LR;
   api("API schema<br/>▉");
   contractA("Contract schema A<br/>▛");
   contractB("Contract schema B<br/>▟")
-  api -."Exclude types and fields<br/>according to contract A".->contractA
-  api -."Exclude types and fields<br/>according to contract B".->contractB
+  api -."Filter schema<br/>according to contract A".->contractA
+  api -."Filter schema<br/>according to contract B".->contractB
 ```
 
-## Use cases
+## What are contracts for?
 
-Contracts have the following primary use cases:
+You usually create a contract to support a **contract gateway** or **contract documentation** (or both).
 
-### Scoped gateways
+### Contract gateways
 
-You can deploy a [managed instance](https://www.apollographql.com/docs/federation/managed-federation/overview/) of your gateway that uses your contract schema. Developers who use this "scoped" gateway can only execute operations that the contract schema supports:
+You can deploy a [managed instance](https://www.apollographql.com/docs/federation/managed-federation/overview/) of your gateway that uses a contract schema. Developers who use this contract gateway can only execute GraphQL operations that the contract schema supports:
 
 ```mermaid
 graph BT;
   adminapp(Admin app);
   userapp(User app);
   subgraph " ";
-    scopedgateway(["Scoped gateway<br/>▟"]);
-    unscopedgateway(["Unscoped gateway<br/>▉"]);
+    standardgateway(["Standard gateway<br/>▉"]);
+    contractgateway(["Contract gateway<br/>▟"]);
     subgraphs[["(All subgraphs)"]];
   end;
-  adminapp -.- unscopedgateway;
-  userapp -.- scopedgateway;
-  unscopedgateway & scopedgateway  --- subgraphs;
+  userapp -.- contractgateway;
+  adminapp -.- standardgateway;
+  standardgateway & contractgateway --- subgraphs;
   class adminapp,userapp secondary;
 ```
 
 This enables you to hide experimental types and fields that are still in development, or to limit a particular audience's access to only the portions of your graph that they need.
 
-Scoped gateways can safely connect to the same subgraph instances as non-scoped gateways, because they can only request data that's represented in the contract schema.
+Contract gateways can safely connect to the same subgraph instances as any other gateway, because they can only interact with data that's represented in the contract schema.
 
-### Scoped documentation
+### Contract documentation
 
-Each contract variant has its own README, schema reference, and Explorer. If you [make a contract variant public](./org/graphs/#public-variants), you can provide these resources to external client developers to help them interact with a specific portion of your graph (while omitting irrelevant types and fields).
+In Studio, each contract variant has its own README, schema reference, and Explorer. If you [make a contract variant public](./org/graphs/#public-variants), you can provide these resources to external client developers to help them interact with a specific portion of your graph (while omitting irrelevant types and fields).
 
 ## Setup
 
@@ -175,13 +175,23 @@ If everything looks right, click **Create**. This kicks off the generation of yo
 
 ### 6. Use your new contract variant
 
-Congratulations! You've created a contract in Apollo Studio. You can now use your contract variant to provide a [scoped gateway or scoped documentation](#use-cases) to your users.
+Congratulations! You've created a contract in Apollo Studio. You can now use your contract variant to provide a [contract gateway or contract documentation](#applications-of-contracts) to your users.
 
 For example, you can complete the [managed federation setup](https://www.apollographql.com/docs/federation/managed-federation/setup/) for a new gateway instance that uses your contract variant.
 
 Whenever your contract's source variant successfully updates its API schema, Apollo updates your contract schema to reflect changes to definitions and tags. These updates are automatically picked up by a managed gateway.
 
 > Configuration updates to a source variant do _not_ yet trigger new contract variant builds. This functionality is coming soon.
+
+## Editing a contract
+
+After you create a contract, you can edit its lists of included and excluded tags. From the Contracts list in your graph's Settings page, click **Edit Contract** where shown:
+
+<img class="screenshot" alt="Edit contract menu" src="./img/contract-edit.jpg" width="550"/>
+
+This opens a dialog similar to the one you used to create the contract.
+
+> You can't change an existing contract's name or source variant. Instead, you can create a _new_ contract (and delete the existing contract variant if you no longer need it).
 
 ## Contract errors
 
