@@ -26,7 +26,7 @@ You can use Studio with any GraphQL server. Certain features (such as [metrics r
 
 ## 2. Create your first graph
 
-In Studio, each **graph** corresponds to a data graph and its associated GraphQL schema. Your first graph will use your GraphQL server's schema.
+In Studio, each **graph** has an associated GraphQL schema. Your first graph will use your GraphQL server's schema.
 
 1. Visit [studio.apollographql.com](https://studio.apollographql.com/) again. Now that you have an account, this opens Studio.
 
@@ -58,14 +58,17 @@ Apollo Server supports a feature called **schema reporting** that enables it to 
 
 Set your graph API key as the value of the `APOLLO_KEY` environment variable in your server's environment, and set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`.
 
-If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add the API key to the `.env` file in your project's root directory, like so:
+If you're using the [`dotenv`](https://www.npmjs.com/package/dotenv) library, you can add these definitions to the `.env` file in your project's root directory, like so:
 
-```none:title=.env
+```bash{1-2}:title=.env
 APOLLO_KEY=YOUR_KEY_HERE
-APOLLO_GRAPH_ID=your-graph-id
 APOLLO_SCHEMA_REPORTING=true
+APOLLO_GRAPH_ID=your-graph-id
 ```
 
+> **Important:** If you use a `.env` file, **do not commit it to version control**. Always use `.gitignore` or a similar method to omit files that include secret credentials.
+>
+> You can alternatively provide these values to Apollo Server via the [`apollo` constructor option](https://www.apollographql.com/docs/apollo-server/api/apollo-server/#apollo), but again, **do not add secret credentials to your application source**.
 
 Now whenever your server starts up, it automatically registers its schema with the Apollo schema registry _and_ begins pushing metrics to Apollo Studio!
 

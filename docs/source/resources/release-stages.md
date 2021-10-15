@@ -74,7 +74,7 @@ Opt-in previews might be announced via email, in the Apollo Studio UI, and/or on
 
 ### Public preview
 
-A feature in public preview is enabled for Apollo users by default. However, it might still contain bugs or undergo iteration on visual design.
+A feature in public preview is enabled for Apollo users by default. However, it might still contain bugs or undergo iteration. There is no defined SLA for features that are released in public preview.
 
 This stage helps Apollo gather additional bug reports and feedback in preparation for general availability.
 

@@ -1,14 +1,14 @@
 ---
 title: 'Build a schema'
 sidebar_title: '1. Build a schema'
-description: Create the blueprint for your data graph
+description: Create the blueprint for your graph
 ---
 
 > Getting started with Apollo? [Check out **Odyssey**, Apollo's learning platform](https://odyssey.apollographql.com?utm_source=apollo_docs&utm_medium=referral)! Our introductory course, **Lift-off**, introduces many of the same concepts as this tutorial with helpful videos and interactive code challenges.
 
 > Time to accomplish: 15 minutes
 
-Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
+Every graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might include the following types:
 
 ```graphql
 # A book has a title and an author
@@ -28,7 +28,7 @@ In the steps below, we'll set up a GraphQL server that will enforce our schema's
 
 ## Set up Apollo Server
 
-A schema is only useful if our data graph conforms to the schema's structure. Enforcing a schema's structure is one of the core features of **Apollo Server**, a production-ready, open-source library that helps you implement your data graph's API.
+A schema is only useful if our graph conforms to the schema's structure. Enforcing a schema's structure is one of the core features of **Apollo Server**, a production-ready, open-source library that helps you implement your graph's API.
 
 From the `start/server` directory, let's install Apollo Server (along with our project's other dependencies):
 
@@ -53,7 +53,7 @@ Now that Apollo Server is prepared to receive our schema, let's define it.
 
 ## Define your schema's types
 
-Your GraphQL schema defines what types of data a client can read and write to your data graph. Schemas are strongly typed, which unlocks powerful developer tooling.
+Your GraphQL schema defines what types of data a client can read and write to your graph. Schemas are strongly typed, which unlocks powerful developer tooling.
 
 Your schema's structure should support the actions that your clients will take. Our example app needs to be able to:
 
@@ -79,7 +79,7 @@ module.exports = typeDefs;
 
 The schema will go inside the `gql` function (between the backticks). The language we'll use to write the schema is GraphQL's schema definition language (SDL).
 
-> Because the schema sits directly between your application clients and your underlying data services, front-end and back-end teams should collaborate on its structure. When you develop your own data graph, practice **schema-first development** and agree on a schema _before_ you begin implementing your API.
+> Because the schema sits directly between your application clients and your underlying data services, front-end and back-end teams should collaborate on its structure. When you develop your own graph, practice **schema-first development** and agree on a schema _before_ you begin implementing your API.
 
 ### Object types
 
@@ -137,9 +137,9 @@ Notice above that the `missionPatch` field of the `Mission` type takes an **argu
 
 ### The `Query` type
 
-We've defined the objects that exist in our data graph, but clients don't yet have a way to _fetch_ those objects. To resolve that, our schema needs to define  **queries** that clients can execute against the data graph.
+We've defined the objects that exist in our graph, but clients don't yet have a way to _fetch_ those objects. To resolve that, our schema needs to define  **queries** that clients can execute against the graph.
 
-You define your data graph's supported queries as fields of a special type called the `Query` type. Paste the following into your schema definition:
+You define your graph's supported queries as fields of a special type called the `Query` type. Paste the following into your schema definition:
 
 ```graphql:title=src/schema.js
 type Query {

@@ -1,21 +1,21 @@
 ---
-title: The Apollo GraphQL platform
+title: The Apollo Graph Platform
 sidebar_title: The Apollo platform
-description: Bring your data graph from prototype to production
+description: Bring your graph from prototype to production
 ---
 
-The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-studio) a **data graph**: a unified data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
+The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-studio) a unified **graph**: a data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
 
-A data graph sits between application clients and back-end services, facilitating the flow of data between them:
+Your graph sits between application clients and back-end services, facilitating the flow of data between them:
 
 ![diagram](../images/index-diagram.svg)
 
-An Apollo data graph uses [GraphQL](./benefits/) to define and enforce the structure of this data flow.
+An Apollo graph uses [GraphQL](./benefits/) to define and enforce the structure of this data flow.
 
 
 ## 1. Build your graph with Apollo Server
 
-Your data graph needs a service that processes GraphQL operations from application clients. This service communicates with back-end data sources to fetch and modify data as needed. To build this service, you can use [**Apollo Server**](https://www.apollographql.com/docs/apollo-server/).
+Your graph needs a service that processes GraphQL operations from application clients. This service communicates with back-end data sources to fetch and modify data as needed. To build this service, you can use [**Apollo Server**](https://www.apollographql.com/docs/apollo-server/).
 
 Apollo Server is an extensible, [open-source](https://github.com/apollographql/apollo-server) JavaScript GraphQL server. With it, you can define:
 
@@ -26,23 +26,23 @@ You can deploy Apollo Server to any hosted or serverless environment. It support
 
 ### Build incrementally
 
-Your data graph doesn't immediately need to connect _all_ of your back-end data sources or handle _all_ of your client requests. The Apollo platform supports (and encourages) **incremental adoption**.
+Your graph doesn't immediately need to connect _all_ of your back-end data sources or handle _all_ of your client requests. The Apollo Graph Platform supports (and encourages) **incremental adoption**.
 
-As you connect more data sources and expand your schema, Apollo Server can handle a larger and larger percentage of your client data requests. Clients can continue using an existing solution for requests that your data graph doesn't yet support.
+As you connect more data sources and expand your schema, Apollo Server can handle a larger and larger percentage of your client data requests. Clients can continue using an existing solution for requests that your graph doesn't yet support.
 
 ### Make the jump to federation
 
-As your data graph begins to grow in size and complexity, you can use Apollo Server's extension libraries to [federate your graph](#4-federate-your-graph-with-apollo-federation).
+As your graph begins to grow in size and complexity, you can use Apollo Server's extension libraries to [federate your graph](#4-federate-your-graph-with-apollo-federation).
 
-In a federated architecture, your data graph's API is implemented across multiple services instead of a monolithic server. Each service has its own GraphQL schema, and those schemas are merged by a **gateway** that intelligently executes operations across services.
+In a federated architecture, your graph's API is implemented across multiple services instead of a monolithic server. Each service has its own GraphQL schema, and those schemas are merged by a **gateway** that intelligently executes operations across services.
 
 ## 2. Query your graph with Apollo Client
 
-After you deploy a first version of your data graph, application clients can begin querying it. To execute these queries, you can use [**Apollo Client**](https://www.apollographql.com/docs/react/).
+After you deploy a first version of your graph, application clients can begin querying it. To execute these queries, you can use [**Apollo Client**](https://www.apollographql.com/docs/react/).
 
 Apollo Client is a customizable, [open-source](https://github.com/apollographql/apollo-client) JavaScript GraphQL client with powerful caching and state management features. It enables developers to define queries directly within the UI components that use them, and automatically update those components as query results arrive or change. It also works seamlessly with [TypeScript](https://www.apollographql.com/docs/react/development-testing/static-typing/).
 
-Apollo Client's cache locally replicates the parts of your data graph that your client cares about. This enables your client to query _itself_ for data if it's already present, dramatically improving performance by preventing unnecessary network requests.
+Apollo Client's cache locally replicates the parts of your graph that your client cares about. This enables your client to query _itself_ for data if it's already present, dramatically improving performance by preventing unnecessary network requests.
 
 ### Supported Apollo Client platforms
 
@@ -70,7 +70,7 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 * Team collaboration via [organizations](https://www.apollographql.com/docs/studio/org/organizations/)
 * [Slack notifications](https://www.apollographql.com/docs/studio/slack-integration/) for schema changes and daily metrics reports
-* [Management of a federated data graph](https://www.apollographql.com/docs/federation/managed-federation/overview/)
+* [Management of a federated graph](https://www.apollographql.com/docs/federation/managed-federation/overview/)
 
 ### Paid Apollo Studio features
 
@@ -86,7 +86,7 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 
 ## 4. Federate your graph with Apollo Federation
 
-As your data graph grows, it can be useful to divide its functionality across multiple GraphQL services that own distinct portions of the graph's schema. Doing so is known as adopting a **federated architecture**. Apollo has defined the specification for a particular federated architecture called [**Apollo Federation**](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
+As your graph grows, it can be useful to divide its functionality across multiple GraphQL services that own distinct portions of the graph's schema. Doing so is known as adopting a **federated architecture**. Apollo has defined the specification for a particular federated architecture called [**Apollo Federation**](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
 > We strongly recommend starting with a non-federated architecture and moving to Apollo Federation only after your non-federated graph is up and running.
 
