@@ -3,8 +3,6 @@ title: Schema checks
 description: Verify the safety of changes to your graph
 ---
 
-> This article was recently updated to use the new Rover CLI instead of the Apollo CLI. If you are already using the Apollo CLI for schema checks, [see this article](./schema-checks-apollo-cli/).
-
 Certain changes to your GraphQL schema (such as removing a field or type) might break one of your application's clients. Apollo Studio provides **schema checks** to help you identify breaking changes before you make them, and to help you identify when a potentially dangerous change _won't_ break anything.
 
 You can review the results of schema checks inside Studio, helping you make informed decisions about evolving your graph:
@@ -23,7 +21,7 @@ Apollo Studio can perform the following types of schema checks:
 
 > Most of this article covers operation checks. For details on composition checks, [see this section](#federated-composition-checks).
 
-## Prerequisites 
+## Prerequisites
 
 To enable schema checks for your graph, do the following if you haven't yet:
 
@@ -195,14 +193,14 @@ jobs:
       # commands against it.
       - run: sleep 5
 
-      # In CI environments, this command authenticates with the `APOLLO_KEY` 
+      # In CI environments, this command authenticates with the `APOLLO_KEY`
       # environment variable.
       - run: rover graph check docs-example-graph@current --schema ./schema.graphql
 ```
 
 ### Integrating with GitHub
 
-If you're using GitHub, you can install the [Apollo Studio GitHub app](https://github.com/apps/apollo-studio). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `rover graph check`, providing built-in pass/fail status checks on your pull requests:
+If you're using GitHub, you can install the [Apollo Studio GitHub app](https://github.com/marketplace/apollo-studio#pricing-and-setup). This app enables Apollo Studio to send a webhook back to your GitHub project on each call to `rover graph check`, providing built-in pass/fail status checks on your pull requests:
 
 <img class="screenshot" src="./img/schema-checks/github-check.png" alt="GitHub Status View" />
 
@@ -222,7 +220,7 @@ Not every change to a schema is a potentially breaking change. Additive changes 
 
 #### Removals
 
-These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
+These changes remove a schema element. If a removed element is actively being used by an operation, your graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -236,7 +234,7 @@ These changes remove a schema element. If a removed element is actively being us
 
 #### Addition of required arguments
 
-These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
+These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -245,7 +243,7 @@ These changes add a required input to a schema element. If an operation is activ
 
 #### In-place updates
 
-These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
+These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your graph. It also might receive an unexpected result.
 
 > **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 

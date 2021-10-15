@@ -1,13 +1,15 @@
 const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
-  pathPrefix: '/docs/studio',
   plugins: [
     {
       resolve: 'gatsby-theme-apollo-docs',
       options: {
         ...themeOptions,
         root: __dirname,
+        pathPrefix: '/docs/studio',
+        algoliaIndexName: 'studio',
+        algoliaFilters: ['docset:studio', ['docset:rover', 'docset:federation']],
         baseDir: 'studio-docs',
         subtitle: 'Studio',
         description: 'How to use Apollo Studio',
@@ -17,40 +19,42 @@ module.exports = {
           null: [
             'index',
             'getting-started',
-            '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)',
+            '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)'
           ],
           'Working with Graphs': [
             'org/graphs',
             'explorer',
+            'embed-explorer',
             'dev-graphs',
-            'federated-graphs',
+            'federated-graphs'
           ],
           'Registering Schemas': [
             'schema/schema-reporting',
             'schema/cli-registration',
-            'schema/schema-reporting-protocol',
+            'schema/schema-reporting-protocol'
           ],
           'Metrics Reporting': [
             'setup-analytics',
             'client-awareness',
-            'datadog-integration',
+            'datadog-integration'
             // field usage
             // operation usage
           ],
-          'CI/CD': [
+          'Schema Delivery': [
             'schema-checks',
             'check-configurations',
+            'launches',
             'validating-client-operations',
-            'github-integration',
+            'github-integration'
           ],
-          'Notifications': [
+          Notifications: [
             'notification-setup',
             'daily-reports',
             'schema-change-integration',
             'performance-alerts',
-            'build-status-notification',
+            'build-status-notification'
           ],
-          'Security': [
+          Security: [
             'api-keys',
             'operation-registry',
             'audit-log',
@@ -60,10 +64,10 @@ module.exports = {
           'Managing Accounts': [
             'org/account',
             'org/organizations',
-            'org/members',
+            'org/members'
           ]
-        },
-      },
-    },
-  ],
+        }
+      }
+    }
+  ]
 };

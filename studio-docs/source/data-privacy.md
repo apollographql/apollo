@@ -12,7 +12,9 @@ Apollo Studio's top priority is ensuring the privacy and security of your data a
 
 ## Which tools send data to Apollo Studio?
 
-Both [Apollo Server](https://www.apollographql.com/docs/apollo-server/) and the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) have **opt-in features** that send data to Apollo Studio. Neither tool sends any data to Studio unless you configure it to do so.
+[Apollo Server](https://www.apollographql.com/docs/apollo-server/), the [Rover CLI](https://www.apollographql.com/docs/rover/), and the [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) have **opt-in features** that send data to Apollo Studio.
+
+The Rover CLI also collects anonymous usage data by default. [You can disable this.](https://www.apollographql.com/docs/rover/privacy/)
 
 Apollo Client does **not** send data to Apollo Studio.
 
@@ -25,7 +27,7 @@ All data sent to Apollo Studio is sent to an endpoint with one of the following 
 | **Latest URLs** |
 | `https://usage-reporting.api.apollographql.com` | Metrics reporting from [Apollo Server](https://www.apollographql.com/docs/studio/setup-analytics/#pushing-traces-from-apollo-server) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/setup-analytics/#third-party-support) |
 | `https://schema-reporting.api.apollographql.com` | Schema registration via schema reporting in [Apollo Server](https://www.apollographql.com/docs/studio/schema/schema-reporting/#apollo-server-setup) (v2.18.0+) and [third-party API servers](https://www.apollographql.com/docs/studio/schema/schema-reporting/#other-graphql-servers) |
-| `https://graphql.api.apollographql.com` | All [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) (v2.31+) commands that communicate with Studio (and the Studio web UI) |
+| `https://graphql.api.apollographql.com` | All [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) (v2.31+) commands and [Rover CLI](https://www.apollographql.com/docs/rover/) commands that communicate with Studio (and the Studio web UI) |
 | `https://operations.api.apollographql.com` | Apollo Server with the [operation registry plugin](https://www.apollographql.com/docs/studio/operation-registry/) (v0.4.1+) |
 | `https://storage-secrets.api.apollographql.com` | Apollo Server with Apollo Gateway (v0.16.0-v0.33.0) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/), or with the [operation registry plugin](https://www.apollographql.com/docs/studio/operation-registry/) (v0.4.1+) |
 | `https://uplink.api.apollographql.com` | Apollo Server with Apollo Gateway (v0.34.0+) with [managed federation](https://www.apollographql.com/docs/federation/managed-federation/overview/) |
@@ -176,6 +178,20 @@ The legal terms and policies that apply to Apollo's corporate websites and custo
 #### Where can I get more help?
 
 If you have any questions (including interest in a Data Processing Addendum or DPA), or encounter any issues, please reach out to [support](https://studio.apollographql.com/support).
+
+## Requesting deletion of data
+
+To request the deletion of specific data from your Apollo Studio organization, please email **support@apollographql.com** with the subject `Data deletion request`.
+
+In your email, please include the following:
+
+* A description of the data that needs to be deleted
+* An approximate timestamp of when that data was reported to Apollo
+* The ID of the Apollo Studio graph that the data is associated with
+
+> **Important:** Currently, data deletion is performed across _all variants_ of an affected graph. Per-variant deletion is not available.
+
+You can also request that members of your organization be removed from marketing outreach. To do so, provide the email addresses of those members in your email.
 
 <!--
 ######################################################################
