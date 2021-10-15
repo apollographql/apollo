@@ -22,7 +22,7 @@ After signing up, you're redirected to your Apollo Studio homepage.
 
 ## Create your first graph
 
-In Apollo Studio, each **graph** is a distinct data graph with a corresponding GraphQL schema. For your first graph, we'll use the schema of the server you just finished building.
+In Apollo Studio, each **graph** has a corresponding GraphQL schema. For your first graph, we'll use the schema of the server you just finished building.
 
 1. From your [Studio homepage](https://studio.apollographql.com), click **New Graph** in the upper right.
 2. Provide a name for your graph and set the **Graph type** to **Deployed**.
@@ -70,7 +70,7 @@ After you restart your server with `npm start`, return to your Studio homepage. 
 
 ## Try out free Studio features
 
-Connecting your server to Apollo Studio activates a variety of powerful features: 
+Connecting your server to Apollo Studio activates a variety of powerful features:
 
 ### The Explorer
 

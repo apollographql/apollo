@@ -8,11 +8,11 @@ description: Start here to learn how to build full-stack apps with Apollo
 
 Welcome! This tutorial guides you through building a full-stack, GraphQL-powered app with the Apollo platform.
 
-We want you to feel empowered to build your own production-ready app with Apollo, so 
+We want you to feel empowered to build your own production-ready app with Apollo, so
 we're skipping "Hello World" in favor of an example that's closer to "Real
-World", complete with authentication, pagination, testing, and more. 
+World", complete with authentication, pagination, testing, and more.
 
-Each section should take about 10-15 minutes (except the final section, which is closer to 20). 
+Each section should take about 10-15 minutes (except the final section, which is closer to 20).
 
 Ready? Let's dive in!
 
@@ -34,7 +34,7 @@ The app includes the following views:
 * A user profile page
 * A cart
 
-To populate these views, our app's data graph will connect to two data sources: 
+To populate these views, our **graph** will connect to two data sources:
 a REST API and a SQLite database. (Don't worry, you don't need to be familiar with
 either of those technologies to complete the tutorial.)
 

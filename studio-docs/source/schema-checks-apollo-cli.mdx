@@ -10,7 +10,7 @@ Schema checks are a **paid feature** that's available as part of Apollo Studio [
 
 ## Prerequisites
 
-To enable schema checks for your data graph, first do the following:
+To enable schema checks for your graph, first do the following:
 
 1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
 2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
@@ -97,7 +97,7 @@ You can also rerun checks from inside Studio. When you rerun a check, the latest
 
 ### Checking a federated schema
 
-If your data graph uses [Apollo Federation](https://www.apollographql.com/docs/federation/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](https://www.apollographql.com/docs/federation/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
+If your graph uses [Apollo Federation](https://www.apollographql.com/docs/federation/), the schema checks process differs slightly. For details, see [Checking changes to a federated graph](https://www.apollographql.com/docs/federation/managed-federation/advanced-topics/#checking-changes-to-a-federated-graph).
 
 ## Using with continuous integration
 
@@ -181,7 +181,7 @@ Not every change to a schema is a potentially breaking change. Additive changes 
 
 #### Removals
 
-These changes remove a schema element. If a removed element is actively being used by an operation, your data graph will return an error to affected clients.
+These changes remove a schema element. If a removed element is actively being used by an operation, your graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -195,7 +195,7 @@ These changes remove a schema element. If a removed element is actively being us
 
 #### Addition of required arguments
 
-These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the data graph will return an error to affected clients.
+These changes add a required input to a schema element. If an operation is actively using an element of your graph and doesn't add the new required input argument, the graph will return an error to affected clients.
 
 | Name | Description |
 |------|-------------|
@@ -204,7 +204,7 @@ These changes add a required input to a schema element. If an operation is activ
 
 #### In-place updates
 
-These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your data graph. It also might receive an unexpected result.
+These changes update an existing schema element. If an operation is actively using an element that is updated, the operation might start receiving an error from your graph. It also might receive an unexpected result.
 
 > **Note:** In some cases, in-place updates _are_ compatible with affected clients at runtime (such as a type rename or a conversion from an object to an interface that uses the same fields). However, schema checks still marks these as breaking changes, because validation does not have enough information to ensure that they are safe.
 

@@ -3,7 +3,7 @@ title: Setting up Apollo Studio notifications
 sidebar_title: Setup
 ---
 
-Apollo Studio can notify your team about changes to your data graph and its performance. These notifications help you stay up to date and address issues as they arise.
+Apollo Studio can notify your team about changes to your graph and its performance. These notifications help you stay up to date and address issues as they arise.
 
 > If you don't have an Apollo Studio organization yet, [get started](getting-started/).
 
