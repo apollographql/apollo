@@ -175,13 +175,20 @@ If everything looks right, click **Create**. This kicks off the generation of yo
 
 ### 6. Use your new contract variant
 
-Congratulations! You've created a contract in Apollo Studio. You can now use your contract variant to provide a [contract gateway or contract documentation](#applications-of-contracts) to your users.
+Congratulations! You've created a contract in Apollo Studio. You can now use your contract variant to provide a [contract gateway or contract documentation](#what-are-contracts-for) to your users.
 
 For example, you can complete the [managed federation setup](https://www.apollographql.com/docs/federation/managed-federation/setup/) for a new gateway instance that uses your contract variant.
 
-Whenever your contract's source variant successfully updates its API schema, Apollo updates your contract schema to reflect changes to definitions and tags. These updates are automatically picked up by a managed gateway.
+## Automatic updates
 
-> Configuration updates to a source variant do _not_ yet trigger new contract variant builds. This functionality is coming soon.
+Apollo automatically updates your contract schema whenever any of the following occurs:
+
+* Your contract's source variant successfully composes an updated API schema.
+* You [edit your contract](#editing-a-contract).
+
+This makes sure that your contract schema reflects the latest version of your source variant's schema, and that the correct types and fields are included and excluded.
+
+Updates to your contract schema are automatically fetched by your managed [contract gateways](#contract-gateways).
 
 ## Editing a contract
 
