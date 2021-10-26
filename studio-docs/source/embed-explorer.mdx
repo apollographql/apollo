@@ -3,8 +3,6 @@ title: Embedding the Explorer
 sidebar_title: Embedded Explorer
 ---
 
-import { ExpansionPanel } from "gatsby-theme-apollo-docs/src/components/expansion-panel";
-import { MultiCodeBlock } from "gatsby-theme-apollo-docs";
 import { EmbeddableExplorer } from "gatsby-theme-apollo-docs";
 
 If you have a [public variant](./org/graphs/#public-variants) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
@@ -37,17 +35,55 @@ For example, here's an embedded Explorer for an Apollo example graph. Try it out
 
 > This embedded Explorer collapses its left column by default because the full three-column layout is a little cramped on this page. You can [customize the embedded Explorer's appearance](#options) to suit the page it's on.
 
-## Basic setup
+## Setup
 
 > Before you proceed, make sure you have a [public variant](./org/graphs/#public-variants) of your graph in Apollo Studio.
 
-In your public variant, on the Explorer page, in the Settings tab, you should see an option to "Embed this graph". Clicking on this will open a modal with a snippet of code and some options. You can copy and paste the snippet into the html of your app to embed the Explorer for that graph. There are additional options you can pass to the `EmbeddedExplorer` constructor in that snippet.
+1. <a href="https://studio.apollographql.com/" target="_blank">Go to Apollo Studio</a> and open the public variant you want to use with the embedded Explorer.
+
+2. Go to the variant's Explorer page.
+
+3. Under the Explorer's Settings tab, find **Embed Explorer** and click **Copy code snippet**.
+
+    The following dialog appears:
+
+    <img class="screenshot" src="./img/explorer-embed.jpg" alt="Explorer embed dialog" width="600" />
+
+4. Use the options in the dialog to customize the code snippet's appearance and behavior to your liking.
+5. Click **Copy** to copy the snippet, then paste it into your code.
+
+[See below](#options) for descriptions of options shown in the dialog, along with advanced options that _aren't_ shown.
 
 ## Options
 
-When you embed the Explorer, you set options for it in the configuration.
+The `EmbeddedExplorer` object takes an options object with the following structure (individual options are described below):
 
-The following options are supported:
+```js
+{
+  graphRef: 'acephei@current',
+  endpointUrl: 'https://acephei-gateway.herokuapp.com',
+  persistExplorerState: false,
+  initialState: {
+    document: `query ExampleQuery {
+  me {
+    id
+  }
+}
+`,
+    variables: { 'Variable1': 'ExampleValue' },
+    headers: { 'Header1': 'ExampleValue' },
+    displayOptions: {
+      showHeadersAndEnvVars: true,
+      docsPanelState: 'open',
+      theme: 'light',
+    },
+  },
+}
+```
+
+### Top-level options
+
+These are the top-level fields you can include in the options object you pass to `new EmbeddedExplorer`:
 
 <table class="field-table api-ref">
   <thead>
@@ -68,7 +104,7 @@ The following options are supported:
 </td>
 <td>
 
-**Required.** The graph ref for the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. Has the format `graph-id@variant-name`.
+**Required.** The graph ref for the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. Has the format `graph-id@variant-name`. This value is automatically populated in the Explorer's embed snippet.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable code completion.
 
@@ -87,9 +123,9 @@ If you omit this option, the Explorer _does_ still load, but it doesn't know whi
 </td>
 <td>
 
-The endpointUrl for the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. This will be autofilled in the snippet you can grab from Explorer Settings in Studio.
+The endpoint URL of the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. This value is automatically populated  in the Explorer's embed snippet.
 
-If you specify your own fetcher via `handleRequest`, you can use any url you like, however, this is required if you don't have a custom `handleRequest` passed.
+**Required**, _unless_ you specify your own fetcher with the [`handleRequest`](#handlerequest) option.
 
 </td>
 </tr>
@@ -123,13 +159,46 @@ The default value is `false`.
 </td>
 <td>
 
-By default, we use the `fetch` api to fetch to your endpoint url. You can pass a custom fetcher that will be called everytime an operation is run.
+By default, the embedded Explorer uses the `fetch` API to send requests to your `endpointUrl`. You can instead pass a _custom_ fetcher that's used to run all operations.
 
-You might want to do this if you want specific headers included on every request made from your Embedded Explorer.
+You might want to do this if you need to include specific headers in every request made from your embedded Explorer.
 
 </td>
 </tr>
 
+<tr>
+<td>
+
+##### `initialState`
+
+`Object`
+
+</td>
+<td>
+
+An object containing additional options related to the state of the embedded Explorer on page load.
+
+For supported subfields, see [`initialState` options](#initialstate-options).
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+### `initialState` options
+
+These are the fields you can include in the `initialState` option you pass to `new EmbeddedExplorer`:
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name /<br/>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
 <tr>
 <td>
 
@@ -202,8 +271,6 @@ intialState: {
 
 A URI-encoded, serialized object containing initial HTTP header values to populate in the Explorer on load.
 
-Note that if you [route requests through the parent page](#route-requests-through-the-parent-page-advanced), you need to specify headers in your request handler, not just in the Explorer.
-
 Example:
 
 ```jsx
@@ -217,6 +284,22 @@ initialState: {
 </td>
 </tr>
 
+</tbody>
+</table>
+
+### `displayOptions` options
+
+These are the fields you can include in the `initialState.displayOptions` option you pass to `new EmbeddedExplorer`:
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name /<br/>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
 <tr>
 <td>
 
@@ -267,8 +350,5 @@ The default value is `dark`.
 
 </td>
 </tr>
-</tbody>
-</table>
-
 </tbody>
 </table>
