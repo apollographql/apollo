@@ -1,4 +1,4 @@
-const themeOptions = require('gatsby-theme-apollo-docs/theme-options');
+const {mermaidOptions, ...themeOptions} = require('gatsby-theme-apollo-docs/theme-options');
 
 module.exports = {
   plugins: [
@@ -13,6 +13,12 @@ module.exports = {
         description: 'How to use the Apollo GraphQL platform',
         githubRepo: 'apollographql/apollo',
         spectrumPath: '/',
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-mermaid',
+            options: { mermaidOptions }
+          }
+        ],
         sidebarCategories: {
           null: [
             'index',
@@ -44,8 +50,8 @@ module.exports = {
             'resources/faq',
             'resources/release-stages',
           ],
-        },
-      },
+        }
+      }
     },
   ],
 };
