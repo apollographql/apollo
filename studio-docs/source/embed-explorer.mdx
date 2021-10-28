@@ -91,7 +91,7 @@ The `EmbeddedExplorer` object takes an options object with the following structu
       theme: 'light',
     },
   },
-  handleRequest: () => {
+  handleRequest: (endpointUrl, options) => {
     return fetch(endpointUrl, {
       ...options,
       headers: {
