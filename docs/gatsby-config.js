@@ -18,7 +18,7 @@ module.exports = {
             'index',
             'intro/platform',
             'intro/benefits',
-            '[Guided tutorials](https://odyssey.apollographql.com/?utm_source=apollo_docs&utm_medium=referral&utm_campaign=docs_sidebar)'
+            '[Guided tutorials](https://odyssey.apollographql.com/?utm_source=apollo_docs&utm_medium=referral&utm_campaign=docs_sidebar)',
           ],
           'Full-Stack Tutorial': [
             'tutorial/introduction',
@@ -30,18 +30,19 @@ module.exports = {
             'tutorial/client',
             'tutorial/queries',
             'tutorial/mutations',
-            'tutorial/local-state'
+            'tutorial/local-state',
           ],
           'Development Tools': [
             '[Rover CLI](https://www.apollographql.com/docs/rover)',
             'devtools/cli',
             'devtools/editor-plugins',
-            'devtools/apollo-config'
+            'devtools/apollo-config',
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',
             'resources/graphql-glossary',
             'resources/faq',
+            'resources/elastic-license-v2-faq',
             'resources/release-stages',
           ],
         },
