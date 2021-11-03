@@ -1,6 +1,6 @@
 ---
 title: GraphQL FAQ
-sidebar_title: FAQ
+sidebar_title: GraphQL FAQ
 ---
 
 This article answers common questions about GraphQL, organized by phases in the GraphQL adoption timeline.
@@ -80,9 +80,9 @@ Apollo's learning platform, [**Odyssey**](https://odyssey.apollographql.com?utm_
 
 This documentation also includes a [full-stack tutorial](../tutorial/introduction/) and getting-started content for each platform component:
 
-* [Apollo Client](https://www.apollographql.com/docs/react/get-started/)
-* [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/)
-* [Apollo Studio](https://www.apollographql.com/docs/studio/)
+- [Apollo Client](https://www.apollographql.com/docs/react/get-started/)
+- [Apollo Server](https://www.apollographql.com/docs/apollo-server/getting-started/)
+- [Apollo Studio](https://www.apollographql.com/docs/studio/)
 
 For an introduction to core GraphQL concepts, check out [graphql.org](https://graphql.org).
 
@@ -94,17 +94,17 @@ GraphQL servers created with `apollo-server` can be deployed to any environment 
 
 There are deployment guides available for:
 
-* [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/)
-* [Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/)
-* [Azure Functions](https://www.apollographql.com/docs/apollo-server/deployment/azure-functions/)
+- [Heroku](https://www.apollographql.com/docs/apollo-server/deployment/heroku/)
+- [Lambda](https://www.apollographql.com/docs/apollo-server/deployment/lambda/)
+- [Azure Functions](https://www.apollographql.com/docs/apollo-server/deployment/azure-functions/)
 
 ### How do I connect my client app to my schema?
 
-The Apollo platform has tools available to connect almost any kind of client to your schema: 
+The Apollo platform has tools available to connect almost any kind of client to your schema:
 
-* [Apollo Client](https://www.apollographql.com/docs/react/) for JavaScript clients
-* [Apollo iOS](https://www.apollographql.com/docs/ios/) for native iOS clients
-* [Apollo Android](https://github.com/apollographql/apollo-android) for native Android clients
+- [Apollo Client](https://www.apollographql.com/docs/react/) for JavaScript clients
+- [Apollo iOS](https://www.apollographql.com/docs/ios/) for native iOS clients
+- [Apollo Android](https://github.com/apollographql/apollo-android) for native Android clients
 
 For Apollo Client projects, there are also many view-layer integrations to make querying GraphQL schemas easier in [React](https://www.apollographql.com/docs/react/), [Vue](https://apollo.vuejs.org/), and [Angular](https://apollo-angular.com/docs/).
 
