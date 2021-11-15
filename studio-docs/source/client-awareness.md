@@ -4,9 +4,11 @@ sidebar_title: Segmenting by client
 description: Understand how each of your clients is using your graph
 ---
 
-Apollo Studio enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your graph. This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases](#common-use-cases)
+Apollo Studio enables you to view operation metrics for each of your application's different clients (such as `web` and `iOS`) and client versions (such as `1.0` and `1.1`), helping you understand how each one interacts with your graph:
 
-![client overview](./img/client-awareness/overview.png)
+<img src="./img/client-awareness/overview.jpg" class="screenshot" alt="Client awareness overview" width="400" />
+
+This feature (called **client awareness**) is especially useful as your number of clients grows, and as you consider when to deprecate or discontinue support for older client versions. [See other common use cases.](#common-use-cases)
 
 ## Setup
 
@@ -82,7 +84,7 @@ By filtering your graph's metrics by client and client version, you can identify
 
 Modifying or removing an existing field in your schema is often a **breaking change** for the clients that use that field. Client awareness gives you a breakdown of which clients use which fields in your schema, enabling you to determine the impact of such a change:
 
-![Table of client field usage](./img/client-awareness/field-usage.png)
+<img src="./img/client-awareness/field-usage.png" class="screenshot" alt="Table of client field usage" />
 
 ### Backend cutover
 
@@ -90,4 +92,4 @@ Changes to your schema often accompany changes to your backend, such as the addi
 
 The following shows a cutover from one back-end service to another:
 
-![druid cutover](./img/client-awareness/cutover.png)
+<img src="./img/client-awareness/cutover.png" class="screenshot" alt="Cutting over a backend" />

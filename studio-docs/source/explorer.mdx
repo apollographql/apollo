@@ -7,6 +7,7 @@ import { VideoFrame } from 'gatsby-theme-apollo-docs'
 import { Button } from '@apollo/space-kit/Button';
 import { Link } from 'gatsby';
 import { colors } from 'gatsby-theme-apollo-core';
+import { EmbeddableExplorer } from "gatsby-theme-apollo-docs";
 
 The Apollo Studio Explorer is a powerful web IDE for creating, running, and managing GraphQL operations:
 
@@ -53,6 +54,32 @@ The Getting Started tab _within_ the Explorer helps you get up and running with 
 When you execute your first query, the Explorer prompts you for the URL of your running GraphQL server. You can then change this URL at any time from the Explorer's Settings tab.
 
 ## Building a query
+
+Here's an example embedded Explorer you use to try out the query-building features described below:
+
+<EmbeddableExplorer
+  graphRef="Apollo-Fullstack-Demo-o3tsz8@current"
+  graphEndpoint="https://apollo-fullstack-tutorial.herokuapp.com/"
+  graphSubscriptionEndpoint="wss://apollo-fullstack-tutorial.herokuapp.com/graphql"
+  defaultOperation={`query GetLaunches {
+  launches {
+    launches {
+      id
+      site
+      rocket {
+        id
+        name
+      }
+    }
+  }
+}`}
+  styles={{
+    width: "100%",
+    height: "450px",
+    border: "0px",
+    borderRadius: "4px",
+  }}
+/>
 
 ### The operation editor
 
