@@ -5,7 +5,7 @@ sidebar_title: Using schema reporting
 
 import ObtainGraphApiKey from "../../shared/obtain-graph-api-key";
 
-**Schema reporting** enables your GraphQL server to register its latest schema with the Apollo schema registry every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). This protocol is supported by [Apollo Server](#apollo-server-setup), and [other GraphQL servers](#other-graphql-servers) can implement support.
+**Schema reporting** enables your GraphQL server to register its latest schema with Apollo every time it starts up. To use this feature, your server needs to support the [schema reporting protocol](./schema-reporting-protocol/). This protocol is supported by [Apollo Server](#apollo-server-setup), and [other GraphQL servers](#other-graphql-servers) can implement support.
 
 > **Schema reporting does not currently support graphs that use Apollo Federation.** If you have a federated graph, instead see [Setting up managed federation](https://www.apollographql.com/docs/federation/managed-federation/setup/).
 
@@ -62,9 +62,9 @@ To provide these values to Apollo Server, set the following environment variable
 
 ### Customizing schema reporting behavior in Apollo Server
 
-Schema reporting is implemented via a plugin called `ApolloServerPluginSchemaReporting`. When you set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`, Apollo Server automatically installs that plugin with its default configuration.
+Apollo Server supports schema reporting via a plugin called `ApolloServerPluginSchemaReporting`. When you set the `APOLLO_SCHEMA_REPORTING` environment variable to `true`, Apollo Server automatically installs this plugin with its default configuration.
 
-If you need to configure the plugin further, you can explicitly install the plugin in your server. For example, you can tweak the amount of time that Apollo Server waits on startup before attempting to register its schema, or you can override the actual schema string that is registered. See the [schema reporting plugin reference](https://www.apollographql.com/docs/apollo-server/api/plugin/schema-reporting/) for more details.
+If you need to configure the plugin further, you can explicitly install the plugin in your server. For example, you can tweak the amount of time that Apollo Server waits on startup before attempting to register its schema, or you can override the actual schema string that is registered. For details, see the [schema reporting plugin reference](https://www.apollographql.com/docs/apollo-server/api/plugin/schema-reporting/).
 
 ## Other GraphQL servers
 
@@ -74,7 +74,7 @@ Any GraphQL server can (and is encouraged to!) support automatic schema registra
 
 ## Rolling deploys with schema reporting
 
-Whenever you perform a rolling deployment of an update to your schema, different active instances of your server might temporarily report different schemas to the schema registry. If this occurs, the registry uses the following algorithm to choose which schema to register:
+Whenever you perform a rolling deployment of a schema update, different active instances of your server might temporarily report different schemas to Apollo. If this occurs, Apollo uses the following algorithm to choose which schema to register:
 
 ```mermaid
 flowchart TB;

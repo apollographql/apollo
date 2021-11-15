@@ -81,15 +81,17 @@ Apollo Studio provides a powerful **Explorer** IDE that helps you visualize your
 
 ### Tracking schema changes
 
-The History view in Apollo Studio lets you view the timeline of changes made to your graph's schema:
+The Schema > Changelog tab in Apollo Studio displays a timeline of changes made to your graph's schema:
 
-<img src="../img//schema-history.jpg" class="screenshot" alt="Studio History view" width="400" />
+<img src="../img/schema-changelog.jpg" class="screenshot" alt="Schema Changelog tab" width="600" />
 
-**Only schema changes that you push to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](../schema/cli-registration/#registering-with-continuous-delivery).
+**Only schema changes that you publish to Studio are included in this timeline**, which is one of the most important reasons to [include schema registration in your continuous delivery pipeline](../schema/cli-registration/#registering-with-continuous-delivery).
 
 ## Managing variants
 
-To distinguish between instances of the same graph running in different environments (such as staging and production), you can define **variants** for a deployed graph. Each variant has its own schema, along with its own change history, metrics, and operation registry.
+To distinguish between instances of the same graph running in different environments (such as staging and production), you can define **variants** for a deployed graph. Each variant has its own schema, along with its own change history, metrics, and operation registry:
+
+<img src="../img/graph-variants.jpg" class="screenshot" alt="Schema Changelog tab" width="400" />
 
 > Development graphs do **not** support variants.
 
@@ -144,7 +146,7 @@ These are the only operations (other than creating new protected variants and cr
 
 `Graph Admins` and `Org Admins` can configure whether a variant is protected from the Access tab of the graph's Settings page.
 
-## Setting internal graph visibility (Enterprise only)
+## Internal graph visibility (Enterprise only)
 
 > For _external_ graph visibility, see [Public variants](#public-variants).
 
@@ -164,4 +166,4 @@ by visiting the graph's Settings page and changing the **graph owner**.
 > **Deleting a graph cannot be undone!**
 
 You can delete a graph from Studio by visiting its Settings page and clicking
-**Delete**.
+**Delete Graph**.

@@ -6,7 +6,11 @@ description: Understand your graph's performance with detailed analytics
 
 import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
 
-Apollo Studio can ingest operation **traces** from your GraphQL server to provide performance metrics for your graph. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Apollo Studio can ingest operation traces from your GraphQL server to provide performance metrics for your graph:
+
+<img src="./img/studio-metrics.jpg" class="screenshot" alt="Apollo Studio metrics view" />
+
+A **trace** corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 Trace reporting enables you to visualize:
 
@@ -25,9 +29,7 @@ After you obtain a graph API key, assign it to the `APOLLO_KEY` environment vari
 
 > Consult your production environment's documentation to learn how to set its environment variables.
 
-Now the next time you start your production server, it will automatically begin pushing trace data to Studio:
-
-<img src="./img//metrics.jpg" class="screenshot" alt="Apollo Studio metrics view" />
+Now the next time you start your production server, it will automatically begin pushing trace data to Studio.
 
 You can also push trace data from environments besides production, such as a staging or beta server. To keep this data separate from your production data, learn how to [create variants of your graph](./org/graphs/#managing-variants).
 
