@@ -91,27 +91,32 @@ type Query {
   topProducts: [Product!]!
 }
 
-type Product @key(fields: "upc") {
+# Tagged type
+# You can tag an object type which will  in all its fields tagged All fields part of the "Product" object inherit the "partner" tag so we can avoid tagging them explicitly
+type Product @key(fields: "upc") @tag(name: "partner") {
   upc: ID!
   name: String!
   description: String!
   # Tagged fields
+  # The internalId, and percentageMatch fields would also inherit the "partner" tag, so they need
+  # the "private" and "experimental" tag (and an exclude filter) to keep being inaccessible
   internalId: ID! @tag(name: "private")
   percentageMatch: Float! @tag(name: "experimental")
 }
 ```
 
-This schema applies the `@tag` directive to two object fields: `internalId` and `percentageMatch`.
+This schema applies the `@tag` directive to one object: `Product`, and two object fields: `internalId` and `percentageMatch`. 
 
 Each tag has a string `name`. You tag types and fields with the _same_ `name` if they should be included or excluded as a group by a particular contract.
 
-Whenever your source variant's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
+Whenever your source variant's [Supergraph schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
 
 #### Tagging rules
 
 * You can apply tags to the following in your schema:
     * Fields of object types (as shown above)
     * Definitions of object, interface, and union types
+    * The tags on an object or interface are inherited by all of its fields (as shown above)
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
