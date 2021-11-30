@@ -91,13 +91,11 @@ type Query {
   topProducts: [Product!]!
 }
 
-# Tagged type
-# You can tag an object type which will  in all its fields tagged All fields part of the "Product" object inherit the "partner" tag so we can avoid tagging them explicitly
+# All fields on the "Product" object inherit the "partner" tag so we can avoid tagging them explicitly
 type Product @key(fields: "upc") @tag(name: "partner") {
   upc: ID!
   name: String!
   description: String!
-  # Tagged fields
   # The internalId, and percentageMatch fields would also inherit the "partner" tag, so they need
   # the "private" and "experimental" tag (and an exclude filter) to keep being inaccessible
   internalId: ID! @tag(name: "private")
@@ -116,7 +114,7 @@ Whenever your source variant's [Supergraph schema](https://www.apollographql.com
 * You can apply tags to the following in your schema:
     * Fields of object types (as shown above)
     * Definitions of object, interface, and union types
-    * The tags on an object or interface are inherited by all of its fields (as shown above)
+    * Tags on an object or interface are inherited by all of its fields (as shown above)
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
@@ -218,7 +216,8 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 | `EMPTY_UNION_MASKING` | All of a union type's included types were excluded, and an error occurred while excluding the entire union. |
 | `PARTIAL_INTERFACE_MASKING` | An interface field's return type was excluded, and an error occurred while excluding that interface field. |
 | `SCHEMA_RETRIEVAL` | Studio encountered an error while retrieving the source variant's schema. It might not yet have a valid composed schema. |
-| `TAG_MATCHING` | Studio encountered an error while determining which tags to include and exclude. The contract might be attempting to include and exclude the same tag. |
+| `TAG_INHERITING` | Studio encountered an error while attempting to add parent tags to fields.  |
+| `TAG_MATCHING` | Studio encountered an error determining which types and fields should be inaccessible based on their tags. |
 | `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
 | `TO_API_SCHEMA` | Studio encountered an error while attempting to generate an API schema from the contract variant's supergraph schema. |
 | `UNKNOWN` | An unknown error occurred. |
