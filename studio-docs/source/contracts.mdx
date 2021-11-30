@@ -209,6 +209,8 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 
 | Error | Description |
 |-------|-------------|
+| `ADD_DIRECTIVE_DEFINITIONS_IF_NOT_PRESENT` | An error occurred adding directive definitions for `@tag`, `@inaccessible`, and core directive usages. |
+| `DIRECTIVE_DEFINITION_LOCATION_AUGMENTING` | An error occured augmenting the directive definition for `@tag` to support `OBJECT`, `FIELD_DEFINITION`, `INTERFACE` and `UNION`. |
 | `INPUT_VALIDATION` | The contract is attempting to include and exclude the same tag.  |
 | `PARSING` | After including and excluding fields, the resulting contract schema failed to parse. |
 | `PARSING_TAG_DIRECTIVES` | Studio encountered an error while trying to obtain all uses of `@tag` from the source variant schema. |
@@ -221,6 +223,7 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 | `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
 | `TO_API_SCHEMA` | Studio encountered an error while attempting to generate an API schema from the contract variant's supergraph schema. |
 | `UNKNOWN` | An unknown error occurred. |
+| `VERSION_CHECK` | The Federation version used is not supported by contracts. |
 
 ## Special cases
 
