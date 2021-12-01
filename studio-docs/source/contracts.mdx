@@ -91,13 +91,14 @@ type Query {
   topProducts: [Product!]!
 }
 
-# All fields of the Product object type automatically inherit the "partner" tag so we can avoid tagging them individually
+# All fields of the Product object type automatically inherit
+# the "partner" tag so we can avoid tagging them individually
 type Product @key(fields: "upc") @tag(name: "partner") {
   upc: ID!
   name: String!
   description: String!
-  # The internalId and percentageMatch fields also inherit the "partner" tag, so they need
-  # the "private" and "experimental" tag (along with an exclude filter) to remain inaccessible
+  # These fields also inherit the "partner" tag. You can
+  # prevent access to them by using an excludes filter
   internalId: ID! @tag(name: "private")
   percentageMatch: Float! @tag(name: "experimental")
 }
@@ -114,7 +115,7 @@ Whenever your source variant's [supergraph schema](https://www.apollographql.com
 * You can apply tags to the following in your schema:
     * Fields of object types (as shown above)
     * Definitions of object, interface, and union types
-    * Tags applied to objects and interfaces (as well as tags applied to extension types) are inherited by all fields of that type
+       * Tags applied to objects and interfaces (as well as tags applied to extension types) are inherited by all fields of that type
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
