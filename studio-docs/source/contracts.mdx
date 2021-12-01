@@ -98,7 +98,7 @@ type Product @key(fields: "upc") @tag(name: "partner") {
   name: String!
   description: String!
   # These fields also inherit the "partner" tag. You can
-  # prevent access to them by using an excludes filter
+  # prevent access to them by defining an excludes filter in Studio
   internalId: ID! @tag(name: "internal")
   percentageMatch: Float! @tag(name: "experimental")
 }
