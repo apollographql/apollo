@@ -79,7 +79,7 @@ With contracts, you apply **tags** to types and fields in your subgraph schemas 
 
 For example, let's take a look at this Products subgraph schema:
 
-```graphql{1-6,16-18}:title=products.graphql
+```graphql{1-6,18-21}:title=products.graphql
 # You must include this definition in any schema with tags!
 directive @tag(name: String!) repeatable on
   | FIELD_DEFINITION
