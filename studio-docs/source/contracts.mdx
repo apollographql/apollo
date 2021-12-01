@@ -115,7 +115,6 @@ Whenever your source variant's [supergraph schema](https://www.apollographql.com
 * You can apply tags to the following in your schema:
     * Fields of object types (as shown above)
     * Definitions of object, interface, and union types
-       * Tags applied to objects and interfaces (as well as tags applied to extension types) are inherited by all fields of that type
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
@@ -239,3 +238,7 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
     * _However_, if a subgraph resolves one of these fields by returning the excluded object, a runtime error occurs in the gateway and the operation fails.
 
 * You _can_ exclude object fields that are used in a computed field's [`@requires` directive](https://www.apollographql.com/docs/federation/entities/#extending-an-entity-with-computed-fields-advanced) without causing runtime errors.
+
+* Tags on objects and interfaces (including tags on extension types) are inherited by all fields of that type
+
+* Tagging interface fields in [Federation v1](https://www.apollographql.com/docs/federation/) is not supported. You may still make a field inaccessible by tagging the interface or by ensuring object fields that implement the interface field are removed
