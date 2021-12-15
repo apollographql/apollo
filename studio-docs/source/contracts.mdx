@@ -118,6 +118,7 @@ Whenever your source variant's [supergraph schema](https://www.apollographql.com
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
+* Whenever you tag an object or interface type, those tags propagate to the fields of that type.
 
 Additional guidance is provided in [Special cases](#special-cases).
 
@@ -160,8 +161,9 @@ The dialog detects all tag names that are used in your source variant's schema, 
 
 Your contract will filter types and fields from its source variant according to the following rules:
 
-* **If the Included Tags list is empty**, the contract schema _includes_ each type and field _unless_ it's tagged with an _excluded_ tag.
-* **If the Included Tags list is non-empty**, the contract schema _excludes_ each type and field _unless_ it's tagged with an _included_ tag.
+* **If the Included Tags list is empty**, the contract schema _includes_ each type and object/interface field _unless_ it's tagged with an _excluded_ tag.
+* **If the Included Tags list is non-empty**, the contract schema _excludes_ each union type and object/interface field _unless_ it's tagged with an _included_ tag.
+    * Each object and interface type is _included_ as long as _at least one_ of its fields is included (unless the type is explicitly excluded)
     * The contract schema _excludes_ a type or field if it's tagged with both an included tag _and_ an excluded tag.
 
 When you're done adding tag names, click **Continue**.
@@ -231,6 +233,8 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 
 * If a contract excludes an object, interface, or union type, it **must** also exclude all schema fields that _return_ that type. Otherwise, generation of the contract schema fails.
 
+* If a contract has an includes filter, object and interface types without an included tag remain accessible (unlike other supported schema elements).
+
 * If a contract excludes an object that implements an interface or is included in a union:
 
     * The contract is _not_ required to exclude schema fields that return that interface or union.
@@ -239,6 +243,6 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 
 * You _can_ exclude object fields that are used in a computed field's [`@requires` directive](https://www.apollographql.com/docs/federation/entities/#extending-an-entity-with-computed-fields-advanced) without causing runtime errors.
 
-* Tags on objects and interfaces (including tags on extension types) are inherited by all fields of that type
+* Tags on objects and interface types (including tags on extension types) are inherited by all fields of that type.
 
-* Tagging interface fields in [Federation v1](https://www.apollographql.com/docs/federation/) is not supported. You may still make a field inaccessible by tagging the interface or by ensuring object fields that implement the interface field are removed
+* Tagging interface fields in [Federation v1](https://www.apollographql.com/docs/federation/) is not supported. You can still make an interface field inaccessible by tagging the interface or by ensuring object fields that implement the interface field are removed.
