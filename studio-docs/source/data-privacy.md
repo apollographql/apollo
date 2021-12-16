@@ -140,7 +140,7 @@ update. If you can't update for whatever reason, you can use the [`privateHeader
 
 ## What data does Apollo Studio log about operations executed in the Explorer?
 
-**Only front-end usage metrics for improving the product.** The [Apollo Studio Explorer](./explorer/) enables you to build and execute operations against your GraphQL server. These operations are sent directly from your browser and **do not** pass through Studio servers.
+**Only front-end usage metrics for improving the product.** The [Apollo Studio Explorer](./explorer/explorer/) enables you to build and execute operations against your GraphQL server. These operations are sent directly from your browser and **do not** pass through Studio servers.
 
 ## GDPR
 

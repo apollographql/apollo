@@ -5,7 +5,7 @@ sidebar_title: Embedded Explorer
 
 import { EmbeddableExplorer } from "gatsby-theme-apollo-docs";
 
-If you have a [public variant](./org/graphs/#public-variants) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+If you have a [public variant](../org/graphs/#public-variants) of your graph, you can embed the [Apollo Studio Explorer](./explorer/) in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
 
 For example, here's an embedded Explorer for an Apollo example graph. Try it out!
 
@@ -37,7 +37,7 @@ For example, here's an embedded Explorer for an Apollo example graph. Try it out
 
 ## Setup
 
-> Before you proceed, make sure you have a [public variant](./org/graphs/#public-variants) of your graph in Apollo Studio.
+> Before you proceed, make sure you have a [public variant](../org/graphs/#public-variants) of your graph in Apollo Studio.
 
 1. <a href="https://studio.apollographql.com/" target="_blank">Go to Apollo Studio</a> and open the public variant you want to use with the embedded Explorer.
 
@@ -47,7 +47,7 @@ For example, here's an embedded Explorer for an Apollo example graph. Try it out
 
     The following dialog appears:
 
-    <img class="screenshot" src="./img/embed-explorer-modal.jpg" alt="Explorer embed dialog" width="600" />
+    <img class="screenshot" src="../img/embed-explorer-modal.jpg" alt="Explorer embed dialog" width="600" />
 
 4. Use the options in the dialog to customize the embedded Explorer's appearance and behavior to your liking.
 5. Click **Copy** to copy the snippet, then paste it into your code.
@@ -59,7 +59,7 @@ For example, here's an embedded Explorer for an Apollo example graph. Try it out
 
 You can also open the Embed Explorer dialog from the Explorer's operation editor. Open the **•••** menu next to an operation and click **Embed this operation**:
 
-<img class="screenshot" src="./img/explorer-embed-definition-menu.jpg" alt="Explorer embed link" width="300" />
+<img class="screenshot" src="../img/explorer-embed-definition-menu.jpg" alt="Explorer embed link" width="300" />
 
 This configures your embedded Explorer to include all of the following automatically on load:
 
@@ -126,7 +126,7 @@ These are the top-level fields you can include in the options object you pass to
 </td>
 <td>
 
-**Required.** The graph ref for the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. Has the format `graph-id@variant-name`. This value is automatically populated in the Explorer's embed snippet.
+**Required.** The graph ref for the [public variant](../org/graphs/#public-variants) you want to use the embedded Explorer with. Has the format `graph-id@variant-name`. This value is automatically populated in the Explorer's embed snippet.
 
 The Explorer fetches this variant's schema from Apollo Studio to populate its Documentation panel and enable code completion.
 
@@ -145,7 +145,7 @@ If you omit this option, the Explorer _does_ still load, but it doesn't know whi
 </td>
 <td>
 
-The endpoint URL of the [public variant](./org/graphs/#public-variants) you want to use the embedded Explorer with. This value is automatically populated  in the Explorer's embed snippet.
+The endpoint URL of the [public variant](../org/graphs/#public-variants) you want to use the embedded Explorer with. This value is automatically populated  in the Explorer's embed snippet.
 
 **Required**, _unless_ you specify your own fetcher with the [`handleRequest`](#handlerequest) option.
 
@@ -349,7 +349,7 @@ The default value is `open`.
 </td>
 <td>
 
-If `true`, the embedded Explorer includes the panels for [setting request headers and environment variables](./explorer/#authentication). If `false`, those panels are not present.
+If `true`, the embedded Explorer includes the panels for [setting request headers and environment variables](./connecting-authenticating/). If `false`, those panels are not present.
 
 The default value is `true`.
 
