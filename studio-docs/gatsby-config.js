@@ -21,6 +21,11 @@ module.exports = {
             'getting-started',
             '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)'
           ],
+          'Registering Schemas': [
+            'schema/schema-reporting',
+            'schema/cli-registration',
+            'schema/schema-reporting-protocol'
+          ],
           'Working with Graphs': [
             'org/graphs',
             'dev-graphs',
@@ -28,12 +33,10 @@ module.exports = {
           ],
           'The Explorer': [
             'explorer/explorer',
+            'explorer/sandbox',
+            'explorer/connecting-authenticating',
             'explorer/embed-explorer',
-          ],
-          'Registering Schemas': [
-            'schema/schema-reporting',
-            'schema/cli-registration',
-            'schema/schema-reporting-protocol'
+            'explorer/additional-features',
           ],
           'Metrics Reporting': [
             'setup-analytics',
