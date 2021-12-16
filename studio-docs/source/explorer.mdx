@@ -170,15 +170,49 @@ You can then include that environment variable in header values with the followi
 
 When you share this operation, the value of `token` is _not_ shared, and other users can provide their own.
 
-#### Preflight Scripts (beta)
+#### Preflight scripts (beta)
 
 > To request access to preflight scripts, contact **support@apollographql.com**.
 
-[Similar to Postman](https://learning.postman.com/docs/writing-scripts/pre-request-scripts/), the Explorer can execute custom JavaScript before your request runs. This feature is especially useful for managing OAuth, for example by refreshing an access token automatically.
+Similar to tools like Postman, the Explorer can run a custom **preflight script** before each GraphQL operation that's executed by your team members. This script is identical for every team member that uses the Explorer with a particular variant. Preflight scripts are especially useful for managing authentication flows like OAuth, for example by refreshing an access token.
 
-You can save preflight scripts to your organization, meaning all users in your organization can use them.
+Each preflight script applies to a _single variant_ of a particular graph, so you can define different scripts for each of your graph's environments.
 
-For more information, see the [documentation for preflight scripts](https://github.com/apollographql/apollo-studio-community/blob/main/preview-docs/PreRequestScripts.md).
+##### ⚠️ Important considerations for preflight scripts
+
+* All team members with access to a variant can _view_ that variant's preflight script.
+* Only organization members with the [`Graph Admin` role](./org/members/#organization-wide-member-roles) can _create or edit_ a variant's preflight script.
+* Preflight scripts are stored in the Apollo cloud in plaintext.
+    * **Do not include secret credentials in preflight scripts.** Instead, team members can provide their individual credentials in the Explorer via [environment variables](#environment-variables).
+* Team members can [disable](#disabling-preflight-scripts) the execution of a preflight script.
+
+##### Creating a preflight script
+
+To create a preflight script:
+
+1. [Open Apollo Studio](https://studio.apollographql.com/org/gh.StephenBarlow) and then open the Explorer for the graph and variant you want to create a script for.
+
+2. Open the Explorer's Settings tab and scroll down to the **Preflight script** section:
+
+    <img class="screenshot" src="./img/preflight-script.jpg" alt="Preflight script settings in the Explorer" width="500" />
+
+3. Click **Add script**. The following dialog appears:
+
+    <img class="screenshot" src="./img/preflight-script-edit.jpg" alt="Editing preflight scripts in the Explorer" width="600" />
+
+4. Click **Show snippets** to display a list of common helpful actions you can perform from your preflight script (such as sending HTTP requests and interacting with Explorer environment variables).
+
+5. Develop your script in the **Script editor** panel. As you develop, you can click **Test script** to test its execution. Console messages are printed in the **Console output** panel.
+
+6. When your script is ready, click **Save**. Studio stores your script.
+
+You're done! After you save your script, it's automatically loaded for any team member that uses the Explorer with the associated variant.
+
+##### Disabling preflight scripts
+
+By default, a variant's preflight script runs automatically before every GraphQL operation that's executed in the Explorer. Team members can temporarily disable the script from the **Preflight script** section of the Settings tab. To do so, toggle the switch to **OFF**:
+
+<img class="screenshot" src="./img/preflight-script-disable.jpg" alt="Disabling preflight scripts in the Explorer" width="500" />
 
 ### CORS policies
 
