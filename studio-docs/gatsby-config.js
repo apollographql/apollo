@@ -23,10 +23,12 @@ module.exports = {
           ],
           'Working with Graphs': [
             'org/graphs',
-            'explorer',
-            'embed-explorer',
             'dev-graphs',
-            'federated-graphs'
+            'federated-graphs',
+          ],
+          'The Explorer': [
+            'explorer/explorer',
+            'explorer/embed-explorer',
           ],
           'Registering Schemas': [
             'schema/schema-reporting',
