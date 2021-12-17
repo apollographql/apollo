@@ -31,7 +31,7 @@ interface Location {
 }
 
 interface ResponseShape {
-  eventType: 'BUILD_STATUS_UPDATE';
+  eventType: 'BUILD_PUBLISH_EVENT';
   eventID: string;
   supergraphSchemaURL: string | undefined; // See description below
   buildSucceeded: boolean;
