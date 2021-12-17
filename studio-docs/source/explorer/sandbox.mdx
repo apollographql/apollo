@@ -8,7 +8,7 @@ import { Button } from '@apollo/space-kit/Button';
 import { Link } from 'gatsby';
 import { colors } from 'gatsby-theme-apollo-core';
 
-**Apollo Sandbox** is a special instance of the [Explorer](./explorer/) that doesn't require an Apollo account. Sandbox doesn't support advanced Explorer features like schema history, but it's great for local development.
+**Apollo Sandbox** is a special instance of the [Explorer](./explorer/) that doesn't require an Apollo account. Sandbox doesn't support certain Explorer features like schema history, but it's great for local development.
 
 <p>
   <Button
@@ -26,11 +26,43 @@ Sandbox automatically attempts to connect to a GraphQL server running at `http:/
 
 >To try out Sandbox with an example GraphQL API, you can set its URL to `https://swapi-graphql.netlify.app/.netlify/functions/index`.
 
-### Offline Sandbox
+## In-Sandbox schema diffs and checks
+
+Apollo Sandbox provides schema diffs and checks to help you validate changes to your development schema before you publish those changes to Studio.
+
+> Unlike most of Sandbox, these features require an Apollo account, and they require you to be signed in.
+
+### Schema diffs
+
+From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Schema Diff** page from the left navigation panel. Then use the dropdown menus to select any accessible organization, graph, and variant to compare against:
+
+<img class="screenshot" src="../img/sandbox-diff.jpg" alt="Schema diff in Sandbox" />
+
+In addition to viewing the diff on this page, you can click **Run a Check** in the upper-right to run [schema checks](#schema-checks) against the currently selected variant.
+
+### Schema checks
+
+> [Schema checks](../schema-checks/) require both a [paid Studio plan](https://www.apollographql.com/pricing/) and [usage reporting data](../setup-analytics/) from your GraphQL server.
+>
+> Organization members with the [`Consumer` role](../org/members/#organization-wide-member-roles) cannot run schema checks.
+
+From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Checks** page from the left navigation panel:
+
+<img class="screenshot" src="../img/sandbox-checks-select.jpg" alt="Sandbox select variant for checks" width="400" />
+
+Select any accessible organization, graph, and variant to check against and click **Run a check**. When the check completes, Sandbox displays a result summary:
+
+<img class="screenshot" src="../img/sandbox-checks-result.jpg" alt="Sandbox checks result" width="400" />
+
+To view the result's _full_ details in Studio, click **Go to details**.
+
+
+
+## Offline Sandbox
 
 You can use Sandbox _without_ an internet connection if you're querying a graph running on `localhost`. To do so, [open Sandbox in your browser](https://studio.apollographql.com/sandbox/) at least once while connected to the internet. You can then use that browser to open Sandbox while offline.
 
-#### Reconnecting
+### Reconnecting
 
 Sandbox automatically reconnects to Apollo Studio whenever your internet connection is restored. When it does, it might display a notification that your Apollo Studio application version is stale by at least 24 hours. You can click the notification to update _all_ of your browser's open Apollo Studio tabs to the latest version.
 
