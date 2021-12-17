@@ -38,19 +38,25 @@ From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Schema Dif
 
 <img class="screenshot" src="../img/sandbox-diff.jpg" alt="Schema diff in Sandbox" />
 
+In addition to viewing the diff on this page, you can click **Run a Check** in the upper-right to run [schema checks](#schema-checks) against the currently selected variant.
+
 ### Schema checks
 
-> Schema checks require a [paid Studio plan](https://www.apollographql.com/pricing/).
+> [Schema checks](../schema-checks/) require both a [paid Studio plan](https://www.apollographql.com/pricing/) and [usage reporting data](../setup-analytics/) from your GraphQL server.
+>
+> Organization members with the [`Consumer` role](../org/members/#organization-wide-member-roles) cannot run schema checks.
 
 From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Checks** page from the left navigation panel:
 
 <img class="screenshot" src="../img/sandbox-checks-select.jpg" alt="Sandbox select variant for checks" width="400" />
 
-Select any accessible organization, graph, and variant to check against and click **Run a check**. When the check completes, Sandbox displays the result:
+Select any accessible organization, graph, and variant to check against and click **Run a check**. When the check completes, Sandbox displays a result summary:
 
 <img class="screenshot" src="../img/sandbox-checks-result.jpg" alt="Sandbox checks result" width="400" />
 
-Based on the result, you can rerun the check, view the result's full details, or select a different variant to check against.
+To view the result's _full_ details in Studio, click **Go to details**.
+
+
 
 ## Offline Sandbox
 
