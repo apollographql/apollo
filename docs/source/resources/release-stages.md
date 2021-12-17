@@ -19,8 +19,6 @@ graph LR;
   class deprecated secondary;
 ```
 
-> In production environments, you should only use Apollo open source releases that are in [general availability](#general-availability-ga). This is the only release stage that is officially supported by Apollo.
-
 ### Alpha / Beta
 
 An alpha or beta release is in volatile, active development. The release might not be feature-complete, and breaking API changes are possible between individual versions.
@@ -31,17 +29,17 @@ These stages help Apollo gather feedback and issues from community members and c
 
 A preview release is in active development. Previews are usually announced publicly and are a near-complete representation of a final release's feature set. However, they are not officially supported with any SLA, and breaking API changes are possible between versions.
 
-You're encouraged to test out preview releases in safe local and test environments to familiarize yourself with upcoming features before they reach [general availability](#general-availability-ga). _Do not_ use a preview release in production.
+You're encouraged to try out preview releases in test environments to familiarize yourself with upcoming features before they reach [general availability](#general-availability-ga).
 
 ### Release candidate (RC)
 
 A release candidate (RC) release is considered potentially viable for general availability. Minor bugs might still be present, and documentation for the release might be incomplete.
 
-You're encouraged to test out RC releases in a staging environment to help Apollo identify any remaining issues. You should wait until [general availability](#general-availability-ga) to use a particular release in production.
+You're encouraged to test out RC releases to help Apollo identify any remaining issues. 
 
 ### General availability (GA)
 
-A generally available release has been deemed ready for use in a production environment and is officially supported by Apollo. Its documentation is considered sufficient to support widespread adoption.
+A generally available release has been deemed ready for use in a production environment and is fully supported by Apollo. Its documentation is considered sufficient to support widespread adoption without special assistance or support.
 
 ### Deprecated
 
