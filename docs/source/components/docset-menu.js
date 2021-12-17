@@ -38,6 +38,16 @@ const ArticleListLink = styled.a({
   }
 });
 
+const getIconName = function(docsetName) {
+  if (docsetName === 'apollo-server') {
+    return 'server';
+  } else if (docsetName === 'kotlin') {
+    return 'android';
+  } else {
+    return docsetName;
+  }
+}
+
 export default function DocsetMenu() {
   const navItems = useContext(NavItemsContext);
   return (
@@ -47,7 +57,7 @@ export default function DocsetMenu() {
         .map((navItem) => (
           <MenuItem
             key={navItem.url}
-            icon={<DocsetIcon docset={navItem.docset === 'apollo-server' ? 'server' : navItem.docset} />}
+            icon={<DocsetIcon docset={getIconName(navItem.docset)} />}
             title={<StyledLink href={navItem.url}>{navItem.title}</StyledLink>}
             style={{"marginBottom": "20px"}}
           >

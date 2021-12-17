@@ -1,5 +1,8 @@
 /schema/registry/ /docs/studio/org/graphs/
 
+/explorer/ /docs/studio/explorer/explorer/
+/embed-explorer/ /docs/studio/explorer/embed-explorer/
+
 # Move managed federation docs into Federation docset
 /managed-federation/overview/ /docs/federation/managed-federation/overview/
 /managed-federation/monitoring/ /docs/federation/managed-federation/monitoring/#metrics-and-observability

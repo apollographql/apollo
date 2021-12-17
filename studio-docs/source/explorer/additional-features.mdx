@@ -1,0 +1,179 @@
+---
+title: Additional Explorer features
+sidebar_title: Additional features
+---
+
+## Display
+
+### Dark mode
+
+> Toggle between light and dark mode from the Explorer's Settings tab.
+
+### Table layout for response data
+
+> Toggle between table and JSON layout from the top of the Explorer's Response panel.
+
+You can view an operation's response as JSON or as a table. Table layout is especially useful when your response includes an array, or when you want to share a query's results with someone who isn't familiar with JSON.
+
+When looking at arrays of data in table mode, you can click the header of any column of data to sort your array by that column's values.
+
+### Inline/Extract fragments
+
+> Right-click any fragment name to inline that fragment in queries where it is used. Right-click any selection of fields to extract those fields into a fragment.
+
+While editing your operations, you can now inline and extract your fragments with one click. This is useful when trying to select the same fields in multiple places using fragments, or when trying too inline fragments into a single operation to be used somewhere else.
+
+### Inline/Extract variables
+
+> Click the "**...**" menu next to an operation in the editor to select a notation for variables.
+
+While editing your operations, you can toggle between inline or extracted notation for variables. This is useful when you want to switch notations to copy and paste something, or when you're drafting a query in the editor and want to move it to your code.
+
+#### Inline variable
+
+```graphql:title=query.graphql
+query {
+  user(id: "Beth Harmon") {
+    name
+  }
+}
+```
+
+#### Extracted variable
+
+```graphql:title=query.graphql
+query($id: ID!) {
+  user(id: $id) {
+    name
+  }
+}
+```
+
+```json:title=variables.json
+{
+  "id": "Beth Harmon"
+}
+```
+
+## Federation
+
+### Query plans for federated graphs
+
+If you're working with a federated graph in Studio, the Explorer dynamically calculates query plans for your operations in the right-hand panel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
+
+There are two display modes for query plans. You can switch between the "text" and "chart" display modes in the response panel's header menu.
+
+## Local development
+
+You can use the Explorer for local development by opening [Sandbox](./sandbox/), or by creating a [development graph](../dev-graphs/) in Studio.
+
+Unlike _deployed_ graphs, both Sandbox and dev graphs use **introspection** to fetch your schema from your development server, and they also poll regularly for changes. Whenever schema changes are detected, they're pulled in automatically.
+
+You can pause introspection polling at any time. To do so:
+
+* **In Sandbox**, open the Explorer Settings tab on the left and edit your connection settings. In the dialog, disable **Auto Update**.
+* **In dev graphs**, open the **DEV GRAPH** menu at the top and disable **Auto Update**.
+
+## Embedding
+
+If you've enabled [public access to a variant of your graph](../org/graphs/#public-variants), you can embed the Explorer in a webpage that you can then provide to your graph's consumers. This enables those consumers to test out operations from your own website.
+
+See [Embedding the Explorer](./embed-explorer).
+
+## Saving operations
+
+### Operation history
+
+> View your operation history from the Explorer's **Run history** tab.
+
+The Explorer saves the history of your recently run operations (and the variable values for those operations) to your browser's local storage. Access your history to retain and recover previous work without cluttering your editor.
+
+### Downloading responses
+
+You can copy responses from your operations with a button or download any given response to a local JSON file.
+
+If you are looking at your data [in the table layout](#table-layout-for-response-data), you will also be able to download arrays in your response to CSV files.
+
+## Testing operations
+
+### Tracing
+
+> Enable **Inlined traces** from the Explorer's Settings tab.
+
+If you are using Apollo Server 2.18+, you can see traces from your responses inlined in the Explorer by adding the `ApolloServerPluginInlineTrace` plugin to your server's configuration:
+
+```
+import { ApolloServerPluginInlineTrace } from "apollo-server-core";
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginInlineTrace()],
+})
+```
+
+Turning on the inlined traces feature in the Explorer's settings tells the Explorer to forward a special header to your server to request that it return tracing information along with its response.
+
+### Mocked responses
+
+> Enable **Mock responses** from the Explorer's Settings tab.
+
+This feature naively mocks operation responses based on your schema's types, instead of sending your operations over the wire to your endpoint.
+
+Mocked responses are helpful if you want to get a feel for the shape of a query's response when your endpoint isn't available, or if you need a quick response to use in a code sample or a unit test.
+
+### Response hints
+
+> Enable **Use response hints** from the Explorer's Settings tab.
+
+As you build your query, the Explorer runs partial queries under the hood and shows their results in-line. This is helpful when you want to get a sense of the data you'll get back in your full operation response. It can also help you retrieve a quick answer to a query without needing to click the Run button.
+
+The Explorer does not show response hints for mutations (this requires running partial mutations, which is unsafe).
+
+### Default headers
+
+> Set **Default Headers** from the Explorer's Settings tab.
+
+> **WARNING:** Do not use **default headers** to provide sensitive information, such as an access token. Instead, use [environment variables](./connecting-authenticating/#environment-variables)
+
+You can specify default headers that are applied to _every_ Explorer request executed by _every_ user in your organization. This can be useful if you want to provide a consistent identifier to your server for requests coming from the Explorer.
+
+### Field latency hints
+
+As an alternative to [response hints](#response-hints), the Explorer can show you hints for the latency of the fields in your query. This option is available only if you've configured your graph to [report field usage and tracing data to Studio](../setup-analytics/).
+
+The Explorer shows you the 95th-percentile (default) response times for the fields in your query to help you get a sense of how "expensive" your query is and what the bottlenecks in response time will be.
+You can change which percentile you want to see hints from at any time in the Explorer settings.
+
+### `graphql-lodash` integration
+
+The Explorer [extends your schema with `graphql-lodash`](https://github.com/APIs-guru/graphql-lodash) on the client side, so you can write queries that include lodash directives and they will resolve correctly. This is helfpul if you want to manipulate your response data into into a specific format for exporting, or if you want to do some quick analysis without needing to export.
+
+Here's an example of a query that uses `graphql-lodash`. You can try pasting this in the Explorer embedded at http://apollographql.com/studio/develop:
+
+```graphql:title=example.graphql
+query StarWarsGenderStats {
+  genderStats: allPeople @_(get: "edges") {
+    edges @_(countBy: "node.gender") {
+      node {
+        gender
+      }
+    }
+  }
+}
+```
+
+## FAQ
+
+### Does the Explorer support subscription operations?
+
+Yes. You can run queries, mutations, and subscriptions all from the same Explorer page. You can start and stop listening to subscriptions, and you can see new subscription data as it comes in and old information as it becomes stale.
+
+You can also set your server's subscription websocket endpoint independently from the HTTP endpoint for queries and mutations.
+
+### Is the Explorer available for on-prem distribution?
+
+Not at this time. The Explorer is available for free, unlimited use in Apollo Studio, but it is not available for download or on-prem distribution. This might change in the future, but for now our goal is to provide the best possible Explorer experience from within Studio.
+
+### Do my Explorer operations pass through Apollo servers?
+
+No. Operations you run in the Explorer are sent directly from your browser to your GraphQL server, _without_ passing through Apollo's systems. Apollo never sees your request headers or response data. For more information, see [Apollo Studio data privacy and compliance](../data-privacy).

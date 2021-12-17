@@ -34,6 +34,7 @@ interface ResponseShape {
   eventType: 'BUILD_STATUS_UPDATE';
   eventID: string;
   supergraphSchemaURL: string | undefined; // See description below
+  buildSucceeded: boolean;
   buildErrors: BuildError[] | undefined; // See description below
   graphID: string;
   variantID: string; // See description below

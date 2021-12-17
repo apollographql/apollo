@@ -79,7 +79,7 @@ With contracts, you apply **tags** to types and fields in your subgraph schemas 
 
 For example, let's take a look at this Products subgraph schema:
 
-```graphql{1-6,16-18}:title=products.graphql
+```graphql{1-6,18-21}:title=products.graphql
 # You must include this definition in any schema with tags!
 directive @tag(name: String!) repeatable on
   | FIELD_DEFINITION
@@ -91,21 +91,24 @@ type Query {
   topProducts: [Product!]!
 }
 
-type Product @key(fields: "upc") {
+# All fields of the Product object type automatically inherit
+# the "partner" tag so we can avoid tagging them individually
+type Product @key(fields: "upc") @tag(name: "partner") {
   upc: ID!
   name: String!
   description: String!
-  # Tagged fields
-  internalId: ID! @tag(name: "private")
+  # These fields also inherit the "partner" tag. You can
+  # prevent access to them by defining an excludes filter in Studio
+  internalId: ID! @tag(name: "internal")
   percentageMatch: Float! @tag(name: "experimental")
 }
 ```
 
-This schema applies the `@tag` directive to two object fields: `internalId` and `percentageMatch`.
+This schema applies the `@tag` directive to one object (`Product`) and two object fields (`internalId` and `percentageMatch`).
 
 Each tag has a string `name`. You tag types and fields with the _same_ `name` if they should be included or excluded as a group by a particular contract.
 
-Whenever your source variant's [API schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
+Whenever your source variant's [supergraph schema](https://www.apollographql.com/docs/federation/#federated-schemas) is generated, that schema retains all of the `@tag`s from your subgraph schemas.
 
 #### Tagging rules
 
@@ -115,6 +118,7 @@ Whenever your source variant's [API schema](https://www.apollographql.com/docs/f
 * Tag names can include alphanumeric characters (`a-z`, `A-Z`, `0-9`), along with hyphen (`-`) and forward slash (`/`).
 * Whenever you tag an object type definition, _also_ tag every field that _returns_ that type.
     * If you don't do this, a contract might exclude a type while including fields that return it. This produces an invalid contract schema.
+* Whenever you tag an object or interface type, those tags propagate to the fields of that type.
 
 Additional guidance is provided in [Special cases](#special-cases).
 
@@ -157,8 +161,9 @@ The dialog detects all tag names that are used in your source variant's schema, 
 
 Your contract will filter types and fields from its source variant according to the following rules:
 
-* **If the Included Tags list is empty**, the contract schema _includes_ each type and field _unless_ it's tagged with an _excluded_ tag.
-* **If the Included Tags list is non-empty**, the contract schema _excludes_ each type and field _unless_ it's tagged with an _included_ tag.
+* **If the Included Tags list is empty**, the contract schema _includes_ each type and object/interface field _unless_ it's tagged with an _excluded_ tag.
+* **If the Included Tags list is non-empty**, the contract schema _excludes_ each union type and object/interface field _unless_ it's tagged with an _included_ tag.
+    * Each object and interface type is _included_ as long as _at least one_ of its fields is included (unless the type is explicitly excluded)
     * The contract schema _excludes_ a type or field if it's tagged with both an included tag _and_ an excluded tag.
 
 When you're done adding tag names, click **Continue**.
@@ -206,23 +211,29 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
 
 | Error | Description |
 |-------|-------------|
+| `ADD_DIRECTIVE_DEFINITIONS_IF_NOT_PRESENT` | An error occurred adding directive definitions for `@tag`, `@inaccessible`, and core directive usages. |
+| `DIRECTIVE_DEFINITION_LOCATION_AUGMENTING` | An error occured augmenting the directive definition for `@tag` to support `OBJECT`, `FIELD_DEFINITION`, `INTERFACE`, and `UNION`. |
+| `EMPTY_OBJECT_AND_INTERFACE_MASKING` | All of an object or interface type's fields were excluded, and an error occurred while excluding the entire type.  |
+| `EMPTY_UNION_MASKING` | All of a union type's included types were excluded, and an error occurred while excluding the entire union. |
 | `INPUT_VALIDATION` | The contract is attempting to include and exclude the same tag.  |
 | `PARSING` | After including and excluding fields, the resulting contract schema failed to parse. |
 | `PARSING_TAG_DIRECTIVES` | Studio encountered an error while trying to obtain all uses of `@tag` from the source variant schema. |
-| `EMPTY_OBJECT_AND_INTERFACE_MASKING` | All of an object or interface type's fields were excluded, and an error occurred while excluding the entire type.  |
-| `EMPTY_UNION_MASKING` | All of a union type's included types were excluded, and an error occurred while excluding the entire union. |
 | `PARTIAL_INTERFACE_MASKING` | An interface field's return type was excluded, and an error occurred while excluding that interface field. |
 | `SCHEMA_RETRIEVAL` | Studio encountered an error while retrieving the source variant's schema. It might not yet have a valid composed schema. |
-| `TAG_MATCHING` | Studio encountered an error while determining which tags to include and exclude. The contract might be attempting to include and exclude the same tag. |
-| `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
+| `TAG_INHERITING` | Studio encountered an error while attempting to add parent tags to fields.  |
+| `TAG_MATCHING` | Studio encountered an error determining which types and fields should be inaccessible based on their tags. |
 | `TO_API_SCHEMA` | Studio encountered an error while attempting to generate an API schema from the contract variant's supergraph schema. |
+| `TO_FILTER_SCHEMA` | Studio failed to generate and return a contract supergraph schema for an unknown reason. |
 | `UNKNOWN` | An unknown error occurred. |
+| `VERSION_CHECK` | The Federation version used is not supported by contracts. |
 
 ## Special cases
 
 * If a contract excludes _every field_ of a particular object type, the entire type definition is excluded from the contract schema.
 
 * If a contract excludes an object, interface, or union type, it **must** also exclude all schema fields that _return_ that type. Otherwise, generation of the contract schema fails.
+
+* If a contract has an includes filter, object and interface types without an included tag remain accessible (unlike other supported schema elements).
 
 * If a contract excludes an object that implements an interface or is included in a union:
 
@@ -231,3 +242,7 @@ Whenever Apollo Studio attempts to create or update your contract schema, it mig
     * _However_, if a subgraph resolves one of these fields by returning the excluded object, a runtime error occurs in the gateway and the operation fails.
 
 * You _can_ exclude object fields that are used in a computed field's [`@requires` directive](https://www.apollographql.com/docs/federation/entities/#extending-an-entity-with-computed-fields-advanced) without causing runtime errors.
+
+* Tags on objects and interface types (including tags on extension types) are inherited by all fields of that type.
+
+* Tagging interface fields in [Federation v1](https://www.apollographql.com/docs/federation/) is not supported. You can still make an interface field inaccessible by tagging the interface or by ensuring object fields that implement the interface field are removed.
