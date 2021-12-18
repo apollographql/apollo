@@ -81,11 +81,9 @@ For example, let's take a look at this Products subgraph schema:
 
 ```graphql{1-6,18-21}:title=products.graphql
 # You must include this definition in any schema with tags!
-directive @tag(name: String!) repeatable on
-  | FIELD_DEFINITION
-  | INTERFACE
-  | OBJECT
-  | UNION
+directive @tag(
+  name: String!
+) repeatable on FIELD_DEFINITION | INTERFACE | OBJECT | UNION
 
 type Query {
   topProducts: [Product!]!
