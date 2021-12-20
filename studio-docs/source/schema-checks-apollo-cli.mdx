@@ -12,7 +12,7 @@ Schema checks are a **paid feature** that's available as part of Apollo Studio [
 
 To enable schema checks for your graph, first do the following:
 
-1. [Set up metrics reporting](./setup-analytics/) to Apollo Studio from your GraphQL server.
+1. [Set up metrics reporting](/metrics/usage-reporting/) to Apollo Studio from your GraphQL server.
 2. Set up schema registration in your [continuous delivery pipeline](./schema/cli-registration/#registering-with-continuous-delivery).
     * (If you use [schema reporting](./schema/schema-reporting/) to register your schema, no additional action is required.)
 3. [Install the Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) in your development environment if you haven't yet.
@@ -62,7 +62,7 @@ View full details at: https://studio.apollographql.com/service/example-1234/chec
 
 Each change to the schema is labeled either `PASS` or `FAIL`.
 
-> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing analytics to Apollo Studio](/setup-analytics/) for schema checks to work. **If there are no operation metrics to compare against, all potentially dangerous schema changes are labeled `FAIL`.**
+> **Note:** Because breaking changes are detected by analyzing recent operations, your GraphQL server _must_ be [pushing metrics to Apollo Studio](/metrics/usage-reporting/) for schema checks to work. **If there are no operation metrics to compare against, all potentially dangerous schema changes are labeled `FAIL`.**
 
 The CLI output also includes a Studio URL that provides full details on the changes and their impact on existing clients and operations:
 

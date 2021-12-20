@@ -39,11 +39,10 @@ module.exports = {
             'explorer/additional-features',
           ],
           'Metrics Reporting': [
-            'setup-analytics',
-            'client-awareness',
-            'datadog-integration'
-            // field usage
-            // operation usage
+            'metrics/usage-reporting',
+            'metrics/field-usage',
+            'metrics/client-awareness',
+            'metrics/datadog-integration',
           ],
           'Schema Delivery': [
             'schema-checks',
