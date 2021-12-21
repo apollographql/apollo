@@ -4,4 +4,93 @@ sidebar_title: Field usage
 description: Understand which fields your clients use
 ---
 
-<img src="../img/fields-page.jpg" class="screenshot" alt="Fields page in Studio" width="600" />
+In Apollo Studio, your graph's **Fields** page can display usage metrics for each field in your schema. For example, here are metrics for the fields of a `BuildError` type:
+
+<img src="../img/fields-page.jpg" class="screenshot" alt="Fields page in Studio" width="700" />
+
+You can click any field in the table to view details about which clients and operations contribute to its usage.
+
+The table displays some combination of the following metrics for each field, depending on what data is available:
+
+| Metric | Description |
+|--------|-------------|
+| **Field executions** in the last day | How many times your servers have executed the resolver for the field, according to [trace data](/metrics/usage-reporting/) provided by your servers. |
+| **Referencing operations** in the last day | How many operations sent by clients have included the field, according to metrics provided by your servers. |
+
+For each of these columns to appear on the Fields page, your GraphQL servers must report the associated metrics to Apollo Studio. If some but not _all_ of your GraphQL servers report this data, the Fields page presents an incomplete picture of your graph's field usage.
+
+
+## Field executions vs. referencing operations
+
+Let's look at the example metrics for the `BuildError` type again:
+
+<img src="../img/fields-page.jpg" class="screenshot" alt="Fields page in Studio" width="700" />
+
+As you can see, the daily **field executions** and **referencing operations** for a single field can differ significantly! There are many possible reasons for this, described below.
+
+### Objects in lists
+
+Let's say a client executes the following query one time:
+
+```graphql
+query GetBooks {
+  books {
+    title
+  }
+}
+```
+
+If `Query.books` returns a list of ten `Book` objects, then `Book.title` is resolved _ten times_. This query therefore contributes _ten_ **field executions** and just _one_ **referencing operation** to `Book.title`.
+
+### Fields that return interfaces
+
+Let's say our GraphQL server's schema defines the following interface and object types:
+
+```graphql
+interface Media {
+  title: String!
+}
+
+type Book implements Media {
+  title: String!
+  author: String!
+}
+
+type Query {
+  favoriteMedia: Media!
+}
+```
+
+Now, let's say a client executes the following query:
+
+```graphql
+query GetFavoriteMedia {
+  favoriteMedia {
+    title
+  }
+}
+```
+
+If `Query.favoriteMedia` returns a `Book` object here, then `Book.title` is resolved one time. _However_, the original query _does not reference_ `Book.title`. Instead, it references **`Media.title`**.
+
+Therefore, this query contributes _one_ **field execution** and _zero_ **referencing operations** to `Book.title`.
+
+### Referenced fields that aren't resolved
+
+Let's say a client executes the following query one time:
+
+```graphql
+query GetLoggedInUser {
+  loggedInUser {
+    name
+  }
+}
+```
+
+Now, let's say `Query.loggedInUser` returns `null` because no user is logged in. In this case, the resolver for `User.name` never executes, because its parent retuns `null`. Therefore, this query contributes _zero_ **field executions** and _one_ **referencing operation** to `User.name`.
+
+A referenced field might also not be resolved for any of these reasons:
+
+* The resolver is skipped due to a `@skip` or `@include` directive.
+* The field is part of a fragment that doesn't apply to a particular object.
+* The field's resolver is called for each item in a list, but the list is empty.
