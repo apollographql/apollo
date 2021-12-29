@@ -24,7 +24,7 @@ The table displays some combination of the following metrics for each field, dep
 | Field executions       | How many times your servers have executed the resolver for the field over a given time period.                                       |
 | Referencing operations | How many operations sent by clients over a given time period have included the field, according to metrics provided by your servers. |
 
-For each of these columns to appear on the Fields page, your GraphQL servers must report the associated metrics to Apollo Studio. If some but not _all_ of your GraphQL servers report this data, the Fields page presents an incomplete picture of your graph's field usage.
+For each of these columns to appear on the Fields page, your GraphQL servers must [report the associated metrics to Apollo Studio](#reporting-field-usage). If some but not _all_ of your GraphQL servers report this data, the Fields page presents an incomplete picture of your graph's field usage.
 
 ## Field executions vs. referencing operations
 
@@ -69,7 +69,9 @@ query GetTwoBooks {
 }
 ```
 
-This operation contains two textual references to the fields `Query.book` and `Book.title`, and (assuming `Query.book` doesn't return `null`) each field is thus executed twice. So this will count as 2 towards the "field executions" statistic for each field. However, Apollo Studio will consider this to just be a single "referencing operation" for each field, as it is counting operations rather than references within operations.
+This operation includes two references to the fields `Query.book` and `Book.title`. Therefore, the resolvers for these fields each execute twice (assuming `Query.book` doesn't return `null`). However, these multiple references are all part of a _single_ operation.
+
+Therefore, this query contributes two **field executions** and just _one_ **referencing operation** to each of `Query.book` and `Book.title`.
 
 ### Fields that return interfaces
 
@@ -102,7 +104,7 @@ query GetFavoriteMedia {
 
 If `Query.favoriteMedia` returns a `Book` object here, then `Book.title` is resolved one time. _However_, the original query _does not reference_ `Book.title`. Instead, it references **`Media.title`**, because `Query.favoriteMedia` has a return type of `Media`.
 
-Therefore, this query contributes one **field execution** and zero **referencing operations** to `Book.title`. It also contributes one **referencing operation** to `Media.title`; interface fields always have zero **field executions**.
+Therefore, this query contributes one **field execution** and zero **referencing operations** to `Book.title`. It also contributes one **referencing operation** to `Media.title`. Note that interface fields always have zero **field executions**.
 
 ### Referenced fields that aren't resolved
 
@@ -120,10 +122,10 @@ Now, let's say `Query.loggedInUser` returns `null` because no user is logged in.
 
 A referenced field might not be resolved for any of these reasons:
 
-- The field is nested under a field which returns `null`, as shown above.
-- The field is nested under a field which returns a list, but the list is empty.
-- The field is part of a fragment that doesn't apply to a particular object.
-- The resolver is skipped due to a `@skip` or `@include` directive.
+* The field is nested under a field that returns `null`, as shown above.
+* The field is nested under a field that returns a list, but the list is empty.
+* The field is part of a fragment that doesn't apply to a particular object.
+* The resolver is skipped due to a `@skip` or `@include` directive.
 
 ### `@key` and `@requires` fields in a federated graph
 
@@ -181,25 +183,47 @@ To help resolve these references, the Reviews subgraph _must_ return each `Produ
 
 Therefore, this query contributes one **field execution** and zero **referencing operations** to `Product.id`. Similar logic applies to fields that use the [`@requires` directive](https://www.apollographql.com/docs/federation/entities/#extending-an-entity-with-computed-fields-advanced).
 
-## Sending field usage data
+## Reporting field usage
 
-Your GraphQL server may be set up to send only field execution statistics, only referencing operation statistics, or both. (This document explains how to configure an Apollo Server to talk to Studio, including an Apollo Server with Apollo Gateway in front of GraphQL servers from any platform.)
+Your GraphQL server can report metrics for field executions, referencing operations, or both.
 
-In order to report referencing operation statistics, your server must be running Apollo Server 3.6 or newer. If your graph is federated, there are no specific requirements for your subgraphs in order to support referencing operation statistics.
+### Prerequisites
 
-There are no specific requirements in order to report field execution statistics from a non-federated Apollo Server. To report field execution statistics from an Apollo Gateway, your subgraphs must support federated tracing; these are the server libraries listed with "FTV1" in [the subgraph-compatible library list](https://www.apollographql.com/docs/federation/other-servers/). If some of your subgraphs support federated tracing and others do not, field executions in subgraphs that do not support federated tracing will not contribute to statistics.
+> ⚠️ Before continuing, make sure you've configured your GraphQL server to [push metrics to Apollo Studio](./usage-reporting/) .
 
-Calculating field execution statistics can potentially have performance impacts on large queries and high-traffic graphs. This is especially the case for federated graphs, because field execution statistics are currently transmitted from subgraphs to federated graphs in the form of detailed execution traces inside the body of the response from the subgraph to the Gateway. Starting with Apollo Server 3.6, you can disable field-level instrumentation for some or all operations via the [`fieldLevelInstrumentation` option to `ApolloServerPluginUsageReporting`](https://apollographql.com/docs/apollo-server/api/plugin/usage-reporting/#fieldlevelinstrumentation).
+To report each type of field usage metric to Apollo, make sure your graph meets the prerequisites for that metric:
 
-Disabling field-level instrumentation for a particular request has three effects:
+#### Referencing operations
 
-- The request does not contribute to the "field executions" statistic on the Fields page.
-- The request does not contribute to field-level execution timing hints that can be optionally displayed in Studio Explorer and in vscode-graphql.
-- The request does not produce a trace that can be viewed on the Traces section of the Operations page.
+To report metrics for referencing operations, your GraphQL server must run Apollo Server 3.6 or later.
 
-These requests _will_ still contribute to most features of Studio, such as schema checks, the Operations page, and the "referencing operations" statistic on the Fields page.
+If you have a [federated graph](https://apollographql.com/docs/federation), your _gateway_ must run Apollo Server 3.6 or later, but there are no requirements for your subgraphs.
 
-To disable field-level instrumentation for all requests, pass `() => false` as the `fieldLevelInstrumentation` option:
+#### Field executions
+
+To report metrics for field executions, your GraphQL server can run any recent version of Apollo Server 2.x or 3.x.
+
+If you have a [federated graph](https://apollographql.com/docs/federation), your subgraphs must support federated tracing. For compatible libraries, see the **FTV1** column of [this table](https://www.apollographql.com/docs/federation/other-servers/).
+
+> If _some_ of your subgraphs support federated tracing and others _don't_, only field executions in compatible subgraphs are reported to Apollo.
+
+### Performance considerations
+
+Calculating field execution metrics can affect performance for large queries or high-traffic graphs. This is especially true for [federated graphs](https://apollographql.com/docs/federation), because a subgraph calculates each incoming operation's field execution metrics _before_ responding to the gateway (the metrics are included in the response).
+
+#### Disabling field execution metrics
+
+In Apollo Server 3.6 and later, you can disable field-level instrumentation for some or all operations by providing the [`fieldLevelInstrumentation` option to `ApolloServerPluginUsageReporting`](https://apollographql.com/docs/apollo-server/api/plugin/usage-reporting/#fieldlevelinstrumentation).
+
+Disabling field-level instrumentation for a particular request has the following effects:
+
+- The request does not contribute to the "field executions" statistic on the Fields page in Studio.
+- The request does not contribute to field-level execution timing hints that can be displayed in the Explorer and in VS Code.
+- The request does not produce a trace that can be viewed in the Traces section of the Operations page in Studio.
+
+These requests _do_ still contribute to most features of Studio, such as schema checks, the Operations page, and the "referencing operations" statistic on the Fields page.
+
+To disable field-level instrumentation for _all_ requests, pass `() => false` as the `fieldLevelInstrumentation` option:
 
 ```ts
 new ApolloServer({
@@ -212,8 +236,31 @@ new ApolloServer({
 });
 ```
 
-If you do this, field execution statistics will not appear on the Fields page.
+If you do this, field execution statistics do not appear on the Fields page.
 
-You can also enable field-level instrumentation for a fixed fraction of all requests by passing a number between 0 and 1 as the `fieldLevelInstrumentation` option. (Be careful to pass _a number_ like `0.01`, not _a function returning a number_ like `() => 0.01`, which will have a different effect.) If you pass a number, your server will randomly choose to enable field-level instrumentation on each request with the given probability. Additionally, when a request is chosen for field-level instrumentation, your server will report it to Apollo Studio with a weight based on the given probability. The fields execution statistic on the Fields page (as well as execution timing hints) will be scaled by this weight. So for example, if you pass `0.01`, your server will enable field-level execution on 1% of requests, and every observed field execution will count as 100 field executions on the Fields page. (The actual observed execution count is available in a tooltip in the table.)
+#### Fractional sampling
 
-You can also decide whether or not to enable field-level instrumentation (and what the weight should be) on a per-operation basis by passing a function for `fieldLevelInstrumentation`. For example, you may want to enable field-level instrumentation more often for rare operations and less often for common operations. See the [usage reporting plugin docs](https://apollographql.com/docs/apollo-server/api/plugin/usage-reporting/#fieldlevelinstrumentation) for more details.
+You can enable field-level instrumentation for a fixed fraction of all requests by passing a number between `0` and `1` as the `fieldLevelInstrumentation` option:
+
+```ts
+new ApolloServer({
+  plugins: [
+    ApolloServerPluginUsageReporting({
+      fieldLevelInstrumentation: 0.01,
+    }),
+  ],
+  // ...
+});
+```
+
+Make sure to pass a _number_ (like `0.01`), _not_ a function _returning_ a number (like `() => 0.01`). If you pass a number, Apollo Server randomly chooses to enable field-level instrumentation for each request according to the given probability.
+
+In this case, whenever field-level instrumentation _is_ enabled for a particular request, Apollo Server reports it to Studio with a weight based on the given probability. The "field executions" statistic on the Fields page (along with execution timing hints) is scaled by this weight.
+
+For example, if you pass `0.01`, your server enables field-level execution for approximately 1% of requests, and every observed field execution is counted as 100 field executions on the Fields page. (The actual observed execution count is available in a tooltip in the table.)
+
+#### Custom sampling
+
+You can decide whether to enable field-level instrumentation (and what the weight should be) on a per-operation basis by passing a function as the value of `fieldLevelInstrumentation`.
+
+For example, you might want to enable field-level instrumentation more often for rare operations and less often for common operations. For details, see the [usage reporting plugin docs](https://apollographql.com/docs/apollo-server/api/plugin/usage-reporting/#fieldlevelinstrumentation).

@@ -25,7 +25,7 @@ All data sent to Apollo Studio is sent to an endpoint with one of the following 
 | Base URL | Used by |
 |----------|---------|
 | **Latest URLs** |
-| `https://usage-reporting.api.apollographql.com` | Metrics reporting from [Apollo Server](/metrics/usage-reporting/#pushing-traces-from-apollo-server) (v2.18.0+) and [third-party API servers](/metrics/usage-reporting/#third-party-support) |
+| `https://usage-reporting.api.apollographql.com` | Metrics reporting from [Apollo Server](/metrics/usage-reporting/#pushing-metrics-from-apollo-server) (v2.18.0+) and [third-party API servers](/metrics/usage-reporting/#third-party-support) |
 | `https://schema-reporting.api.apollographql.com` | Schema registration via schema reporting in [Apollo Server](/schema/schema-reporting/#apollo-server-setup) (v2.18.0+) and [third-party API servers](/schema/schema-reporting/#other-graphql-servers) |
 | `https://graphql.api.apollographql.com` | All [Apollo CLI](https://www.apollographql.com/docs/devtools/cli/) (v2.31+) commands and [Rover CLI](https://www.apollographql.com/docs/rover/) commands that communicate with Studio (and the Studio web UI) |
 | `https://operations.api.apollographql.com` | Apollo Server with the [operation registry plugin](/operation-registry/) (v0.4.1+) |
