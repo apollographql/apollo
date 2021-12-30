@@ -209,7 +209,7 @@ If you have a [federated graph](https://apollographql.com/docs/federation), your
 
 ### Performance considerations
 
-Calculating field execution metrics can affect performance for large queries or high-traffic graphs. This is especially true for [federated graphs](https://apollographql.com/docs/federation), because a subgraph calculates each incoming operation's field execution metrics _before_ responding to the gateway (the metrics are included in the response).
+Calculating field execution metrics can affect performance for large queries or high-traffic graphs. This is especially true for [federated graphs](https://apollographql.com/docs/federation), because a subgraph includes each operation's full trace data in its response to the gateway.
 
 #### Disabling field execution metrics
 
@@ -253,7 +253,9 @@ new ApolloServer({
 });
 ```
 
-Make sure to pass a _number_ (like `0.01`), _not_ a function _returning_ a number (like `() => 0.01`). If you pass a number, Apollo Server randomly chooses to enable field-level instrumentation for each request according to the given probability.
+If you do so, Apollo Server randomly chooses to enable field-level instrumentation for each request according to the given probability.
+
+> ⚠️ Make sure to pass a _number_ (like `0.01`), _not_ a function that always _returns_ the same number (like `() => 0.01`), which has a [different effect](#custom-sampling).
 
 In this case, whenever field-level instrumentation _is_ enabled for a particular request, Apollo Server reports it to Studio with a weight based on the given probability. The "field executions" statistic on the Fields page (along with execution timing hints) is scaled by this weight.
 
