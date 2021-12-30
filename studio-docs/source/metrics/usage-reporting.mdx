@@ -4,13 +4,13 @@ sidebar_title: Setup
 description: Understand your graph's performance with detailed analytics
 ---
 
-import ObtainGraphApiKey from '../shared/obtain-graph-api-key.mdx';
+import ObtainGraphApiKey from '../../shared/obtain-graph-api-key.mdx';
 
-Apollo Studio can ingest operation traces from your GraphQL server to provide performance metrics for your graph:
+Apollo Studio can ingest operation metrics from your GraphQL server to provide performance metrics for your graph:
 
-<img src="./img/studio-metrics.jpg" class="screenshot" alt="Apollo Studio metrics view" />
+<img src="../img/studio-metrics.jpg" class="screenshot" alt="Apollo Studio metrics view" />
 
-A **trace** corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
+Included in these metrics are **traces**. A trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 Trace reporting enables you to visualize:
 
@@ -19,9 +19,9 @@ Trace reporting enables you to visualize:
 * Which parts of the schema are used most
 * Which of your resolvers in the server are acting as bottlenecks
 
-## Pushing traces from Apollo Server
+## Pushing metrics from Apollo Server
 
-Apollo Server has built-in support for pushing traces to Apollo Studio. To set it up, you provide it a **graph API key** from Studio.
+Apollo Server has built-in support for pushing metrics to Apollo Studio. To set it up, you provide it a **graph API key** from Studio.
 
 <ObtainGraphApiKey />
 
@@ -29,7 +29,7 @@ After you obtain a graph API key, assign it to the `APOLLO_KEY` environment vari
 
 > Consult your production environment's documentation to learn how to set its environment variables.
 
-Now the next time you start your production server, it will automatically begin pushing trace data to Studio.
+Now the next time you start your production server, it automatically begins pushing trace data to Studio.
 
 You can also push trace data from environments besides production, such as a staging or beta server. To keep this data separate from your production data, learn how to [create variants of your graph](./org/graphs/#managing-variants).
 
@@ -60,13 +60,15 @@ You can set up a reporting agent in your GraphQL server to push metrics to Apoll
 
 Apollo Server defines its agent for performing these tasks in [the usage reporting plugin](https://github.com/apollographql/apollo-server/tree/main/packages/apollo-server-core/src/plugin/usageReporting).
 
-> If you're interested in collaborating with Apollo on creating a dedicated integration for your GraphQL server, please get in touch with us at **support@apollographql.com** or via our [Apollo Spectrum Community](https://spectrum.chat/apollo).
+> If you're interested in collaborating with Apollo on creating a dedicated integration for your GraphQL server, please get in touch with us at **support@apollographql.com**.
 
 ### Tracing format
 
 Apollo Studio's reporting endpoint accepts batches of traces that are encoded in **protocol buffer** format. Each trace corresponds to the execution of a single GraphQL operation, including a breakdown of the timing and error information for each field that's resolved as part of the operation.
 
 The schema for this protocol buffer is defined as the `Report` message in the [TypeScript reference implementation](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-reporting-protobuf/src/reports.proto).
+
+> This document describes how to create a report whose `tracesPerQuery` objects consist solely of a list of detailed execution traces in the `trace` array. Apollo Studio now allows your server to describe usage as a mix of detailed execution traces and pre-aggregated statistics (released in Apollo Server 2.24), which leads to much more efficient reports. This document does not yet describe how to generate these statistics. It also does not describe how to support the "referencing operations" feature of [the Fields page](../field-usage/).
 
 As a starting point, we recommend implementing an extension to the GraphQL execution that creates a report with a single trace, as defined in the `Trace` message of [the protobuf schema](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-reporting-protobuf/src/reports.proto). Then, you can batch multiple traces into a single report. We recommend sending batches approximately every 20 seconds, and limiting each batch to a reasonable size (~4MB).
 
