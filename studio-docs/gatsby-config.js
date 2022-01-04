@@ -24,6 +24,7 @@ module.exports = {
           'Registering Schemas': [
             'schema/schema-reporting',
             'schema/cli-registration',
+            '[Using Sandbox](https://apollographql.com/docs/studio/explorer/sandbox/#publishing-schemas-from-sandbox)',
             'schema/schema-reporting-protocol'
           ],
           'Working with Graphs': [
