@@ -20,17 +20,37 @@ import { colors } from 'gatsby-theme-apollo-core';
   </Button>
 </p>
 
-Sandbox automatically attempts to connect to a GraphQL server running at `http://localhost:4000`. You can use the box at the top of the page to change this URL to any local or remote GraphQL endpoint that's accessible by your browser:
+Sandbox automatically attempts to connect to a GraphQL server running at `http://localhost:4000`. You can use the box at the top of Sandbox to change this URL to any local or remote GraphQL endpoint that's accessible by your browser:
 
 <img class="screenshot" src="../img/sandbox-url.jpg" alt="Sandbox URL field" width="300" />
 
 >To try out Sandbox with an example GraphQL API, you can set its URL to `https://swapi-graphql.netlify.app/.netlify/functions/index`.
 
+## Publishing schemas from Sandbox
+
+> ⚠️ Sandbox does not yet support publishing subgraph schemas to Studio for a [federated graph](https://www.apollographql.com/docs/federation/).
+
+If you're signed in to Sandbox with your Apollo account, you can publish your GraphQL server's schema to any Studio graph and variant you have the necessary permissions for.
+
+To do so, first click **Publish** at the top of Sandbox:
+
+<img class="screenshot" src="../img/sandbox-publish.jpg" alt="Publishing schemas to Studio from Sandbox" width="600" />
+
+Then use the dropdown to select _where_ in Studio to publish your schema. You can publish to any of the following:
+
+* An entirely new graph
+* A new variant of an existing graph
+* An existing variant of an existing graph
+
+After you select an option, a dialog appears that enables you to select or create a graph and variant to publish to. After you make your selections, click **Confirm** to publish.
+
+When Sandbox finishes publishing your schema, it redirects you to your selected variant in Studio.
+
 ## In-Sandbox schema diffs and checks
 
 Apollo Sandbox provides schema diffs and checks to help you validate changes to your development schema before you publish those changes to Studio.
 
-> Unlike most of Sandbox, these features require an Apollo account, and they require you to be signed in.
+> These features require you to be signed in to Sandbox with your Apollo account.
 
 ### Schema diffs
 
@@ -55,8 +75,6 @@ Select any accessible organization, graph, and variant to check against and clic
 <img class="screenshot" src="../img/sandbox-checks-result.jpg" alt="Sandbox checks result" width="400" />
 
 To view the result's _full_ details in Studio, click **Go to details**.
-
-
 
 ## Offline Sandbox
 
