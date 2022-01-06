@@ -1,0 +1,133 @@
+---
+title: Operation signatures
+description: How Studio identifies equivalent operations
+---
+
+In your metrics reports, Apollo Studio groups together operations based on the exact set of fields they include, _not_ based on operation _names_. This means that operations with the same name but different sets of fields are displayed separately:
+
+<img src="../img/separate-operations.jpg" alt="Separate operations with same name in Studio" class="screenshot" width="500" />
+
+To help Studio identify functionally identical operations, Apollo Server generates the **signature** for each operation it reports to Studio. This signature is a normalized representation for an operation with deterministic field order, whitespace, and values for in-line argument values.
+
+## Why do we need an operation signature?
+
+Consider the following operations:
+
+```graphql{10-11,17}
+query GetPostDetails($postId: String!) {
+  post(id: $postId) {
+    author
+    content
+  }
+}
+
+query GetPostDetails($postId: String!) {
+  post(id: $postId) {
+    content # Different field order
+    author
+  }
+}
+
+query GetPostDetails($postId: String!) {
+  post(id: $postId) {
+    writer: author # Field alias
+    content
+  }
+}
+```
+
+Despite some cosmetic differences, all of these operations execute identically on a particular GraphQL server. Therefore, Studio should group them when displaying performance information.
+
+Helpfully, Apollo Server's [signature algorithm](#signature-algorithm) generates the _exact same operation signature_ for all of these operations, which means Studio _does_ group them.
+
+## Signature algorithm
+
+[Jump to an example](#example-signature)
+
+Apollo Server's current signature algorithm performs the following modifications on an operation to generate its signature:
+
+### 1. Transform in-line argument values
+
+If an operation includes any in-line argument values, those values are transformed according to their type:
+
+* `Boolean` and `enum` values are _preserved_.
+* `Int` and `Float` values are replaced with `0`.
+* `String`, list, and object values are replaced with their "empty" counterpart (`""`, `[]`, or `{}`).
+
+> Argument values provided as GraphQL variable names are preserved.
+
+### 2. Remove extraneous characters
+
+All of an operation's [ignored tokens](http://spec.graphql.org/October2021/#sec-Language.Source-Text.Ignored-Tokens) (including comments and redundant whitespace) are removed. Single spaces are preserved only when required for parsing the request.
+
+If the operation document includes _multiple_ operations, then operations besides the _executed_ operation are removed.
+
+If the operation document includes fragments that _aren't used_ by the executed operation, then those fragments are removed (other fragments are preserved).
+
+### 3. Reorder definitions
+
+The definition of the executed operation appears _first_, followed by any applicable fragment definitions.
+
+#### Fragment definitions
+
+If any fragment definitions contain _sub_-fragments, _all_ top-level fragment definitions appear before _all_ second-level fragment definitions, and so on.
+
+Sorting within each fragment level is alphanumeric by fragment name.
+
+> Whenever the names of two sorted items are identical, the original order of those items relative to each other is preserved.
+
+#### Fields
+
+For a given object or fragment's fields, field selections are sorted in the following order:
+
+1. Individually listed fields
+2. Fragment spreads
+3. In-line fragments
+
+Within each set, sorting is alphanumeric by field name or fragment name.
+
+##### Field aliases
+
+All field aliases are _removed_. If an operation includes three instances of the same field with different aliases, then that field is listed in the signature three times with its non-aliased name.
+
+#### Directives and arguments
+
+If multiple directives are applied to the same location in the operation document, those directives are sorted alphanumerically.
+
+If a single field accepts multiple arguments, those arguments are sorted alphanumerically by name.
+
+## Example signature
+
+Consider this operation:
+
+```graphql
+# Fragment definitions need to appear after operation definition
+fragment NameParts on User {
+  firstname
+  lastname
+}
+
+# Excessive characters (including this comment!) need to be removed
+
+query GetUser {
+  user(id : "hello") { # Replace string argument value with empty string
+    ... NameParts # Spread fragment needs to appear after individual fields
+    timezone # Needs to appear alphanumerically after `name`
+    aliased: name # Need to remove alias
+  }
+}
+```
+
+The signature algorithm generates the following signature for this operation:
+
+```graphql
+query GetUser{user(id:""){name timezone...NameParts}}fragment NameParts on User{firstname lastname}
+```
+
+See Apollo Server's reference implementation of [operation signatures](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-server-core/src/plugin/usageReporting/defaultUsageReportingSignature.ts) for more information.
+
+## Signatures and sensitive data
+
+The signature algorithm's primary purpose is to group together operations that differ only cosmetically (in terms of whitespace, field order, aliases, and so on). As an additional effect, the algorithm does [remove most in-line argument values](#1-transform-in-line-argument-values), which in theory helps maintain data privacy.
+
+**However, you should not rely on this!** Ideally, your sensitive data should never reach Apollo Studio in the first place. Whenever possible, [use GraphQL variables](https://www.apollographql.com/docs/react/data/operation-best-practices/#use-graphql-variables-to-provide-arguments) instead of in-line values for arguments. This helps you control exactly which values are reported to Apollo. For details, see [Apollo Studio data privacy and compliance](/data-privacy/).

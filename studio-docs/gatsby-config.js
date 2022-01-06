@@ -44,6 +44,7 @@ module.exports = {
             'metrics/field-usage',
             'metrics/client-awareness',
             'metrics/datadog-integration',
+            'metrics/operation-signatures',
           ],
           'Schema Delivery': [
             'schema-checks',
