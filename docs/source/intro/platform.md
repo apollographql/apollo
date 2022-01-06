@@ -4,7 +4,7 @@ sidebar_title: The Apollo platform
 description: Bring your graph from prototype to production
 ---
 
-The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), and [manage](#3-manage-your-graph-with-apollo-studio) a unified **graph**: a data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
+The Apollo platform helps you [build](#1-build-your-graph-with-apollo-server), [query](#2-query-your-graph-with-apollo-client), [manage](#3-manage-your-graph-with-apollo-studio), and [scale](#4-scale-your-graph-with-apollo-federation) a unified **graph**: a data layer that enables applications to interact with data from any combination of connected data stores and external APIs.
 
 Your graph sits between application clients and back-end services, facilitating the flow of data between them:
 
@@ -32,7 +32,7 @@ As you connect more data sources and expand your schema, Apollo Server can handl
 
 ### Make the jump to federation
 
-As your graph begins to grow in size and complexity, you can use Apollo Server's extension libraries to [federate your graph](#4-federate-your-graph-with-apollo-federation).
+As your graph begins to grow in size and complexity, you can use Apollo Server's extension libraries to [federate your graph](#4-scale-your-graph-with-apollo-federation).
 
 In a federated architecture, your graph's API is implemented across multiple services instead of a monolithic server. Each service has its own GraphQL schema, and those schemas are merged by a **gateway** that intelligently executes operations across services.
 
@@ -56,11 +56,11 @@ In addition to its open-source libraries, the Apollo platform provides a cloud-h
 
 ### The schema registry
 
-The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-registry/) powers many development tools, including Apollo Studio. By registering your graph's schema, you can use Studio to explore your schema's structure, track its change history, and lay the foundation for many other powerful features.
+The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-registry/) powers many development tools, including Apollo Studio. By publishing your graph's schema, you can use Studio to explore your schema's structure, track its change history, and lay the foundation for many other powerful features.
 
 ### Free Apollo Studio features
 
-* A powerful [schema explorer](https://www.apollographql.com/docs/studio/explorer/) that helps your team build and run queries against your registered schema:
+* [The Explorer](https://www.apollographql.com/docs/studio/explorer/), a powerful GraphQL IDE that helps your team build and run queries against your graph:
 
     <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
@@ -84,21 +84,21 @@ The Apollo [schema registry](https://www.apollographql.com/docs/studio/schema-re
 * [Integration with Datadog](https://www.apollographql.com/docs/studio/datadog-integration/)
 * Longer data retention
 
-## 4. Federate your graph with Apollo Federation
+## 4. Scale your graph with Apollo Federation
 
 As your graph grows, it can be useful to divide its functionality across multiple GraphQL services that own distinct portions of the graph's schema. Doing so is known as adopting a **federated architecture**. Apollo has defined the specification for a particular federated architecture called [**Apollo Federation**](https://www.apollographql.com/docs/apollo-server/federation/introduction/).
 
-> We strongly recommend starting with a non-federated architecture and moving to Apollo Federation only after your non-federated graph is up and running.
+Let's look at how this differs from a non-federated architecture.
 
 ### Non-federated architecture
 
-In a non-federated architecture, your monolithic GraphQL server owns the entirety of your graph's schema. When a client request comes in, the server resolves it by fetching and/or modifying data across one or more data stores that it connects to directly:
+In a non-federated architecture, your monolithic GraphQL server is responsible for the entirety of your graph's schema. When a client request comes in, the server resolves it by fetching and/or modifying data across one or more data stores that it connects to directly:
 
 ```mermaid
 graph TB
   subgraph " "
-  userdb[(Users database)];
-  productdb[(Products database)];
+  userdb[(Users<br/>database)];
+  productdb[(Products<br/>database)];
   monolith([GraphQL server]);
   end
   userdb & productdb --- monolith;
@@ -115,12 +115,12 @@ With Apollo Federation, a **gateway** sits in front of one or more **subgraphs**
 ```mermaid
 graph TB;
   subgraph " "
-  userdb[(Users database)];
-  productdb[(Products database)];
+  userdb[(Users<br/>database)];
+  productdb[(Products<br/>database)];
   gateway([GraphQL gateway]);
-  serviceA[Users subgraph];
-  serviceB[Products subgraph];
-  serviceC[Inventory subgraph];
+  serviceA[Users<br/>subgraph];
+  serviceB[Products<br/>subgraph];
+  serviceC[Inventory<br/>subgraph];
   end
   webapp(Web app);
   iosapp(iOS app);
@@ -131,7 +131,7 @@ graph TB;
   class webapp,iosapp secondary;
 ```
 
-The gateway is a GraphQL server, _and so is each subgraph_. Each subgraph defines its own schema and connects to whichever data stores it needs to populate that schema's fields. The gateway then aggregates these schemas and combines them into a _single_ schema.
+The gateway is a GraphQL server, _and so is each subgraph_. Each subgraph defines its own schema and connects to whichever data stores it needs to populate that schema's fields. The gateway then aggregates these schemas and combines them into a _single_ schema (called the **supergraph schema**).
 
 When a client request comes in, the gateway knows which requested fields are owned by which subgraph. It intelligently executes operations across whichever combination of subgraphs is needed to fully complete the operation.
 

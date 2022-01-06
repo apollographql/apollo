@@ -55,7 +55,7 @@ The query above uses `admins` and `managers` as aliases for the `users` field.
 
 ## Data source
 
-A pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [Data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources/) provide the best experience for fetching and caching data from REST endpoints.
+A pattern for fetching data from a particular service, with built-in support for caching, deduplication, and error handling. When deploying GraphQL as a layer between your apps and existing APIs and services, [data sources](https://www.apollographql.com/docs/apollo-server/v2/features/data-sources/) provide the best experience for fetching and caching data from REST endpoints.
 
 ## Deferred query
 
@@ -78,18 +78,18 @@ query NewsFeed {
 
 ## Directive
 
-A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`, and [custom directives](https://www.apollographql.com/docs/graphql-tools/schema-directives/). Directives can be used for features such as authentication, incremental data loading, etc.
+A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. GraphQL includes some built-in directives (such as `@skip` and `@include`), and you can define [custom directives](https://www.apollographql.com/docs/apollo-server/schema/creating-directives/). Directives can be used for features such as authentication, incremental data loading, etc.
 
 ```graphql
 type User @auth {
   name: String!
-  banned: Boolean @auth!
+  banned: Boolean @auth
 }
 ```
 
 ## Docstring
 
-Provides the description of a type, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer and GraphiQL.
+Provides the description of a type, field, or argument. Docstrings automatically appear in many common GraphQL tools, including the Apollo Studio Explorer.
 
 ```graphql
 """
@@ -117,6 +117,7 @@ A file or request string that contains one or multiple definitions of a GraphQL 
 Most Apollo libraries use the `gql` template literal to create GraphQL documents:
 
 ```js
+// A schema document created with the gql template literal
 const typeDefs = gql`
   type Book {
     title: String
@@ -202,17 +203,9 @@ const typeDefs = gql`
 `;
 ```
 
-## GraphQL Playground
+## GraphQL server
 
-An in-browser IDE for GraphQL development and workflow. Provided [out-of-the-box in Apollo Server](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/).
-
-## GraphQL service
-
-The server that contains a GraphQL schema and the ability to run it. Services have runtime information, and through features of the Apollo Platform they can send metrics and maintain a history of the schemas that have been run on that service in the past.
-
-## GraphiQL
-
-An in-browser IDE for GraphQL development and workflow.
+A server that contains a GraphQL schema and can resolve operations that are executed against that schema. [Apollo Server](https://www.apollographql.com/docs/apollo-server/) is an example of a GraphQL server.
 
 ## Introspection
 
@@ -253,7 +246,7 @@ A type in a GraphQL schema that has one or more fields.
 
 ```graphql
 type User {
-   name: String!
+  name: String!
 }
 ```
 
@@ -308,11 +301,11 @@ query getHuman { human(id: 0) { height weight(unit: "") } }
 
 ## Partial query caching
 
-A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [Data Source](https://www.apollographql.com/docs/apollo-server/features/data-sources/) caching.
+A technique for caching inputs to GraphQL queries. This type of caching ensures that if the query is slightly different but with the same inputs, those inputs can simply be retrieved from the cache instead of fetching data again from the backend. It is implemented in Apollo Server 2 as [data source](https://www.apollographql.com/docs/apollo-server/features/data-sources/) caching.
 
 ## Query
 
-A read-only fetch operation to request data from a GraphQL service.
+A read-only fetch operation to request data from a GraphQL server.
 
 ## Query colocation
 
@@ -343,10 +336,6 @@ function ExchangeRates() {
   ));
 }
 ```
-
-## Query safelisting
-
-A technique for preventing unwanted attacks by maintaining a list of approved queries that are allowed in your application. Any query not present in the list that is run against the server will not be allowed. [Automatic Persisted Queries](https://www.apollographql.com/docs/apollo-server/performance/apq/) is a feature of Apollo Server 2 that enables query whitelisting and persisted queries.
 
 ## Resolver
 
@@ -396,7 +385,7 @@ type Query {
 }
 ```
 
-## Schema first development
+## Schema-first development
 
 A development approach for designing and building modern UIs that involves the frontend and backend teams agreeing on a Schema first, which serves as a contract between the UI and the backend before any API engineering happens.
 
@@ -408,13 +397,9 @@ The central source of truth for your schema. It enables schema registration, sch
 
 Refers to the need to evolve a schema over time. As a schema evolves, there is a potential for introducing breaking changes to clients. The Apollo CLI assists schema evolution by checking schema changes for breaking changes using Apollo Studio. Read more in our article about [schema checks](https://www.apollographql.com/docs/studio/schema-checks/#set-up-schema-checks).
 
-## Schema stitching
-
-The process of merging [different schemas into one GraphQL schema](https://www.apollographql.com/docs/graphql-tools/schema-stitching/). These schemas can be local, remote, or from third-party services. In a microservice-style deployment model, where your data exists across multiple APIs, schema stitching makes it possible to combine all of them into one schema that can be queried for all the data at once.
-
 ## Subscription
 
-A real-time GraphQL operation. A [Subscription](https://www.apollographql.com/docs/apollo-server/features/subscriptions/) is defined in a schema along with queries and mutations.
+A long-lived, real-time GraphQL operation. Supported [subscriptions](https://www.apollographql.com/docs/apollo-server/features/subscriptions/) are defined in a schema along with queries and mutations.
 
 ```graphql
 type Subscription {
@@ -431,7 +416,7 @@ subscription onCommentAdded($repoFullName: String!){
 
 ## Scalar type
 
-A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a [custom scalar](https://www.apollographql.com/docs/graphql-tools/scalars/#custom-scalars) type such as **Date** can be specified in a GraphQL service implementation.
+A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. You can also define [custom scalars](https://www.apollographql.com/docs/apollo-server/schema/custom-scalars/).
 
 ## Type system
 
@@ -449,21 +434,12 @@ query GetUser($userId: ID!) {
 }
 ```
 
-In the query above, `userId` is a variable. The variable and its type is declared in the operation signature, signified by a `$`. The type of the variable here is a required `ID`. It's important to note that variable types must match the type of the arguments that they fill.
+In the query above, `userId` is a variable. The variable and its type are declared in the operation signature, signified by a `$`. The type of the variable here is a non-nullable `ID`. It's important to note that variable types must match the type of the arguments that they fill.
 
-The `userId` variable would be passed to the operation by `apollo-client` like this:
+The `userId` variable is included in the operation by Apollo Client like so:
 
 ```js
 client.query({ query: getUserQuery, variables: { userId: 1 } });
-```
-
-In `react-apollo` it would be passed like this:
-
-```jsx
-<Query query={getUserQuery} variables={{ userId: 1 }}>
-  {' '}
-  ...{' '}
-</Query>
 ```
 
 ## Whole response caching
