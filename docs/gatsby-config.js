@@ -34,9 +34,9 @@ module.exports = {
           ],
           'Development Tools': [
             '[Rover CLI](https://www.apollographql.com/docs/rover)',
-            'devtools/cli',
             'devtools/editor-plugins',
             'devtools/apollo-config',
+            'devtools/cli',
           ],
           Resources: [
             '[Principled GraphQL](https://principledgraphql.com)',

@@ -24,6 +24,7 @@ module.exports = {
           'Registering Schemas': [
             'schema/schema-reporting',
             'schema/cli-registration',
+            '[Using Sandbox](https://apollographql.com/docs/studio/explorer/sandbox/#publishing-schemas-from-sandbox)',
             'schema/schema-reporting-protocol'
           ],
           'Working with Graphs': [
@@ -39,11 +40,10 @@ module.exports = {
             'explorer/additional-features',
           ],
           'Metrics Reporting': [
-            'setup-analytics',
-            'client-awareness',
-            'datadog-integration'
-            // field usage
-            // operation usage
+            'metrics/usage-reporting',
+            'metrics/field-usage',
+            'metrics/client-awareness',
+            'metrics/datadog-integration',
           ],
           'Schema Delivery': [
             'schema-checks',
