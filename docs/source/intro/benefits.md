@@ -87,15 +87,15 @@ Thanks to GraphQL's [strong typing](https://graphql.org/learn/schema) and built-
 
 Apollo provides a cloud-hosted collection of tools that help you measure your graph's performance and grow it safely. These tools are together known as [**Apollo Studio**](https://www.apollographql.com/docs/studio/).
 
-After registering your GraphQL schema, you can use Studio's **Explorer tab** to inspect all of its types and fields. You can also build and run queries against your running server:
+After registering your GraphQL schema, you can use the **Apollo Studio Explorer** to inspect all of its types and fields. You can also build and run queries against your running server:
 
 <img src="../img/explorer-tab.jpg" alt="Studio Explorer tab" class="screenshot" />
 
 ### Apollo Client DevTools
 
-The Apollo Client DevTools extension for [Chrome](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/) enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes [GraphiQL](https://github.com/graphql/graphiql), an IDE that helps you test queries while you're working on front-end code.
+The Apollo Client DevTools extension for [Chrome](https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/) enables you to inspect your Apollo Client cache, track active queries, and view mutations. It also includes an embedded version of the Explorer, which helps you test queries while you're working on front-end code.
 
-<img src="../assets/dev-tools.png" alt="Apollo DevTools" class="screenshot" />
+<img src="../img/explorer-devtools.jpg" alt="Apollo DevTools" class="screenshot" />
 
 ## GraphQL is production-ready
 
@@ -142,6 +142,6 @@ Consequently, it's important to design your schema such that it supports the ope
 
 ### Incompatibility with web browser caching
 
-Although [Apollo Client](https://www.apollographql.com/docs/react/) provides useful client-side [caching features](https://www.apollographql.com/docs/react/caching/cache-configuration/), the automatic caching provided by your _web browser_ does not interact well with GraphQL.
+Although [Apollo Client](https://www.apollographql.com/docs/react/) provides powerful client-side [caching features](https://www.apollographql.com/docs/react/caching/cache-configuration/), those features often require some configuration to get the most out of them. The _automatic_ caching provided by your _web browser_ does not interact well with GraphQL.
 
 Web browsers cache fetched data according to its URL. With GraphQL, you fetch all data from the _same_ URL (the URL of your GraphQL server). Consequently, you can't rely on the cached value for this URL.
