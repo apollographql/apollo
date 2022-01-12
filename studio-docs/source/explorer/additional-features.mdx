@@ -55,14 +55,6 @@ query($id: ID!) {
 }
 ```
 
-## Federation
-
-### Query plans for federated graphs
-
-If you're working with a federated graph in Studio, the Explorer dynamically calculates query plans for your operations in the right-hand panel (an option under the Responses tab). As you edit your query, the Explorer will recalculate your query plans and show you their updates.
-
-There are two display modes for query plans. You can switch between the "text" and "chart" display modes in the response panel's header menu.
-
 ## Local development
 
 You can use the Explorer for local development by opening [Sandbox](./sandbox/), or by creating a [development graph](../dev-graphs/) in Studio.
@@ -73,6 +65,48 @@ You can pause introspection polling at any time. To do so:
 
 * **In Sandbox**, open the Explorer Settings tab on the left and edit your connection settings. In the dialog, disable **Auto Update**.
 * **In dev graphs**, open the **DEV GRAPH** menu at the top and disable **Auto Update**.
+
+## Federation
+
+### Query plans for federated graphs
+
+If you're working with a federated graph in Studio, the Explorer dynamically calculates example query plans for your operations in the right-hand panel (click **Response** and select **Query Plan Preview** from the dropdown):
+
+<img class="screenshot" src="../img/explorer-query-plan.jpg" alt="Query plan in the Explorer" width="300" />
+
+> If you don't see the **Query Plan Preview** option, make sure you're using the full version of the Apollo Explorer, _not_ Apollo Sandbox. Also make sure you're using the Explorer with a federated graph.
+
+As you edit your operation, the Explorer recalculates the example query plan accordingly.
+
+> **⚠️ The Explorer might not always calculate the exact same query plan as your gateway!** The Explorer's example query plan helps you reason about your operations, but it is _not_ intended as a source of truth.
+
+There are two display modes for query plans. You can switch between **Show plan as text** and **Show plan as chart** by clicking the icons next to **Query Plan Preview**:
+
+<img class="screenshot" src="../img/explorer-query-plan-diagram.jpg" alt="Query plan diagram in the Explorer" width="600" />
+
+## Subscription support
+
+The Explorer supports the following libraries/protocols for sending subscription operations over WebSocket:
+
+* [`graphql-ws`](https://github.com/enisdenjo/graphql-ws)
+    * This library uses the `graphql-transport-ws` protocol.
+* [`subscriptions-transport-ws`](https://github.com/apollographql/subscriptions-transport-ws)
+    * This library uses the `graphql-ws` protocol (not to be confused with the `graphql-ws _library_ above).
+    * Most Apollo Server instances with subscriptions enabled use this library.
+
+To execute a subscription operation, first specify your subscriptions endpoint and implementation in the Explorer's connection settings:
+
+<img class="screenshot" src="../img/explorer-subscriptions-settings.jpg" alt="Subscription settings in the Explorer" width="500" />
+
+When you execute a subscription, a Subscriptions panel appears in the bottom-right of the Response panel:
+
+<img class="screenshot" src="../img/explorer-subscriptions-panel.jpg" alt="Subscriptions panel in the Explorer" width="500" />
+
+The dot next to `STATUS` indicates whether the Explorer is connected to your WebSocket endpoint (green if connected, red if disconnected). As long as you're connected _and_ listening for updates, any such updates appear in the panel as they're received.
+
+> If you can't connect, double-check that you've specified the correct subscriptions endpoint and implementation.
+
+You can click the `X` next to `Listening` to stop listening for updates (the updates you've already received remain in the panel). You can also click the `X` next to `Subscriptions` to close the panel entirely.
 
 ## Embedding
 
@@ -163,12 +197,6 @@ query StarWarsGenderStats {
 ```
 
 ## FAQ
-
-### Does the Explorer support subscription operations?
-
-Yes. You can run queries, mutations, and subscriptions all from the same Explorer page. You can start and stop listening to subscriptions, and you can see new subscription data as it comes in and old information as it becomes stale.
-
-You can also set your server's subscription websocket endpoint independently from the HTTP endpoint for queries and mutations.
 
 ### Is the Explorer available for on-prem distribution?
 
