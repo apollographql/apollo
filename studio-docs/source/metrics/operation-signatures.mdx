@@ -36,13 +36,15 @@ query GetPostDetails($postId: String!) {
 }
 ```
 
-Despite some cosmetic differences, all of these operations execute identically on a particular GraphQL server. Therefore, Studio should group them when displaying performance information.
+Despite some cosmetic differences (including comments), all of these operations execute identically on a particular GraphQL server. Therefore, Studio should group them when displaying performance information.
 
 Helpfully, Apollo Server's [signature algorithm](#signature-algorithm) generates the _exact same operation signature_ for all of these operations, which means Studio _does_ group them.
 
 ## Signature algorithm
 
-[Jump to an example](#example-signature)
+> ⚠️ **This algorithm might change in future versions of Apollo Server.** This article describes the signature algorithm as of Apollo Server 3.6.1. It is provided here for informational purposes, not as a canonical specification.
+
+Feel free to [jump to an example](#example-signature) or [view the source](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-server-core/src/plugin/usageReporting/defaultUsageReportingSignature.ts).
 
 Apollo Server's current signature algorithm performs the following modifications on an operation to generate its signature:
 
@@ -58,7 +60,7 @@ If an operation includes any in-line argument values, those values are transform
 
 ### 2. Remove extraneous characters
 
-All of an operation's [ignored tokens](http://spec.graphql.org/October2021/#sec-Language.Source-Text.Ignored-Tokens) (including comments and redundant whitespace) are removed. Single spaces are preserved only when required for parsing the request.
+Most unnecessary characters in the operation definition (including comments and redundant whitespace) are removed.
 
 If the operation document includes _multiple_ operations, then operations besides the _executed_ operation are removed.
 
@@ -66,25 +68,19 @@ If the operation document includes fragments that _aren't used_ by the executed 
 
 ### 3. Reorder definitions
 
-The definition of the executed operation appears _first_, followed by any applicable fragment definitions.
+Any preserved fragment definitions appear _first_, sorted alphanumerically by fragment name. The definition of the executed operation appears after all fragment definitions.
 
-#### Fragment definitions
-
-If any fragment definitions contain _sub_-fragments, _all_ top-level fragment definitions appear before _all_ second-level fragment definitions, and so on.
-
-Sorting within each fragment level is alphanumeric by fragment name.
-
-> Whenever the names of two sorted items are identical, the original order of those items relative to each other is preserved.
+> Whenever the names of two sorted items are identical, the algorithm preserves the original order of those items relative to each other.
 
 #### Fields
 
 For a given object or fragment's fields, field selections are sorted in the following order:
 
 1. Individually listed fields
-2. Fragment spreads
+2. Named fragment spreads
 3. In-line fragments
 
-Within each set, sorting is alphanumeric by field name or fragment name.
+Within each of these, sorting is alphanumeric by field name or fragment name.
 
 ##### Field aliases
 
@@ -101,14 +97,7 @@ If a single field accepts multiple arguments, those arguments are sorted alphanu
 Consider this operation:
 
 ```graphql
-# Fragment definitions need to appear after operation definition
-fragment NameParts on User {
-  firstname
-  lastname
-}
-
-# Excessive characters (including this comment!) need to be removed
-
+# Operation definition needs to appear after all fragment definitions
 query GetUser {
   user(id : "hello") { # Replace string argument value with empty string
     ... NameParts # Spread fragment needs to appear after individual fields
@@ -116,15 +105,20 @@ query GetUser {
     aliased: name # Need to remove alias
   }
 }
+
+# Excessive characters (including this comment!) need to be removed
+
+fragment NameParts on User {
+  firstname
+  lastname
+}
 ```
 
 The signature algorithm generates the following signature for this operation:
 
 ```graphql
-query GetUser{user(id:""){name timezone...NameParts}}fragment NameParts on User{firstname lastname}
+fragment NameParts on User{firstname lastname}query GetUser{user(id:""){name timezone...NameParts}}
 ```
-
-See Apollo Server's reference implementation of [operation signatures](https://github.com/apollographql/apollo-server/blob/main/packages/apollo-server-core/src/plugin/usageReporting/defaultUsageReportingSignature.ts) for more information.
 
 ## Signatures and sensitive data
 
