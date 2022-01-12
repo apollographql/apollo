@@ -76,9 +76,11 @@ If you're working with a federated graph in Studio, the Explorer dynamically cal
 
 > If you don't see the **Query Plan Preview** option, make sure you're using the full version of the Apollo Explorer, _not_ Apollo Sandbox. Also make sure you're using the Explorer with a federated graph.
 
-As you edit your operation, the Explorer recalculates the example query plan accordingly.
+As you edit an operation, the Explorer recalculates its example query plan accordingly.
 
-> **⚠️ The Explorer might not always calculate the exact same query plan as your gateway!** The Explorer's example query plan helps you reason about your operations, but it is _not_ intended as a source of truth.
+> **⚠️ The Explorer might not use the same query planning logic as your gateway!** You can mouse over the information icon next to **Query Plan Preview** to see which version of the `@apollo/query-planner` library the Explorer is using. This version might differ from your gateway's version.
+>
+>The Explorer's example query plan helps you reason about your operations, but it is _not_ intended as a source of truth.
 
 There are two display modes for query plans. You can switch between **Show plan as text** and **Show plan as chart** by clicking the icons next to **Query Plan Preview**:
 
@@ -91,7 +93,7 @@ The Explorer supports the following libraries/protocols for sending subscription
 * [`graphql-ws`](https://github.com/enisdenjo/graphql-ws)
     * This library uses the `graphql-transport-ws` protocol.
 * [`subscriptions-transport-ws`](https://github.com/apollographql/subscriptions-transport-ws)
-    * This library uses the `graphql-ws` protocol (not to be confused with the `graphql-ws _library_ above).
+    * This library uses the `graphql-ws` protocol (not to be confused with the `graphql-ws` _library_ above).
     * Most Apollo Server instances with subscriptions enabled use this library.
 
 To execute a subscription operation, first specify your subscriptions endpoint and implementation in the Explorer's connection settings:
