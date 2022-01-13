@@ -1,5 +1,6 @@
 /schema/registry/ /docs/studio/org/graphs/
 
+/performance/ /docs/studio/metrics/operation-signatures/
 /setup-analytics/ /docs/studio/metrics/usage-reporting/
 /datadog-integration/ /docs/studio/metrics/datadog-integration/
 /client-awareness/ /docs/studio/metrics/client-awareness/
