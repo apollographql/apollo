@@ -3,6 +3,8 @@ title: Connecting and authenticating with the Explorer
 sidebar_title: Connecting and authenticating
 ---
 
+import { InlineCode } from '../../components/InlineCode';
+
 The Explorer automatically attempts to connect to your GraphQL server at the URL specified in the Explorer Settings tab. Depending on your server's settings, you might need to configure this connection to handle CORS requirements or authentication.
 
 ## CORS policies
@@ -100,6 +102,15 @@ To create a preflight script:
 6. When your script is ready, click **Save**. Studio stores your script.
 
 You're done! After you save your script, it's automatically loaded for any team member that uses the Explorer with the associated variant.
+
+#### Preflight script API
+| Function | Type | Description  |
+|---|---|---|
+| `explorer.environment.get` | <InlineCode>(key: string) => Readonly<JSONValue \| undefined></InlineCode> | Used to retrieve the current value of an environment variable by it's key |
+| `explorer.environment.set` | `(key: string, value: JSONValue) => void` | Used to set a new value for an environment variable by it's key |
+| `explorer.fetch` | <InlineCode>(href: string, options?: { method?: string, body?: string \| null, headers?: Record<string, string> }) => Promise<{ code: number, body: string, json: () => any }></InlineCode> | Used to make network requests to external services |
+| `explorer.prompt` | <InlineCode>(msg: string, defaultResponse?: string) => Promise<string \| null></InlineCode> | Used to prompt the user for input and return the value in a promise. If the user cancels the prompt `null` is returned |
+
 
 #### Disabling preflight scripts
 
