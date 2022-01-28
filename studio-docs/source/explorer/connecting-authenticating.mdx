@@ -25,7 +25,7 @@ Access-Control-Allow-Credentials: true
 
 ## Authentication
 
-The Explorer currently enables you to authenticate via [request headers](#request-headers), [cookies](#cookies), and [preflight scripts](#preflight-scripts-beta).
+The Explorer currently enables you to authenticate via [request headers](#request-headers), [cookies](#cookies), and [preflight scripts](#preflight-scripts).
 
 > If your graph has authentication requirements that aren't covered by these options, please contact **support@apollographql.com** with questions or feedback.
 
@@ -52,7 +52,7 @@ Once configured, requests sent from `https://studio.apollographql.com` will carr
 
 ### Environment variables
 
-The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in header values or [preflight scripts](#preflight-scripts-beta). This enables you to share operations (including headers) with other team members _without_ exposing sensitive data.
+The bottom panel of the Explorer editor includes an Environment Variables tab. Here, you can provide sensitive information that you can then include in header values or [preflight scripts](#preflight-scripts). This enables you to share operations (including headers) with other team members _without_ exposing sensitive data.
 
 For example, you can define a `token` environment variable like so:
 
@@ -100,6 +100,76 @@ To create a preflight script:
 6. When your script is ready, click **Save**. Studio stores your script.
 
 You're done! After you save your script, it's automatically loaded for any team member that uses the Explorer with the associated variant.
+
+#### Preflight script API reference
+
+These functions are available within the scope of a preflight script. Snippets for each are available via the **Show snippets** link in the preflight script dialog.
+
+<table class="field-table api-ref">
+  <thead>
+    <tr>
+      <th>Name /<br/>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+<tbody>
+
+<tr>
+<td>
+
+##### `explorer.environment.get`
+
+`(key: string) => Readonly`
+</td>
+<td>
+
+Function that returns the current value of the environment variable with the specified `key`.
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `explorer.environment.set`
+
+`(key: string, value: JSONValue) => void`
+</td>
+<td>
+
+Function that sets a new value for the environment variable with the specified `key`.
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `explorer.fetch`
+
+`(href: string, options?: { method?: string, body?: string | null, headers?: Record<string, string> }) => Promise<{ code: number, body: string, json: () => any }>`
+</td>
+<td>
+
+Function for making HTTP requests to external services from within a preflight script.
+</td>
+</tr>
+
+<tr>
+<td>
+
+##### `explorer.prompt`
+
+`(msg: string, defaultResponse?: string) => Promise<string | null>`
+</td>
+<td>
+
+Function that prompts the user for input and returns the value in a promise. If the user cancels the prompt, the promise resolves to `null`.
+</td>
+</tr>
+
+</tbody>
+</table>
+
 
 #### Disabling preflight scripts
 
