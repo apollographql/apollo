@@ -31,7 +31,7 @@ You can override a member's organization-wide role for individual graphs. For ex
 
 Members with the `Graph Admin` or `Org Admin` role can assign graph-specific roles from the Access tab of the graph's Settings page.
 
-If a graph is made [hidden](./graphs/#setting-graph-visibility-enterprise-only), then only users with explicit overrides (as well as `Org Admins`) can see the graph.
+If a graph is made [hidden](./graphs/#internal-graph-visibility-enterprise-only), then only users with explicit overrides (as well as `Org Admins`) can see the graph.
 
 `Graph Admins` and `Org Admins` have exactly the same permissions on graphs, so you can only grant a `Graph Admin` override, not an (equivalent) `Org Admin` override.
 
@@ -86,7 +86,7 @@ Notably, `Billing Manager`s can't invite new members to the organization or upda
 
 ## Graph API key roles
 
-Each [graph API key](../api-keys/) also has a corresponding member role. This role can be `Graph Admin` (the default), `Contributor`, `Observer`, or `Consumer`. A graph API key provides access only to its associated graph. It does not provide access to actions associated with organizations or users. 
+Each [graph API key](../api-keys/) also has a corresponding member role. This role can be `Graph Admin` (the default), `Contributor`, `Observer`, or `Consumer`. A graph API key provides access only to its associated graph. It does not provide access to actions associated with organizations or users.
 
 Otherwise, a graph API key is equivalent in privileges to a user with the same role for the graph. For example, you can use a `Consumer` key to fetch a graph's schema, and you can use a `Graph Admin` key to manage integrations.
 
