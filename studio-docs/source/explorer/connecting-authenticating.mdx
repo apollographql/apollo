@@ -167,6 +167,21 @@ Function that prompts the user for input and returns the value in a promise. If 
 </td>
 </tr>
 
+<tr>
+<td>
+
+##### `explorer.request.body`
+
+`
+{ query: string; variables: { [key in string]?: JSONValue } | null; operationName: string | undefined; }
+`
+</td>
+<td>
+
+The body of the `POST` request that's sent to the configured GraphQL endpoint for the current operation.
+</td>
+</tr>
+
 </tbody>
 </table>
 
