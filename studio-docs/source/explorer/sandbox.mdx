@@ -58,6 +58,8 @@ From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Schema Dif
 
 <img class="screenshot" src="../img/sandbox-diff.jpg" alt="Schema diff in Sandbox" />
 
+> If you are introspecting a subgraph, you will see the subgraph sdl, _not_ the federation-generated subgraph schema. You can see the federation-generated subgraph schema on the SDL page in Sandbox.
+
 In addition to viewing the diff on this page, you can click **Run a Check** in the upper-right to run [schema checks](#schema-checks) against the currently selected variant.
 
 ### Schema checks
@@ -75,6 +77,17 @@ Select any accessible organization, graph, and variant to check against and clic
 <img class="screenshot" src="../img/sandbox-checks-result.jpg" alt="Sandbox checks result" width="400" />
 
 To view the result's _full_ details in Studio, click **Go to details**.
+
+#### Subgraph checks
+
+You can run subgraph checks on federated graphs. If you are introspecting a subgraph you will see a subgraph dropdown where you can select the subgraph that you want your local subgraph to replace.
+
+<img class="screenshot" src="../img/sandbox-subgraph-check-prompt.jpg" alt="Sandbox subgraph check prompt" width="400" />
+
+When you click **Run a check**, composition validation will be run. If composition is successful, you will see both the composition result and the results of the operation check, otherwise you will just see the composition failure.  
+
+<img class="screenshot" src="../img/sandbox-subgraph-check-result.jpg" alt="Sandbox subgraph check result" width="400" />
+
 
 ## Offline Sandbox
 
