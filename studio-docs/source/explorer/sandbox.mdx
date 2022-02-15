@@ -58,7 +58,7 @@ From [Sandbox](https://studio.apollographql.com/sandbox/), open the **Schema Dif
 
 <img class="screenshot" src="../img/sandbox-diff.jpg" alt="Schema diff in Sandbox" />
 
-> If you are introspecting a subgraph, you will see the subgraph sdl, _not_ the federation-generated subgraph schema. You can see the federation-generated subgraph schema on the SDL page in Sandbox.
+> If you're using Sandbox with a subgraph, this diff shows the schema as originally defined, not the generated subgraph schema that includes federation-specific fields like Query._entities. You can view the generated subgraph schema from the SDL page in Sandbox.
 
 In addition to viewing the diff on this page, you can click **Run a Check** in the upper-right to run [schema checks](#schema-checks) against the currently selected variant.
 
@@ -80,11 +80,11 @@ To view the result's _full_ details in Studio, click **Go to details**.
 
 #### Subgraph checks
 
-You can run subgraph checks on federated graphs. If you are introspecting a subgraph you will see a subgraph dropdown where you can select the subgraph that you want your local subgraph to replace.
+You can run subgraph checks on federated graphs. If you're using Sandbox with a subgraph, you can use the subgraph dropdown to select which subgraph you want to check your changes against.
 
 <img class="screenshot" src="../img/sandbox-subgraph-check-prompt.jpg" alt="Sandbox subgraph check prompt" width="400" />
 
-When you click **Run a check**, composition validation will be run. If composition is successful, you will see both the composition result and the results of the operation check, otherwise you will just see the composition failure.  
+When you click **Run a check**, Studio first performs a composition check using your local subgraph schema and the registered schemas of your other subgraphs. If composition succeeds, Sandbox then performs operation checks as usual and displays the results of all checks. If composition fails, Sandbox does not perform operation checks and displays the composition error.
 
 <img class="screenshot" src="../img/sandbox-subgraph-check-result.jpg" alt="Sandbox subgraph check result" width="400" />
 
