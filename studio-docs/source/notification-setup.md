@@ -30,9 +30,10 @@ Currently, Studio can send each of these notification types to the channel(s) in
 > For performance alerts, see [Performance alerts setup](./performance-alerts/#setup).
 
 1. Go to your graph's Settings page in [Apollo Studio](https://studio.apollographql.com/).
-2. Select the **Notifications** tab.
-3. Click **Add notification** in the upper right.
-4. Choose a notification type and click **Next**.
+2. Select the **Reporting** tab.
+3. Click **Add notification** in the upper right:
+    <img src="./img/add-new-alert.jpg" class="screenshot" width="500" alt="Add new alert button" />
+5. Select a notification type and click **Next**:
     <img src="./img/add-notification.jpg" class="screenshot" width="500" alt="Notification creation modal" />
 5. In the dropdown, select which [variant](./org/graphs/#managing-variants) of your graph you want to receive notifications for.
 6. Select an existing configured channel to send notifications to, or select which type of new channel you want to configure:
