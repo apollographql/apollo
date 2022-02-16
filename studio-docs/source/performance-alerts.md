@@ -24,14 +24,14 @@ Each performance alert you define can apply to either **a specific operation** o
 ## Setup
 
 1. Go to your graph's Settings page in [Apollo Studio](https://studio.apollographql.com/).
-2. Select the **Notifications** tab and scroll to the bottom of the page:
+2. Select the **Reporting** tab.
+3. Find the Performance Alerts card and click **Add a new alert**.
 
-   <img src="./img/integrations/perf_alert_setup.png" class="screenshot" alt="Performance alert" />
+    <img src="./img/add-new-alert.jpg" class="screenshot" width="500" alt="Add new alert button" />
 
-2. Click **Add new alert**.
-3. Configure the alert's **Operation Name**, **Trigger**, and **Trigger Value** to suit your needs.
-4. Select a **Channel** to send alerts to. You can select **New Channel** from the dropdown if you haven't yet configured the Slack channel or Pagerduty instance you want to use.
-5. Click **Done**.
+4. Configure the alert's **Operation Name**, **Trigger**, and **Trigger Value** to suit your needs.
+5. Select a **Channel** to send alerts to. You can select **New Channel** from the dropdown if you haven't yet configured the Slack channel or Pagerduty instance you want to use.
+6. Click **Create**.
 
 ## Threshold window
 
