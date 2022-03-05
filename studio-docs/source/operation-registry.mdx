@@ -146,13 +146,13 @@ const server = new ApolloServer({
 
 ### 5. Add the operation registry plugin to Apollo Server
 
-Enable demand control by adding the operation registry to Apollo Server. To enable the operation registry within Apollo Server, it's necessary to install and enable the `apollo-server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Studio.
+Enable demand control by adding the operation registry to Apollo Server. To enable the operation registry within Apollo Server, it's necessary to install and enable the `@apollo/server-plugin-operation-registry` plugin and ensure Apollo Server is configured to communicate with Apollo Studio.
 
 First, add the appropriate plugin to the Apollo Server's `package.json`:
 
 ```
 
-npm install apollo-server-plugin-operation-registry
+npm install @apollo/server-plugin-operation-registry
 
 ```
 
@@ -167,7 +167,7 @@ const server = new ApolloServer({
   // ...
   // New configuration
   plugins: [
-    require('apollo-server-plugin-operation-registry')({
+    require('@apollo/server-plugin-operation-registry')({
       forbidUnregisteredOperations: true,
     }),
   ],
@@ -200,7 +200,7 @@ const gateway = new ApolloGateway({
     // ...
     // New configuration
     plugins: [
-      require("apollo-server-plugin-operation-registry")({
+      require("@apollo/server-plugin-operation-registry")({
         forbidUnregisteredOperations: true
       })
     ]
@@ -222,7 +222,7 @@ Configure the `graphVariant` field (`schemaTag` in `apollo-server` pre-2.13.0) t
 const server = new ApolloServer({
   // Existing configuration
   plugins: [
-    require('apollo-server-plugin-operation-registry')({
+    require('@apollo/server-plugin-operation-registry')({
       schemaTag: 'overrideTag', // highlight-line
     }),
   ],
@@ -293,7 +293,7 @@ const server = new ApolloServer({
   subscriptions: false,
   apollo: { key: '<APOLLO_KEY>' },
   plugins: [
-    require('apollo-server-plugin-operation-registry')({
+    require('@apollo/server-plugin-operation-registry')({
       // De-structure the object to get the HTTP `headers` and the GraphQL
       // request `context`.  Additional validation is possible, but this
       // function must be synchronous.  For more details, see the note below.
@@ -337,7 +337,7 @@ This **experimental** function can be used to monitor the number of operations i
 ```js{4-10}
 const server = new ApolloServer({
   plugins: [
-    require("apollo-server-plugin-operation-registry")({
+    require("@apollo/server-plugin-operation-registry")({
       willUpdateManifest(newManifest, oldManifest) {
         metrics.report(
           "safelist.numberOperations",
@@ -362,7 +362,7 @@ This function is run when an operation is not found in the manifest.
 ```js{4-6}
 const server = new ApolloServer({
   plugins: [
-    require("apollo-server-plugin-operation-registry")({
+    require("@apollo/server-plugin-operation-registry")({
       onUnregisteredOperation(requestContext) {
         metrics.increment("safelist.numberUnregisteredOperations", 1);
       }
@@ -384,7 +384,7 @@ This function is run when an operation is not in the manifest and
 ```js{5-7}
 const server = new ApolloServer({
   plugins: [
-    require("apollo-server-plugin-operation-registry")({
+    require("@apollo/server-plugin-operation-registry")({
       forbidUnregisterdOperations: true,
       onForbiddenOperation(requestContext) {
         metrics.increment("safelist.numberForbiddenOperations", 1);
@@ -405,7 +405,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
-    require("apollo-server-plugin-operation-registry")({
+    require("@apollo/server-plugin-operation-registry")({
       forbidUnregisteredOperations: true,
       dryRun: true // highlight-line
     });
@@ -440,7 +440,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
-    require("apollo-server-plugin-operation-registry")({
+    require("@apollo/server-plugin-operation-registry")({
       // ... other, existing options ...
       debug: true, // highlight-line
     });
@@ -482,11 +482,11 @@ While this upgrade does not require additional work, we recommend running
 the new plugin with `dryRun` and `debug` enabled before enforcing the safelist. To report metrics and use the new storage location, upgrade:
 
 - `apollo-server` or `apollo-server-<variant>` to `>2.6.3`
-- `apollo-server-plugin-operation-registry` to `0.2.0-alpha.1`.
+- `@apollo/server-plugin-operation-registry` to `>=3.5.3`.
 
 In one line, run:
 
-`npm install apollo-server apollo-server-plugin-operation-registry`
+`npm install apollo-server @apollo/server-plugin-operation-registry`
 
 If operations have not been registered since June 6th, 2019, the plugin will
 fallback on the old location. With `debug` enabled, the plugin will log which
@@ -512,12 +512,12 @@ specific variant/tag, follow these steps:
   This can be done by running `apollo service:push --variant <VARIANT>`
 - **client**: Ensure that operations have been registered to the specified graph variant/tag.
   This can be done by running `apollo client:push --variant <VARIANT>` or modifying the service in the `apollo.config.js`
-- **server**: Set the `schemaTag` field of `apollo-server-plugin-operation-registry` to the targeted graph variant/tag
+- **server**: Set the `schemaTag` field of `@apollo/server-plugin-operation-registry` to the targeted graph variant/tag
 
 ```js
 const server = new ApolloServer({
   plugins: [
-    require('apollo-server-plugin-operation-registry')({
+    require('@apollo/server-plugin-operation-registry')({
       schemaTag: 'prod', // highlight-line
 
       // suggested before enforcing the safelist
@@ -555,8 +555,8 @@ to reference a storage secret that then references the manifests
 `/(service id)/(storage secret)/(tag)/manifest.v2.json`
 
 These changes should be transparent, since the new version of the operation
-registry plugin, `0.2.0-alpha.1`, will attempt to use the new scheme and then
-fallback on the old.All apollo cli versions write to the new and old manifest
+registry plugin will attempt to use the new scheme and then
+fallback on the old. All apollo cli versions write to the new and old manifest
 locations without additional configuration.
 
 Be aware that the the variant/tag specific manifest will
