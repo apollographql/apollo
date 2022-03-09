@@ -18,7 +18,7 @@ As a reminder, mutations are GraphQL operations that can modify back-end data (u
 type Mutation {
   bookTrips(launchIds: [ID]!): TripUpdateResponse!
   cancelTrip(launchId: ID!): TripUpdateResponse!
-  login(email: String): String # login token
+  login(email: String): User # login token
 }
 ```
 
