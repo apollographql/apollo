@@ -36,6 +36,7 @@ module.exports = {
             'explorer/explorer',
             'explorer/sandbox',
             'explorer/connecting-authenticating',
+            'explorer/operation-collections',
             'explorer/embed-explorer',
             'explorer/additional-features',
           ],

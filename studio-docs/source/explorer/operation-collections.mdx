@@ -1,0 +1,71 @@
+---
+title: Operation collections in the Explorer
+sidebar_title: Operation collections
+---
+
+You can save **operation collections** in the Apollo Studio Explorer, enabling you to organize your frequently used GraphQL operations and optionally share them with your organization:
+
+<img src="../img/operation-collections/list-collections.jpg" alt="Explorer collections list" class="screenshot" width="300" />
+
+Each [variant](../org/graphs/#managing-variants) of a graph has its own set of operation collections. An operation collection can be either **personal** (visible only to you) or **shared** (visible to all organization members).
+
+## Creating a collection
+
+To create an operation collection in the Explorer:
+
+1. [Open Studio](https://studio.apollographql.com/) and navigate to the Explorer.
+2. In the top left, select the graph/variant combination you want to create a collection for (e.g., `docs-example-graph/current` in the screenshot above).
+3. Click the "bookmark" tab in the Explorer's left panel to open your collection settings (shown in the screenshot above).
+4. Click **+ Create collection** at the top of either the Personal or the Shared section, depending on which type of collection you want to create.
+
+    A dialog like the following appears:
+
+    <img src="../img/operation-collections/create-collection.jpg" alt="Create collection dialog" class="screenshot" width="500" />
+
+5. Provide a name and optional description for your collection.
+6. If you're creating a shared collection, you can click **Advanced permissions for this collection** to specify whether non-admin members of the organization can modify your shared collection and its operations.
+7. Click **Add**.
+
+That's it! Your newly created collection appears in its corresponding list.
+
+## Adding operations
+
+To add operations to a collection:
+
+1. Define at least one operation in the Explorer's editor panel:
+
+    <img src="../img/operation-collections/create-operation.jpg" alt="Example query in the Explorer editor panel" class="screenshot" width="350" />
+
+    > If you define _multiple_ operations in a single editor, _all_ of those operations are saved together as a single entry in a collection.
+
+2. Click the "floppy disk" button (shown in the screenshot above) to open the save dialog:
+
+    <img src="../img/operation-collections/save-operation.jpg" alt="Dialog for saving operation to collection" class="screenshot" width="500" />
+
+3. Provide a name for the collection entry, then use the dropdown menu to select a collection to add it to.
+
+    > If you don't see the collection you want, make sure you've selected the correct graph/variant combination in the Explorer.
+
+4. Click **Save**.
+
+That's it! Your newly saved entry appears in its corresponding collection:
+
+<img src="../img/operation-collections/added-operation.jpg" alt="Saved operation shown in left panel" class="screenshot" width="500" />
+
+If you've saved the entry to a shared collection, it also appears for other members of your organization.
+
+## Modifying collections and operations
+
+> ⚠️ Non-admin organization members _can't_ edit another team member's shared collection, _unless_ that team member specifically configures the collection to allow this.
+
+**To edit a collection's details,** click the **•••** button next to its entry in the list and select **Configure**.
+
+**To edit an existing operation in a collection,** click that operation to open it and make any necessary changes. Then click the "floppy disk" icon to save those changes.
+
+## Sharing collections
+
+As mentioned above, every **shared** operation collection is automatically visible in the Explorer for all members of your organization.
+
+You can also give team members a link directly to a particular shared collection or operation. To do so, click the **•••** button next to any shared collection or operation in the list and select the **Copy link** option.
+
+> Team members must be signed in to Studio to view linked collections or operations.
