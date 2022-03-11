@@ -19,6 +19,7 @@ module.exports = {
           null: [
             'index',
             'getting-started',
+            'explorer/sandbox',
             '[Managed federation](https://apollographql.com/docs/federation/managed-federation/overview/)'
           ],
           'Registering Schemas': [
@@ -34,7 +35,6 @@ module.exports = {
           ],
           'The Explorer': [
             'explorer/explorer',
-            'explorer/sandbox',
             'explorer/connecting-authenticating',
             'explorer/operation-collections',
             'explorer/embed-explorer',
