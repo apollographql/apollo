@@ -72,11 +72,8 @@ Let’s walk through Apollo Server's default behavior for reporting on fields in
 // GraphQL Response
 {
   "data": { ... },          // NEVER sent to Apollo Studio.
-  "errors": [ ... ],        // Sent to Studio, used to report on errors for operations and fields.
-  "extensions": {
-    "tracing": { ... },     // Sent to Studio, used to report on performance data for operations and fields.
-    "cacheControl": { ... } // Sent to Studio, used to determine cache policies and forward CDN cache headers.
-  }
+  "errors": [ ... ] 
+  // Sent to Studio, used to report on errors for operations and fields.
 }
 ```
 
