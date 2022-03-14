@@ -98,6 +98,7 @@ type Launch {
   isBooked: Boolean!
 }
 ```
+(make sure to not add any semicolons since gql is its own language)
 
 The `Launch` object type has a collection of **fields**, and each field has a type of its own. A field's type can be either an object type or a **scalar type**. A scalar type is a primitive (like `ID`, `String`, `Boolean`, `Int` or `Float`) that resolves to a single value. In addition to GraphQL's built-in scalar types, you can define [custom scalar types](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/).
 
@@ -186,7 +187,7 @@ type TripUpdateResponse {
 }
 ```
 
-This response type contains a `success` status, a corresponding `message`, and an array of any `Launch`es that were modified by the mutation. It's good practice for a mutation to return whatever objects it modifies so the requesting client can update its cache and UI without needing to make a followup query.
+This response type contains a `success` status, a corresponding `message`, and an array of any `Launch`es that were modified by the mutation. **It's good practice for a mutation to return whatever objects it modifies so the requesting client can update its cache and UI without needing to make a followup query**.
 
 Our example app's schema is now complete!
 
