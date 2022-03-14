@@ -48,6 +48,7 @@ This tutorial assumes the following:
 
 * You're familiar with both JavaScript/ES6 and React.
     * If you need to brush up on React, we recommend going through the [official React tutorial](https://reactjs.org/tutorial/tutorial.html).
+    * If you get confused by some of the ES6 syntax used throughout the course you can look them up [here](https://www.javascripttutorial.net/es6/javascript-object-destructuring/). Make sure to at least know about spreading, destructuring, defaulting as well as naming destructured variables.
 
 * You're interested in implementing both a back-end GraphQL API _and_ a front-end client that consumes it. If you're only interested in one or the other, see one of the following:
     * [Get started with Apollo Client](https://www.apollographql.com/docs/react/get-started/) (frontend)
