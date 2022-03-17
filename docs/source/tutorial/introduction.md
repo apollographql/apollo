@@ -9,7 +9,7 @@ description: Start here to learn how to build full-stack apps with Apollo
 Welcome! This tutorial guides you through building a full-stack, GraphQL-powered app with the Apollo platform.
 
 We want you to feel empowered to build your own production-ready app with Apollo, so
-we're skipping "Hello World" in favor of an example that's closer to "Real
+we're skipping "Hello World" in favor of an example that's closer to the "Real
 World", complete with authentication, pagination, testing, and more.
 
 Each section should take about 10-15 minutes (except the final section, which is closer to 20).
